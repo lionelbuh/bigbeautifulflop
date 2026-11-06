@@ -1,0 +1,78 @@
+{
+  "slug": "nobody-knew-health-care",
+  "status": "published",
+  "published": "2026-11-04",
+  "headline": "Nobody knew health care could be so complicated",
+  "dek": "A discovery announced to the nation’s governors, many of whom had known for some time. Neuchâtel and Lyon were not surprised either.",
+  "topics": ["health care", "policy"],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "White House remarks",
+    "medium": "Remarks at a meeting with the National Governors Association, White House",
+    "date": "2017-02-27",
+    "text": [
+      "Now, I have to tell you, it’s an unbelievably complex subject. Nobody knew that health care could be so complicated."
+    ],
+    "context": "Said during the debate on repealing and replacing the Affordable Care Act.",
+    "source": {
+      "label": "Remarks to the National Governors Association, 27 February 2017",
+      "url": null
+    },
+    "verification": {
+      "status": "to-verify",
+      "note": "Link the official White House transcript or a video of the remarks before launch."
+    }
+  },
+  "presidential": {
+    "en": [
+      "Health care is one of the most complex systems in American life. It touches every family, every employer and every hospital in the country, and that is exactly why getting reform right matters more than getting it done fast.",
+      "Doctors, patients and many of the governors in this room have understood that complexity for years. We intend to learn from them, and we still intend to deliver a better law."
+    ],
+    "fr": [
+      "Le système de santé est l’un des plus complexes de la vie américaine. Il concerne chaque famille, chaque employeur et chaque hôpital du pays ; c’est précisément pourquoi il importe davantage de bien le réformer que de le réformer vite.",
+      "Les médecins, les patients et bon nombre des gouverneurs ici présents connaissent cette complexité depuis longtemps. Nous entendons apprendre d’eux, et nous restons déterminés à proposer une meilleure loi."
+    ],
+    "changes": [
+      "Admits the difficulty without claiming nobody else had noticed.",
+      "Credits the people who had noticed.",
+      "Keeps the political goal: replacing the law."
+    ]
+  },
+  "editions": {
+    "neuchatelois": {
+      "review": "draft",
+      "fr": [
+        "Personne ne savait que la santé, c’était si compliqué ? Dans le canton, on le sait depuis longtemps : ça fait des années qu’on se dispute pour savoir si l’hôpital doit être en haut ou en bas.",
+        "Nous, on fabrique des montres avec trois cents pièces qui tiennent dans un dé à coudre. Alors les choses compliquées, on connaît.",
+        "Mais un système de santé, c’est plus compliqué qu’une montre à complications. Et en plus, ça ne donne même pas l’heure."
+      ],
+      "en": [
+        "Nobody knew health care was so complicated? In this canton we’ve known for ages: we’ve spent years arguing about whether the hospital should be up in the mountains or down by the lake.",
+        "We make watches with three hundred parts that fit inside a thimble. So complicated things, we know about.",
+        "But a health system is more complicated than a watch with complications. And on top of that, it doesn’t even tell the time."
+      ],
+      "notes": [
+        "Neuchâtel is split between “le Haut”, the mountain towns of La Chaux-de-Fonds and Le Locle, and “le Bas”, the lakeside. Where hospitals should go has been a long-running political fight.",
+        "In watchmaking, a “complication” is any function beyond telling the time: a calendar, a moon phase, a chime. The joke works in English too."
+      ]
+    },
+    "lyonnais": {
+      "review": "draft",
+      "fr": [
+        "Personne savait que la santé, c’était si compliqué ? Oh, les gones, faut arrêter le beaujolais nouveau.",
+        "N’importe quel Lyonnais vous le dira : c’est plus simple de traverser la Presqu’île par les traboules sans se perdre que de comprendre une feuille de remboursement.",
+        "Bon, on en reparle au bouchon, autour d’un tablier de sapeur et d’un pot de côtes-du-rhône. Et après, promis, on réforme."
+      ],
+      "en": [
+        "Nobody knew health care was so complicated? Come on, guys, lay off the new wine.",
+        "Any Lyonnais will tell you: it’s easier to cross the old town through the secret passageways without getting lost than to understand a medical reimbursement form.",
+        "Right, let’s discuss it over lunch at the bistro, with some fried tripe and a jug of red. And after that, I promise, we reform."
+      ],
+      "notes": [
+        "“Gone” is Lyon slang for a kid, or a fellow Lyonnais of any age.",
+        "Traboules are the covered passageways that run through buildings in old Lyon. Tourists get lost in them; locals pretend not to.",
+        "A bouchon is a traditional Lyon bistro. The tablier de sapeur is breaded, fried tripe. A “pot” is a 46-centilitre bottle of house wine."
+      ]
+    }
+  }
+}
