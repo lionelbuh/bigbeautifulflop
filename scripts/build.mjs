@@ -14,7 +14,7 @@ import { loadStatements } from '../src/site/content.js';
 import { buildPages } from '../src/site/pages.js';
 import { SITE_URL, SITE_NAME, MOTTO, DISCLAIMER } from '../src/site/layout.js';
 import { articlePath } from '../src/site/components.js';
-import { dayNumber } from '../src/client/rotation.js';
+import { dayNumber } from '../src/site/rotation.js';
 import { e } from '../src/site/html.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -43,11 +43,7 @@ export function build({ date = process.env.BUILD_DATE } = {}) {
     return file;
   };
   const css = readFileSync(path.join(root, 'src/styles/main.css'), 'utf8');
-  // one file, no import: rotation.js (without its exports) followed by main.js (without its import)
-  const js = [
-    readFileSync(path.join(root, 'src/client/rotation.js'), 'utf8').replace(/^export /gm, ''),
-    readFileSync(path.join(root, 'src/client/main.js'), 'utf8').replace(/^import .*$/m, ''),
-  ].join('\n');
+  const js = readFileSync(path.join(root, 'src/client/main.js'), 'utf8');
   const assets = {
     css: hashed('main', 'css', css),
     js: hashed('main', 'js', `{\n${js}\n}\n`),

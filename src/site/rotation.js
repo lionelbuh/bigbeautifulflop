@@ -1,7 +1,6 @@
 /**
- * "Edition of the day": which regional version a switcher opens on.
- * Shared by the build (the static default) and the browser (so the choice follows the reader's
- * date even between two builds). Pure and deterministic: same date, same edition, everywhere.
+ * "Edition of the day": which Swiss and French versions come first under each statement.
+ * Used at build time; the site rebuilds every night. Pure and deterministic: same date, same order.
  */
 const DAY = 86400000;
 

@@ -1,121 +1,123 @@
-/** Reusable blocks: the original, the presidential version, regional editions and their switcher. */
-import { e, paras, formatDate, truncate, frenchSpacing } from './html.js';
-import { flag, chip } from './layout.js';
-import { getCountry, regionPath } from '../../content/regions.js';
+/**
+ * Every version of a statement is shown as a post card, one under the other: the original, the
+ * presidential version, then the regional ones. Light on purpose: no photo, no long explanations.
+ * The English adaptation sits behind "Translate post", as on social networks.
+ */
+import { e, paras, formatDate, frenchSpacing } from './html.js';
+import { chip } from './layout.js';
+import { REGIONS } from '../../content/regions.js';
 import { editionsFor } from './content.js';
-import { editionIndex } from '../client/rotation.js';
+import { editionIndex } from './rotation.js';
 
 export const articlePath = (s) => `/statements/${s.slug}/`;
 export const editionPath = (s, region) => `/statements/${s.slug}/${region.id}/`;
 
-/** The original statement: verbatim, attributed, sourced, and visibly not ours. */
-export function originalBlock(s, { size = 'large', link = false } = {}) {
-  const o = s.original;
-  const source = o.source.url
-    ? `<a href="${e(o.source.url)}" rel="noopener external">${e(o.source.label)}</a>`
-    : e(o.source.label);
-  const pending = o.verification?.status !== 'verified'
-    ? `<p class="verify-flag" title="${e(o.verification?.note || '')}">Wording to be checked against the source before launch</p>`
-    : '';
-  return `<figure class="original original--${size}">
-  <p class="stamp stamp--original">Original statement <span>· verbatim, not satire</span></p>
-  <blockquote cite="${e(o.source.url || '')}">${paras(o.text)}</blockquote>
-  <figcaption>
-    <span class="original-speaker">${e(o.speaker)}</span>
-    <span class="original-meta">${e(o.medium)}, <time datetime="${o.date}">${formatDate(o.date)}</time></span>
-    <span class="original-source">Source: ${source}</span>
-    ${size === 'large' && o.context ? `<span class="original-context">${e(o.context)}</span>` : ''}
-    ${pending}
-  </figcaption>
-  ${link ? `<a class="more" href="${articlePath(s)}">Read the full edition</a>` : ''}
-</figure>`;
+const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function shortDate(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return `${d} ${SHORT_MONTHS[m - 1]} ${y}`;
 }
 
-/** How a measured, statesmanlike president would have said the same thing. */
-export function presidentialBlock(s, { size = 'large', idPrefix = 'p' } = {}) {
-  const p = s.presidential;
-  const changes = size === 'large' && p.changes?.length
-    ? `<div class="changes"><p class="changes-title">What changed</p><ul>${p.changes.map((c) => `<li>${e(c)}</li>`).join('')}</ul></div>`
-    : '';
-  const french = size === 'large' && p.fr?.length
-    ? `<details class="in-french" id="${idPrefix}-fr"><summary>Lire la version présidentielle en français</summary><div lang="fr">${paras(p.fr, '', { french: true })}</div></details>`
-    : '';
-  return `<section class="presidential presidential--${size}">
-  <p class="stamp stamp--presidential">${flag('us')} The presidential version <span>· satire</span></p>
-  <div class="presidential-text">${paras(size === 'large' ? p.en : [truncate(p.en.join(' '), 220)])}</div>
-  ${changes}
-  ${french}
-</section>`;
-}
+const initials = (name) => name.replace(/\b[A-Z]\.\s*/g, '').split(/\s+/).map((w) => w[0]).join('').slice(0, 2);
 
-/** One regional version: the French original, its English adaptation, and the notes that explain the jokes. */
-export function editionBody(s, region, ed, { notes = true } = {}) {
-  const noteList = notes && ed.notes?.length
-    ? `<details class="edition-notes"><summary>Lost in translation: the notes</summary><ul>${ed.notes.map((n) => `<li>${e(n)}</li>`).join('')}</ul></details>`
-    : '';
-  const review = ed.review !== 'approved'
-    ? '<p class="review-flag">Draft: awaiting review by a local speaker</p>'
-    : '';
-  return `<div class="edition-columns">
-    <div class="edition-fr" lang="${region.lang}">
-      <p class="col-label">${e(region.name)}, in the original</p>
-      ${paras(ed.fr, '', { french: true })}
-    </div>
-    <div class="edition-en" lang="en">
-      <p class="col-label">The English adaptation</p>
-      ${paras(ed.en)}
-    </div>
-  </div>
-  ${noteList}
-  ${review}`;
-}
-
-/**
- * The country's editions of a statement, as tabs. Opens on the edition of the day; without
- * JavaScript every edition is shown one after the other.
- */
-export function editionSwitcher(s, countryId, { day, idPrefix, headingLevel = 3, title } = {}) {
-  const country = getCountry(countryId);
-  const list = editionsFor(s, countryId);
-  if (!list.length) return '';
-  const selected = editionIndex(list.length, day);
-  const h = `h${headingLevel}`;
-  const tabs = list
-    .map(({ region }, i) => `<button type="button" role="tab" id="${idPrefix}-tab-${region.id}" aria-controls="${idPrefix}-${region.id}" aria-selected="${i === selected}" tabindex="${i === selected ? 0 : -1}">${chip(region)}${e(region.name)}</button>`)
-    .join('');
-  const panels = list
-    .map(({ region, edition }, i) => `<section class="edition" role="tabpanel" id="${idPrefix}-${region.id}" aria-labelledby="${idPrefix}-tab-${region.id}"${i === selected ? '' : ' data-inactive'}>
-    <${h} class="edition-title">${chip(region)}<span>${e(region.name)}</span> <small>${e(region.place)}</small></${h}>
-    ${editionBody(s, region, edition)}
-    <p class="edition-link"><a href="${editionPath(s, region)}">Permalink: the ${e(region.name)} edition</a></p>
-  </section>`)
-    .join('');
-  return `<div class="switcher" data-switcher>
-  <div class="switcher-head">
-    <p class="stamp stamp--world">${flag(country.flag)} ${e(title || `${country.name}: edition of the day`)}</p>
-    <div class="switcher-tabs" role="tablist" aria-label="${e(country.name)} editions">${tabs}</div>
-  </div>
-  ${panels}
-</div>`;
-}
-
-/** Card for a statement in lists and on the home page. */
-export function statementCard(s, { day } = {}) {
-  const all = [...editionsFor(s, 'switzerland'), ...editionsFor(s, 'france')];
-  const pick = all[editionIndex(all.length, day)];
-  const teaser = pick
-    ? `<div class="card-edition"><p class="card-edition-label">${chip(pick.region)}${e(pick.region.name)}</p><p lang="${pick.region.lang}">${e(frenchSpacing(truncate(pick.edition.fr[0], 150)))}</p></div>`
-    : '';
-  return `<article class="card">
-  <p class="kicker">${e((s.original.channel || s.original.medium))} · <time datetime="${s.original.date}">${formatDate(s.original.date)}</time></p>
-  <h3 class="card-title"><a href="${articlePath(s)}">${e(s.headline)}</a></h3>
-  <blockquote class="card-quote">${e(truncate(s.original.text.join(' '), 160))}</blockquote>
-  <div class="card-presidential"><p class="card-edition-label">${flag('us')} Presidential</p><p>${e(truncate(s.presidential.en.join(' '), 170))}</p></div>
-  ${teaser}
-  <p class="card-regions">${all.map(({ region }) => `<a href="${editionPath(s, region)}">${chip(region)}${e(region.name)}</a>`).join('')}</p>
+/** The post card shared by all versions. */
+function post({ variant, avatar, name, meta, badge, body, translate, footer, lang }) {
+  return `<article class="post post--${variant}">
+  <header class="post-head">
+    ${avatar}
+    <p class="post-who"><span class="post-name">${name}</span><span class="post-meta">${meta}</span></p>
+    <span class="post-badge">${badge}</span>
+  </header>
+  <div class="post-text"${lang ? ` lang="${lang}"` : ''}>${body}</div>
+  ${translate ? `<details class="post-translate"><summary>Translate post</summary><div lang="en">${translate}</div></details>` : ''}
+  ${footer ? `<footer class="post-foot">${footer}</footer>` : ''}
 </article>`;
 }
 
-export function regionLink(region) {
-  return `<a class="region-link" href="${regionPath(region)}">${chip(region)}${e(region.name)}</a>`;
+/** The original: verbatim, attributed and sourced. The only quotation on the site. */
+export function originalPost(s) {
+  const o = s.original;
+  const source = o.source.url ? `<a href="${e(o.source.url)}" rel="noopener external">${e(o.source.label)}</a>` : e(o.source.label);
+  const check = o.verification?.status !== 'verified' ? ' · <span class="verify-flag">wording to be checked</span>' : '';
+  return post({
+    variant: 'original',
+    avatar: `<span class="avatar avatar--original" aria-hidden="true">${e(initials(o.speaker))}</span>`,
+    name: e(o.speaker),
+    meta: `${o.handle ? `${e(o.handle)} · ` : ''}${e(o.channel || o.medium)} · <time datetime="${o.date}">${shortDate(o.date)}</time>`,
+    badge: 'Original',
+    body: `<blockquote cite="${e(o.source.url || '')}">${paras(o.text)}</blockquote>`,
+    footer: `Source: ${source}${check}`,
+  });
 }
+
+/** How a measured, statesmanlike president would have said it. */
+export function presidentialPost(s) {
+  const p = s.presidential;
+  return post({
+    variant: 'presidential',
+    avatar: '<span class="avatar avatar--presidential" aria-hidden="true">★</span>',
+    name: 'The Presidential Version',
+    meta: 'How a real president would say it',
+    badge: 'Satire',
+    body: paras(p.en),
+    // the French presidential version, behind the same kind of link
+    translate: null,
+    footer: p.fr?.length ? `<details class="post-translate post-translate--inline"><summary>Version française</summary><div lang="fr">${paras(p.fr, '', { french: true })}</div></details>` : '',
+  });
+}
+
+/** One regional version, with its English adaptation behind "Translate post". */
+export function regionalPost(s, region, { permalink = true, notes = false, english = false } = {}) {
+  const ed = s.editions[region.id];
+  const noteList = notes && ed.notes?.length
+    ? `<details class="post-translate post-translate--inline"><summary>Lost in translation</summary><ul>${ed.notes.map((n) => `<li>${e(n)}</li>`).join('')}</ul></details>`
+    : '';
+  const draft = ed.review !== 'approved' ? '<span class="verify-flag">draft</span>' : '';
+  const link = permalink ? `<a href="${editionPath(s, region)}">Permalink</a>` : '';
+  return post({
+    variant: 'regional',
+    avatar: `<span class="avatar avatar--regional" aria-hidden="true" style="--chip-a:${region.chip[0]};--chip-b:${region.chip[1]}"></span>`,
+    name: e(region.name),
+    meta: e(region.place),
+    badge: 'Satire',
+    lang: english ? 'en' : region.lang,
+    body: english ? paras(ed.en) : paras(ed.fr, '', { french: true }),
+    translate: english ? null : paras(ed.en),
+    footer: [link, draft].filter(Boolean).join(' · ') + noteList,
+  });
+}
+
+/**
+ * The regional versions of a statement, in the order of the day: today's Swiss and French
+ * editions first, then the others.
+ */
+export function regionsInOrder(s, day) {
+  const first = [];
+  const rest = [];
+  for (const country of ['switzerland', 'france']) {
+    const list = editionsFor(s, country).map((x) => x.region);
+    const i = editionIndex(list.length, day);
+    list.forEach((r, j) => (j === i ? first : rest).push(r));
+  }
+  return [...first, ...rest];
+}
+
+/** The whole thread: original, presidential, then every regional version. */
+export function thread(s, { day, regions = true } = {}) {
+  const list = regions ? regionsInOrder(s, day) : [];
+  return `<div class="thread">
+  ${originalPost(s)}
+  <p class="thread-step">The presidential version</p>
+  ${presidentialPost(s)}
+  ${list.length ? `<p class="thread-step">Around the world</p>${list.map((r) => regionalPost(s, r)).join('')}` : ''}
+</div>`;
+}
+
+/** Links to every regional version of a statement. */
+export function regionLinks(s) {
+  return REGIONS.filter((r) => s.editions?.[r.id])
+    .map((r) => `<a href="${editionPath(s, r)}">${chip(r)}${e(r.name)}</a>`)
+    .join('');
+}
+
+export { formatDate };

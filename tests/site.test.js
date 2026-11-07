@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { loadStatements, validateStatement } from '../src/site/content.js';
 import { REGIONS } from '../content/regions.js';
-import { dayNumber, editionIndex } from '../src/client/rotation.js';
+import { dayNumber, editionIndex } from '../src/site/rotation.js';
 
 const statements = loadStatements(path.resolve('content/statements'));
 
@@ -53,8 +53,10 @@ describe('build', () => {
         const html = readFileSync(path.join(out, 'statements', s.slug, id, 'index.html'), 'utf8');
         expect(html).toContain('An independent satirical project');
         // only the original goes in a <blockquote>; the regional text is never presented as a quotation
+        expect(html).toContain('class="post post--original"');
         const quotes = html.match(/<blockquote[\s\S]*?<\/blockquote>/g) || [];
-        expect(quotes.join()).not.toContain(s.editions[id].fr[0].slice(0, 30));
+        expect(quotes.length).toBe(1);
+        expect(quotes.join()).not.toContain(s.editions[id].en[0].slice(0, 30));
       }
     }
     const home = readFileSync(path.join(out, 'index.html'), 'utf8');
