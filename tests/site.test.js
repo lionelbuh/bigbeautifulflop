@@ -75,6 +75,16 @@ describe('build', () => {
         expect(quotes.join()).not.toContain(s.editions[id].fr[0].slice(0, 40));
       }
     }
+    for (const s of statements) {
+      // every statement has its share image (npm run images)
+      expect(existsSync(path.resolve('public/og', `${s.slug}.png`))).toBe(true);
+      const html = readFileSync(path.join(out, 'statements', s.slug, 'index.html'), 'utf8');
+      expect(html).toContain(`<meta property="og:image" content="https://bigbeautifulflop.com/og/${s.slug}.png" />`);
+      expect(html).toContain(`<link rel="canonical" href="https://bigbeautifulflop.com/statements/${s.slug}/" />`);
+      const ld = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s);
+      expect(JSON.parse(ld[1])['@graph'][0]['@type']).toBe('SatiricalArticle');
+    }
+    expect(readFileSync(path.join(out, '404.html'), 'utf8')).toContain('noindex');
     const home = readFileSync(path.join(out, 'index.html'), 'utf8');
     expect(home).toContain('Making presidential statements presidential again.');
     expect(readFileSync(path.join(out, 'sitemap.xml'), 'utf8')).toContain('/switzerland/vaudois/');

@@ -7,7 +7,7 @@
  *   BUILD_DATE=2026-11-06 node scripts/build.mjs   build as of a given day (tests, previews)
  */
 import { createHash } from 'node:crypto';
-import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs';
+import { cpSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadStatements } from '../src/site/content.js';
@@ -50,7 +50,9 @@ export function build({ date = process.env.BUILD_DATE } = {}) {
     font: '/assets/fonts/fraunces-latin-opsz-normal.woff2',
   };
 
-  const pages = buildPages({ statements, day, today, assets });
+  const ogDir = path.join(root, 'public/og');
+  const ogImages = new Set(existsSync(ogDir) ? readdirSync(ogDir) : []);
+  const pages = buildPages({ statements, day, today, assets, ogImages });
   for (const p of pages) {
     const file = p.path.endsWith('/') ? path.join(out, p.path, 'index.html') : path.join(out, p.path);
     mkdirSync(path.dirname(file), { recursive: true });
@@ -69,9 +71,13 @@ export function build({ date = process.env.BUILD_DATE } = {}) {
 function sitemap(pages) {
   const urls = pages
     .filter((p) => p.listed)
-    .map((p) => `  <url><loc>${SITE_URL}${p.path}</loc>${p.lastmod ? `<lastmod>${p.lastmod}</lastmod>` : ''}</url>`)
+    .map((p) => {
+      const lastmod = p.lastmod ? `<lastmod>${p.lastmod}</lastmod>` : '';
+      const image = p.image && p.image.path !== '/og/default.png' ? `<image:image><image:loc>${SITE_URL}${p.image.path}</image:loc></image:image>` : '';
+      return `  <url><loc>${SITE_URL}${p.path}</loc>${lastmod}${image}</url>`;
+    })
     .join('\n');
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls}\n</urlset>\n`;
 }
 
 function feed(statements) {

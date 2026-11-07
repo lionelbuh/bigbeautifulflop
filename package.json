@@ -10,7 +10,8 @@
     "dev": "node scripts/serve.mjs",
     "test": "vitest run",
     "check": "npm test && npm run build",
-    "new": "node scripts/new-statement.mjs"
+    "new": "node scripts/new-statement.mjs",
+    "images": "node scripts/og-images.mjs"
   },
   "engines": {
     "node": ">=20"

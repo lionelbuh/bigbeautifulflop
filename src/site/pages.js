@@ -1,6 +1,6 @@
 /** Every page of the site, as { path, lang, html } objects (see scripts/build.mjs). */
 import { e, formatDate, truncate } from './html.js';
-import { renderPage, flag, chip, emailLink, DISCLAIMER, SITE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
+import { renderPage, flag, chip, emailLink, CONTACT_EMAIL, DEFAULT_IMAGE, DISCLAIMER, SITE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
 import { COUNTRIES, REGIONS, getCountry, regionsOf, regionPath } from '../../content/regions.js';
 import { editionsFor, leadStatement, splitLatest } from './content.js';
 import {
@@ -9,7 +9,8 @@ import {
 } from './components.js';
 
 /** Builds every page. `day` is the day number used for the editions of the day. */
-export function buildPages({ statements, day, today, assets }) {
+export function buildPages({ statements, day, today, assets, ogImages = new Set() }) {
+  const imageOf = (s) => (ogImages.has(`${s.slug}.png`) ? { path: `/og/${s.slug}.png`, alt: `${s.headline}: Trump’s post and its satirical versions` } : DEFAULT_IMAGE);
   const { recent, archived } = splitLatest(statements);
   const lead = leadStatement(recent);
   const header = {
@@ -22,36 +23,37 @@ export function buildPages({ statements, day, today, assets }) {
       pageId: o.pageId,
       lang: o.lang || 'en',
       header,
-      head: { title: o.title, description: o.description, path: o.path, type: o.type, alternates: o.alternates, jsonLd: o.jsonLd, assets },
+      head: { title: o.title, docTitle: o.docTitle, description: o.description, path: o.path, type: o.type, alternates: o.alternates, jsonLd: o.jsonLd, image: o.image, published: o.published, assets },
       main: o.main,
       bodyClass: o.bodyClass,
     }),
     lang: o.lang || 'en',
     listed: o.listed !== false,
     lastmod: o.lastmod,
+    image: o.image,
   });
   const ctx = { statements, recent, archived, lead, day, today };
 
   const pages = [
-    page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} What Trump says, what a real president would say, and how the rest of the world would put it.`, main: home(ctx), bodyClass: 'home' }),
+    page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} What Trump says, what a real president would say, and how the rest of the world would put it.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
     page({ pageId: 'originals', path: '/originals/', title: 'The Originals', description: 'Every statement we adapt, quoted verbatim with its date and source.', main: originals(ctx) }),
     page({ pageId: 'presidential', path: '/presidential/', title: 'The Presidential Edition', description: 'The same messages, as a measured and statesmanlike American president would deliver them.', main: presidential(ctx) }),
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
     page({ pageId: 'archives', path: '/archives/', title: 'Archives', description: 'Every statement, day by day, with all its versions.', main: archives(ctx) }),
     page({ pageId: 'about', path: '/about/', title: 'About', description: DISCLAIMER, main: about(ctx) }),
-    { path: '/404.html', lang: 'en', listed: false, html: renderPage({ pageId: '', header, head: { title: 'Page not found', description: 'This page does not exist.', path: '/404.html', assets }, main: notFound() }) },
+    { path: '/404.html', lang: 'en', listed: false, html: renderPage({ pageId: '', header, head: { title: 'Page not found', description: 'This page does not exist.', path: '/404.html', noindex: true, assets }, main: notFound() }) },
   ];
 
   const byDay = new Map();
   for (const s of statements) byDay.set(s.original.date, [...(byDay.get(s.original.date) || []), s]);
   for (const [date, list] of byDay) {
-    pages.push(page({ pageId: 'archives', path: dayPath(date), title: `Statements of ${formatDate(date)}`, description: list.map((s) => s.headline).join(' · '), main: dayPage(ctx, date, list) }));
+    pages.push(page({ pageId: 'archives', path: dayPath(date), title: `Statements of ${formatDate(date)}`, description: list.map((s) => s.headline).join(' · '), main: dayPage(ctx, date, list), lastmod: list.map((s) => s.published).sort().pop() }));
   }
 
   for (const country of COUNTRIES) {
     pages.push(page({ pageId: country.id, path: country.path, title: country.name, description: country.description, main: countryPage(ctx, country) }));
     for (const region of regionsOf(country.id)) {
-      pages.push(page({ pageId: country.id, path: regionPath(region), title: `The ${region.name} edition`, description: `${region.name} (${region.place}): ${region.voice}`, main: regionPage(ctx, region) }));
+      pages.push(page({ pageId: country.id, path: regionPath(region), title: `The ${region.name} edition`, description: `${region.name} (${region.place}): ${region.voice}`, main: regionPage(ctx, region), listed: statements.some((s) => s.editions?.[region.id]) }));
     }
   }
 
@@ -59,12 +61,14 @@ export function buildPages({ statements, day, today, assets }) {
     const regions = REGIONS.filter((r) => s.editions?.[r.id]);
     pages.push(page({
       pageId: '', path: articlePath(s), type: 'article', title: s.headline, description: s.dek, main: article(ctx, s), lastmod: s.published,
-      jsonLd: articleLd(s),
+      docTitle: `${s.headline}: Trump’s post, made presidential`, image: imageOf(s), published: s.published,
+      jsonLd: articleLd(s, imageOf(s)),
     }));
     for (const region of regions) {
       pages.push(page({
         pageId: region.country, path: editionPath(s, region), lang: region.lang, type: 'article', lastmod: s.published,
-        title: `${s.headline}: the ${region.name} edition`,
+        title: `${s.headline}: the ${region.name} edition`, image: imageOf(s), published: s.published,
+        jsonLd: editionLd(s, region, imageOf(s)),
         description: truncate(s.editions[region.id].en.join(' '), 155),
         main: editionPage(ctx, s, region),
       }));
@@ -73,16 +77,89 @@ export function buildPages({ statements, day, today, assets }) {
   return pages;
 }
 
-function articleLd(s) {
+const publisher = () => ({
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#organization`,
+  name: SITE_NAME,
+  url: `${SITE_URL}/`,
+  logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon-512.png`, width: 512, height: 512 },
+  email: CONTACT_EMAIL,
+});
+
+/** Home: the site and its publisher. */
+function siteLd() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'SatiricalArticle',
-    headline: s.headline,
-    description: s.dek,
-    datePublished: s.published,
-    url: `${SITE_URL}${articlePath(s)}`,
-    publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
-    citation: { '@type': 'CreativeWork', author: { '@type': 'Person', name: s.original.speaker }, dateCreated: s.original.date, name: s.original.medium, ...(s.original.source.url ? { url: s.original.source.url } : {}) },
+    '@graph': [
+      { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: SITE_NAME, url: `${SITE_URL}/`, description: MOTTO, inLanguage: ['en', 'fr'], publisher: { '@id': `${SITE_URL}/#organization` } },
+      publisher(),
+    ],
+  };
+}
+
+/** The original post the satire is based on (only it is attributed to its author). */
+const basedOn = (s) => ({
+  '@type': 'SocialMediaPosting',
+  author: { '@type': 'Person', name: s.original.speaker },
+  datePublished: s.original.date,
+  ...(s.original.source.url ? { url: s.original.source.url } : {}),
+  sharedContent: { '@type': 'WebPage', name: s.original.medium },
+});
+
+function breadcrumbs(items) {
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map(([name, path], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE_URL}${path}` })),
+  };
+}
+
+function articleLd(s, image) {
+  const url = `${SITE_URL}${articlePath(s)}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'SatiricalArticle',
+        headline: s.headline,
+        description: s.dek,
+        url,
+        mainEntityOfPage: url,
+        image: `${SITE_URL}${image.path}`,
+        datePublished: s.published,
+        dateModified: s.published,
+        inLanguage: 'en',
+        author: { '@id': `${SITE_URL}/#organization` },
+        publisher: publisher(),
+        about: { '@type': 'Person', name: s.original.speaker },
+        isBasedOn: basedOn(s),
+        keywords: [...(s.topics || []), 'satire', 'Donald Trump', 'Truth Social'].join(', '),
+      },
+      breadcrumbs([['Home', '/'], ['Archives', '/archives/'], [formatDate(s.original.date), dayPath(s.original.date)], [s.headline, articlePath(s)]]),
+    ],
+  };
+}
+
+function editionLd(s, region, image) {
+  const url = `${SITE_URL}${editionPath(s, region)}`;
+  const country = getCountry(region.country);
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'SatiricalArticle',
+        headline: `${s.headline}: the ${region.name} edition`,
+        url,
+        mainEntityOfPage: url,
+        image: `${SITE_URL}${image.path}`,
+        datePublished: s.published,
+        inLanguage: region.lang,
+        author: { '@id': `${SITE_URL}/#organization` },
+        publisher: publisher(),
+        isPartOf: { '@type': 'SatiricalArticle', url: `${SITE_URL}${articlePath(s)}`, headline: s.headline },
+        isBasedOn: basedOn(s),
+      },
+      breadcrumbs([['Home', '/'], [country.name, country.path], [region.name, regionPath(region)], [s.headline, editionPath(s, region)]]),
+    ],
   };
 }
 

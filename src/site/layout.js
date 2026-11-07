@@ -10,6 +10,15 @@ export const DISCLAIMER =
 
 export const CONTACT_EMAIL = 'hello@bigbeautifulflop.com';
 
+/**
+ * Search engine ownership checks (see docs/SEO.md): paste the code Google Search Console or Bing
+ * Webmaster Tools gives for the "HTML tag" method. Empty: no tag.
+ */
+export const GOOGLE_SITE_VERIFICATION = '';
+export const BING_SITE_VERIFICATION = '';
+
+export const DEFAULT_IMAGE = { path: '/og/default.png', alt: 'Big Beautiful Flop: making presidential statements presidential again.' };
+
 /** The address as HTML entities, so simple address-harvesting robots do not pick it up (as on Morges.info). */
 export function emailLink(address = CONTACT_EMAIL) {
   const enc = [...address].map((c) => `&#${c.charCodeAt(0)};`).join('');
@@ -50,26 +59,43 @@ export function chip(region) {
   return `<span class="chip" aria-hidden="true" style="--chip-a:${a};--chip-b:${b}"></span>`;
 }
 
-export function renderHead({ title, description, path, lang = 'en', type = 'website', alternates = [], jsonLd = null, assets }) {
+export function renderHead({
+  title, docTitle, description, path, lang = 'en', type = 'website', alternates = [], jsonLd = null, assets,
+  image = DEFAULT_IMAGE, published = null, noindex = false,
+}) {
   const url = `${SITE_URL}${path}`;
-  const fullTitle = path === '/' ? `${SITE_NAME}: ${MOTTO}` : `${title} · ${SITE_NAME}`;
+  const fullTitle = path === '/' ? `${SITE_NAME}: ${MOTTO}` : `${docTitle || title} · ${SITE_NAME}`;
   const ogLocale = { en: 'en_US', 'fr-CH': 'fr_CH', 'fr-FR': 'fr_FR' }[lang] || 'en_US';
   const alt = alternates.map((a) => `<link rel="alternate" hreflang="${a.lang}" href="${SITE_URL}${a.path}" />`).join('\n    ');
+  const img = `${SITE_URL}${image.path}`;
+  const verify = [
+    GOOGLE_SITE_VERIFICATION && `<meta name="google-site-verification" content="${e(GOOGLE_SITE_VERIFICATION)}" />`,
+    BING_SITE_VERIFICATION && `<meta name="msvalidate.01" content="${e(BING_SITE_VERIFICATION)}" />`,
+  ].filter(Boolean).join('\n    ');
   return `<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>${e(fullTitle)}</title>
     <meta name="description" content="${e(description)}" />
-    <link rel="canonical" href="${url}" />
-    ${alt}
+    ${noindex ? '<meta name="robots" content="noindex" />' : `<link rel="canonical" href="${url}" />`}
+    ${alt}${verify ? `\n    ${verify}` : ''}
     <meta property="og:site_name" content="${SITE_NAME}" />
     <meta property="og:type" content="${type}" />
     <meta property="og:title" content="${e(title)}" />
     <meta property="og:description" content="${e(description)}" />
     <meta property="og:url" content="${url}" />
     <meta property="og:locale" content="${ogLocale}" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="${img}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="${e(image.alt)}" />${published ? `\n    <meta property="article:published_time" content="${published}" />\n    <meta property="article:section" content="Satire" />` : ''}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${e(title)}" />
+    <meta name="twitter:description" content="${e(description)}" />
+    <meta name="twitter:image" content="${img}" />
     <meta name="theme-color" content="#f6f2ea" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="${SITE_NAME}" href="/feed.xml" />
     <link rel="preload" href="${assets.font}" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="${assets.css}" />
