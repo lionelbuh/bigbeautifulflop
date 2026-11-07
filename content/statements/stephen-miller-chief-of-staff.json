@@ -20,12 +20,12 @@
     ],
     "context": "",
     "source": {
-      "label": "Truth Social, @realDonaldTrump (via Roll Call Factbase)",
-      "url": "https://rollcall.com/factbase/trump/topic/social/"
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
     },
     "verification": {
       "status": "verified",
-      "note": "Copied by the editor from Roll Call Factbase on 7 November 2026."
+      "note": "Checked by the editor against truthsocial.com/@realDonaldTrump on 7 November 2026."
     }
   },
   "presidential": {

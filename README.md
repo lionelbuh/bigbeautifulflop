@@ -14,12 +14,12 @@ quoted verbatim with its source, and shows:
 > An independent satirical project. Original statements are sourced and attributed. All presidential
 > and regional adaptations are fictional, AI-assisted editorial interpretations.
 
-## Status: first milestone (homepage mockup)
+## Status
 
-Three sample statements; the lead one (“The very stable genius”) shows the whole concept with
-Vaudois, Valaisan, Genevois, Parisien and Sud versions. **Before launch:** verify every original
-against its source (the quotes were entered from memory) and have each regional version read by a
-local speaker. Both are flagged on the pages until done (see `docs/EDITORIAL.md`).
+The front page shows the latest five statements as a carousel; every statement is also in the
+archives (calendar, one page per day). Originals are copied by the editor from Truth Social and
+checked character by character. Regional versions stay marked "draft" until a local speaker has read
+them (see `docs/EDITORIAL.md`).
 
 ## Pages and URLs
 
