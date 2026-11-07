@@ -2,23 +2,19 @@
 import { e, formatDate, truncate } from './html.js';
 import { renderPage, flag, chip, DISCLAIMER, SITE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
 import { COUNTRIES, REGIONS, getCountry, regionsOf, regionPath } from '../../content/regions.js';
-import { editionsFor, leadStatement, splitByAge } from './content.js';
-import { editionIndex } from './rotation.js';
+import { editionsFor, leadStatement, splitLatest } from './content.js';
 import {
   articlePath, editionPath, originalPost, presidentialPost, regionalPost, regionsInOrder, regionLinks, thread,
+  firstRegions, archiveCalendar, dayPath,
 } from './components.js';
 
 /** Builds every page. `day` is the day number used for the editions of the day. */
 export function buildPages({ statements, day, today, assets }) {
-  const { recent, archived } = splitByAge(statements, today);
+  const { recent, archived } = splitLatest(statements);
   const lead = leadStatement(recent);
-  const todays = (countryId) => {
-    const list = editionsFor(lead, countryId);
-    return list[editionIndex(list.length, day)]?.region.name;
-  };
   const header = {
     dateLabel: formatDate(today),
-    editionsLabel: `Today: ${[todays('switzerland'), todays('france')].filter(Boolean).join(' & ')} editions`,
+    editionsLabel: 'Satire from Switzerland & France',
   };
   const page = (o) => ({
     path: o.path,
@@ -34,17 +30,23 @@ export function buildPages({ statements, day, today, assets }) {
     listed: o.listed !== false,
     lastmod: o.lastmod,
   });
-  const ctx = { statements, recent, archived, lead, day };
+  const ctx = { statements, recent, archived, lead, day, today };
 
   const pages = [
     page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} What Trump says, what a real president would say, and how the rest of the world would put it.`, main: home(ctx), bodyClass: 'home' }),
     page({ pageId: 'originals', path: '/originals/', title: 'The Originals', description: 'Every statement we adapt, quoted verbatim with its date and source.', main: originals(ctx) }),
     page({ pageId: 'presidential', path: '/presidential/', title: 'The Presidential Edition', description: 'The same messages, as a measured and statesmanlike American president would deliver them.', main: presidential(ctx) }),
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
-    page({ pageId: 'archives', path: '/archives/', title: 'Archives', description: 'Earlier statements and all their versions, by date.', main: archives(ctx) }),
+    page({ pageId: 'archives', path: '/archives/', title: 'Archives', description: 'Every statement, day by day, with all its versions.', main: archives(ctx) }),
     page({ pageId: 'about', path: '/about/', title: 'About', description: DISCLAIMER, main: about(ctx) }),
     { path: '/404.html', lang: 'en', listed: false, html: renderPage({ pageId: '', header, head: { title: 'Page not found', description: 'This page does not exist.', path: '/404.html', assets }, main: notFound() }) },
   ];
+
+  const byDay = new Map();
+  for (const s of statements) byDay.set(s.original.date, [...(byDay.get(s.original.date) || []), s]);
+  for (const [date, list] of byDay) {
+    pages.push(page({ pageId: 'archives', path: dayPath(date), title: `Statements of ${formatDate(date)}`, description: list.map((s) => s.headline).join(' · '), main: dayPage(ctx, date, list) }));
+  }
 
   for (const country of COUNTRIES) {
     pages.push(page({ pageId: country.id, path: country.path, title: country.name, description: country.description, main: countryPage(ctx, country) }));
@@ -86,37 +88,60 @@ function articleLd(s) {
 
 /* ---------- home ---------- */
 
-function home({ recent, archived, lead, day }) {
-  const others = recent.filter((s) => s !== lead);
-  return `<section class="story" aria-labelledby="lead-title">
-  <p class="kicker">The lead</p>
-  <h1 id="lead-title" class="story-title"><a href="${articlePath(lead)}">${e(lead.headline)}</a></h1>
-  ${thread(lead, { day })}
+function home({ statements, recent, lead, day, today }) {
+  const slides = [lead, ...recent.filter((s) => s !== lead)];
+  const firsts = firstRegions(slides, day);
+  const n = slides.length;
+  const tabs = slides.map((s, i) => `<li><button type="button" class="carousel-tab" data-go="${i}" aria-current="${i === 0}"><span class="carousel-num">${i + 1}</span><span class="carousel-name">${e(s.headline)}</span></button></li>`).join('');
+  const items = slides.map((s, i) => `<article class="slide story" data-slide id="slide-${i + 1}" aria-roledescription="slide" aria-label="${i + 1} of ${n}"${i ? ' data-inactive' : ''}>
+    <p class="kicker">${i ? `${i + 1} of ${n}` : 'The lead'} · ${e(s.original.channel || s.original.medium)}, ${formatDate(s.original.date)}</p>
+    ${i ? `<h2 class="story-title">` : `<h1 class="story-title">`}<a href="${articlePath(s)}">${e(s.headline)}</a>${i ? '</h2>' : '</h1>'}
+    ${thread(s, { day: day + i, first: firsts[i] })}
+  </article>`).join('');
+  return `<section class="carousel" data-carousel aria-roledescription="carousel" aria-label="The latest ${n} statements">
+  <div class="carousel-bar" hidden>
+    <p class="carousel-label">The latest ${n}</p>
+    <ol class="carousel-tabs">${tabs}</ol>
+  </div>
+  ${items}
+  <div class="carousel-foot" hidden>
+    <button type="button" class="carousel-btn" data-step="-1"><span aria-hidden="true">‹</span> Previous</button>
+    <span class="carousel-pos" aria-live="polite">1 / ${n}</span>
+    <button type="button" class="carousel-btn carousel-btn--next" data-step="1">Next <span aria-hidden="true">›</span></button>
+  </div>
 </section>
-${others.map((s) => `<section class="story story--short">
-  <h2 class="story-title"><a href="${articlePath(s)}">${e(s.headline)}</a></h2>
-  ${thread(s, { day, regions: false })}
-  <p class="story-more"><a href="${articlePath(s)}">Around the world</a>${regionLinks(s)}</p>
-</section>`).join('')}
-${archived.length ? `<p class="story-archives"><a class="button" href="/archives/">Archives: ${archived.length} earlier statement${archived.length > 1 ? 's' : ''}</a></p>` : ''}
+<section class="archive-box" aria-labelledby="archive-title">
+  <h2 id="archive-title" class="archive-heading">The archives</h2>
+  <p class="section-intro">Every statement, day by day. Pick a day.</p>
+  ${archiveCalendar(statements, today)}
+  <p class="story-more"><a href="/archives/">All the archives</a></p>
+</section>
 <p class="disclaimer">${e(DISCLAIMER)}</p>`;
 }
 
 /* ---------- archives ---------- */
 
-function archives({ archived }) {
+function archiveEntry(s) {
+  return `<div class="story story--short">${storyTitle(s)}<div class="thread">${originalPost(s)}</div>
+    <p class="story-more"><a href="${articlePath(s)}">All versions</a>${regionLinks(s)}</p></div>`;
+}
+
+function archives({ statements, today }) {
   const byDate = new Map();
-  for (const s of archived) {
-    if (!byDate.has(s.original.date)) byDate.set(s.original.date, []);
-    byDate.get(s.original.date).push(s);
-  }
+  for (const s of statements) byDate.set(s.original.date, [...(byDate.get(s.original.date) || []), s]);
   const days = [...byDate].map(([date, list]) => `<section class="archive-day">
-    <h2 class="archive-date">${formatDate(date)}</h2>
-    ${list.map((s) => `<div class="story story--short">${storyTitle(s)}<div class="thread">${originalPost(s)}</div>
-      <p class="story-more"><a href="${articlePath(s)}">All versions</a>${regionLinks(s)}</p></div>`).join('')}
+    <h2 class="archive-date"><a href="${dayPath(date)}">${formatDate(date)}</a></h2>
+    ${list.map(archiveEntry).join('')}
   </section>`).join('');
-  return `${sectionHead('Archives', 'Archives', 'The front page shows the last three days. Everything older is kept here, newest first, with all its versions.')}
+  return `${sectionHead('Archives', 'Archives', 'Every statement, day by day, newest first. Pick a day in the calendar, or scroll.')}
+  <div class="archive-box">${archiveCalendar(statements, today)}</div>
   ${days || '<p class="empty">Nothing in the archives yet.</p>'}`;
+}
+
+function dayPage({ day }, date, list) {
+  return `${sectionHead('<a href="/archives/">Archives</a>', formatDate(date), `${list.length} statement${list.length > 1 ? 's' : ''} that day.`)}
+  ${list.map((s, i) => `<article class="story">${storyTitle(s)}${thread(s, { day: day + i })}</article>`).join('')}
+  <p class="disclaimer">${e(DISCLAIMER)}</p>`;
 }
 
 /* ---------- article ---------- */

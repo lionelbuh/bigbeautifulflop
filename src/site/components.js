@@ -110,15 +110,84 @@ export function regionsInOrder(s, day) {
 }
 
 /** The whole thread: original, presidential, then every regional version. */
-export function thread(s, { day, regions = true } = {}) {
+export function thread(s, { day, regions = true, first = null } = {}) {
   const list = regions ? regionsInOrder(s, day) : [];
+  const lead = list.find((r) => r.id === first) || list[0];
+  const rest = list.filter((r) => r !== lead);
   return `<div class="thread">
   ${originalPost(s)}
+  ${lead ? `<p class="thread-step">${e(lead.name)}, the satirical version</p>${regionalPost(s, lead)}` : ''}
   <p class="thread-step">The presidential version</p>
   ${presidentialPost(s)}
-  ${list.length ? `<p class="thread-step">Around the world</p>${list.map((r) => regionalPost(s, r)).join('')}` : ''}
+  ${rest.length ? `<p class="thread-step">Around the world</p>${rest.map((r) => regionalPost(s, r)).join('')}` : ''}
 </div>`;
 }
+
+/**
+ * Which regional version opens each statement of a list, so that a page shows a different style
+ * each time (as long as there are enough regions): the first of its order of the day not yet used.
+ */
+export function firstRegions(statements, day) {
+  const used = new Set();
+  return statements.map((s, i) => {
+    const list = regionsInOrder(s, day + i);
+    const pick = list.find((r) => !used.has(r.id)) || list[0];
+    if (pick) used.add(pick.id);
+    return pick?.id || null;
+  });
+}
+
+/**
+ * The calendar of the archives, like Morges.info's agenda: one month per grid, each day a tile, the
+ * days with statements in colour and linked to their page. Only months with statements are shown,
+ * newest first; in the browser one month at a time, with arrows.
+ */
+export function archiveCalendar(statements, today) {
+  const byDay = new Map();
+  for (const s of statements) {
+    if (!byDay.has(s.original.date)) byDay.set(s.original.date, []);
+    byDay.get(s.original.date).push(s);
+  }
+  const months = [...new Set([...byDay.keys()].map((d) => d.slice(0, 7)))].sort().reverse();
+  const heads = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => `<li>${d}</li>`).join('');
+  const pad = (n) => String(n).padStart(2, '0');
+  const grids = months.map((key, i) => {
+    const [y, m] = key.split('-').map(Number);
+    const days = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    const offset = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 6) % 7; // Monday first
+    const cells = Array.from({ length: offset }, () => '<li class="cal-blank" aria-hidden="true"></li>');
+    for (let d = 1; d <= days; d += 1) {
+      const iso = `${key}-${pad(d)}`;
+      const list = byDay.get(iso) || [];
+      const cls = ['cal-day'];
+      if (iso === today) cls.push('is-today');
+      if (iso > today) cls.push('is-future');
+      const num = `<span class="cal-num">${d}</span>`;
+      const labels = list.slice(0, 2).map((s) => `<span class="cal-ev">${e(s.headline)}</span>`).join('');
+      const more = list.length > 2 ? `<span class="cal-ev cal-more">+${list.length - 2}</span>` : '';
+      cells.push(list.length
+        ? `<li><a class="${cls.join(' ')}" href="${dayPath(iso)}" aria-label="${e(`${formatDate(iso)}: ${list.map((s) => s.headline).join(', ')}`)}">${num}${labels}${more}</a></li>`
+        : `<li><span class="${cls.join(' ')}">${num}</span></li>`);
+    }
+    return `<section class="cal-month" data-cal-month${i ? ' data-inactive' : ''} aria-label="${MONTHS_LONG[m - 1]} ${y}">
+      <h3 class="cal-month-title">${MONTHS_LONG[m - 1]} ${y}</h3>
+      <ol class="cal-weekdays" aria-hidden="true">${heads}</ol>
+      <ol class="cal-grid">${cells.join('')}</ol>
+    </section>`;
+  });
+  if (!grids.length) return '';
+  return `<div class="cal" data-cal>
+    <div class="cal-nav" hidden>
+      <button type="button" class="cal-btn" data-cal-step="1" aria-label="Earlier month">‹</button>
+      <span class="cal-pos" aria-live="polite"></span>
+      <button type="button" class="cal-btn" data-cal-step="-1" aria-label="Later month">›</button>
+    </div>
+    ${grids.join('')}
+  </div>`;
+}
+
+const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+export const dayPath = (iso) => `/archives/${iso}/`;
 
 /** Links to every regional version of a statement. */
 export function regionLinks(s) {

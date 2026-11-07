@@ -49,9 +49,9 @@ back into the JSON with `review: "draft"`. It must never change `original` or `s
 
 ## Front page and archives
 
-The front page shows the statements of the last three days (by `original.date`), newest first
-(`original.time`, US Eastern, e.g. `"13:51"`). Older statements move to `/archives/` automatically
-at the nightly rebuild. `featured: true` picks the lead story among the recent ones.
+The front page shows the latest five statements as a carousel (lead first, then newest first)
+(`original.time`, US Eastern, e.g. `"13:51"`). Every statement is also in `/archives/`, with a calendar
+and one page per day (`/archives/YYYY-MM-DD/`). `featured: true` picks the lead among the latest five.
 
 ## Adding statements by hand
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { mkdtempSync, readFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { loadStatements, validateStatement, splitByAge } from '../src/site/content.js';
+import { loadStatements, validateStatement, splitLatest } from '../src/site/content.js';
 import { REGIONS } from '../content/regions.js';
 import { dayNumber, editionIndex } from '../src/site/rotation.js';
 
@@ -33,14 +33,12 @@ describe('content', () => {
   });
 });
 
-describe('archives', () => {
-  it('keeps the last three days on the front page and archives the rest', () => {
-    const mk = (slug, date) => ({ slug, original: { date } });
-    const list = [mk('a', '2026-11-07'), mk('b', '2026-11-05'), mk('c', '2026-11-04')];
-    const { recent, archived } = splitByAge(list, '2026-11-07');
-    expect(recent.map((s) => s.slug)).toEqual(['a', 'b']);
-    expect(archived.map((s) => s.slug)).toEqual(['c']);
-    expect(splitByAge(list, '2027-01-01').recent).toHaveLength(3); // nothing new: keep the latest
+describe('front page', () => {
+  it('shows the latest five statements', () => {
+    const list = Array.from({ length: 7 }, (_, i) => ({ slug: `s${i}` }));
+    const { recent, archived } = splitLatest(list);
+    expect(recent.map((s) => s.slug)).toEqual(['s0', 's1', 's2', 's3', 's4']);
+    expect(archived).toHaveLength(2);
   });
 });
 
@@ -67,7 +65,7 @@ describe('build', () => {
         expect(html).toContain('class="post post--original"');
         const quotes = html.match(/<blockquote[\s\S]*?<\/blockquote>/g) || [];
         expect(quotes.length).toBe(1);
-        expect(quotes.join()).not.toContain(s.editions[id].en[0].slice(0, 30));
+        expect(quotes.join()).not.toContain(s.editions[id].fr[0].slice(0, 40));
       }
     }
     const home = readFileSync(path.join(out, 'index.html'), 'utf8');

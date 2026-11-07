@@ -65,6 +65,53 @@
         "Joe Gruters is a loyal lad: there from the start, always. He named me Statesman of the Year twice. The only one ever to get it twice is me, write that down.",
         "So to me, Joe is like a Lyon bistro that never changes its menu: you go back with your eyes closed."
       ]
+    },
+    "vaudois": {
+      "review": "draft",
+      "fr": [
+        "Joe, c’est un bon. Il est là depuis le début, il a gagné la Floride, et il m’a nommé homme d’État de l’année deux fois. Deux fois, hein.",
+        "Moi je dis rien, mais ça joue. Votez Joe, ou bien ?"
+      ],
+      "en": [
+        "Joe’s a good one. Been here from the start, won Florida, and named me Statesman of the Year twice. Twice, mind.",
+        "I’m not saying anything, but it works. Vote Joe, yeah?"
+      ]
+    },
+    "genevois": {
+      "review": "draft",
+      "fr": [
+        "Joe Gruters brigue un nouveau mandat. À Genève, on appellerait ça une reconduction tacite.",
+        "Avec une lettre de recommandation de trois pages, dont deux sur l’auteur de la lettre."
+      ],
+      "en": [
+        "Joe Gruters is seeking another term. In Geneva we’d call it a tacit renewal.",
+        "With a three-page letter of recommendation, two pages of which are about the person who wrote it."
+      ]
+    },
+    "parisien": {
+      "review": "draft",
+      "fr": [
+        "Joe m’a élu homme d’État de l’année. Deux fois. Évidemment que je le soutiens, je suis pas un ingrat.",
+        "Ça s’appelle un renvoi d’ascenseur. À Paris, on connaît bien : on a beaucoup d’ascenseurs, et ils marchent rarement."
+      ],
+      "en": [
+        "Joe named me Statesman of the Year. Twice. Of course I’m backing him, I’m not ungrateful.",
+        "It’s called returning the favour. In Paris we know all about it: we have lots of lifts, and they rarely work."
+      ],
+      "notes": [
+        "“Renvoi d’ascenseur”, literally “sending the lift back”, means returning a favour."
+      ]
+    },
+    "sud": {
+      "review": "draft",
+      "fr": [
+        "Joe, c’est le meilleur président de parti de l’histoire de l’humanité ! Il m’a élu homme d’État deux fois, deux !",
+        "S’il y avait un trophée de pétanque, il me le donnerait aussi. Et il aurait raison."
+      ],
+      "en": [
+        "Joe is the best party chairman in the history of mankind! He named me Statesman twice, twice!",
+        "If there were a pétanque trophy, he’d give me that too. And he’d be right."
+      ]
     }
   }
 }

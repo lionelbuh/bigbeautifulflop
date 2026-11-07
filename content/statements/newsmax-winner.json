@@ -64,6 +64,53 @@
       "notes": [
         "“Kenavo” is Breton for goodbye."
       ]
+    },
+    "vaudois": {
+      "review": "draft",
+      "fr": [
+        "Il paraît qu’une télé dit que je suis un gagnant. Bon. Je vais pas me vanter, hein.",
+        "Je le partage juste. Comme ça. Au cas où."
+      ],
+      "en": [
+        "Apparently a TV channel says I’m a winner. Well. I’m not going to brag, mind.",
+        "I’m just sharing it. Like that. Just in case."
+      ]
+    },
+    "valaisan": {
+      "review": "draft",
+      "fr": [
+        "Adieu ! Une télé d’en bas dit que je suis un gagnant.",
+        "Ici, on attend le résultat du combat de reines avant de crier victoire."
+      ],
+      "en": [
+        "Hello! A TV channel from down below says I’m a winner.",
+        "Up here we wait for the result of the cow fight before shouting victory."
+      ],
+      "notes": [
+        "Combats de reines: traditional contests in Valais between Hérens cows, to decide which one leads the herd up to the summer pasture."
+      ]
+    },
+    "parisien": {
+      "review": "draft",
+      "fr": [
+        "Une chaîne dit que je suis un gagnant. Je le repartage à 6 h 48.",
+        "Pourquoi 6 h 48 ? Parce qu’à 6 h 48, personne ne me contredit."
+      ],
+      "en": [
+        "A channel says I’m a winner. I’m reposting it at 6:48 a.m.",
+        "Why 6:48 a.m.? Because at 6:48 a.m., nobody contradicts me."
+      ]
+    },
+    "sud": {
+      "review": "draft",
+      "fr": [
+        "Ils le disent à la télé : je suis un gagnant ! Et j’ai raison sur l’Iran !",
+        "C’est pas moi qui le dis, c’est la télé, alors c’est vrai. Comme la météo du Vieux-Port : toujours beau."
+      ],
+      "en": [
+        "They’re saying it on TV: I’m a winner! And I’m right about Iran!",
+        "It’s not me saying it, it’s the TV, so it’s true. Like the Old Port weather forecast: always sunny."
+      ]
     }
   }
 }

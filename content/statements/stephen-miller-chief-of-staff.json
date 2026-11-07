@@ -60,6 +60,53 @@
         "Quick announcement, I’ve got a lunch. Stephen Miller becomes chief of staff on Monday. Susie moves over to the party: we’re calling it a promotion, everyone gets it.",
         "Thanks Susie, really, you were great. Leaving drinks on Thursday, bring your own crisps."
       ]
+    },
+    "genevois": {
+      "review": "draft",
+      "fr": [
+        "Petit remaniement, rien de grave. À Genève, on change de chef de cabinet plus souvent que de banquier, et beaucoup moins souvent que d’avis.",
+        "Stephen monte d’un étage. Susie part au parti, avec nos remerciements et une belle montre."
+      ],
+      "en": [
+        "A little reshuffle, nothing serious. In Geneva we change chiefs of staff more often than bankers, and much less often than our minds.",
+        "Stephen moves up a floor. Susie goes to the party, with our thanks and a nice watch."
+      ]
+    },
+    "valaisan": {
+      "review": "draft",
+      "fr": [
+        "Adieu ! Changement à la cabane : dès lundi, Stephen passe devant, comme le guide dans la montée.",
+        "Susie redescend s’occuper du parti. Elle a bien tenu la corde, on la remercie."
+      ],
+      "en": [
+        "Hello! Change at the mountain hut: from Monday, Stephen takes the lead, like the guide on the climb.",
+        "Susie heads back down to look after the party. She held the rope well; our thanks to her."
+      ]
+    },
+    "sud": {
+      "review": "draft",
+      "fr": [
+        "Fan de chichourle, quel chef de cabinet ! Le meilleur de l’histoire, peut-être même de l’univers.",
+        "Et Susie, une championne, elle part au parti. On lui fera une bouillabaisse d’adieu, avec tout le Vieux-Port."
+      ],
+      "en": [
+        "Blimey, what a chief of staff! The best in history, maybe in the universe.",
+        "And Susie, a champion, she’s off to the party. We’ll throw her a farewell bouillabaisse, with the whole Old Port invited."
+      ]
+    },
+    "chti": {
+      "review": "draft",
+      "fr": [
+        "Eh biloute, Stephen i’ devient chef lundi ! Susie, elle part au parti, mais elle a fait du bon boulot, hein.",
+        "Pour fêter ça : frites pour tout l’monde à la baraque."
+      ],
+      "en": [
+        "Hey pal, Stephen becomes the boss on Monday! Susie’s off to the party, but she did a great job, mind.",
+        "To celebrate: chips for everyone at the chip van."
+      ],
+      "notes": [
+        "The “baraque à frites”, a roadside chip van, is an institution of northern France."
+      ]
     }
   }
 }
