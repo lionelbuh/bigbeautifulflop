@@ -239,8 +239,10 @@ function about() {
     </ul>
     <h2>Regions</h2>
     <ul class="about-regions">${regions}</ul>
+    <h2>Parody and commentary</h2>
+    <p>Big Beautiful Flop is parody and commentary. Original statements are quoted verbatim for the purpose of criticism and commentary (fair use, 17 U.S.C. § 107; Swiss Copyright Act, art. 25). Satire of public figures is protected speech under the First Amendment to the U.S. Constitution, the Swiss Federal Constitution (art. 16–17) and the European Convention on Human Rights (art. 10).</p>
     <h2>Disclaimer</h2>
-    <p>${e(DISCLAIMER)} Big Beautiful Flop is not affiliated with any government, party, campaign, news agency or social network.</p>
+    <p>${e(DISCLAIMER)} Big Beautiful Flop is not affiliated with the White House, Truth Social, or any government, party, campaign, news agency or social network.</p>
   </div>`;
 }
 
