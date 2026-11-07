@@ -25,12 +25,12 @@ them (see `docs/EDITORIAL.md`).
 
 | Page | URL |
 | --- | --- |
-| Front page | `/` |
-| Article (all versions) | `/statements/<slug>/` |
-| One regional edition | `/statements/<slug>/<region>/` |
-| The Originals · The Presidential Edition · English Edition | `/originals/`, `/presidential/`, `/english/` |
-| Switzerland · France, and each region | `/switzerland/`, `/switzerland/vaudois/`, `/france/sud/` … |
-| About | `/about/` |
+| Front page (carousel of the latest 5, archives calendar) | `/` |
+| Article: original, American President, then the four sections as tabs | `/statements/<slug>/` |
+| One version | `/statements/<slug>/<region>/` |
+| The four sections | `/switzerland-france/`, `/united-states/`, `/united-kingdom/`, `/diplomat/` |
+| Countries and regions | `/switzerland/`, `/france/`, `/switzerland/vaudois/`, `/united-states/texas/`, `/united-kingdom/yorkshire/` … |
+| The Originals · English Edition · Archives (and one page per day) · About | `/originals/`, `/english/`, `/archives/`, `/archives/YYYY-MM-DD/`, `/about/` |
 
 Plus `sitemap.xml`, `robots.txt`, `feed.xml` (RSS), `llms.txt`, `404.html`.
 

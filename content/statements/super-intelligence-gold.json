@@ -4,7 +4,7 @@
   "published": "2026-11-07",
   "featured": true,
   "headline": "Super Intelligence is GOLD",
-  "dek": "The President is 100% in favour of Super Intelligence, and of the states that get rich from it. Those that say no are foolish. A real president, and five regions, reply.",
+  "dek": "The President is 100% in favour of Super Intelligence, and of the states that get rich from it; those that say no are foolish. Twenty-two regions and three statesmen reply.",
   "topics": [
     "artificial intelligence",
     "economy"
@@ -42,7 +42,7 @@
   "editions": {
     "vaudois": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Alors moi, la super-intelligence, je suis pour. À cent pour cent. Bon, nonante pour cent. Faut voir.",
         "Les cantons qui en veulent deviendront riches, paraît-il. C’est de l’or, qu’ils disent. Chez nous, l’or, on le met à la banque et on n’en parle pas.",
         "Et ceux qui disent non, je dirais pas qu’ils sont bêtes. Je dirais qu’ils ont leurs raisons, ou bien ?"
@@ -58,7 +58,7 @@
     },
     "valaisan": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Adieu ! La super-intelligence, c’est de l’or ? Nous, on a eu les barrages, puis l’or blanc, et maintenant ça.",
         "Les gens d’en bas qui disent non, c’est leur affaire. Ici on dit oui, du moment qu’elle tient dans un mazot et qu’elle comprend le patois."
       ],
@@ -72,7 +72,7 @@
     },
     "genevois": {
       "review": "approved",
-      "fr": [
+      "text": [
         "La super-intelligence, de l’or ? Très bien. À Genève, on sait garder l’or : on a des coffres pour ça, et beaucoup de discrétion.",
         "On organisera d’abord une conférence internationale sur son éthique, au bord du lac, avec quarante pays et un buffet. Ceux qui disent non auront un siège d’observateur."
       ],
@@ -83,7 +83,7 @@
     },
     "parisien": {
       "review": "approved",
-      "fr": [
+      "text": [
         "La super-intelligence ? Évidemment que je suis pour, je suis déjà super-intelligent, ça me fera de la compagnie.",
         "Ceux qui disent non sont des idiots. Enfin, en province, je comprends : ils n’ont même pas la fibre."
       ],
@@ -94,7 +94,7 @@
     },
     "sud": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Oh peuchère, la super-intelligence ! C’est de l’or, je vous dis, de l’or en barre, de l’or comme le soleil sur le Vieux-Port !",
         "Ceux qui disent non, ils sont fadas. Moi je l’installe tout de suite à côté du terrain de pétanque : comme ça, elle mesure qui a tiré le plus près."
       ],
@@ -104,6 +104,262 @@
       ],
       "notes": [
         "At pétanque, measuring whose ball is closest to the jack is the source of most arguments in southern France."
+      ]
+    },
+    "fribourgeois": {
+      "review": "draft",
+      "text": [
+        "Salut les gaillards ! La super-intelligence, moi je suis pour. Cent pour cent. Les cantons qui la veulent vont devenir riches, c’est de l’or, je vous dis.",
+        "Bon, à Fribourg on est prudents. On l’essaiera d’abord d’un côté de la Sarine, et si ça marche, on lui apprendra l’allemand pour l’autre côté.",
+        "Et ceux qui disent non ? Pas de souci, ils viendront quand même à la Bénichon."
+      ],
+      "en": [
+        "Hey folks! Super intelligence: I’m for it. A hundred percent. The cantons that want it will get rich, it’s gold, I tell you.",
+        "Mind you, in Fribourg we’re careful. We’ll try it on one side of the river first, and if it works, we’ll teach it German for the other side.",
+        "And the ones who say no? No problem, they’ll still turn up for the harvest feast."
+      ],
+      "notes": [
+        "The Sarine river roughly marks the language border in the canton of Fribourg: French on one bank, German on the other.",
+        "The Bénichon is Fribourg’s great autumn feast. Nobody, whatever their opinions, misses it."
+      ]
+    },
+    "neuchatelois": {
+      "review": "draft",
+      "text": [
+        "La super-intelligence, c’est de l’or ? Chez nous, on a déjà vu passer une révolution qui devait rendre tout le monde riche : la montre à quartz. Elle a failli nous ruiner, puis on a appris à faire avec.",
+        "Alors oui, on est pour. Mais on va d’abord la démonter pièce par pièce pour comprendre comment elle marche, et la remonter mieux."
+      ],
+      "en": [
+        "Super intelligence is gold? Round here we’ve already lived through one revolution that was supposed to make everyone rich: the quartz watch. It nearly ruined us, then we learned to live with it.",
+        "So yes, we’re in favour. But first we’ll take it apart, piece by piece, to see how it works, and put it back together better."
+      ],
+      "notes": [
+        "In the 1970s and 1980s, cheap quartz watches from abroad hit the Swiss watch industry hard, and Neuchâtel’s watchmaking towns with it."
+      ]
+    },
+    "chti": {
+      "review": "draft",
+      "text": [
+        "Eh biloute, la super-intelligence, ch’est de l’or, qu’i dit ! Ichi, de l’or, on en a eu : du noir, le charbon.",
+        "Alors les richesses promises, on connaît, et on sait qui finit par les ramasser. Mais bon, si elle sait faire des frites, on la prend."
+      ],
+      "en": [
+        "Hey pal, super intelligence is gold, he says! Up here we had gold too: the black kind, coal.",
+        "So we know all about promised riches, and who ends up pocketing them. Still, if it can make proper chips, we’ll take it."
+      ],
+      "notes": [
+        "The Nord was France’s great coal-mining region until the last pits closed in 1990. Coal was called “l’or noir”, black gold."
+      ]
+    },
+    "lyonnais": {
+      "review": "draft",
+      "text": [
+        "La super-intelligence, de l’or ? Ici, on a inventé le cinéma, et le métier à tisser à cartes perforées, l’ancêtre de l’ordinateur. Alors l’intelligence des machines, c’est un peu un gone de chez nous.",
+        "On est pour, évidemment. Mais on en reparle au bouchon : si elle n’est pas fichue de choisir entre un saint-marcellin et une cervelle de canut, elle n’est pas si super que ça."
+      ],
+      "en": [
+        "Super intelligence, gold? We invented cinema here, and the punch-card loom, the ancestor of the computer. So machine intelligence is practically one of ours.",
+        "We’re for it, obviously. But let’s talk it over at the bistro: if it can’t choose between two local cheeses, it’s not that super."
+      ],
+      "notes": [
+        "The Lumière brothers invented the cinématographe in Lyon and shot the first film there in 1895; Joseph-Marie Jacquard’s punch-card loom (Lyon, 1804) inspired the first computers.",
+        "Saint-marcellin is a small soft cheese; “cervelle de canut” (silk weaver’s brain) is a herb-and-cheese dip. Both are Lyon bistro classics."
+      ]
+    },
+    "breton": {
+      "review": "draft",
+      "text": [
+        "La super-intelligence, de l’or ? Peut-être. Ici, on a vu passer beaucoup de choses qui devaient tout changer. La marée, elle, revient toujours deux fois par jour.",
+        "On veut bien essayer. Mais si elle ne sait pas prévoir le temps de demain à Brest, on garde notre baromètre."
+      ],
+      "en": [
+        "Super intelligence, gold? Maybe. We’ve seen plenty of things that were supposed to change everything. The tide still comes in twice a day.",
+        "We’re happy to give it a go. But if it can’t forecast tomorrow’s weather in Brest, we’re keeping our barometer."
+      ],
+      "notes": [
+        "Brest, at the western tip of Brittany, is famous for weather that changes several times a day."
+      ]
+    },
+    "new-york": {
+      "review": "draft",
+      "text": [
+        "Super intelligence? Great. Love it. Bring it. You know what else is gold around here? A one-bedroom with a window. Nobody can afford that either.",
+        "Any state that says no is foolish? Buddy, I’ve been called worse by a guy selling pretzels on Sixth Avenue. We’ll take the AI. Just don’t park it in the bike lane."
+      ],
+      "en": [
+        "New York is happy to have AI, but points out that the real luxury in the city is an affordable apartment.",
+        "Being called foolish by a politician barely registers in New York, where street vendors are ruder. Yes to AI, as long as it doesn’t get in everyone’s way."
+      ]
+    },
+    "texas": {
+      "review": "draft",
+      "text": [
+        "I’m a hundred percent for super intelligence, and in Texas a hundred percent means a hundred and ten. We’ve got the land, we’ve got the power plants and we’ve got the attitude.",
+        "Any state that wants to get rich can come on down. The ones that say no can watch us build it from their porch. Everything’s bigger here, data centers included."
+      ],
+      "en": [
+        "Texas is all in on AI and believes it has the space, the electricity and the confidence to host it.",
+        "Other states are welcome to join; the ones that refuse will simply watch Texas do it first. Everything is bigger in Texas, including the data centers."
+      ],
+      "notes": [
+        "Texas has become one of the main destinations for the large data centers that power artificial intelligence."
+      ]
+    },
+    "deep-south": {
+      "review": "draft",
+      "text": [
+        "Well, bless his heart. He is just a hundred percent for super intelligence, and so are we, we surely are.",
+        "Now, calling the states that say no “foolish”? My grandmother always said you catch more investors with sweet tea than with name-calling. So y’all come on down: we’ll have the AI, the sweet tea and the manners."
+      ],
+      "en": [
+        "“Bless his heart” sounds kind, but in the South it is a polite way of saying someone is being a bit much.",
+        "The South welcomes AI, but finds insulting the states that refuse rather rude: you win people over with hospitality, not with names."
+      ],
+      "notes": [
+        "“Bless your heart” is the South’s most famous double-edged phrase: sympathy on the surface, a verdict underneath."
+      ]
+    },
+    "california": {
+      "review": "draft",
+      "text": [
+        "Super intelligence? Honestly, we’re kind of already on it. Half of it is being built in a garage in Palo Alto right now, and the other half is on a podcast about itself.",
+        "So yeah, a hundred percent. The “foolish” thing is a bit of a vibe, though. Out here we’d just say the other states are on a different journey."
+      ],
+      "en": [
+        "California sees itself as the place where AI is already being made, with a wink at Silicon Valley’s garages and endless tech podcasts.",
+        "It’s all for it, but finds name-calling off-putting: Californians would describe opponents far more gently."
+      ]
+    },
+    "boston": {
+      "review": "draft",
+      "text": [
+        "Super intelligence. Fine. We’ve had it here since 1636. It’s called Harvard. Then MIT showed up across the river to argue with it.",
+        "So yeah, we’re in. But you want to call somebody foolish? Get in line, pal. Around here we were doing that before the country existed."
+      ],
+      "en": [
+        "Boston is in favour, and reminds everyone that it has been home to world-class universities for centuries.",
+        "It is not impressed by insults either: Bostonians consider bluntness a local speciality, and an old one."
+      ],
+      "notes": [
+        "Harvard was founded in 1636, in Cambridge, across the Charles River from Boston. MIT moved next door in 1916."
+      ]
+    },
+    "midwest": {
+      "review": "draft",
+      "text": [
+        "Well, that sounds real nice. Super intelligence, huh? We’d be happy to have some, if it’s not too much trouble. We’ve got the land, the power and plenty of folks glad to help.",
+        "Now, I wouldn’t call anybody foolish. That’s not really how we do things. We’d just say, “Oh, that’s an interesting choice,” and bring them a hotdish."
+      ],
+      "en": [
+        "The Midwest politely welcomes AI and points to its land, its energy and its workforce.",
+        "It would never call anyone foolish: “that’s interesting” is about as close as a Midwesterner gets to an insult, usually followed by a casserole."
+      ],
+      "notes": [
+        "A hotdish is a Minnesota casserole, the Midwest’s answer to most of life’s situations."
+      ]
+    },
+    "london": {
+      "review": "draft",
+      "text": [
+        "Super intelligence, one hundred per cent in favour. How refreshing. We’ve had something similar in London for years: it’s called the Tube map, and nobody understands that either.",
+        "Places that say no are foolish, apparently. Bold. Over here we’d simply raise an eyebrow and let the rent do the talking."
+      ],
+      "en": [
+        "London welcomes AI with dry irony: the Underground map is already more confusing than any machine.",
+        "Calling objectors foolish strikes Londoners as a bit much. They would just raise an eyebrow, and let the city’s prices make the point."
+      ]
+    },
+    "liverpool": {
+      "review": "draft",
+      "text": [
+        "Super intelligence? Go ’ed then, we’ll have a bit of that. Gold, he says.",
+        "Listen, lad, we’ve heard “this’ll make yous all rich” before. The only thing that ever really did was four fellas with guitars. If it can write a song half as good, it’s welcome round ours."
+      ],
+      "en": [
+        "Go ahead, Liverpool will give AI a try.",
+        "But it is wary of promises of riches: in its experience, the only thing that truly put the city on the map was the Beatles. If AI can write a decent song, it’s welcome."
+      ],
+      "notes": [
+        "“Go ’ed” (go ahead), “yous” (you, plural) and “round ours” (at our place) are everyday Scouse, Liverpool’s English."
+      ]
+    },
+    "manchester": {
+      "review": "draft",
+      "text": [
+        "Super intelligence? Yeah, we’re in. Bit late, mind. We built the first stored-program computer here in 1948, so technically it’s ours and he’s just catching up.",
+        "Calling folk foolish for saying no, though? Not very clever for a super intelligence fan, is it?"
+      ],
+      "en": [
+        "Manchester supports AI and points out that the world’s first stored-program computer was built there in 1948.",
+        "It also notes that insulting people is not a very intelligent way to promote intelligence."
+      ],
+      "notes": [
+        "The “Manchester Baby” ran its first program at the University of Manchester on 21 June 1948."
+      ]
+    },
+    "yorkshire": {
+      "review": "draft",
+      "text": [
+        "Gold, is it? We’ll see. In Yorkshire we don’t say no to riches, but we don’t say yes till we’ve seen the price. If it’s free, we’ll have two.",
+        "And as for calling folk foolish: round here, that word is reserved for a man who pays full price."
+      ],
+      "en": [
+        "Yorkshire will consider AI once it knows what it costs, and will happily take it if it’s free.",
+        "The only people Yorkshire calls foolish are those who don’t look for a bargain."
+      ],
+      "notes": [
+        "Yorkshire folk are proverbially plain-spoken and careful with money, and proud of both."
+      ]
+    },
+    "scotland": {
+      "review": "draft",
+      "text": [
+        "A hundred per cent in favour of super intelligence? Aye, nae bother. We invented half the modern world already: the telephone, the television, penicillin, the pedal bicycle. You’re welcome.",
+        "As for calling folk foolish for saying no, we’ve a much richer vocabulary for that in Scotland. But this is a family website."
+      ],
+      "en": [
+        "Scotland is relaxed about AI, and reminds everyone how many modern inventions came from Scots.",
+        "It has far stronger words than “foolish”, but it is keeping them to itself."
+      ],
+      "notes": [
+        "Alexander Graham Bell (telephone), John Logie Baird (television), Alexander Fleming (penicillin) and Kirkpatrick Macmillan (pedal bicycle) were all Scots."
+      ]
+    },
+    "wales": {
+      "review": "draft",
+      "text": [
+        "Super intelligence, is it? Lovely. We’ll have some, now in a minute. Gold, he says.",
+        "We had the gold too, mind: Welsh gold goes into the royal wedding rings. So we know what matters with gold. Not who finds it, but who gets to keep it."
+      ],
+      "en": [
+        "Wales is warmly in favour, in its own unhurried way.",
+        "It knows a thing or two about gold, and suspects the real question is who ends up with the riches."
+      ],
+      "notes": [
+        "“Now in a minute” is Welsh English for “soon”, which may or may not mean today.",
+        "Royal wedding rings have traditionally been made from Welsh gold."
+      ]
+    },
+    "british-diplomat": {
+      "review": "draft",
+      "text": [
+        "His Majesty’s Government notes with interest the President’s enthusiasm for super intelligence, which we share, if perhaps at a slightly lower volume.",
+        "The potential benefits for prosperity are considerable, and we look forward to working with partners who wish to realise them. We would gently observe that those who choose a different course are rarely persuaded by being called foolish. In our experience, a cup of tea and a consultation paper go further."
+      ],
+      "en": [
+        "We agree with him, but he is shouting.",
+        "AI could make a lot of money and we would like some of it. Insulting people who disagree never works. We will do this slowly, with paperwork."
+      ]
+    },
+    "swiss-president": {
+      "review": "draft",
+      "text": [
+        "The Federal Council is following developments in artificial intelligence with great attention. These technologies offer real opportunities for our economy, our research and our jobs.",
+        "As is our tradition, each canton will decide for itself, and the Confederation will support those that wish to move forward. In Switzerland, we do not consider those who prefer caution to be foolish: we consider them part of the conversation. Should the question become important enough, the people will have the last word."
+      ],
+      "fr": [
+        "Le Conseil fédéral suit avec une grande attention les développements de l’intelligence artificielle. Ces technologies offrent de réelles perspectives pour notre économie, notre recherche et nos emplois.",
+        "Comme le veut notre tradition, chaque canton décidera pour lui-même, et la Confédération soutiendra ceux qui souhaitent aller de l’avant. En Suisse, nous ne tenons pas pour insensés ceux qui préfèrent la prudence : nous les considérons comme des partenaires du dialogue. Si la question devient suffisamment importante, le peuple aura le dernier mot."
       ]
     }
   }

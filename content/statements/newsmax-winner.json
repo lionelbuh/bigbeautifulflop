@@ -39,7 +39,7 @@
   "editions": {
     "neuchatelois": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Un journal dit que je suis un gagnant et que j’ai raison. Je le recopie, comme ça vous le lisez deux fois.",
         "Chez nous, une montre qui se dit précise passe quand même au contrôle officiel. Mais moi, pas besoin : je me contrôle tout seul."
       ],
@@ -53,7 +53,7 @@
     },
     "breton": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Un journal dit que je suis un gagnant, et que j’ai raison. Je le recopie, on sait jamais.",
         "Ici, on dit pas grand-chose : on attend de voir si ça tient après la marée. Kenavo."
       ],
@@ -67,7 +67,7 @@
     },
     "vaudois": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Il paraît qu’une télé dit que je suis un gagnant. Bon. Je vais pas me vanter, hein.",
         "Je le partage juste. Comme ça. Au cas où."
       ],
@@ -78,7 +78,7 @@
     },
     "valaisan": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Adieu ! Une télé d’en bas dit que je suis un gagnant.",
         "Ici, on attend le résultat du combat de reines avant de crier victoire."
       ],
@@ -92,7 +92,7 @@
     },
     "parisien": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Une chaîne dit que je suis un gagnant. Je le repartage à 6 h 48.",
         "Pourquoi 6 h 48 ? Parce qu’à 6 h 48, personne ne me contredit."
       ],
@@ -103,7 +103,7 @@
     },
     "sud": {
       "review": "approved",
-      "fr": [
+      "text": [
         "Ils le disent à la télé : je suis un gagnant ! Et j’ai raison sur l’Iran !",
         "C’est pas moi qui le dis, c’est la télé, alors c’est vrai. Comme la météo du Vieux-Port : toujours beau."
       ],

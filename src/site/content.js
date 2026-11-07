@@ -4,7 +4,7 @@
  */
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { REGIONS, getRegion } from '../../content/regions.js';
+import { REGIONS, getRegion, englishLabel } from '../../content/regions.js';
 
 export const STATUSES = ['draft', 'review', 'approved', 'published'];
 
@@ -25,8 +25,9 @@ export function validateStatement(s, file = s?.slug) {
   need(s.presidential && Array.isArray(s.presidential.en) && s.presidential.en.length, 'presidential.en is required');
   for (const [id, ed] of Object.entries(s.editions || {})) {
     need(getRegion(id), `edition "${id}" is not a region declared in content/regions.js`);
-    need(Array.isArray(ed.fr) && ed.fr.length, `editions.${id}.fr is required`);
-    need(Array.isArray(ed.en) && ed.en.length, `editions.${id}.en (English adaptation) is required`);
+    need(Array.isArray(ed.text) && ed.text.length, `editions.${id}.text (the version itself) is required`);
+    const region = getRegion(id);
+    if (region && englishLabel(region)) need(Array.isArray(ed.en) && ed.en.length, `editions.${id}.en (English adaptation) is required`);
   }
   return errors;
 }

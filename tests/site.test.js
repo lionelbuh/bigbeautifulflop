@@ -3,7 +3,7 @@ import { mkdtempSync, readFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { loadStatements, validateStatement, splitLatest, leadStatement } from '../src/site/content.js';
-import { REGIONS } from '../content/regions.js';
+import { REGIONS, getRegion, englishLabel } from '../content/regions.js';
 import { dayNumber, editionIndex } from '../src/site/rotation.js';
 
 const statements = loadStatements(path.resolve('content/statements'));
@@ -23,11 +23,11 @@ describe('content', () => {
     expect(validateStatement(s).join()).toMatch(/source/);
   });
 
-  it('every regional version has an English adaptation', () => {
+  it('every version has its English adaptation (except the ones written for no translation)', () => {
     for (const s of statements) {
       for (const [id, ed] of Object.entries(s.editions)) {
         expect(REGIONS.map((r) => r.id)).toContain(id);
-        expect(ed.en.length).toBeGreaterThan(0);
+        if (englishLabel(getRegion(id))) expect(ed.en.length).toBeGreaterThan(0);
       }
     }
   });
@@ -72,7 +72,7 @@ describe('build', () => {
         expect(html).toContain('class="post post--original"');
         const quotes = html.match(/<blockquote[\s\S]*?<\/blockquote>/g) || [];
         expect(quotes.length).toBe(1);
-        expect(quotes.join()).not.toContain(s.editions[id].fr[0].slice(0, 40));
+        expect(quotes.join()).not.toContain(s.editions[id].text[0].slice(0, 40));
       }
     }
     for (const s of statements) {

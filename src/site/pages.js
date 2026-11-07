@@ -1,7 +1,7 @@
 /** Every page of the site, as { path, lang, html } objects (see scripts/build.mjs). */
 import { e, formatDate, truncate } from './html.js';
 import { renderPage, flag, chip, emailLink, CONTACT_EMAIL, DEFAULT_IMAGE, DISCLAIMER, SITE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
-import { COUNTRIES, REGIONS, getCountry, regionsOf, regionPath } from '../../content/regions.js';
+import { COUNTRIES, REGIONS, CATEGORIES, getCountry, categoryOf, regionsOf, regionPath } from '../../content/regions.js';
 import { editionsFor, leadStatement, splitLatest } from './content.js';
 import {
   articlePath, editionPath, originalPost, presidentialPost, regionalPost, regionsInOrder, regionLinks, thread,
@@ -15,7 +15,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
   const lead = leadStatement(recent);
   const header = {
     dateLabel: formatDate(today),
-    editionsLabel: 'Satire from Switzerland & France',
+    editionsLabel: 'Swiss · French · American · British',
   };
   const page = (o) => ({
     path: o.path,
@@ -37,7 +37,8 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
   const pages = [
     page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} What Trump says, what a real president would say, and how the rest of the world would put it.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
     page({ pageId: 'originals', path: '/originals/', title: 'The Originals', description: 'Every statement we adapt, quoted verbatim with its date and source.', main: originals(ctx) }),
-    page({ pageId: 'presidential', path: '/presidential/', title: 'The Presidential Edition', description: 'The same messages, as a measured and statesmanlike American president would deliver them.', main: presidential(ctx) }),
+    // the former "Presidential Edition" now lives in The Diplomat
+    { path: '/presidential/', lang: 'en', listed: false, html: redirectPage('/diplomat/') },
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
     page({ pageId: 'archives', path: '/archives/', title: 'Archives', description: 'Every statement, day by day, with all its versions.', main: archives(ctx) }),
     page({ pageId: 'about', path: '/about/', title: 'About', description: DISCLAIMER, main: about(ctx) }),
@@ -50,10 +51,18 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
     pages.push(page({ pageId: 'archives', path: dayPath(date), title: `Statements of ${formatDate(date)}`, description: list.map((s) => s.headline).join(' · '), main: dayPage(ctx, date, list), lastmod: list.map((s) => s.published).sort().pop() }));
   }
 
+  for (const cat of CATEGORIES) {
+    const description = cat.countries.length > 1 ? cat.countries.map((c) => getCountry(c).description).join(' ') : getCountry(cat.countries[0]).description;
+    pages.push(page({ pageId: cat.id, path: cat.path, title: cat.name, description, main: categoryPage(ctx, cat) }));
+  }
   for (const country of COUNTRIES) {
-    pages.push(page({ pageId: country.id, path: country.path, title: country.name, description: country.description, main: countryPage(ctx, country) }));
+    const cat = categoryOf(country.id);
+    // a country that is a section by itself (United States, ...) already has its page above
+    if (country.path !== cat.path) {
+      pages.push(page({ pageId: cat.id, path: country.path, title: country.name, description: country.description, main: countryPage(ctx, country) }));
+    }
     for (const region of regionsOf(country.id)) {
-      pages.push(page({ pageId: country.id, path: regionPath(region), title: `The ${region.name} edition`, description: `${region.name} (${region.place}): ${region.voice}`, main: regionPage(ctx, region), listed: statements.some((s) => s.editions?.[region.id]) }));
+      pages.push(page({ pageId: cat.id, path: regionPath(region), title: editionName(region), description: `${region.name} (${region.place}): ${region.voice}`, main: regionPage(ctx, region), listed: statements.some((s) => s.editions?.[region.id]) }));
     }
   }
 
@@ -66,10 +75,10 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
     }));
     for (const region of regions) {
       pages.push(page({
-        pageId: region.country, path: editionPath(s, region), lang: region.lang, type: 'article', lastmod: s.published,
-        title: `${s.headline}: the ${region.name} edition`, image: imageOf(s), published: s.published,
+        pageId: categoryOf(region.country).id, path: editionPath(s, region), lang: region.lang, type: 'article', lastmod: s.published,
+        title: `${s.headline}: ${editionName(region, true)}`, image: imageOf(s), published: s.published,
         jsonLd: editionLd(s, region, imageOf(s)),
-        description: truncate(s.editions[region.id].en.join(' '), 155),
+        description: truncate((s.editions[region.id].en || s.editions[region.id].text).join(' '), 155),
         main: editionPage(ctx, s, region),
       }));
     }
@@ -147,7 +156,7 @@ function editionLd(s, region, image) {
     '@graph': [
       {
         '@type': 'SatiricalArticle',
-        headline: `${s.headline}: the ${region.name} edition`,
+        headline: `${s.headline}: ${editionName(region, true)}`,
         url,
         mainEntityOfPage: url,
         image: `${SITE_URL}${image.path}`,
@@ -236,11 +245,11 @@ function editionPage(_ctx, s, region) {
   const country = getCountry(region.country);
   const siblings = REGIONS.filter((r) => s.editions?.[r.id] && r.id !== region.id);
   return `<article class="story" lang="en">
-  <p class="kicker">${flag(country.flag)} ${e(country.name)} · The ${e(region.name)} edition</p>
+  <p class="kicker">${flag(country.flag)} ${e(country.name)} · ${e(editionName(region))}</p>
   <h1 class="story-title"><a href="${articlePath(s)}">${e(s.headline)}</a></h1>
   <div class="thread">
     ${originalPost(s)}
-    <p class="thread-step">The ${e(region.name)} version</p>
+    <p class="thread-step">${e(versionName(region))}</p>
     ${regionalPost(s, region, { permalink: false, notes: true })}
   </div>
   <p class="story-more"><a href="${articlePath(s)}">All versions</a>${siblings.map((r) => `<a href="${editionPath(s, r)}">${chip(r)}${e(r.name)}</a>`).join('')}</p>
@@ -249,6 +258,51 @@ function editionPage(_ctx, s, region) {
 }
 
 /* ---------- sections ---------- */
+
+/** "The Vaudois edition", "The British Diplomat" (`lower`: "the Vaudois edition"). */
+function editionName(region, lower = false) {
+  const name = region.name.startsWith('The ') ? region.name : `The ${region.name} edition`;
+  return lower ? name.replace(/^The /, 'the ') : name;
+}
+
+/** "The Vaudois version", "The British Diplomat". */
+function versionName(region) {
+  return region.name.startsWith('The ') ? region.name : `The ${region.name} version`;
+}
+
+/** A small page that sends readers (and search engines) to a page's new address. */
+function redirectPage(to) {
+  const url = `${SITE_URL}${to}`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Moved</title><link rel="canonical" href="${url}"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=${to}"></head><body><p>This page has moved: <a href="${to}">${url}</a>.</p></body></html>\n`;
+}
+
+/**
+ * One of the four editorial sections: its regions (as pills, grouped by country) and every statement
+ * with versions in it. The Diplomat also shows the American President, its first statesman.
+ */
+function categoryPage({ statements, day }, cat) {
+  const countries = cat.countries.map(getCountry);
+  const pills = countries.map((c) => {
+    const items = regionsOf(c.id).map((r) => {
+      const n = statements.filter((s) => s.editions?.[r.id]).length;
+      return `<a class="region-pill${n ? '' : ' region-pill--empty'}" href="${regionPath(r)}">${chip(r)}${e(r.name)}<small>${n || 'soon'}</small></a>`;
+    }).join('');
+    return `${countries.length > 1 ? `<p class="region-pills-label">${flag(c.flag)} <a href="${c.path}">${e(c.name)}</a></p>` : ''}<nav class="region-pills" aria-label="${e(c.name)}">${items}</nav>`;
+  }).join('');
+  const diplomat = cat.id === 'diplomat';
+  const items = statements.filter((s) => diplomat || cat.countries.some((c) => editionsFor(s, c).length)).map((s) => `<section class="story story--short">${storyTitle(s)}<div class="thread">
+    ${originalPost(s)}
+    <p class="thread-step">${cat.flags.map((f) => flag(f)).join('')} ${e(cat.name)}</p>
+    ${diplomat ? presidentialPost(s) : ''}
+    ${regionsInOrder(s, day, cat.countries, { grouped: true }).map((r) => regionalPost(s, r)).join('')}
+  </div></section>`);
+  const intro = cat.countries.length > 1
+    ? 'The same statement, retold the way people actually talk in French-speaking Switzerland and in the regions of France. Each version has its English adaptation.'
+    : countries[0].description;
+  return `${sectionHead(`${cat.flags.map((f) => flag(f)).join(' ')} Editorial section`, cat.name, intro)}
+  <div class="section-pills">${pills}</div>
+  ${items.join('')}`;
+}
 
 function sectionHead(kicker, title, intro) {
   return `<header class="section-head"><p class="kicker">${kicker}</p><h1>${e(title)}</h1><p class="section-intro">${e(intro)}</p></header>`;
@@ -261,13 +315,8 @@ function originals({ statements }) {
   ${statements.map((s) => `<section class="story story--short">${storyTitle(s)}<div class="thread">${originalPost(s)}</div></section>`).join('')}`;
 }
 
-function presidential({ statements }) {
-  return `${sectionHead(`${flag('us')} Satire`, 'The Presidential Edition', 'The same message, the way a measured, diplomatic president would say it.')}
-  ${statements.map((s) => `<section class="story story--short">${storyTitle(s)}${thread(s, { regions: false })}</section>`).join('')}`;
-}
-
 function english({ statements }) {
-  return `${sectionHead(`${flag('world')} For the world audience`, 'The English Edition', 'Every regional version, adapted back into natural English so the joke still lands.')}
+  return `${sectionHead(`${flag('world')} For the world audience`, 'The English Edition', 'Every version in English: the French ones adapted so the joke still lands, the American and British ones as written.')}
   ${statements.map((s) => `<section class="story story--short">${storyTitle(s)}<div class="thread">
     ${presidentialPost(s)}
     ${REGIONS.filter((r) => s.editions?.[r.id]).map((r) => regionalPost(s, r, { english: true })).join('')}
@@ -293,16 +342,16 @@ function countryPage({ statements, day }, country) {
 function regionPage({ statements }, region) {
   const country = getCountry(region.country);
   const list = statements.filter((s) => s.editions?.[region.id]);
-  return `${sectionHead(`${flag(country.flag)} <a href="${country.path}">${e(country.name)}</a> · ${e(region.place)}`, `The ${region.name} edition`, region.voice)}
+  return `${sectionHead(`${flag(country.flag)} <a href="${country.path}">${e(country.name)}</a> · ${e(region.place)}`, editionName(region), region.voice)}
   ${list.length ? list.map((s) => `<section class="story story--short">${storyTitle(s)}<div class="thread">
     ${originalPost(s)}
-    <p class="thread-step">The ${e(region.name)} version</p>
+    <p class="thread-step">${e(versionName(region))}</p>
     ${regionalPost(s, region)}
   </div></section>`).join('') : `<p class="empty">No ${e(region.name)} edition yet. The desk is looking for a local voice.</p>`}`;
 }
 
 function about() {
-  const regions = COUNTRIES.map((c) => `<li>${flag(c.flag)} <strong>${e(c.name)}</strong>: ${regionsOf(c.id).map((r) => `<a href="${regionPath(r)}">${e(r.name)}</a>`).join(', ')}</li>`).join('');
+  const regions = COUNTRIES.map((c) => `<li>${flag(c.flag)} <strong><a href="${c.path}">${e(c.name)}</a></strong>: ${[...(c.id === 'diplomat' ? ['The American President'] : []), ...regionsOf(c.id).map((r) => `<a href="${regionPath(r)}">${e(r.name)}</a>`)].join(', ')}</li>`).join('');
   return `${sectionHead('About', 'An independent satirical publication', TAGLINE)}
   <div class="prose">
     <p>Big Beautiful Flop takes public statements by Donald Trump and shows them three ways: the original, word for word; the same message as a measured, statesmanlike president would put it; and the way people around the world would actually say it.</p>

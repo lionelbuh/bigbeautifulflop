@@ -29,10 +29,10 @@ export function emailLink(address = CONTACT_EMAIL) {
 export const NAV = [
   { id: 'home', label: 'Home', path: '/' },
   { id: 'originals', label: 'The Originals', path: '/originals/' },
-  { id: 'presidential', label: 'The Presidential Edition', path: '/presidential/' },
-  { id: 'switzerland', label: 'Switzerland', path: '/switzerland/' },
-  { id: 'france', label: 'France', path: '/france/' },
-  { id: 'english', label: 'English Edition', path: '/english/' },
+  { id: 'switzerland-france', label: 'Switzerland & France', path: '/switzerland-france/' },
+  { id: 'united-states', label: 'United States', path: '/united-states/' },
+  { id: 'united-kingdom', label: 'United Kingdom', path: '/united-kingdom/' },
+  { id: 'diplomat', label: 'The Diplomat', path: '/diplomat/' },
   { id: 'archives', label: 'Archives', path: '/archives/' },
   { id: 'about', label: 'About', path: '/about/' },
 ];
@@ -44,6 +44,8 @@ const FLAGS = {
   ch: '<svg class="flag" viewBox="0 0 32 32" aria-hidden="true"><path fill="#d52b1e" d="M0 0h32v32H0z"/><path fill="#fff" d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z"/></svg>',
   fr: '<svg class="flag" viewBox="0 0 48 32" aria-hidden="true"><path fill="#002654" d="M0 0h16v32H0z"/><path fill="#fff" d="M16 0h16v32H16z"/><path fill="#ce1126" d="M32 0h16v32H32z"/></svg>',
   us: '<svg class="flag" viewBox="0 0 48 32" aria-hidden="true"><path fill="#fff" d="M0 0h48v32H0z"/><path stroke="#b22234" stroke-width="2.46" d="M0 1.23h48M0 6.15h48M0 11.08h48M0 16h48M0 20.92h48M0 25.85h48M0 30.77h48"/><path fill="#3c3b6e" d="M0 0h20v17.2H0z"/></svg>',
+  gb: '<svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="gb-c"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="gb-t"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#gb-c)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#gb-t)" stroke="#c8102e" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#c8102e" stroke-width="6"/></g></svg>',
+  lectern: '<svg class="flag" viewBox="0 0 48 32" aria-hidden="true"><rect width="48" height="32" rx="2" fill="#1f3a5f"/><path d="M15 9h18l-2.6 7H17.6z" fill="#f6f2ea"/><path d="M22.5 16h3v9h-3z" fill="#f6f2ea"/><path d="M17 25h14v2.6H17z" fill="#f6f2ea"/><path d="M24 4.2v4.4" stroke="#e05a5f" stroke-width="2.2" stroke-linecap="round"/><circle cx="24" cy="4" r="1.9" fill="#e05a5f"/></svg>',
   world: '<svg class="flag flag--round" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 16h28M16 2c-5 4-5 24 0 28M16 2c5 4 5 24 0 28M5 8.5h22M5 23.5h22" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
 };
 
@@ -134,7 +136,7 @@ export function renderFooter() {
       <p class="footer-disclaimer">${e(DISCLAIMER)}</p>
       <p class="footer-contact">Contact: ${emailLink()}</p>
     </div>
-    <nav aria-label="Sections"><ul class="footer-links">${links}<li><a href="/feed.xml">RSS feed</a></li></ul></nav>
+    <nav aria-label="Sections"><ul class="footer-links">${links}<li><a href="/english/">English Edition</a></li><li><a href="/feed.xml">RSS feed</a></li></ul></nav>
   </div>
 </footer>`;
 }

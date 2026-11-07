@@ -1022,3 +1022,99 @@ a.cal-day:focus-visible {
   font-weight: 500;
   color: var(--ink-faint);
 }
+
+/* ---------- the four editorial sections, as tabs under each statement ---------- */
+.sections-tabs {
+  display: none;
+}
+.js .sections-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.sections-tabs [role='tab'] {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 64px;
+  padding: 8px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: #fff;
+  font: inherit;
+  text-align: left;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.sections-tabs [role='tab']:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.sections-tabs [role='tab'][aria-selected='true'] {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+.sections-flags {
+  display: flex;
+  gap: 4px;
+}
+.sections-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.sections-count {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+.sections-count::after {
+  content: ' versions';
+}
+.js .sections-panel[data-inactive] {
+  display: none;
+}
+.js .sections-heading {
+  display: none;
+}
+.sections-panel > .post + .post {
+  margin-top: 12px;
+}
+.sections-note {
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-faint);
+}
+@media (max-width: 600px) {
+  .js .sections-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* section pages: regions grouped by country */
+.section-pills {
+  max-width: 640px;
+  margin: -12px auto 40px;
+}
+.section-pills .region-pills {
+  margin: 0 0 14px;
+}
+.region-pills-label {
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.region-pills-label a {
+  color: inherit;
+  text-decoration: none;
+}
+.post--diplomat .avatar {
+  box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px var(--navy);
+}

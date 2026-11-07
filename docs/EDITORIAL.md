@@ -59,3 +59,37 @@ and one page per day (`/archives/YYYY-MM-DD/`). `featured: true` picks the lead 
 The editor copies the post (text, date, time, link) from Truth Social or Roll Call Factbase and pastes
 it into the conversation or into a new file (`npm run new -- <slug>`). Only the posts worth adapting
 are added: the selection is editorial, not automatic.
+
+## The four editorial sections
+
+Every statement can be retold in four sections (regions in `content/regions.js`, `CATEGORIES`):
+
+| Section | Versions | Language of the version | English link |
+| --- | --- | --- | --- |
+| Switzerland & France | Vaudois, Valaisan, Genevois, Fribourgeois, Neuchâtelois; Parisien, Sud, Ch’ti, Lyonnais, Breton | French | “English version”: an adaptation that keeps the joke |
+| United States | New York, Texas, Deep South, California, Boston, Midwest | American English | “In plain English”: for international readers |
+| United Kingdom | London, Liverpool, Manchester, Yorkshire, Scotland, Wales | British English | “In plain English” |
+| The Diplomat | The American President (`presidential`), the British Diplomat, the Swiss President | English (+ French for the American and Swiss presidents) | British Diplomat: “What he really means” |
+
+In a statement file, a version is `editions.<region>`: `text` (the version itself), `en` (its English
+adaptation), optional `fr` (a French version of an English text) and `notes` (“Lost in translation”).
+
+## Writing rules (for editors and for the AI drafting engine)
+
+- **Preserve the original subject and meaning.** The political point survives; the tone changes.
+- **Never invent facts, quotes or events.** If the original makes an unsupported factual claim, the
+  rewrite says it was claimed (“he says”, “apparently”), or flags the doubt; it never presents it as
+  established. Local references used for colour (a date, an invention, a dish) must be true; explain
+  them in `notes`.
+- **The original stays apart.** It is the only quotation; every rewrite is labelled satire, and the
+  diplomats’ versions are fictional interpretations, never real statements by real officials.
+- **Each version genuinely different.** Its own angle on the message, not the same joke with a new
+  accent. Avoid recycled expressions across regions (and across statements).
+- **Authentic, not caricature.** Regional vocabulary and attitudes used naturally and sparingly; for
+  American and British versions, no phonetic spelling or forced accents: vocabulary, expressions and
+  attitude. No stereotype that becomes offensive or ridiculous.
+- **Intelligent humour**: understatement, irony and recognisable local references rather than insults.
+- **English adaptations rebuild the joke** for international readers instead of translating literally.
+- **Diplomats**: the American President is measured, confident and respectful of institutions; the British
+  Diplomat is elegant, polite, understated and occasionally dry; the Swiss President is neutral,
+  conciliatory, pragmatic and leaves the last word to the people. No insults, no self-praise.

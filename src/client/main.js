@@ -72,3 +72,34 @@ for (const cal of document.querySelectorAll('[data-cal]')) {
     if (step) show(index + Number(step.dataset.calStep));
   });
 }
+
+/**
+ * Under each statement: the four editorial sections as tabs (Switzerland & France, United States,
+ * United Kingdom, The Diplomat). Arrow keys move between tabs. Without JavaScript every section is
+ * shown, one after the other, each with its heading.
+ */
+for (const box of document.querySelectorAll('[data-tabs]')) {
+  const tabs = [...box.querySelectorAll('[role="tab"]')];
+  if (!tabs.length) continue;
+  const select = (tab, { focus = false } = {}) => {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls'))?.toggleAttribute('data-inactive', !on);
+    }
+    if (focus) tab.focus();
+  };
+  box.addEventListener('click', (event) => {
+    const tab = event.target.closest('[role="tab"]');
+    if (tab && tabs.includes(tab)) select(tab);
+  });
+  box.addEventListener('keydown', (event) => {
+    const i = tabs.indexOf(document.activeElement);
+    if (i < 0) return;
+    const keys = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+    if (!(event.key in keys)) return;
+    event.preventDefault();
+    select(tabs[(keys[event.key] + tabs.length) % tabs.length], { focus: true });
+  });
+}

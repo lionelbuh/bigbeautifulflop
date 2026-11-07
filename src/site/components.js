@@ -1,11 +1,12 @@
 /**
- * Every version of a statement is shown as a post card, one under the other: the original, the
- * presidential version, then the regional ones. Light on purpose: no photo, no long explanations.
- * The English adaptation sits behind "English version".
+ * Every version of a statement is shown as a post card: the original, the American President's
+ * version, then the four editorial sections as tabs (Switzerland & France, United States, United
+ * Kingdom, The Diplomat). Light on purpose: no photo, no long explanations. The English adaptation of
+ * each version sits behind a link ("English version", "In plain English", "What he really means").
  */
 import { e, paras, formatDate, frenchSpacing } from './html.js';
-import { chip } from './layout.js';
-import { REGIONS, getCountry } from '../../content/regions.js';
+import { chip, flag } from './layout.js';
+import { REGIONS, CATEGORIES, getCountry, englishLabel } from '../../content/regions.js';
 import { editionsFor } from './content.js';
 import { editionIndex } from './rotation.js';
 
@@ -28,7 +29,7 @@ function clock(time) {
 const initials = (name) => name.replace(/\b[A-Z]\.\s*/g, '').split(/\s+/).map((w) => w[0]).join('').slice(0, 2);
 
 /** The post card shared by all versions. */
-function post({ variant, avatar, name, meta, badge, body, translate, footer, lang }) {
+function post({ variant, avatar, name, meta, badge, body, translate, translateLabel = 'English version', footer, lang }) {
   return `<article class="post post--${variant}">
   <header class="post-head">
     ${avatar}
@@ -36,7 +37,7 @@ function post({ variant, avatar, name, meta, badge, body, translate, footer, lan
     <span class="post-badge">${badge}</span>
   </header>
   <div class="post-text"${lang ? ` lang="${lang}"` : ''}>${body}</div>
-  ${translate ? `<details class="post-translate"><summary>English version</summary><div lang="en">${translate}</div></details>` : ''}
+  ${translate ? `<details class="post-translate"><summary>${e(translateLabel)}</summary><div lang="en">${translate}</div></details>` : ''}
   ${footer ? `<footer class="post-foot">${footer}</footer>` : ''}
 </article>`;
 }
@@ -63,8 +64,8 @@ export function presidentialPost(s) {
   return post({
     variant: 'presidential',
     avatar: '<span class="avatar avatar--presidential" aria-hidden="true">★</span>',
-    name: 'The Presidential Version',
-    meta: 'How a real president would say it',
+    name: 'The American President',
+    meta: 'The presidential version: how a statesmanlike president would say it',
     badge: 'Satire',
     body: paras(p.en),
     // the French presidential version, behind the same kind of link
@@ -76,55 +77,88 @@ export function presidentialPost(s) {
 /** "Valaisan (Switzerland)", "Parisien (France)"; no country when the name already says it ("Sud de la France"). */
 function regionLabel(region) {
   const country = getCountry(region.country).name;
-  return region.name.includes(country) ? e(region.name) : `${e(region.name)} <span class="post-country">(${e(country)})</span>`;
+  return region.country === 'diplomat' || region.name.includes(country) ? e(region.name) : `${e(region.name)} <span class="post-country">(${e(country)})</span>`;
 }
 
-/** One regional version, with its English adaptation behind "English version". */
+/** One version (regional or diplomatic), with its English adaptation behind the region's link. */
 export function regionalPost(s, region, { permalink = true, notes = false, english = false } = {}) {
   const ed = s.editions[region.id];
+  const isFrench = region.lang.startsWith('fr');
   const noteList = notes && ed.notes?.length
     ? `<details class="post-translate post-translate--inline"><summary>Lost in translation</summary><ul>${ed.notes.map((n) => `<li>${e(n)}</li>`).join('')}</ul></details>`
     : '';
+  const french = !isFrench && ed.fr?.length
+    ? `<details class="post-translate post-translate--inline"><summary>Version française</summary><div lang="fr">${paras(ed.fr, '', { french: true })}</div></details>`
+    : '';
   const draft = ed.review !== 'approved' ? '<span class="verify-flag">draft</span>' : '';
   const link = permalink ? `<a href="${editionPath(s, region)}">Permalink</a>` : '';
+  // English edition: the English adaptation of French versions; English-language versions as written
+  const showEnglish = english && isFrench;
+  const label = englishLabel(region);
   return post({
-    variant: 'regional',
+    variant: region.country === 'diplomat' ? 'diplomat' : 'regional',
     avatar: `<span class="avatar avatar--regional" aria-hidden="true" style="--chip-a:${region.chip[0]};--chip-b:${region.chip[1]}"></span>`,
     name: regionLabel(region),
     meta: e(region.place),
     badge: 'Satire',
-    lang: english ? 'en' : region.lang,
-    body: english ? paras(ed.en) : paras(ed.fr, '', { french: true }),
-    translate: english ? null : paras(ed.en),
-    footer: [link, draft].filter(Boolean).join(' · ') + noteList,
+    lang: showEnglish ? 'en' : region.lang,
+    body: showEnglish ? paras(ed.en) : paras(ed.text, '', { french: isFrench }),
+    translate: english || !label || !ed.en?.length ? null : paras(ed.en),
+    translateLabel: label,
+    footer: [link, draft].filter(Boolean).join(' · ') + french + noteList,
   });
 }
 
 /**
- * The regional versions of a statement, in the order of the day: today's Swiss and French
- * editions first, then the others.
+ * The versions of a statement in the given countries, in the order of the day. `grouped` (for display):
+ * country by country, each with today's region first. Otherwise (to pick a region to show first):
+ * today's region of every country first, then the others.
  */
-export function regionsInOrder(s, day) {
+export function regionsInOrder(s, day, countries = ['switzerland', 'france'], { grouped = false } = {}) {
   const first = [];
   const rest = [];
-  for (const country of ['switzerland', 'france']) {
+  const groups = [];
+  for (const country of countries) {
     const list = editionsFor(s, country).map((x) => x.region);
     const i = editionIndex(list.length, day);
+    if (i >= 0) groups.push([list[i], ...list.filter((_, j) => j !== i)]);
     list.forEach((r, j) => (j === i ? first : rest).push(r));
   }
-  return [...first, ...rest];
+  return grouped ? groups.flat() : [...first, ...rest];
 }
 
-/** The whole thread: original, presidential, then every regional version. */
+/** The four editorial sections of a statement as tabs (only those with versions). */
+function sectionTabs(s, { day, first, idPrefix }) {
+  const sections = CATEGORIES.map((cat) => {
+    // country by country; the region chosen to open the statement leads, with its country first
+    const lead = REGIONS.find((r) => r.id === first && cat.countries.includes(r.country));
+    const countries = lead ? [lead.country, ...cat.countries.filter((c) => c !== lead.country)] : cat.countries;
+    let list = regionsInOrder(s, day, countries, { grouped: true });
+    if (lead && list.includes(lead)) list = [lead, ...list.filter((r) => r !== lead)];
+    return { cat, list };
+  }).filter((x) => x.list.length);
+  if (!sections.length) return '';
+  const flags = (cat) => cat.flags.map((f) => flag(f)).join('');
+  const tabs = sections.map(({ cat, list }, i) => `<button type="button" role="tab" id="${idPrefix}-tab-${cat.id}" aria-controls="${idPrefix}-${cat.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="sections-flags">${flags(cat)}</span><span class="sections-name">${e(cat.name)}</span><span class="sections-count">${list.length}</span></button>`).join('');
+  const panels = sections.map(({ cat, list }, i) => `<section class="sections-panel" role="tabpanel" id="${idPrefix}-${cat.id}" aria-labelledby="${idPrefix}-tab-${cat.id}"${i ? ' data-inactive' : ''}>
+    <p class="thread-step sections-heading">${flags(cat)} ${e(cat.name)}</p>
+    ${cat.id === 'diplomat' ? '<p class="sections-note">The American President is just above. Here, two more statesmen.</p>' : ''}
+    ${list.map((r) => regionalPost(s, r)).join('')}
+  </section>`).join('');
+  return `<div class="sections" data-tabs>
+  <p class="thread-step">Around the world</p>
+  <div class="sections-tabs" role="tablist" aria-label="Editorial sections">${tabs}</div>
+  ${panels}
+</div>`;
+}
+
+/** The whole thread: the original, the American President, then the four sections as tabs. */
 export function thread(s, { day, regions = true, first = null } = {}) {
-  const list = regions ? regionsInOrder(s, day) : [];
-  const lead = list.find((r) => r.id === first) || list[0];
-  const rest = list.filter((r) => r !== lead);
   return `<div class="thread">
   ${originalPost(s)}
   <p class="thread-step">The presidential version</p>
   ${presidentialPost(s)}
-  ${lead ? `<p class="thread-step">Around the world</p>${[lead, ...rest].map((r) => regionalPost(s, r)).join('')}` : ''}
+  ${regions ? sectionTabs(s, { day, first, idPrefix: `t-${s.slug}` }) : ''}
 </div>`;
 }
 

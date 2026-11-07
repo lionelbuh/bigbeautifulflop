@@ -52,7 +52,7 @@ function statementCard(s) {
     <h1>${e(s.headline)}</h1>
     <p class="quote"><b>The original · ${e(s.original.channel || '')}</b>“${e(truncate(s.original.text.join(' '), 175))}”</p>
     <p class="foot"><span>The presidential version · <b>6 regional versions</b> · English adaptations</span><span>bigbeautifulflop.com</span></p>
-  </div>`.replace('6 regional versions', `${Object.keys(s.editions || {}).length} regional versions`);
+  </div>`.replace('6 regional versions', `${Object.keys(s.editions || {}).length} versions`);
 }
 
 const defaultCard = `${BASE}<div class="frame">${brand}
