@@ -8,6 +8,14 @@ export const TAGLINE = 'Lost in translation. Found in reality.';
 export const DISCLAIMER =
   'An independent satirical project. Original statements are sourced and attributed. All presidential and regional adaptations are fictional, AI-assisted editorial interpretations.';
 
+export const CONTACT_EMAIL = 'hello@bigbeautifulflop.com';
+
+/** The address as HTML entities, so simple address-harvesting robots do not pick it up (as on Morges.info). */
+export function emailLink(address = CONTACT_EMAIL) {
+  const enc = [...address].map((c) => `&#${c.charCodeAt(0)};`).join('');
+  return `<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${enc}">${enc}</a>`;
+}
+
 export const NAV = [
   { id: 'home', label: 'Home', path: '/' },
   { id: 'originals', label: 'The Originals', path: '/originals/' },
@@ -99,6 +107,7 @@ export function renderFooter() {
       <p class="footer-name">Big Beautiful <span class="brand-accent">Flop</span></p>
       <p class="footer-tagline">${e(TAGLINE)}</p>
       <p class="footer-disclaimer">${e(DISCLAIMER)}</p>
+      <p class="footer-contact">Contact: ${emailLink()}</p>
     </div>
     <nav aria-label="Sections"><ul class="footer-links">${links}<li><a href="/feed.xml">RSS feed</a></li></ul></nav>
   </div>

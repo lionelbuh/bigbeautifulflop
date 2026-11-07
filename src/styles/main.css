@@ -1015,3 +1015,6 @@ a.cal-day:focus-visible {
   color: inherit;
   text-decoration: none;
 }
+.footer-contact {
+  font-size: 0.85rem;
+}

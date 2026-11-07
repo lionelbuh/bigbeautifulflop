@@ -1,6 +1,6 @@
 /** Every page of the site, as { path, lang, html } objects (see scripts/build.mjs). */
 import { e, formatDate, truncate } from './html.js';
-import { renderPage, flag, chip, DISCLAIMER, SITE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
+import { renderPage, flag, chip, emailLink, DISCLAIMER, SITE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
 import { COUNTRIES, REGIONS, getCountry, regionsOf, regionPath } from '../../content/regions.js';
 import { editionsFor, leadStatement, splitLatest } from './content.js';
 import {
@@ -240,9 +240,13 @@ function about() {
     <h2>Regions</h2>
     <ul class="about-regions">${regions}</ul>
     <h2>Parody and commentary</h2>
-    <p>Big Beautiful Flop is parody and commentary. Original statements are quoted verbatim for the purpose of criticism and commentary (fair use, 17 U.S.C. § 107; Swiss Copyright Act, art. 25). Satire of public figures is protected speech under the First Amendment to the U.S. Constitution, the Swiss Federal Constitution (art. 16–17) and the European Convention on Human Rights (art. 10).</p>
+    <p>Big Beautiful Flop is parody and commentary. Original statements are quoted verbatim for the purpose of criticism and commentary (fair use, 17 U.S.C. § 107; Swiss Copyright Act, art. 25; French Intellectual Property Code, art. L122-5). Satire of public figures is protected speech under the First Amendment to the U.S. Constitution, the Swiss Federal Constitution (art. 16–17), French law on parody and caricature (art. L122-5, 4°) and the European Convention on Human Rights (art. 10).</p>
     <h2>Disclaimer</h2>
     <p>${e(DISCLAIMER)} Big Beautiful Flop is not affiliated with the White House, Truth Social, or any government, party, campaign, news agency or social network.</p>
+    <h2>Contact and corrections</h2>
+    <p>Write to ${emailLink()}. If we have quoted a statement inaccurately, tell us: we check it against the source and correct it promptly.</p>
+    <h2>Privacy</h2>
+    <p>This site sets no cookies, uses no analytics or advertising trackers, and collects no personal data. It is hosted on GitHub Pages (GitHub, Inc.), whose servers may keep technical logs, such as IP addresses, for security; see GitHub’s privacy statement.</p>
   </div>`;
 }
 
