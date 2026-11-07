@@ -4,7 +4,7 @@
   "published": "2026-11-07",
   "featured": true,
   "headline": "Super Intelligence is GOLD",
-  "dek": "The President is 100% in favour of Super Intelligence, and of the states that get rich from it; those that say no are foolish. Twenty-two regions and three statesmen reply.",
+  "dek": "The President is 100% in favour of Super Intelligence, and of the states that get rich from it; those that say no are foolish. Twenty-two regions and four statesmen reply.",
   "topics": [
     "artificial intelligence",
     "economy"
@@ -349,6 +349,20 @@
       "en": [
         "We agree with him, but he is shouting.",
         "AI could make a lot of money and we would like some of it. Insulting people who disagree never works. We will do this slowly, with paperwork."
+      ]
+    },
+    "french-diplomat": {
+      "review": "draft",
+      "text": [
+        "La France salue l’intérêt que porte le Président des États-Unis à l’intelligence artificielle, un domaine où nos chercheurs et nos entreprises comptent parmi les meilleurs au monde. Nous partageons la conviction que ces technologies seront une source de prospérité.",
+        "Mais la France croit aussi que la puissance n’a de sens que si elle sert l’humain. C’est pourquoi nous défendons, avec nos partenaires européens, une intelligence artificielle à la fois ambitieuse et encadrée. Quant à ceux qui hésitent, nous ne les traitons pas d’insensés : nous les invitons à un sommet à Paris, et nous en sortons avec une déclaration commune."
+      ],
+      "en": [
+        "France welcomes the US President’s interest in artificial intelligence, a field in which French researchers and companies are among the best in the world. We share the conviction that these technologies will bring prosperity.",
+        "But France also believes that power only makes sense if it serves people. That is why, with our European partners, we stand for artificial intelligence that is both ambitious and regulated. As for those who hesitate, we do not call them foolish: we invite them to a summit in Paris, and we all come out with a joint declaration."
+      ],
+      "notes": [
+        "Paris hosted the AI Action Summit in February 2025. It ended with a joint declaration on inclusive and sustainable AI, which the United States and the United Kingdom declined to sign."
       ]
     },
     "swiss-president": {

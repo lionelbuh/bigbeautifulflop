@@ -142,7 +142,7 @@ function sectionTabs(s, { day, first, idPrefix }) {
   const tabs = sections.map(({ cat, list }, i) => `<button type="button" role="tab" id="${idPrefix}-tab-${cat.id}" aria-controls="${idPrefix}-${cat.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="sections-flags">${flags(cat)}</span><span class="sections-name">${e(cat.name)}</span><span class="sections-count">${list.length}</span></button>`).join('');
   const panels = sections.map(({ cat, list }, i) => `<section class="sections-panel" role="tabpanel" id="${idPrefix}-${cat.id}" aria-labelledby="${idPrefix}-tab-${cat.id}"${i ? ' data-inactive' : ''}>
     <p class="thread-step sections-heading">${flags(cat)} ${e(cat.name)}</p>
-    ${cat.id === 'diplomat' ? '<p class="sections-note">The American President is just above. Here, two more statesmen.</p>' : ''}
+    ${cat.id === 'diplomat' ? '<p class="sections-note">The American President is just above. Here, the other statesmen.</p>' : ''}
     ${list.map((r) => regionalPost(s, r)).join('')}
   </section>`).join('');
   return `<div class="sections" data-tabs>

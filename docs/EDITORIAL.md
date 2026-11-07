@@ -69,7 +69,7 @@ Every statement can be retold in four sections (regions in `content/regions.js`,
 | Switzerland & France | Vaudois, Valaisan, Genevois, Fribourgeois, Neuchâtelois; Parisien, Sud, Ch’ti, Lyonnais, Breton | French | “English version”: an adaptation that keeps the joke |
 | United States | New York, Texas, Deep South, California, Boston, Midwest | American English | “In plain English”: for international readers |
 | United Kingdom | London, Liverpool, Manchester, Yorkshire, Scotland, Wales | British English | “In plain English” |
-| The Diplomat | The American President (`presidential`), the British Diplomat, the Swiss President | English (+ French for the American and Swiss presidents) | British Diplomat: “What he really means” |
+| The Diplomat | The American President (`presidential`), the British Diplomat, the French Diplomat, the Swiss President | English (+ French for the American and Swiss presidents); French for the French Diplomat | British Diplomat: “What he really means”; French Diplomat: “English version” |
 
 In a statement file, a version is `editions.<region>`: `text` (the version itself), `en` (its English
 adaptation), optional `fr` (a French version of an English text) and `notes` (“Lost in translation”).
@@ -91,5 +91,6 @@ adaptation), optional `fr` (a French version of an English text) and `notes` (�
 - **Intelligent humour**: understatement, irony and recognisable local references rather than insults.
 - **English adaptations rebuild the joke** for international readers instead of translating literally.
 - **Diplomats**: the American President is measured, confident and respectful of institutions; the British
-  Diplomat is elegant, polite, understated and occasionally dry; the Swiss President is neutral,
+  Diplomat is elegant, polite, understated and occasionally dry; the French Diplomat is eloquent, principled
+  and European, with a taste for grand words and summits; the Swiss President is neutral,
   conciliatory, pragmatic and leaves the last word to the people. No insults, no self-praise.

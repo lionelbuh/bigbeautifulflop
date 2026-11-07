@@ -59,7 +59,7 @@ export const COUNTRIES = [
     lang: 'en',
     flag: 'lectern',
     description:
-      'The same message, as a serious and competent statesman would deliver it: an American President, a British diplomat and a Swiss Federal President. Fictional interpretations, never real statements.',
+      'The same message, as a serious and competent statesman would deliver it: an American President, a British diplomat, a French diplomat and a Swiss Federal President. Fictional interpretations, never real statements.',
   },
 ];
 
@@ -296,6 +296,15 @@ export const REGIONS = [
     english: 'meaning',
     chip: ['#012169', '#c8102e'],
     voice: 'Elegant, polite and measured, with subtle understatement and the occasional dry joke. Never confrontational without reason.',
+  },
+  {
+    id: 'french-diplomat',
+    country: 'diplomat',
+    name: 'The French Diplomat',
+    place: 'A French President or a diplomat of the Quai d’Orsay',
+    lang: 'fr-FR',
+    chip: ['#002654', '#ce1126'],
+    voice: 'Elegant, lyrical and sure of France’s role in the world. Speaks of principles and of Europe, and answers every crisis with a summit in Paris.',
   },
   {
     id: 'swiss-president',
