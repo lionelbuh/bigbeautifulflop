@@ -15,6 +15,7 @@ export const NAV = [
   { id: 'switzerland', label: 'Switzerland', path: '/switzerland/' },
   { id: 'france', label: 'France', path: '/france/' },
   { id: 'english', label: 'English Edition', path: '/english/' },
+  { id: 'archives', label: 'Archives', path: '/archives/' },
   { id: 'about', label: 'About', path: '/about/' },
 ];
 

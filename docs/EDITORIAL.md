@@ -46,3 +46,15 @@ back into the JSON with `review: "draft"`. It must never change `original` or `s
 1. Add an entry to `content/regions.js` (id, country, name, place, lang, two swatch colours, voice).
 2. Write `editions.<id>` in the statements you want. Region pages, navigation, sitemap and the daily
    rotation follow automatically. A new country is one more entry in `COUNTRIES`.
+
+## Front page and archives
+
+The front page shows the statements of the last three days (by `original.date`), newest first
+(`original.time`, US Eastern, e.g. `"13:51"`). Older statements move to `/archives/` automatically
+at the nightly rebuild. `featured: true` picks the lead story among the recent ones.
+
+## Adding statements by hand
+
+The editor copies the post (text, date, time, link) from Truth Social or Roll Call Factbase and pastes
+it into the conversation or into a new file (`npm run new -- <slug>`). Only the posts worth adapting
+are added: the selection is editorial, not automatic.

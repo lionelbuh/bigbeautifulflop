@@ -1,0 +1,65 @@
+{
+  "slug": "stephen-miller-chief-of-staff",
+  "status": "published",
+  "published": "2026-11-07",
+  "headline": "A new Chief of Staff",
+  "dek": "Stephen Miller becomes Chief of Staff on Monday; Susie Wiles moves to the political operation, with thanks.",
+  "topics": [
+    "White House",
+    "appointments"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-06",
+    "time": "13:51",
+    "text": [
+      "I am pleased to announce that Mr. Stephen Miller, the current Deputy Chief of Staff of the Trump Administration, and one of my most trusted advisors, will become the Chief of Staff starting Monday, November 9, 2026. Susie Wiles, who has done an outstanding job, will be moving over to the Trump Political Operation. I want to thank her for her service as Chief of Staff — She has done a great job! President DONALD J. TRUMP"
+    ],
+    "context": "",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump (via Roll Call Factbase)",
+      "url": "https://rollcall.com/factbase/trump/topic/social/"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from Roll Call Factbase on 7 November 2026."
+    }
+  },
+  "presidential": {
+    "en": [
+      "Today I am announcing that Stephen Miller, currently Deputy Chief of Staff, will become White House Chief of Staff on Monday, November 9.",
+      "Susie Wiles, who has served with distinction in that role, will now lead our political operation. I am grateful for her service and wish them both well in their new responsibilities."
+    ],
+    "fr": [
+      "J’annonce aujourd’hui que Stephen Miller, actuellement chef de cabinet adjoint, deviendra chef de cabinet de la Maison-Blanche le lundi 9 novembre.",
+      "Susie Wiles, qui a exercé cette fonction avec distinction, dirigera désormais notre équipe politique. Je la remercie pour son engagement et leur souhaite à tous deux plein succès."
+    ]
+  },
+  "editions": {
+    "vaudois": {
+      "review": "draft",
+      "fr": [
+        "Bon, petit changement à la maison. Stephen, qui était sous-chef, passe chef dès lundi. Susie va s’occuper du parti. Elle a fait du bon boulot, hein, faut le dire.",
+        "Stephen chef, c’est une bonne idée ? Faut voir. Mais on a déjà commandé la nouvelle plaque pour la porte, alors ça joue."
+      ],
+      "en": [
+        "Right, a little reshuffle at the house. Stephen, who was deputy, becomes the boss from Monday. Susie is off to look after the party. She did a good job, mind you, credit where it’s due.",
+        "Is Stephen as boss a good idea? We’ll see. But the new nameplate for the door is already ordered, so it’s fine."
+      ]
+    },
+    "parisien": {
+      "review": "draft",
+      "fr": [
+        "Annonce rapide, j’ai un déjeuner. Stephen Miller passe directeur de cabinet lundi. Susie rejoint le parti : on appelle ça une promotion, tout le monde a compris.",
+        "Merci Susie, vraiment, t’as été top. Pot de départ jeudi, chacun apporte ses chips."
+      ],
+      "en": [
+        "Quick announcement, I’ve got a lunch. Stephen Miller becomes chief of staff on Monday. Susie moves over to the party: we’re calling it a promotion, everyone gets it.",
+        "Thanks Susie, really, you were great. Leaving drinks on Thursday, bring your own crisps."
+      ]
+    }
+  }
+}

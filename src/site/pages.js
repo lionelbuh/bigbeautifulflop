@@ -2,7 +2,7 @@
 import { e, formatDate, truncate } from './html.js';
 import { renderPage, flag, chip, DISCLAIMER, SITE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
 import { COUNTRIES, REGIONS, getCountry, regionsOf, regionPath } from '../../content/regions.js';
-import { editionsFor, leadStatement } from './content.js';
+import { editionsFor, leadStatement, splitByAge } from './content.js';
 import { editionIndex } from './rotation.js';
 import {
   articlePath, editionPath, originalPost, presidentialPost, regionalPost, regionsInOrder, regionLinks, thread,
@@ -10,7 +10,8 @@ import {
 
 /** Builds every page. `day` is the day number used for the editions of the day. */
 export function buildPages({ statements, day, today, assets }) {
-  const lead = leadStatement(statements);
+  const { recent, archived } = splitByAge(statements, today);
+  const lead = leadStatement(recent);
   const todays = (countryId) => {
     const list = editionsFor(lead, countryId);
     return list[editionIndex(list.length, day)]?.region.name;
@@ -33,13 +34,14 @@ export function buildPages({ statements, day, today, assets }) {
     listed: o.listed !== false,
     lastmod: o.lastmod,
   });
-  const ctx = { statements, lead, day };
+  const ctx = { statements, recent, archived, lead, day };
 
   const pages = [
     page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} What Trump says, what a real president would say, and how the rest of the world would put it.`, main: home(ctx), bodyClass: 'home' }),
     page({ pageId: 'originals', path: '/originals/', title: 'The Originals', description: 'Every statement we adapt, quoted verbatim with its date and source.', main: originals(ctx) }),
     page({ pageId: 'presidential', path: '/presidential/', title: 'The Presidential Edition', description: 'The same messages, as a measured and statesmanlike American president would deliver them.', main: presidential(ctx) }),
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
+    page({ pageId: 'archives', path: '/archives/', title: 'Archives', description: 'Earlier statements and all their versions, by date.', main: archives(ctx) }),
     page({ pageId: 'about', path: '/about/', title: 'About', description: DISCLAIMER, main: about(ctx) }),
     { path: '/404.html', lang: 'en', listed: false, html: renderPage({ pageId: '', header, head: { title: 'Page not found', description: 'This page does not exist.', path: '/404.html', assets }, main: notFound() }) },
   ];
@@ -84,8 +86,8 @@ function articleLd(s) {
 
 /* ---------- home ---------- */
 
-function home({ statements, lead, day }) {
-  const others = statements.filter((s) => s !== lead).slice(0, 6);
+function home({ recent, archived, lead, day }) {
+  const others = recent.filter((s) => s !== lead);
   return `<section class="story" aria-labelledby="lead-title">
   <p class="kicker">The lead</p>
   <h1 id="lead-title" class="story-title"><a href="${articlePath(lead)}">${e(lead.headline)}</a></h1>
@@ -96,7 +98,25 @@ ${others.map((s) => `<section class="story story--short">
   ${thread(s, { day, regions: false })}
   <p class="story-more"><a href="${articlePath(s)}">Around the world</a>${regionLinks(s)}</p>
 </section>`).join('')}
+${archived.length ? `<p class="story-archives"><a class="button" href="/archives/">Archives: ${archived.length} earlier statement${archived.length > 1 ? 's' : ''}</a></p>` : ''}
 <p class="disclaimer">${e(DISCLAIMER)}</p>`;
+}
+
+/* ---------- archives ---------- */
+
+function archives({ archived }) {
+  const byDate = new Map();
+  for (const s of archived) {
+    if (!byDate.has(s.original.date)) byDate.set(s.original.date, []);
+    byDate.get(s.original.date).push(s);
+  }
+  const days = [...byDate].map(([date, list]) => `<section class="archive-day">
+    <h2 class="archive-date">${formatDate(date)}</h2>
+    ${list.map((s) => `<div class="story story--short">${storyTitle(s)}<div class="thread">${originalPost(s)}</div>
+      <p class="story-more"><a href="${articlePath(s)}">All versions</a>${regionLinks(s)}</p></div>`).join('')}
+  </section>`).join('');
+  return `${sectionHead('Archives', 'Archives', 'The front page shows the last three days. Everything older is kept here, newest first, with all its versions.')}
+  ${days || '<p class="empty">Nothing in the archives yet.</p>'}`;
 }
 
 /* ---------- article ---------- */

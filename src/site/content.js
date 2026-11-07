@@ -40,9 +40,26 @@ export function loadStatements(dir) {
     if (`${data.slug}.json` !== f) throw new Error(`${f}: file name must be <slug>.json (${data.slug}.json)`);
     return data;
   });
-  return all
-    .filter((s) => s.status === 'published')
-    .sort((a, b) => b.published.localeCompare(a.published) || a.slug.localeCompare(b.slug));
+  return all.filter((s) => s.status === 'published').sort(newestFirst);
+}
+
+/** Newest statement first: by the date and time it was originally said or posted. */
+const stamp = (s) => `${s.original.date}T${s.original.time || '00:00'}`;
+export function newestFirst(a, b) {
+  return stamp(b).localeCompare(stamp(a)) || a.slug.localeCompare(b.slug);
+}
+
+/**
+ * The front page shows the statements of the last `days` days (today included); older ones go to the
+ * archives. If nothing new was said in that window, the front page keeps the latest three.
+ */
+export function splitByAge(statements, today, days = 3) {
+  const from = new Date(`${today}T00:00:00Z`);
+  from.setUTCDate(from.getUTCDate() - (days - 1));
+  const cutoff = from.toISOString().slice(0, 10);
+  let recent = statements.filter((s) => s.original.date >= cutoff);
+  if (!recent.length) recent = statements.slice(0, 3);
+  return { recent, archived: statements.filter((s) => !recent.includes(s)) };
 }
 
 /** The statement's editions for one country, in the order of content/regions.js. */

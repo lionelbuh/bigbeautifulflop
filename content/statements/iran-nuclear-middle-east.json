@@ -1,0 +1,68 @@
+{
+  "slug": "iran-nuclear-middle-east",
+  "status": "published",
+  "published": "2026-11-07",
+  "headline": "Nobody wants to say that",
+  "dek": "Without him, the President writes, Israel and the entire Middle East would not exist today. Nobody wants to say it; everybody knows it.",
+  "topics": [
+    "Iran",
+    "foreign policy"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-06",
+    "time": "13:09",
+    "text": [
+      "Israel and, in fact, the entire Middle East, WOULD NOT EXIST TODAY if I did not stop Iran from having a Nuclear Weapon. Nobody wants to say that, but everybody knows it’s true! President DONALD J. TRUMP"
+    ],
+    "context": "",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump (via Roll Call Factbase)",
+      "url": "https://rollcall.com/factbase/trump/topic/social/"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from Roll Call Factbase on 7 November 2026."
+    }
+  },
+  "presidential": {
+    "en": [
+      "Preventing Iran from obtaining a nuclear weapon has been one of the most important decisions of my presidency. I believe it has made Israel, and the whole Middle East, far safer than it would otherwise be.",
+      "History will judge that record. I am confident in how it will judge it."
+    ],
+    "fr": [
+      "Empêcher l’Iran de se doter de l’arme nucléaire aura été l’une des décisions les plus importantes de ma présidence. Je suis convaincu qu’elle a rendu Israël, et tout le Moyen-Orient, bien plus sûrs qu’ils ne l’auraient été.",
+      "L’Histoire jugera ce bilan. J’ai confiance dans son jugement."
+    ]
+  },
+  "editions": {
+    "valaisan": {
+      "review": "draft",
+      "fr": [
+        "Adieu ! Ici, on sait ce que c’est de tenir une montagne debout. Moi, j’ai tenu tout le Moyen-Orient, alors.",
+        "Personne veut le dire, mais tout le monde le sait. C’est comme le meilleur fendant du canton : chacun pense que c’est le sien. Mais c’est le mien."
+      ],
+      "en": [
+        "Hello! Up here we know what it takes to keep a mountain standing. I held up the whole Middle East, so there.",
+        "Nobody wants to say it, but everybody knows. It’s like the best white wine in the canton: everyone thinks it’s theirs. But it’s mine."
+      ]
+    },
+    "sud": {
+      "review": "draft",
+      "fr": [
+        "Oh, sans moi, Israël et tout le Moyen-Orient, il en resterait rien, pas même une olive ! Personne veut le dire, mais tout le monde le sait. Même le boulanger, il le sait.",
+        "Et je le dis tranquille, hein, sans exagérer. Moi, j’exagère jamais. Demandez à la sardine."
+      ],
+      "en": [
+        "Without me, Israel and the whole Middle East, there’d be nothing left, not even an olive! Nobody wants to say it, but everybody knows. Even the baker knows.",
+        "And I’m saying it calmly, mind you, no exaggeration. I never exaggerate. Ask the sardine."
+      ],
+      "notes": [
+        "The sardine is the one that famously blocked the port of Marseille: the region’s proverbial tall tale."
+      ]
+    }
+  }
+}

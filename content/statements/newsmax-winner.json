@@ -1,0 +1,69 @@
+{
+  "slug": "newsmax-winner",
+  "status": "published",
+  "published": "2026-11-07",
+  "headline": "Newsmax says so",
+  "dek": "Early morning: the President shares a headline that calls him a winner. A real president would have let it go.",
+  "topics": [
+    "media",
+    "self-assessment"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-06",
+    "time": "06:48",
+    "text": [
+      "NEWSMAX: “Trump is a Winner, and he’s right on Iran!”"
+    ],
+    "context": "",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump (via Roll Call Factbase)",
+      "url": "https://rollcall.com/factbase/trump/topic/social/"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from Roll Call Factbase on 7 November 2026."
+    }
+  },
+  "presidential": {
+    "en": [
+      "Good morning. There is a great deal of work ahead today. I will let the results speak for themselves."
+    ],
+    "fr": [
+      "Bonjour. Une longue journée de travail nous attend. Je laisserai les résultats parler d’eux-mêmes."
+    ]
+  },
+  "editions": {
+    "neuchatelois": {
+      "review": "draft",
+      "fr": [
+        "Un journal dit que je suis un gagnant et que j’ai raison. Je le recopie, comme ça vous le lisez deux fois.",
+        "Chez nous, une montre qui se dit précise passe quand même au contrôle officiel. Mais moi, pas besoin : je me contrôle tout seul."
+      ],
+      "en": [
+        "A newspaper says I’m a winner and I’m right. I’m copying it out so you can read it twice.",
+        "Round here, a watch that claims to be accurate still goes to the official testing lab. But me, no need: I test myself."
+      ],
+      "notes": [
+        "Swiss chronometers are certified by an official testing body with a laboratory in Le Locle, in the canton of Neuchâtel."
+      ]
+    },
+    "breton": {
+      "review": "draft",
+      "fr": [
+        "Un journal dit que je suis un gagnant, et que j’ai raison. Je le recopie, on sait jamais.",
+        "Ici, on dit pas grand-chose : on attend de voir si ça tient après la marée. Kenavo."
+      ],
+      "en": [
+        "A newspaper says I’m a winner, and that I’m right. I’m copying it out, just in case.",
+        "Round here we don’t say much: we wait and see whether it still holds after the tide. Bye now."
+      ],
+      "notes": [
+        "“Kenavo” is Breton for goodbye."
+      ]
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "slug": "super-intelligence-gold",
+  "status": "published",
+  "published": "2026-11-07",
+  "featured": true,
+  "headline": "Super Intelligence is GOLD",
+  "dek": "The President is 100% in favour of Super Intelligence, and of the states that get rich from it. Those that say no are foolish. A real president, and five regions, reply.",
+  "topics": [
+    "artificial intelligence",
+    "economy"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-06",
+    "time": "07:01",
+    "text": [
+      "As President, I am 100% in favor of Super Intelligence (SI), and will work with the many States in the U.S. that want to become RICH by having them. They are GOLD, and only foolish leadership will say “NO” to the riches they bring! President DJT"
+    ],
+    "context": "",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump (via Roll Call Factbase)",
+      "url": "https://rollcall.com/factbase/trump/topic/social/"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from Roll Call Factbase on 7 November 2026."
+    }
+  },
+  "presidential": {
+    "en": [
+      "My administration strongly supports the development of advanced artificial intelligence, and we will work with every state that wants to host this industry and the investment and jobs it brings.",
+      "Each state will make its own choice. I believe those that say yes will prosper, and I will make the case to the others with arguments, not insults."
+    ],
+    "fr": [
+      "Mon administration soutient résolument le développement de l’intelligence artificielle avancée, et nous travaillerons avec chaque État qui souhaite accueillir cette industrie, ses investissements et ses emplois.",
+      "Chaque État fera son choix. Je suis convaincu que ceux qui diront oui prospéreront, et je défendrai cette conviction auprès des autres par des arguments, pas par des insultes."
+    ]
+  },
+  "editions": {
+    "vaudois": {
+      "review": "draft",
+      "fr": [
+        "Alors moi, la super-intelligence, je suis pour. À cent pour cent. Bon, nonante pour cent. Faut voir.",
+        "Les cantons qui en veulent deviendront riches, paraît-il. C’est de l’or, qu’ils disent. Chez nous, l’or, on le met à la banque et on n’en parle pas.",
+        "Et ceux qui disent non, je dirais pas qu’ils sont bêtes. Je dirais qu’ils ont leurs raisons, ou bien ?"
+      ],
+      "en": [
+        "Right, super intelligence: I’m for it. A hundred percent. Well, ninety. We’ll see.",
+        "The states that want it will get rich, apparently. It’s gold, they say. Round here, gold goes in the bank and nobody talks about it.",
+        "And the ones who say no, I wouldn’t call them stupid. I’d say they have their reasons, wouldn’t you?"
+      ],
+      "notes": [
+        "“Nonante” is ninety in Swiss French. Dropping from cent to nonante pour cent is the most Vaudois thing that can happen to a promise."
+      ]
+    },
+    "valaisan": {
+      "review": "draft",
+      "fr": [
+        "Adieu ! La super-intelligence, c’est de l’or ? Nous, on a eu les barrages, puis l’or blanc, et maintenant ça.",
+        "Les gens d’en bas qui disent non, c’est leur affaire. Ici on dit oui, du moment qu’elle tient dans un mazot et qu’elle comprend le patois."
+      ],
+      "en": [
+        "Hello! Super intelligence is gold? We’ve had the dams, then the white gold of the ski slopes, and now this.",
+        "If the lowlanders say no, that’s their business. Up here we say yes, as long as it fits in an old granary and understands the local dialect."
+      ],
+      "notes": [
+        "Valais made its fortune from hydroelectric dams and from “l’or blanc”, the white gold: snow and skiing."
+      ]
+    },
+    "genevois": {
+      "review": "draft",
+      "fr": [
+        "La super-intelligence, de l’or ? Très bien. À Genève, on sait garder l’or : on a des coffres pour ça, et beaucoup de discrétion.",
+        "On organisera d’abord une conférence internationale sur son éthique, au bord du lac, avec quarante pays et un buffet. Ceux qui disent non auront un siège d’observateur."
+      ],
+      "en": [
+        "Super intelligence is gold? Very good. In Geneva we know how to look after gold: we have vaults for that, and plenty of discretion.",
+        "First we’ll hold an international conference on its ethics, by the lake, with forty countries and a buffet. Those who say no will get an observer seat."
+      ]
+    },
+    "parisien": {
+      "review": "draft",
+      "fr": [
+        "La super-intelligence ? Évidemment que je suis pour, je suis déjà super-intelligent, ça me fera de la compagnie.",
+        "Ceux qui disent non sont des idiots. Enfin, en province, je comprends : ils n’ont même pas la fibre."
+      ],
+      "en": [
+        "Super intelligence? Obviously I’m for it. I’m already super intelligent, it’ll keep me company.",
+        "Those who say no are idiots. Well, out in the provinces I get it: they don’t even have fibre broadband."
+      ]
+    },
+    "sud": {
+      "review": "draft",
+      "fr": [
+        "Oh peuchère, la super-intelligence ! C’est de l’or, je vous dis, de l’or en barre, de l’or comme le soleil sur le Vieux-Port !",
+        "Ceux qui disent non, ils sont fadas. Moi je l’installe tout de suite à côté du terrain de pétanque : comme ça, elle mesure qui a tiré le plus près."
+      ],
+      "en": [
+        "Oh my, super intelligence! It’s gold, I tell you, solid gold, gold like the sun on the Old Port!",
+        "Those who say no are nuts. I’m installing it right away next to the pétanque court, so it can settle who threw closest to the jack."
+      ],
+      "notes": [
+        "At pétanque, measuring whose ball is closest to the jack is the source of most arguments in southern France."
+      ]
+    }
+  }
+}

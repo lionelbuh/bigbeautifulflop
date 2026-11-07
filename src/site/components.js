@@ -18,6 +18,13 @@ function shortDate(iso) {
   return `${d} ${SHORT_MONTHS[m - 1]} ${y}`;
 }
 
+/** "13:51" → "1:51 PM ET" (times are entered in US Eastern time, as published). */
+function clock(time) {
+  if (!time) return '';
+  const [h, m] = time.split(':').map(Number);
+  return ` · ${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'} ET`;
+}
+
 const initials = (name) => name.replace(/\b[A-Z]\.\s*/g, '').split(/\s+/).map((w) => w[0]).join('').slice(0, 2);
 
 /** The post card shared by all versions. */
@@ -43,7 +50,7 @@ export function originalPost(s) {
     variant: 'original',
     avatar: `<span class="avatar avatar--original" aria-hidden="true">${e(initials(o.speaker))}</span>`,
     name: e(o.speaker),
-    meta: `${o.handle ? `${e(o.handle)} · ` : ''}${e(o.channel || o.medium)} · <time datetime="${o.date}">${shortDate(o.date)}</time>`,
+    meta: `${o.handle ? `${e(o.handle)} · ` : ''}${e(o.channel || o.medium)} · <time datetime="${o.date}">${shortDate(o.date)}${clock(o.time)}</time>`,
     badge: 'Original',
     body: `<blockquote cite="${e(o.source.url || '')}">${paras(o.text)}</blockquote>`,
     footer: `Source: ${source}${check}`,
