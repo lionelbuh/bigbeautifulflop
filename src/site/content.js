@@ -62,6 +62,11 @@ export function editionsFor(statement, countryId) {
   }));
 }
 
+/**
+ * Slide 1 of the front page: the newest statement, unless the editor marked another one of the same
+ * (newest) day as `featured`. An older featured statement never stays ahead of newer posts.
+ */
 export function leadStatement(statements) {
-  return statements.find((s) => s.featured) || statements[0];
+  const newest = statements[0];
+  return statements.find((s) => s.featured && s.original.date === newest?.original.date) || newest;
 }

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { mkdtempSync, readFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { loadStatements, validateStatement, splitLatest } from '../src/site/content.js';
+import { loadStatements, validateStatement, splitLatest, leadStatement } from '../src/site/content.js';
 import { REGIONS } from '../content/regions.js';
 import { dayNumber, editionIndex } from '../src/site/rotation.js';
 
@@ -39,6 +39,13 @@ describe('front page', () => {
     const { recent, archived } = splitLatest(list);
     expect(recent.map((s) => s.slug)).toEqual(['s0', 's1', 's2', 's3', 's4']);
     expect(archived).toHaveLength(2);
+  });
+
+  it('puts the newest post first; a featured post leads only on the newest day', () => {
+    const mk = (slug, date, featured = false) => ({ slug, featured, original: { date } });
+    const yesterday = mk('old-featured', '2026-11-06', true);
+    expect(leadStatement([mk('new', '2026-11-07'), yesterday]).slug).toBe('new');
+    expect(leadStatement([mk('new', '2026-11-06'), yesterday]).slug).toBe('old-featured');
   });
 });
 
