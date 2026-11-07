@@ -116,10 +116,9 @@ export function thread(s, { day, regions = true, first = null } = {}) {
   const rest = list.filter((r) => r !== lead);
   return `<div class="thread">
   ${originalPost(s)}
-  ${lead ? `<p class="thread-step">${e(lead.name)}, the satirical version</p>${regionalPost(s, lead)}` : ''}
   <p class="thread-step">The presidential version</p>
   ${presidentialPost(s)}
-  ${rest.length ? `<p class="thread-step">Around the world</p>${rest.map((r) => regionalPost(s, r)).join('')}` : ''}
+  ${lead ? `<p class="thread-step">Around the world</p>${[lead, ...rest].map((r) => regionalPost(s, r)).join('')}` : ''}
 </div>`;
 }
 
