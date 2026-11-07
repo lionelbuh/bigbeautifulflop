@@ -40,7 +40,7 @@
   },
   "editions": {
     "valaisan": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Adieu ! Ici, on sait ce que c’est de tenir une montagne debout. Moi, j’ai tenu tout le Moyen-Orient, alors.",
         "Personne veut le dire, mais tout le monde le sait. C’est comme le meilleur fendant du canton : chacun pense que c’est le sien. Mais c’est le mien."
@@ -51,7 +51,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Oh, sans moi, Israël et tout le Moyen-Orient, il en resterait rien, pas même une olive ! Personne veut le dire, mais tout le monde le sait. Même le boulanger, il le sait.",
         "Et je le dis tranquille, hein, sans exagérer. Moi, j’exagère jamais. Demandez à la sardine."
@@ -65,7 +65,7 @@
       ]
     },
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Bon. Sans moi, y aurait plus d’Israël ni de Moyen-Orient. C’est pas moi qui le dis, c’est… enfin si, c’est moi.",
         "Personne veut le dire ? Ici non plus, remarquez. Chez nous, on dit jamais rien de trop. Faut voir."
@@ -76,7 +76,7 @@
       ]
     },
     "genevois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "À Genève, on a négocié sur le nucléaire iranien pendant des années, dans des hôtels au bord du lac, avec beaucoup de café.",
         "Mais apparemment, c’est lui tout seul. Bon. On lui enverra la facture des cafés."
@@ -90,7 +90,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Sans moi, le Moyen-Orient n’existerait plus. Voilà.",
         "Personne ne veut le dire, parce que tout le monde est jaloux. Même les pigeons du Trocadéro le savent."
@@ -101,7 +101,7 @@
       ]
     },
     "breton": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Sans moi, il resterait plus rien du Moyen-Orient. Bon.",
         "Ici, on dirait juste : il a fait ce qu’il avait à faire, et on rentre avant la pluie. Mais lui, il préfère le dire en majuscules."

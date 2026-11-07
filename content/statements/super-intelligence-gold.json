@@ -41,7 +41,7 @@
   },
   "editions": {
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Alors moi, la super-intelligence, je suis pour. À cent pour cent. Bon, nonante pour cent. Faut voir.",
         "Les cantons qui en veulent deviendront riches, paraît-il. C’est de l’or, qu’ils disent. Chez nous, l’or, on le met à la banque et on n’en parle pas.",
@@ -57,7 +57,7 @@
       ]
     },
     "valaisan": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Adieu ! La super-intelligence, c’est de l’or ? Nous, on a eu les barrages, puis l’or blanc, et maintenant ça.",
         "Les gens d’en bas qui disent non, c’est leur affaire. Ici on dit oui, du moment qu’elle tient dans un mazot et qu’elle comprend le patois."
@@ -71,7 +71,7 @@
       ]
     },
     "genevois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "La super-intelligence, de l’or ? Très bien. À Genève, on sait garder l’or : on a des coffres pour ça, et beaucoup de discrétion.",
         "On organisera d’abord une conférence internationale sur son éthique, au bord du lac, avec quarante pays et un buffet. Ceux qui disent non auront un siège d’observateur."
@@ -82,7 +82,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "La super-intelligence ? Évidemment que je suis pour, je suis déjà super-intelligent, ça me fera de la compagnie.",
         "Ceux qui disent non sont des idiots. Enfin, en province, je comprends : ils n’ont même pas la fibre."
@@ -93,7 +93,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Oh peuchère, la super-intelligence ! C’est de l’or, je vous dis, de l’or en barre, de l’or comme le soleil sur le Vieux-Port !",
         "Ceux qui disent non, ils sont fadas. Moi je l’installe tout de suite à côté du terrain de pétanque : comme ça, elle mesure qui a tiré le plus près."

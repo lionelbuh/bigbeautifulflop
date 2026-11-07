@@ -42,7 +42,7 @@
   },
   "editions": {
     "fribourgeois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Salut les gaillards ! Joe, c’est un des nôtres depuis le début. Il a été chef du parti en Floride, et à Sarasota il m’a nommé homme d’État de l’année. Deux fois ! Le seul à l’avoir eu deux fois, c’est moi.",
         "À la Bénichon, celui qui te ressert de la cuchaule, tu le gardes. Votez Joe."
@@ -56,7 +56,7 @@
       ]
     },
     "lyonnais": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Joe Gruters, c’est un gone fidèle : là depuis le début, toujours. Il m’a nommé homme d’État de l’année deux fois. Le seul à l’avoir eu deux fois, c’est moi, notez-le.",
         "Alors Joe, pour moi, c’est comme un bouchon qui ne change jamais sa carte : on y retourne les yeux fermés."
@@ -67,7 +67,7 @@
       ]
     },
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Joe, c’est un bon. Il est là depuis le début, il a gagné la Floride, et il m’a nommé homme d’État de l’année deux fois. Deux fois, hein.",
         "Moi je dis rien, mais ça joue. Votez Joe, ou bien ?"
@@ -78,7 +78,7 @@
       ]
     },
     "genevois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Joe Gruters brigue un nouveau mandat. À Genève, on appellerait ça une reconduction tacite.",
         "Avec une lettre de recommandation de trois pages, dont deux sur l’auteur de la lettre."
@@ -89,7 +89,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Joe m’a élu homme d’État de l’année. Deux fois. Évidemment que je le soutiens, je suis pas un ingrat.",
         "Ça s’appelle un renvoi d’ascenseur. À Paris, on connaît bien : on a beaucoup d’ascenseurs, et ils marchent rarement."
@@ -103,7 +103,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Joe, c’est le meilleur président de parti de l’histoire de l’humanité ! Il m’a élu homme d’État deux fois, deux !",
         "S’il y avait un trophée de pétanque, il me le donnerait aussi. Et il aurait raison."

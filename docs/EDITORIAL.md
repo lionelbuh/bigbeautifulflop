@@ -30,7 +30,8 @@
 
 Statuses: `draft` → `review` → `approved` → `published`. Only `published` statements are built.
 
-On the mockup, the samples show two visible flags that disappear once the work is done:
+The owner's “OK” in the conversation approves a statement and all its versions (`review: "approved"`);
+corrections from local readers are welcome afterwards. On the pages, two flags show that disappear once the work is done:
 “Wording to be checked against the source before launch” (until `verification.status` is `verified`)
 and “Draft: awaiting review by a local speaker” (until the edition’s `review` is `approved`).
 

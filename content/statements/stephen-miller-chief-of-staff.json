@@ -40,7 +40,7 @@
   },
   "editions": {
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Bon, petit changement à la maison. Stephen, qui était sous-chef, passe chef dès lundi. Susie va s’occuper du parti. Elle a fait du bon boulot, hein, faut le dire.",
         "Stephen chef, c’est une bonne idée ? Faut voir. Mais on a déjà commandé la nouvelle plaque pour la porte, alors ça joue."
@@ -51,7 +51,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Annonce rapide, j’ai un déjeuner. Stephen Miller passe directeur de cabinet lundi. Susie rejoint le parti : on appelle ça une promotion, tout le monde a compris.",
         "Merci Susie, vraiment, t’as été top. Pot de départ jeudi, chacun apporte ses chips."
@@ -62,7 +62,7 @@
       ]
     },
     "genevois": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Petit remaniement, rien de grave. À Genève, on change de chef de cabinet plus souvent que de banquier, et beaucoup moins souvent que d’avis.",
         "Stephen monte d’un étage. Susie part au parti, avec nos remerciements et une belle montre."
@@ -73,7 +73,7 @@
       ]
     },
     "valaisan": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Adieu ! Changement à la cabane : dès lundi, Stephen passe devant, comme le guide dans la montée.",
         "Susie redescend s’occuper du parti. Elle a bien tenu la corde, on la remercie."
@@ -84,7 +84,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Fan de chichourle, quel chef de cabinet ! Le meilleur de l’histoire, peut-être même de l’univers.",
         "Et Susie, une championne, elle part au parti. On lui fera une bouillabaisse d’adieu, avec tout le Vieux-Port."
@@ -95,7 +95,7 @@
       ]
     },
     "chti": {
-      "review": "draft",
+      "review": "approved",
       "fr": [
         "Eh biloute, Stephen i’ devient chef lundi ! Susie, elle part au parti, mais elle a fait du bon boulot, hein.",
         "Pour fêter ça : frites pour tout l’monde à la baraque."
