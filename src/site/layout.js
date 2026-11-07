@@ -1,5 +1,6 @@
 /** Page shell: <head>, masthead, footer. */
 import { e } from './html.js';
+import { logoFlop } from './logo.js';
 
 export const SITE_NAME = 'Big Beautiful Flop';
 export const SITE_URL = 'https://bigbeautifulflop.com';
@@ -36,11 +37,8 @@ export const NAV = [
   { id: 'about', label: 'About', path: '/about/' },
 ];
 
-/** A speech bubble with a red squiggle: something said, then translated. */
-export const BRAND_MARK = `<svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
-  <path d="M6 6h28a3 3 0 0 1 3 3v17a3 3 0 0 1-3 3H17l-8 7v-7H6a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
-  <path d="M10 18.5c2.5-4 5-4 7.5 0s5 4 7.5 0 4.2-3.4 5.5-1" fill="none" stroke="#b3121a" stroke-width="2.6" stroke-linecap="round"/>
-</svg>`;
+/** The masthead logo: the F of Flop, tipping over (see logo.js). */
+export const BRAND_MARK = logoFlop({ attrs: ' class="brand-mark" aria-hidden="true" focusable="false"' });
 
 const FLAGS = {
   ch: '<svg class="flag" viewBox="0 0 32 32" aria-hidden="true"><path fill="#d52b1e" d="M0 0h32v32H0z"/><path fill="#fff" d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z"/></svg>',
@@ -93,7 +91,8 @@ export function renderHead({
     <meta name="twitter:description" content="${e(description)}" />
     <meta name="twitter:image" content="${img}" />
     <meta name="theme-color" content="#f6f2ea" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="${SITE_NAME}" href="/feed.xml" />

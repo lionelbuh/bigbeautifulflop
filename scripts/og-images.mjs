@@ -5,16 +5,18 @@
  *   npm run images     after adding or changing a statement
  *
  * Writes public/og/default.png, public/og/<slug>.png (one per published statement), and
- * public/apple-touch-icon.png, public/icon-192.png, public/icon-512.png. Images of statements that no
+ * public/apple-touch-icon.png, public/icon-192.png, public/icon-512.png and the tab icons
+ * public/favicon-32.png and public/favicon-48.png. Images of statements that no
  * longer exist are removed.
  */
 import { createRequire } from 'node:module';
-import { mkdtempSync, writeFileSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadStatements } from '../src/site/content.js';
 import { escapeHtml as e, truncate } from '../src/site/html.js';
+import { logoFlop, logoTile } from '../src/site/logo.js';
 
 // Playwright is a development tool, installed on the editor's machine (not needed by the deploy).
 const { chromium } = createRequire(import.meta.url)('playwright');
@@ -22,7 +24,7 @@ const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ogDir = path.join(root, 'public/og');
 const font = (f) => pathToFileURL(path.join(root, 'node_modules/@fontsource-variable/fraunces/files', f)).href;
-const MARK = readFileSync(path.join(root, 'public/favicon.svg'), 'utf8');
+const MARK = logoFlop({ font: 'F' });
 
 const BASE = `<style>
 @font-face { font-family: F; src: url('${font('fraunces-latin-opsz-normal.woff2')}'); font-weight: 100 900; }
@@ -59,7 +61,8 @@ const defaultCard = `${BASE}<div class="frame">${brand}
   <p class="foot"><span>Lost in translation. Found in reality.</span><span>bigbeautifulflop.com</span></p>
 </div>`;
 
-const icon = (size) => `<style>*{margin:0}body{width:${size}px;height:${size}px;background:#f6f2ea;display:grid;place-items:center}svg{width:${Math.round(size * 0.78)}px;height:${Math.round(size * 0.78)}px}</style>${MARK.replace('<rect width="40" height="40" rx="6" fill="#f6f2ea"/>', '')}`;
+// app icons fill the square (phones round the corners); tab icons are a rounded tile on a transparent background
+const icon = (size, { square = true } = {}) => `<style>*{margin:0}html,body{width:${size}px;height:${size}px;background:transparent}svg{display:block;width:${size}px;height:${size}px}</style>${logoTile({ font: 'F', square })}`;
 
 const statements = loadStatements(path.join(root, 'content/statements'));
 mkdirSync(ogDir, { recursive: true });
@@ -74,13 +77,15 @@ async function shot(html, file, size) {
   writeFileSync(tmp, `<!doctype html><meta charset="utf-8">${html}`);
   await page.goto(pathToFileURL(tmp).href, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({ path: file, type: 'png' });
+  await page.screenshot({ path: file, type: 'png', omitBackground: true });
 }
 await shot(defaultCard, path.join(ogDir, 'default.png'));
 for (const s of statements) await shot(statementCard(s), path.join(ogDir, `${s.slug}.png`));
 await shot(icon(180), path.join(root, 'public/apple-touch-icon.png'), 180);
 await shot(icon(192), path.join(root, 'public/icon-192.png'), 192);
 await shot(icon(512), path.join(root, 'public/icon-512.png'), 512);
+await shot(icon(48, { square: false }), path.join(root, 'public/favicon-48.png'), 48);
+await shot(icon(32, { square: false }), path.join(root, 'public/favicon-32.png'), 32);
 await browser.close();
 rmSync(work, { recursive: true, force: true });
 
