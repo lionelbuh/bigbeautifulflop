@@ -306,6 +306,8 @@ function about() {
   return `${sectionHead('About', 'An independent satirical publication', TAGLINE)}
   <div class="prose">
     <p>Big Beautiful Flop takes public statements by Donald Trump and shows them three ways: the original, word for word; the same message as a measured, statesmanlike president would put it; and the way people around the world would actually say it.</p>
+    <h2>Who’s behind this</h2>
+    <p>Big Beautiful Flop is made by a Swiss-American living in California: Swiss enough to believe every disagreement can be settled over a fondue, American enough to care how the President talks. As a neutral country, Switzerland has spent centuries translating between quarrelling powers; this is our modest contribution to that tradition. We are not neutral about manners. We are neutral about fondue: moitié-moitié or pure Gruyère, both are welcome.</p>
     <h2>Our rules</h2>
     <ul>
       <li><strong>The original is quoted verbatim</strong>, dated and sourced. No source, no statement.</li>
