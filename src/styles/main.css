@@ -825,13 +825,27 @@ h3 {
   font-variant-numeric: tabular-nums;
   color: var(--ink-soft);
 }
+/* phones: the same tabs, with their titles, in a strip that scrolls sideways */
 @media (max-width: 600px) {
-  .carousel-name {
+  .carousel-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 0 -20px;
+    padding: 0 20px 4px;
+    scroll-padding: 0 20px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .carousel-tabs::-webkit-scrollbar {
     display: none;
   }
+  .carousel-tabs li {
+    flex: 0 0 132px;
+    scroll-snap-align: start;
+  }
   .carousel-tab {
-    align-items: center;
-    padding: 10px 4px;
+    min-height: 84px;
   }
 }
 

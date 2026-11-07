@@ -32,6 +32,10 @@ for (const box of document.querySelectorAll('[data-carousel]')) {
     index = (i + slides.length) % slides.length;
     slides.forEach((s, j) => s.toggleAttribute('data-inactive', j !== index));
     tabs.forEach((t, j) => t.setAttribute('aria-current', String(j === index)));
+    // phones: slide the strip of tabs so the current one is visible (never scrolls the page itself)
+    const strip = tabs[index].closest('.carousel-tabs');
+    const li = tabs[index].parentElement;
+    if (strip && strip.scrollWidth > strip.clientWidth) strip.scrollLeft = Math.max(0, li.offsetLeft - strip.offsetLeft - 20);
     if (pos) pos.textContent = `${index + 1} / ${slides.length}`;
     if (scroll) box.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
