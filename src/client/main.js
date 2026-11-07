@@ -81,25 +81,30 @@ for (const cal of document.querySelectorAll('[data-cal]')) {
 for (const box of document.querySelectorAll('[data-tabs]')) {
   const tabs = [...box.querySelectorAll('[role="tab"]')];
   if (!tabs.length) continue;
-  const select = (tab, { focus = false } = {}) => {
+  // the same tabs appear twice (above and below the versions): select by panel
+  const select = (tab, { focus = false, scroll = false } = {}) => {
+    const panelId = tab.getAttribute('aria-controls');
     for (const t of tabs) {
-      const on = t === tab;
+      const on = t.getAttribute('aria-controls') === panelId;
       t.setAttribute('aria-selected', String(on));
       t.tabIndex = on ? 0 : -1;
       document.getElementById(t.getAttribute('aria-controls'))?.toggleAttribute('data-inactive', !on);
     }
     if (focus) tab.focus();
+    // chosen from the bottom row: bring the start of the section into view
+    if (scroll) box.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
   box.addEventListener('click', (event) => {
     const tab = event.target.closest('[role="tab"]');
-    if (tab && tabs.includes(tab)) select(tab);
+    if (tab && tabs.includes(tab)) select(tab, { scroll: Boolean(tab.closest('.sections-tabs--bottom')) });
   });
   box.addEventListener('keydown', (event) => {
-    const i = tabs.indexOf(document.activeElement);
+    const row = [...(document.activeElement?.closest('.sections-tabs')?.querySelectorAll('[role="tab"]') || [])];
+    const i = row.indexOf(document.activeElement);
     if (i < 0) return;
-    const keys = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+    const keys = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: row.length - 1 };
     if (!(event.key in keys)) return;
     event.preventDefault();
-    select(tabs[(keys[event.key] + tabs.length) % tabs.length], { focus: true });
+    select(row[(keys[event.key] + row.length) % row.length], { focus: true });
   });
 }

@@ -54,6 +54,13 @@ The front page shows the latest five statements as a carousel (lead first, then 
 (`original.time`, US Eastern, e.g. `"13:51"`). Every statement is also in `/archives/`, with a calendar
 and one page per day (`/archives/YYYY-MM-DD/`). `featured: true` picks the lead among the latest five.
 
+## Times of posts
+
+Truth Social shows the time of a post in the reader’s own time zone (and “4h” for recent posts). The
+editor reads it in California, so pasted times are **Pacific time**; they are stored in **Eastern time**
+(`original.time`, add 3 hours), the time zone of Washington. For “4h”, count back from the time of
+pasting. Hovering over the time on Truth Social shows the exact date and time.
+
 ## Adding statements by hand
 
 The editor copies the post (text, date, time, link) from Truth Social or Roll Call Factbase and pastes
@@ -69,7 +76,7 @@ Every statement can be retold in four sections (regions in `content/regions.js`,
 | Switzerland & France | Vaudois, Valaisan, Genevois, Fribourgeois, Neuchâtelois; Parisien, Sud, Ch’ti, Lyonnais, Breton | French | “English version”: an adaptation that keeps the joke |
 | United States | New York, Texas, Deep South, California, Boston, Midwest | American English | “In plain English”: for international readers |
 | United Kingdom | London, Liverpool, Manchester, Yorkshire, Scotland, Wales | British English | “In plain English” |
-| The Diplomat | The American President (`presidential`), the British Diplomat, the French Diplomat, the Swiss President | English (+ French for the American and Swiss presidents); French for the French Diplomat | British Diplomat: “What he really means”; French Diplomat: “English version” |
+| The Diplomat | The American President (`presidential`), the British Diplomat, the French Diplomat, the Swiss President | English (+ a French version for the American President, the French Diplomat and the Swiss President) | British Diplomat: “What he really means” |
 
 In a statement file, a version is `editions.<region>`: `text` (the version itself), `en` (its English
 adaptation), optional `fr` (a French version of an English text) and `notes` (“Lost in translation”).

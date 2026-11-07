@@ -120,14 +120,19 @@ export function regionsInOrder(s, day, countries = ['switzerland', 'france'], { 
   const groups = [];
   for (const country of countries) {
     const list = editionsFor(s, country).map((x) => x.region);
-    const i = editionIndex(list.length, day);
+    // the statesmen keep a fixed order; the regions take turns opening their country
+    const i = country === 'diplomat' ? Math.min(0, list.length - 1) : editionIndex(list.length, day);
     if (i >= 0) groups.push([list[i], ...list.filter((_, j) => j !== i)]);
     list.forEach((r, j) => (j === i ? first : rest).push(r));
   }
   return grouped ? groups.flat() : [...first, ...rest];
 }
 
-/** The four editorial sections of a statement as tabs (only those with versions). */
+/**
+ * The four editorial sections of a statement as tabs. All four are always shown; a section without
+ * versions yet is greyed out ("coming soon"). The same tabs are repeated below the versions, so
+ * readers can switch section without scrolling back up.
+ */
 function sectionTabs(s, { day, first, idPrefix }) {
   const sections = CATEGORIES.map((cat) => {
     // country by country; the region chosen to open the statement leads, with its country first
@@ -136,19 +141,26 @@ function sectionTabs(s, { day, first, idPrefix }) {
     let list = regionsInOrder(s, day, countries, { grouped: true });
     if (lead && list.includes(lead)) list = [lead, ...list.filter((r) => r !== lead)];
     return { cat, list };
-  }).filter((x) => x.list.length);
-  if (!sections.length) return '';
+  });
+  const open = sections.findIndex((x) => x.list.length);
+  if (open < 0) return '';
   const flags = (cat) => cat.flags.map((f) => flag(f)).join('');
-  const tabs = sections.map(({ cat, list }, i) => `<button type="button" role="tab" id="${idPrefix}-tab-${cat.id}" aria-controls="${idPrefix}-${cat.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="sections-flags">${flags(cat)}</span><span class="sections-name">${e(cat.name)}</span><span class="sections-count">${list.length}</span></button>`).join('');
-  const panels = sections.map(({ cat, list }, i) => `<section class="sections-panel" role="tabpanel" id="${idPrefix}-${cat.id}" aria-labelledby="${idPrefix}-tab-${cat.id}"${i ? ' data-inactive' : ''}>
+  const tabs = (where) => sections.map(({ cat, list }, i) => {
+    const inner = `<span class="sections-flags">${flags(cat)}</span><span class="sections-name">${e(cat.name)}</span>`;
+    if (!list.length) return `<span class="sections-tab sections-tab--soon" aria-disabled="true">${inner}<span class="sections-soon">Coming soon</span></span>`;
+    const id = `${idPrefix}-${where}-${cat.id}`;
+    return `<button type="button" role="tab" class="sections-tab" id="${id}" aria-controls="${idPrefix}-${cat.id}" aria-selected="${i === open}" tabindex="${i === open ? 0 : -1}">${inner}<span class="sections-count">${list.length}</span></button>`;
+  }).join('');
+  const panels = sections.filter((x) => x.list.length).map(({ cat, list }) => `<section class="sections-panel" role="tabpanel" id="${idPrefix}-${cat.id}" aria-labelledby="${idPrefix}-top-${cat.id}"${cat === sections[open].cat ? '' : ' data-inactive'}>
     <p class="thread-step sections-heading">${flags(cat)} ${e(cat.name)}</p>
     ${cat.id === 'diplomat' ? '<p class="sections-note">The American President is just above. Here, the other statesmen.</p>' : ''}
     ${list.map((r) => regionalPost(s, r)).join('')}
   </section>`).join('');
   return `<div class="sections" data-tabs>
   <p class="thread-step">Around the world</p>
-  <div class="sections-tabs" role="tablist" aria-label="Editorial sections">${tabs}</div>
+  <div class="sections-tabs" role="tablist" aria-label="Editorial sections">${tabs('top')}</div>
   ${panels}
+  <div class="sections-tabs sections-tabs--bottom" role="tablist" aria-label="Editorial sections, again">${tabs('bottom')}</div>
 </div>`;
 }
 
