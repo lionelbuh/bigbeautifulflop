@@ -1,11 +1,11 @@
 /**
  * Every version of a statement is shown as a post card, one under the other: the original, the
  * presidential version, then the regional ones. Light on purpose: no photo, no long explanations.
- * The English adaptation sits behind "Translate post", as on social networks.
+ * The English adaptation sits behind "English version".
  */
 import { e, paras, formatDate, frenchSpacing } from './html.js';
 import { chip } from './layout.js';
-import { REGIONS } from '../../content/regions.js';
+import { REGIONS, getCountry } from '../../content/regions.js';
 import { editionsFor } from './content.js';
 import { editionIndex } from './rotation.js';
 
@@ -36,7 +36,7 @@ function post({ variant, avatar, name, meta, badge, body, translate, footer, lan
     <span class="post-badge">${badge}</span>
   </header>
   <div class="post-text"${lang ? ` lang="${lang}"` : ''}>${body}</div>
-  ${translate ? `<details class="post-translate"><summary>Translate post</summary><div lang="en">${translate}</div></details>` : ''}
+  ${translate ? `<details class="post-translate"><summary>English version</summary><div lang="en">${translate}</div></details>` : ''}
   ${footer ? `<footer class="post-foot">${footer}</footer>` : ''}
 </article>`;
 }
@@ -73,7 +73,13 @@ export function presidentialPost(s) {
   });
 }
 
-/** One regional version, with its English adaptation behind "Translate post". */
+/** "Valaisan (Switzerland)", "Parisien (France)"; no country when the name already says it ("Sud de la France"). */
+function regionLabel(region) {
+  const country = getCountry(region.country).name;
+  return region.name.includes(country) ? e(region.name) : `${e(region.name)} <span class="post-country">(${e(country)})</span>`;
+}
+
+/** One regional version, with its English adaptation behind "English version". */
 export function regionalPost(s, region, { permalink = true, notes = false, english = false } = {}) {
   const ed = s.editions[region.id];
   const noteList = notes && ed.notes?.length
@@ -84,7 +90,7 @@ export function regionalPost(s, region, { permalink = true, notes = false, engli
   return post({
     variant: 'regional',
     avatar: `<span class="avatar avatar--regional" aria-hidden="true" style="--chip-a:${region.chip[0]};--chip-b:${region.chip[1]}"></span>`,
-    name: e(region.name),
+    name: regionLabel(region),
     meta: e(region.place),
     badge: 'Satire',
     lang: english ? 'en' : region.lang,

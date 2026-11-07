@@ -1018,3 +1018,7 @@ a.cal-day:focus-visible {
 .footer-contact {
   font-size: 0.85rem;
 }
+.post-country {
+  font-weight: 500;
+  color: var(--ink-faint);
+}
