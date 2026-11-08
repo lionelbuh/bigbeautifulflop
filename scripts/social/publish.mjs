@@ -111,12 +111,31 @@ const threads = {
     const me = await graphGet(THREADS, '/me?fields=id,username', env.THREADS_TOKEN);
     return `@${me.username}`;
   },
+  /** Media containers need a moment before they can be published. */
+  async waitReady(id) {
+    for (let i = 0; i < 20; i += 1) {
+      const { status } = await graphGet(THREADS, `/${id}?fields=status`, env.THREADS_TOKEN);
+      if (status === 'FINISHED') return;
+      if (status === 'ERROR' || status === 'EXPIRED') throw new Error(`Threads container ${status}`);
+      await sleep(3000);
+    }
+    throw new Error('Threads container not ready after 60 s');
+  },
   async publish(s) {
+    const posts = threadFor('threads', s);
+    // the first post carries image 1 of the carousel (Trump and the American President side by side);
+    // the last one, with the link, shows the article's preview card
+    const image = existsSync(path.join(root, 'public/social', s.slug, '01.jpg')) ? `${SITE_URL}/social/${s.slug}/01.jpg` : `${SITE_URL}/og/${s.slug}.png`;
     let first = null;
     let previous = null;
-    for (const text of threadFor('threads', s)) {
-      const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, { media_type: 'TEXT', text, ...(previous ? { reply_to_id: previous } : {}) });
-      await sleep(4000); // Threads asks for a short wait between creating and publishing
+    for (const [i, text] of posts.entries()) {
+      const form = { text, ...(previous ? { reply_to_id: previous } : {}) };
+      if (i === 0) Object.assign(form, { media_type: 'IMAGE', image_url: image });
+      else form.media_type = 'TEXT';
+      if (i === posts.length - 1) form.link_attachment = articleUrl(s);
+      const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, form);
+      if (i === 0) await this.waitReady(container.id);
+      else await sleep(4000); // Threads asks for a short wait between creating and publishing
       const post = await graphPost(THREADS, '/me/threads_publish', env.THREADS_TOKEN, { creation_id: container.id });
       previous = post.id;
       first = first || post.id;

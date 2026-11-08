@@ -118,7 +118,8 @@ used for the longest time. Earlier statements may have more versions (the first 
 ## Social networks
 
 After each deploy, `.github/workflows/social.yml` posts the **new** statements (published on or after
-`start` in `content/social/config.json`) on Bluesky and Threads (a thread of seven posts: Trump and the
+`start` in `content/social/config.json`) on Bluesky and Threads (a thread of seven posts; on Threads the first one shows image 1 of the carousel
+and the last one the link preview: Trump and the
 American President; one American or British satire; two Swiss and two French, one per post, in full in
 French with an English line when there is room; the link),
 Facebook (a post with the link) and Instagram (a carousel of six images in `public/social/<slug>/`, made
