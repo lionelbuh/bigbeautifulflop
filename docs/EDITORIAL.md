@@ -103,6 +103,10 @@ used for the longest time. Earlier statements may have more versions (the first 
   them in `notes`.
 - **The original stays apart.** It is the only quotation; every rewrite is labelled satire, and the
   diplomats’ versions are fictional interpretations, never real statements by real officials.
+- **Regional versions speak in the first person, as Trump himself**, as if he were Vaudois, Valaisan,
+  Texan, Mancunian…: the same message, in that person’s words and manners (“Ce soir, je passe à
+  60 Minutes…”), never a commentary about him (“Il passe à 60 Minutes…”). The diplomats are the
+  exception: they speak for themselves (a government, France, the Federal Council), in reply to him.
 - **Each version genuinely different.** Its own angle on the message, not the same joke with a new
   accent. Avoid recycled expressions across regions (and across statements).
 - **Authentic, not caricature.** Regional vocabulary and attitudes used naturally and sparingly; for
