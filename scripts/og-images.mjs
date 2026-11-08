@@ -93,6 +93,11 @@ h1 { font-family: F; font-weight: 500; font-size: 58px; line-height: 1.05; lette
 .local { font-family: F; font-size: 26px; line-height: 1.35; color: #57524a; margin-bottom: 12px; }
 .en { font-size: 15px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #1f3a5f; margin-bottom: 4px; }
 .foot { margin-top: auto; display: flex; justify-content: space-between; font-size: 21px; color: #57524a; }
+.n3 { gap: 20px; }
+.n3 .card { padding: 20px 26px; }
+.n3 .text { font-size: 28px; line-height: 1.36; }
+.n3 .local { font-size: 23px; }
+.n3 .head { margin-bottom: 10px; }
 .end { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 30px; }
 .end svg { width: 150px; height: 150px; }
 .end .big { font-family: F; font-size: 60px; line-height: 1.1; }
@@ -115,7 +120,7 @@ function cardHtml(c) {
 
 function slideHtml(s, cards, i, total) {
   const head = `<div class="top">${MARK}<span class="brand">Big Beautiful <i>Flop</i></span><span class="count">${i + 1} / ${total}</span></div>`;
-  return `${SLIDE_CSS}<div class="frame">${head}${i === 0 ? `<h1>${e(s.headline)}</h1>` : ''}${cards.map(cardHtml).join('')}
+  return `${SLIDE_CSS}<div class="frame${cards.length > 2 ? ' n3' : ''}">${head}${i === 0 ? `<h1>${e(s.headline)}</h1>` : ''}${cards.map(cardHtml).join('')}
     <p class="foot"><span>Independent satire · only the original is a quotation</span><span>bigbeautifulflop.com</span></p></div>`;
 }
 

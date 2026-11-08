@@ -48,20 +48,38 @@ export function leadSatire(s) {
 
 const quote = (t) => `“${t}”`;
 
-/** Bluesky and Threads: the posts of the thread (the link goes in the last one, and in the card). */
+/** Versions of one country, in the site's order. */
+const ofCountry = (s, country) => versionsOf(s).filter((v) => v.region.country === country);
+
+/** Several versions in one post, each given an equal share of the room left. */
+function grouped(title, list, max) {
+  const lines = list.map((v) => `${v.region.name}: `);
+  const room = Math.floor((max - chars(title) - list.length * 3 - lines.reduce((n, l) => n + chars(l), 0)) / list.length);
+  return `${title}${list.map((v, i) => `\n${lines[i]}${quote(excerpt(englishOf(v.region, v.edition), room))}`).join('')}`;
+}
+
+/**
+ * Bluesky and Threads: a thread of five posts. Trump and the American President side by side, one
+ * American or British satire, two Swiss, two French (all in English), then the link.
+ */
 export function threadPosts(s, max) {
   const url = articleUrl(s);
-  const head = `${s.headline}\n\nTrump on Truth Social:\n`;
-  const posts = [`${head}${quote(excerpt(s.original.text, max - chars(head) - 2))}`];
-  const pHead = 'How a statesmanlike American President would have said it (satire):\n';
-  posts.push(`${pHead}${quote(excerpt(s.presidential.en, max - chars(pHead) - 2))}`);
-  const lead = leadSatire(s);
-  if (lead) {
-    const lHead = `${regionLabel(lead.region)}, in English (satire):\n`;
-    posts.push(`${lHead}${quote(excerpt(englishOf(lead.region, lead.edition), max - chars(lHead) - 2))}`);
+  const head = `${s.headline}\n\nTrump on Truth Social: `;
+  const mid = '\n\nA statesmanlike American President (satire): ';
+  const room = max - chars(head) - chars(mid) - 4;
+  const trumpRoom = Math.floor(room * 0.55);
+  const posts = [`${head}${quote(excerpt(s.original.text, trumpRoom))}${mid}${quote(excerpt(s.presidential.en, room - trumpRoom))}`];
+  const anglo = [...ofCountry(s, 'united-states'), ...ofCountry(s, 'united-kingdom')][0];
+  if (anglo) {
+    const h = `${regionLabel(anglo.region)}, satire: `;
+    posts.push(`${h}${quote(excerpt(anglo.edition.text, max - chars(h) - 2))}`);
   }
+  const swiss = ofCountry(s, 'switzerland').slice(0, 2);
+  if (swiss.length) posts.push(grouped('🇨🇭 Switzerland, in English (satire):', swiss, max));
+  const french = ofCountry(s, 'france').slice(0, 2);
+  if (french.length) posts.push(grouped('🇫🇷 France, in English (satire):', french, max));
   const n = versionsOf(s).length + 1;
-  const last = `All ${n} versions, Swiss, French, American, British and diplomatic: ${url}\n\n${SATIRE_NOTE}`;
+  const last = `All ${n} versions, with three diplomats (British, French, Swiss): ${url}\n\n${SATIRE_NOTE}`;
   posts.push(chars(last) <= max ? last : `All ${n} versions: ${url}`);
   return posts;
 }
@@ -94,28 +112,28 @@ export function instagramCaption(s) {
 }
 
 /**
- * The cards of the Instagram carousel, two per image: the original and a satire, the American
- * President and a version, then the others two by two (10 images at most, the last one being the
- * closing card).
+ * The Instagram carousel, one image per group: Trump and the American President; the Swiss versions;
+ * the French; the American and British; the diplomats. (The closing image is added by the renderer.)
  */
 export function carouselCards(s) {
-  const versions = versionsOf(s);
-  const lead = leadSatire(s);
-  const others = versions.filter((v) => v.region.id !== lead?.region.id);
-  const card = ({ region, edition }) => ({
+  const card = ({ region, edition }, size) => ({
     kind: region.country === 'diplomat' ? 'diplomat' : 'satire',
     label: regionLabel(region),
-    text: excerpt(englishOf(region, edition), 300),
+    text: excerpt(englishOf(region, edition), size),
     local: region.lang.startsWith('fr') ? excerpt(edition.text, 170) : null,
     chip: region.chip,
   });
-  const cards = [
-    { kind: 'original', label: 'Donald J. Trump · Truth Social', text: excerpt(s.original.text, 420) },
-    ...(lead ? [card(lead)] : []),
-    { kind: 'presidential', label: 'The American President', text: excerpt(s.presidential.en, 360) },
-    ...others.map(card),
+  const groups = [
+    ofCountry(s, 'switzerland').slice(0, 2),
+    ofCountry(s, 'france').slice(0, 2),
+    [...ofCountry(s, 'united-states').slice(0, 2), ...ofCountry(s, 'united-kingdom').slice(0, 1)],
+    ofCountry(s, 'diplomat'),
+  ].filter((g) => g.length);
+  return [
+    [
+      { kind: 'original', label: 'Donald J. Trump · Truth Social', text: excerpt(s.original.text, 420) },
+      { kind: 'presidential', label: 'The American President', text: excerpt(s.presidential.en, 380) },
+    ],
+    ...groups.map((g) => g.map((v) => card(v, g.length > 2 ? 300 : 360))),
   ];
-  const slides = [];
-  for (let i = 0; i < cards.length && slides.length < 9; i += 2) slides.push(cards.slice(i, i + 2));
-  return slides;
 }
