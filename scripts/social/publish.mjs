@@ -5,6 +5,7 @@
  *   node scripts/social/publish.mjs --mode check      tests every key: which account it reaches; posts nothing
  *   node scripts/social/publish.mjs --mode preview    prints what would be posted; posts nothing
  *   node scripts/social/publish.mjs --mode publish    posts the new statements not posted yet
+ *   node scripts/social/publish.mjs --mode delete --slug <slug> --networks bluesky   deletes a post (and its log entry)
  *   options: --slug <slug> (one statement, even older than the start date), --networks bluesky,threads
  *
  * Only statements published on or after `start` (content/social/config.json) are posted automatically,
@@ -81,6 +82,25 @@ const bluesky = {
     });
     return up.blob;
   },
+  /** Deletes a thread of ours: the first post and every reply of the same account. */
+  async remove(entry) {
+    const session = await this.session();
+    const thread = await call(`https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=${encodeURIComponent(entry.id)}&depth=20`);
+    const uris = [];
+    const walk = (node) => {
+      if (!node?.post) return;
+      if (node.post.author?.did === session.did) uris.push(node.post.uri);
+      (node.replies || []).forEach(walk);
+    };
+    walk(thread.thread);
+    for (const uri of uris.reverse()) {
+      const rkey = uri.split('/').pop();
+      await call(`${session.pds}/xrpc/com.atproto.repo.deleteRecord`, {
+        method: 'POST', headers: { Authorization: `Bearer ${session.accessJwt}` }, json: { repo: session.did, collection: 'app.bsky.feed.post', rkey },
+      });
+    }
+    return `${uris.length} posts deleted`;
+  },
   /**
    * The first post carries image 1 of the carousel (Trump and the American President side by side);
    * the last one, with the link, the article's link card.
@@ -128,6 +148,11 @@ const threads = {
   async check() {
     const me = await graphGet(THREADS, '/me?fields=id,username', env.THREADS_TOKEN);
     return `@${me.username}`;
+  },
+  /** Deletes the first post of a thread (Meta requires the threads_delete permission). */
+  async remove(entry) {
+    await call(`${THREADS}/${entry.id}?access_token=${encodeURIComponent(env.THREADS_TOKEN)}`, { method: 'DELETE' });
+    return 'first post deleted (replies, if any remain, can be deleted in the app)';
   },
   /** Media containers need a moment before they can be published. */
   async waitReady(id) {
@@ -293,6 +318,31 @@ async function main() {
       } catch (err) {
         failed += 1;
         console.log(`${name}: FAILED ${err.message}`);
+      }
+    }
+    process.exitCode = failed ? 1 : 0;
+    return;
+  }
+
+  if (mode === 'delete') {
+    if (!slug) throw new Error('delete needs --slug');
+    for (const name of chosen) {
+      const entry = log[slug]?.[name];
+      if (!entry) {
+        console.log(`${slug} · ${name}: nothing logged, nothing to delete`);
+        continue;
+      }
+      if (!NETWORKS[name].remove) {
+        console.log(`${slug} · ${name}: deleting is not supported here, delete it in the app`);
+        continue;
+      }
+      try {
+        console.log(`${slug} · ${name}: ${await NETWORKS[name].remove(entry)}`);
+        delete log[slug][name];
+        writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
+      } catch (err) {
+        failed += 1;
+        console.log(`${slug} · ${name}: FAILED ${err.message}`);
       }
     }
     process.exitCode = failed ? 1 : 0;

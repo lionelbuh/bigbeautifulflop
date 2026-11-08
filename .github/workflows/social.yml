@@ -9,6 +9,7 @@ name: Social networks
 #   mode "check"   tests every key and shows which account it reaches; posts nothing
 #   mode "preview" shows the texts that would be posted; posts nothing
 #   mode "publish" posts (optionally one statement: slug; some networks: bluesky,threads,…)
+#   mode "delete"  deletes the posts of one statement (slug) and their log entries
 on:
   schedule:
     - cron: '17 16 * * 1' # Mondays: Threads key reminder only
@@ -19,11 +20,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'check, preview or publish'
+        description: 'check, preview, publish or delete (delete needs a slug)'
         required: true
         default: check
         type: choice
-        options: [check, preview, publish]
+        options: [check, preview, publish, delete]
       slug:
         description: 'One statement (its slug), optional'
         required: false
