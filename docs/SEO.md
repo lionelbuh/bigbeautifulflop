@@ -20,11 +20,15 @@
 
 ## To do once the domain bigbeautifulflop.com works
 
-1. **Google Search Console** (https://search.google.com/search-console): add the property
-   `https://bigbeautifulflop.com` → method “HTML tag” → copy the `content="…"` code into
-   `GOOGLE_SITE_VERIFICATION` in `src/site/layout.js` → publish → click “Verify”. Then **Sitemaps** →
-   enter `sitemap.xml` → Submit.
-   (Alternative: the “Domain” property with a DNS TXT record at the registrar, no code change.)
+1. **Google Search Console** (https://search.google.com/search-console). Two kinds of property:
+   - **Domain** (recommended, covers `www` and non-`www`): type `bigbeautifulflop.com` (no `https://`), add
+     the TXT record Google gives (`google-site-verification=…`, host `@`) at the registrar, click “Verify”.
+     No code change.
+   - **URL prefix**: type `https://bigbeautifulflop.com/`, method “HTML tag”, copy the `content="…"` code
+     into `GOOGLE_SITE_VERIFICATION` in `src/site/layout.js`, publish, click “Verify”.
+   Then **Sitemaps** → submit the sitemap. With a Domain property, give the **full URL**
+   `https://bigbeautifulflop.com/sitemap.xml` (just `sitemap.xml` is refused: “not a URL”); with a URL
+   prefix property, `sitemap.xml` is enough.
 2. **Bing Webmaster Tools** (https://www.bing.com/webmasters): “Import from Google Search Console” is
    the quickest; otherwise “HTML meta tag” → `BING_SITE_VERIFICATION`. Bing also feeds DuckDuckGo,
    Ecosia and Qwant.
