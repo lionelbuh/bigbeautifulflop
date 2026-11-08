@@ -153,6 +153,10 @@ const facebook = {
     // a page key answers /me with the page itself: only such a key can post
     const token = await this.pageToken();
     const me = await graphGet(GRAPH, '/me?fields=id,name', token);
+    if (this.pageId && String(me.id) === String(this.pageId)) {
+      const note = String(this.pageId) !== String(env.FACEBOOK_PAGE_ID) ? ` — FACEBOOK_PAGE_ID could be updated to the ID ending …${String(this.pageId).slice(-4)}` : '';
+      return `page “${this.pageName}” (page key ✓, can post${note})`;
+    }
     if (String(me.id) !== String(env.FACEBOOK_PAGE_ID)) {
       let perms = '';
       try {
@@ -181,8 +185,14 @@ const facebook = {
     // second way: the pages this (system) user manages
     try {
       const { data = [] } = await graphGet(GRAPH, '/me/accounts?fields=id,name,access_token', env.FACEBOOK_PAGE_TOKEN);
-      const match = data.find((p) => String(p.id) === String(env.FACEBOOK_PAGE_ID));
-      if (match?.access_token) return match.access_token;
+      // the page of the secret, or else the only page this key manages (e.g. FACEBOOK_PAGE_ID holds a
+      // profile number instead of the page's)
+      const match = data.find((p) => String(p.id) === String(env.FACEBOOK_PAGE_ID)) || (data.length === 1 ? data[0] : null);
+      if (match?.access_token) {
+        this.pageId = match.id;
+        this.pageName = match.name;
+        return match.access_token;
+      }
       this.lastError += data.length
         ? ` / the key manages other pages: ${data.map((p) => `“${p.name}” (ID ending …${String(p.id).slice(-4)})`).join(', ')}; check FACEBOOK_PAGE_ID`
         : ' / the key manages no page at all: the page is not assigned to this system user';
@@ -192,7 +202,8 @@ const facebook = {
     return env.FACEBOOK_PAGE_TOKEN;
   },
   async publish(s) {
-    const post = await graphPost(GRAPH, `/${env.FACEBOOK_PAGE_ID}/feed`, await this.pageToken(), facebookPost(s));
+    const token = await this.pageToken();
+    const post = await graphPost(GRAPH, `/${this.pageId || env.FACEBOOK_PAGE_ID}/feed`, token, facebookPost(s));
     return { id: post.id };
   },
 };
