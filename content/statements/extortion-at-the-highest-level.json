@@ -109,6 +109,75 @@
         "Oh, what a to-do! They’re threatening his donors, some of the most respected people in the whole world, in the universe even! And impeachment, and prison, and everything!",
         "I say: calm down. Round here, when two neighbours argue over a pétanque ball, before anyone shouts, we measure."
       ]
+    },
+    "midwest": {
+      "review": "draft",
+      "text": [
+        "Well, sounds like an awful lot of folks are upset with each other right now. Threatening letters aren’t very neighborly, whoever’s sending them.",
+        "But ordering the Justice Department around from your phone? That’s not how we’d go about it either. Out here we’d sit everybody down, put on a pot of coffee and let the judge figure it out."
+      ],
+      "en": [
+        "The Midwest dislikes threats from anyone, and also dislikes a president giving orders to the Justice Department by social media post.",
+        "Its solution: calm down, talk it over, and let the courts decide."
+      ]
+    },
+    "california": {
+      "review": "draft",
+      "text": [
+        "Okay, so everyone’s threatening everyone with impeachment and prison and “lawfare at another level”? That is a lot of energy for one Saturday.",
+        "Maybe everybody takes a breath, goes for a hike and lets the courts do their thing. Ordering an investigation by social media post is, like, not the vibe."
+      ],
+      "en": [
+        "California finds the whole quarrel exhausting: threats of impeachment and prison on all sides.",
+        "Its advice: everyone calm down and let the courts work. Ordering investigations by post is not a good look."
+      ]
+    },
+    "london": {
+      "review": "draft",
+      "text": [
+        "Extortion at the highest level, lawfare at another level, weaponization at yet another. One does admire the floor plan.",
+        "In London we’d say that’s a lot of levels for one building, and suggest someone check the planning permission. As for ordering the Justice Department about by press release: brave."
+      ],
+      "en": [
+        "London teases the President’s “levels”: extortion at the highest level, lawfare at another level, and so on.",
+        "And it finds ordering the Justice Department to investigate by public statement rather bold, in the ironic sense."
+      ]
+    },
+    "british-diplomat": {
+      "review": "draft",
+      "text": [
+        "His Majesty’s Government does not comment on the domestic political affairs of our closest ally, and will therefore confine itself to a general observation.",
+        "Impeachment, prosecution and imprisonment are serious matters. In our experience they are best decided by parliaments and courts respectively, and only rarely by press release."
+      ],
+      "en": [
+        "We don’t comment. But we will anyway:",
+        "a president should not order prosecutions in a social media post."
+      ]
+    },
+    "french-diplomat": {
+      "review": "draft",
+      "text": [
+        "France follows with attention, and with deep respect for American institutions, the debates currently under way in Washington.",
+        "Political confrontation is the lifeblood of democracy; independent courts are its guarantee. We trust that the Department of Justice will act with the independence that American democracy rightly expects of it."
+      ],
+      "fr": [
+        "La France suit avec attention, et avec un profond respect pour les institutions américaines, les débats en cours à Washington.",
+        "La confrontation politique est le sang de la démocratie ; des tribunaux indépendants en sont la garantie. Nous ne doutons pas que le ministère de la Justice agira avec l’indépendance que la démocratie américaine attend, à juste titre, de lui."
+      ]
+    },
+    "swiss-president": {
+      "review": "draft",
+      "text": [
+        "The Federal Council does not comment on the internal politics of friendly countries.",
+        "We would only recall that in Switzerland there is no impeachment of a member of the government: Parliament simply decides, every four years, whether to re-elect them. And the people vote four times a year, which leaves very little time for threatening letters."
+      ],
+      "fr": [
+        "Le Conseil fédéral ne commente pas la politique intérieure des pays amis.",
+        "Nous rappellerons seulement qu’en Suisse, il n’existe pas de destitution d’un membre du gouvernement : le Parlement décide simplement, tous les quatre ans, de le réélire ou non. Et le peuple vote quatre fois par an, ce qui laisse très peu de temps pour les lettres de menace."
+      ],
+      "notes": [
+        "Swiss federal votes are held four times a year; members of the Federal Council are elected by Parliament for four years and cannot be removed during their term."
+      ]
     }
   }
 }

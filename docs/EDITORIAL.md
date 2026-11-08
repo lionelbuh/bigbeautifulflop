@@ -81,6 +81,19 @@ Every statement can be retold in four sections (regions in `content/regions.js`,
 In a statement file, a version is `editions.<region>`: `text` (the version itself), `en` (its English
 adaptation), optional `fr` (a French version of an English text) and `notes` (“Lost in translation”).
 
+## The standard format of a new statement (11 versions)
+
+| Section | Versions |
+| --- | --- |
+| The American President (`presidential`) | always, right under the original (English + French) |
+| Switzerland & France | 2 Swiss cantons + 2 French regions |
+| United States | 2 regions |
+| United Kingdom | 1 region |
+| The Diplomat | the British Diplomat, the French Diplomat, the Swiss President |
+
+Regions rotate from one statement to the next: `npm run regions` lists, for each country, the ones not
+used for the longest time. Earlier statements may have more versions (the first examples).
+
 ## Writing rules (for editors and for the AI drafting engine)
 
 - **Preserve the original subject and meaning.** The political point survives; the tone changes.

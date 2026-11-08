@@ -108,6 +108,72 @@
         "Hey pal, apparently some people are getting nasty letters. Up here, you take a nasty letter to the police station. Not to the town hall, and certainly not to the president.",
         "And you don’t shout “to jail” before hearing the other side. That’s how we do it in the North: we have a row, then we have a drink together."
       ]
+    },
+    "new-york": {
+      "review": "draft",
+      "text": [
+        "Somebody’s threatening donors? Okay. In New York, you get a threatening letter, you call a lawyer, you call the cops, and maybe you call your cousin. You don’t mail it to the President. He’s busy.",
+        "Also, “sleazebags”? Pal, around here that’s what we call the guy who takes up two seats on the subway. Let the courts sort it out."
+      ],
+      "en": [
+        "New York’s advice: if you are threatened, go to a lawyer and the police, not to the President.",
+        "And “sleazebag” barely counts as an insult in New York. Let the courts decide who did what."
+      ]
+    },
+    "deep-south": {
+      "review": "draft",
+      "text": [
+        "Well, if somebody’s sending ugly letters, that’s just bad manners, and we don’t hold with bad manners. Take it to the sheriff, honey.",
+        "But calling folks sleazebags and hollering “jail” before anybody’s had their day in court? My mama would’ve said that’s no way to talk. President or not."
+      ],
+      "en": [
+        "The South dislikes threats and bad manners, from either side: report threats to the police.",
+        "But calling people names and demanding prison before any trial is not how a well-raised person talks, even a president."
+      ]
+    },
+    "yorkshire": {
+      "review": "draft",
+      "text": [
+        "Threatening letters, is it? Then take them to the police, love. That’s what they’re for. Sending them to the President is a long way to post something, and dear on stamps.",
+        "As for “sleazebags” and “jail”, we’d want to hear both sides first. Round here, you don’t call a man a crook till you’ve seen his accounts."
+      ],
+      "en": [
+        "Yorkshire’s advice: take threats to the police, not to the President (it would cost a fortune in postage anyway).",
+        "And before calling anyone a criminal, look at the evidence."
+      ]
+    },
+    "british-diplomat": {
+      "review": "draft",
+      "text": [
+        "His Majesty’s Government has every confidence that, where threats against citizens are reported, the appropriate authorities will look into them. It is, if we may say so, a matter best left to the police and the courts rather than to the personal post of a Head of State.",
+        "Strong language has its place in politics. We find it is usually in the second draft, shortly before it is removed."
+      ],
+      "en": [
+        "If there are threats, the police should deal with them, not the President’s inbox.",
+        "And please stop calling people sleazebags."
+      ]
+    },
+    "french-diplomat": {
+      "review": "draft",
+      "text": [
+        "France condemns, without reservation, any intimidation aimed at citizens because of their political commitments, wherever it comes from. In a democracy, such matters belong to independent justice, and to it alone.",
+        "We would add, with all the friendship that unites our two republics, that justice is best served when it is not asked to act “IMMEDIATELY” by the head of state himself."
+      ],
+      "fr": [
+        "La France condamne sans réserve toute intimidation visant des citoyens en raison de leur engagement politique, d’où qu’elle vienne. En démocratie, ces questions relèvent de la justice indépendante, et d’elle seule.",
+        "Nous ajouterons, avec toute l’amitié qui unit nos deux républiques, que la justice est mieux servie lorsqu’on ne lui demande pas d’agir « IMMÉDIATEMENT » à l’initiative du chef de l’État lui-même."
+      ]
+    },
+    "swiss-president": {
+      "review": "draft",
+      "text": [
+        "The Federal Council takes seriously any threat against citizens who take part in political life. In Switzerland, such cases are reported to the police and handled by independent prosecutors, whatever the party of those involved.",
+        "We are attached to the separation of powers, and we have found that it works best when each power keeps its own letterbox."
+      ],
+      "fr": [
+        "Le Conseil fédéral prend au sérieux toute menace visant des citoyens engagés dans la vie politique. En Suisse, de tels cas sont signalés à la police et traités par des procureurs indépendants, quel que soit le parti des personnes concernées.",
+        "Nous sommes attachés à la séparation des pouvoirs, et nous avons constaté qu’elle fonctionne au mieux lorsque chaque pouvoir garde sa propre boîte aux lettres."
+      ]
     }
   }
 }
