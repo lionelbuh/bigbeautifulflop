@@ -15,7 +15,7 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
-import { SITE_URL, articleUrl, threadPosts, facebookPost, instagramCaption } from './compose.mjs';
+import { SITE_URL, articleUrl, threadFor, facebookPost, instagramCaption } from './compose.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const CONFIG = JSON.parse(readFileSync(path.join(root, 'content/social/config.json'), 'utf8'));
@@ -67,15 +67,16 @@ const bluesky = {
   /** Links in the text must be declared as "facets", with byte positions. */
   facets(text) {
     const bytes = (t) => new TextEncoder().encode(t).length;
-    return [...text.matchAll(/https?:\/\/\S+/g)].map((m) => ({
-      index: { byteStart: bytes(text.slice(0, m.index)), byteEnd: bytes(text.slice(0, m.index + m[0].length)) },
-      features: [{ $type: 'app.bsky.richtext.facet#link', uri: m[0] }],
-    }));
+    const at = (m) => ({ byteStart: bytes(text.slice(0, m.index)), byteEnd: bytes(text.slice(0, m.index + m[0].length)) });
+    const links = [...text.matchAll(/https?:\/\/\S+/g)].map((m) => ({ index: at(m), features: [{ $type: 'app.bsky.richtext.facet#link', uri: m[0] }] }));
+    // hashtags, clickable (and picked up by the feeds that follow them)
+    const tags = [...text.matchAll(/(?<=^|\s)#([A-Za-z][A-Za-z0-9_]*)/g)].map((m) => ({ index: at(m), features: [{ $type: 'app.bsky.richtext.facet#tag', tag: m[1] }] }));
+    return [...links, ...tags];
   },
   async publish(s) {
     const session = await this.session();
     const auth = { Authorization: `Bearer ${session.accessJwt}` };
-    const posts = threadPosts(s, 300);
+    const posts = threadFor('bluesky', s);
     // the first post carries a link card with the share image
     let thumb;
     try {
@@ -113,7 +114,7 @@ const threads = {
   async publish(s) {
     let first = null;
     let previous = null;
-    for (const text of threadPosts(s, 500)) {
+    for (const text of threadFor('threads', s)) {
       const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, { media_type: 'TEXT', text, ...(previous ? { reply_to_id: previous } : {}) });
       await sleep(4000); // Threads asks for a short wait between creating and publishing
       const post = await graphPost(THREADS, '/me/threads_publish', env.THREADS_TOKEN, { creation_id: container.id });
@@ -221,7 +222,7 @@ async function main() {
       if (log[s.slug]?.[name]) continue;
       if (mode === 'preview') {
         console.log(`\n=== ${s.slug} · ${name} ===`);
-        if (name === 'bluesky' || name === 'threads') threadPosts(s, name === 'bluesky' ? 300 : 500).forEach((t, i) => console.log(`--- post ${i + 1} (${[...t].length} chars)\n${t}`));
+        if (name === 'bluesky' || name === 'threads') threadFor(name, s).forEach((t, i) => console.log(`--- post ${i + 1} (${[...t].length} chars)\n${t}`));
         if (name === 'facebook') console.log(facebookPost(s).message);
         if (name === 'instagram') console.log(`${instagram.images(s).length} images\n${instagramCaption(s)}`);
         continue;

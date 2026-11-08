@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { loadStatements } from '../src/site/content.js';
-import { excerpt, threadPosts, facebookPost, instagramCaption, carouselCards } from '../scripts/social/compose.mjs';
+import { excerpt, threadPosts, threadFor, facebookPost, instagramCaption, carouselCards } from '../scripts/social/compose.mjs';
 
 const statements = loadStatements(path.resolve('content/statements'));
 const chars = (t) => [...t].length;
@@ -24,6 +24,14 @@ describe('social posts', () => {
         expect(posts.slice(1).join()).toContain('satire');
       }
       expect(chars(instagramCaption(s))).toBeLessThanOrEqual(2200);
+      expect(instagramCaption(s)).not.toContain('#');
+      expect(facebookPost(s).message).not.toMatch(/#\w/);
+      const th = threadFor('threads', s);
+      expect(th[0]).toContain('#PoliticalSatire');
+      expect(th.slice(1).join()).not.toContain('#PoliticalSatire');
+      const bs = threadFor('bluesky', s);
+      for (const p of [...th.map((x) => [x, 500]), ...bs.map((x) => [x, 300])]) expect(chars(p[0])).toBeLessThanOrEqual(p[1]);
+      expect(bs.at(-1)).toContain('#Trump #PoliticalSatire #Satire');
       expect(facebookPost(s).link).toBe(`https://bigbeautifulflop.com/statements/${s.slug}/`);
     }
   });

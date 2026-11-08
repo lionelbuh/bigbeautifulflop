@@ -69,13 +69,23 @@ function frenchPost(flag, v, max) {
  * Bluesky and Threads: a thread of seven posts. Trump and the American President side by side, one
  * American or British satire, two Swiss and two French (one per post, in French), then the link.
  */
-export function threadPosts(s, max) {
+export const THREADS_TOPIC = '#PoliticalSatire';
+export const BLUESKY_TAGS = '#Trump #PoliticalSatire #Satire';
+
+/** Threads: one topic tag on the first post. Bluesky: three hashtags on the last post. */
+export function threadFor(network, s) {
+  if (network === 'threads') return threadPosts(s, 500, { firstTag: THREADS_TOPIC });
+  return threadPosts(s, 300, { lastTag: BLUESKY_TAGS });
+}
+
+export function threadPosts(s, max, { firstTag = '', lastTag = '' } = {}) {
   const url = articleUrl(s);
   const head = `${s.headline}\n\nTrump on Truth Social: `;
   const mid = `\n\n${PRESIDENTIAL_LABEL} (satire): `;
-  const room = max - chars(head) - chars(mid) - 4;
+  const tail = firstTag ? `\n\n${firstTag}` : '';
+  const room = max - chars(head) - chars(mid) - chars(tail) - 4;
   const trumpRoom = Math.floor(room * 0.55);
-  const posts = [`${head}${quote(excerpt(s.original.text, trumpRoom))}${mid}${quote(excerpt(s.presidential.en, room - trumpRoom))}`];
+  const posts = [`${head}${quote(excerpt(s.original.text, trumpRoom))}${mid}${quote(excerpt(s.presidential.en, room - trumpRoom))}${tail}`];
   const anglo = [...ofCountry(s, 'united-states'), ...ofCountry(s, 'united-kingdom')][0];
   if (anglo) {
     const h = `${regionLabel(anglo.region)}, satire: `;
@@ -84,8 +94,9 @@ export function threadPosts(s, max) {
   for (const v of ofCountry(s, 'switzerland').slice(0, 2)) posts.push(frenchPost('🇨🇭', v, max));
   for (const v of ofCountry(s, 'france').slice(0, 2)) posts.push(frenchPost('🇫🇷', v, max));
   const n = versionsOf(s).length + 1;
-  const last = `All ${n} versions, with three diplomats (British, French, Swiss): ${url}\n\n${SATIRE_NOTE}`;
-  posts.push(chars(last) <= max ? last : `All ${n} versions: ${url}`);
+  const tags = lastTag ? `\n\n${lastTag}` : '';
+  const last = `All ${n} versions, with three diplomats (British, French, Swiss): ${url}\n\n${SATIRE_NOTE}${tags}`;
+  posts.push(chars(last) <= max ? last : `All ${n} versions: ${url}${tags}`);
   return posts;
 }
 
@@ -103,17 +114,19 @@ export function facebookPost(s) {
   return { message: parts.filter(Boolean).join('\n\n'), link: articleUrl(s) };
 }
 
-/** Instagram caption (2,200 characters at most; links are not clickable there). */
+/**
+ * Instagram caption (2,200 characters at most; links are not clickable there). No hashtags: Instagram
+ * reads the words of the caption, so it names what the post is about plainly.
+ */
 export function instagramCaption(s) {
   const caption = [
     s.headline,
-    `Trump on Truth Social: ${quote(excerpt(s.original.text, 700))}`,
-    'Swipe for the presidential version, the Swiss, French, American and British versions, and three diplomats.',
-    `All versions: bigbeautifulflop.com (link in bio)`,
+    `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 700))}`,
+    'Swipe for the presidential version (how a statesmanlike president would say it), then the same message as political satire from Switzerland, France, the United States and the United Kingdom, and from three diplomats: British, French and Swiss.',
+    'All versions on bigbeautifulflop.com (link in bio).',
     SATIRE_NOTE,
-    '#Trump #Satire #Politics #Switzerland #France #Diplomacy',
   ].join('\n\n');
-  return excerpt(caption, 2200);
+  return chars(caption) <= 2200 ? caption : excerpt(caption, 2200);
 }
 
 /**

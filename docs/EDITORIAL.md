@@ -122,7 +122,9 @@ After each deploy, `.github/workflows/social.yml` posts the **new** statements (
 American President; one American or British satire; two Swiss and two French, one per post, in full in
 French with an English line when there is room; the link),
 Facebook (a post with the link) and Instagram (a carousel of six images in `public/social/<slug>/`, made
-by `npm run images`: Trump and the President; Swiss; French; American and British; diplomats; link). Each
+by `npm run images`: Trump and the President; Swiss; French; American and British; diplomats; link). Hashtags: none on Instagram (the caption names the subject in plain words) and Facebook; one topic
+(`#PoliticalSatire`) on Threads; `#Trump #PoliticalSatire #Satire` on Bluesky. Never tag official accounts
+(@realDonaldTrump, @WhiteHouse…). Each
 network posts a statement once: `content/social/posted.json` keeps track. Since statements only reach
 `main` after the owner’s OK, nothing is posted without it. By hand, from the Actions tab: mode
 `check` (tests the keys), `preview` (shows the texts) or `publish` (optionally one `slug`). Keys are
