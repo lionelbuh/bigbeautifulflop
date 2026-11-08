@@ -1,1 +1,16 @@
-{}
+{
+  "send-them-directly-to-me": {
+    "bluesky": {
+      "at": "2026-11-08T21:14:42.998Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3mztderap7c2w"
+    },
+    "threads": {
+      "at": "2026-11-08T21:15:51.557Z",
+      "id": "17914399923555708"
+    },
+    "instagram": {
+      "at": "2026-11-08T21:16:36.410Z",
+      "id": "17943633174383503"
+    }
+  }
+}
