@@ -14,6 +14,8 @@
 - **Structured data** (schema.org JSON-LD): `WebSite` and `Organization` on the home page;
   `SatiricalArticle` with `isBasedOn` (the original post, the only text attributed to its author) and a
   `BreadcrumbList` on articles and regional versions.
+- **IndexNow**: after each deploy (not the nightly rebuild), `deploy.yml` sends every sitemap URL to
+  Bing, Yandex, Seznam and Naver (public key in `public/<key>.txt`). Google reads the sitemap instead.
 - **sitemap.xml** (with share images and dates), **robots.txt** (everything allowed), **feed.xml** (RSS),
   **llms.txt** (summary for AI assistants), `404.html` marked `noindex`.
 - Fast: static HTML, one small CSS file, one small script, self-hosted font, works without JavaScript.
