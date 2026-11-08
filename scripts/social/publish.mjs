@@ -73,34 +73,52 @@ const bluesky = {
     const tags = [...text.matchAll(/(?<=^|\s)#([A-Za-z][A-Za-z0-9_]*)/g)].map((m) => ({ index: at(m), features: [{ $type: 'app.bsky.richtext.facet#tag', tag: m[1] }] }));
     return [...links, ...tags];
   },
+  async uploadBlob(session, url, type) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`could not fetch ${url} (HTTP ${res.status})`);
+    const up = await call(`${session.pds}/xrpc/com.atproto.repo.uploadBlob`, {
+      method: 'POST', headers: { Authorization: `Bearer ${session.accessJwt}`, 'Content-Type': type }, body: Buffer.from(await res.arrayBuffer()),
+    });
+    return up.blob;
+  },
+  /**
+   * The first post carries image 1 of the carousel (Trump and the American President side by side);
+   * the last one, with the link, the article's link card.
+   */
   async publish(s) {
     const session = await this.session();
     const auth = { Authorization: `Bearer ${session.accessJwt}` };
     const posts = threadFor('bluesky', s);
-    // the first post carries a link card with the share image
-    let thumb;
+    let image = null;
+    let thumb = null;
     try {
-      const img = await fetch(`${SITE_URL}/og/${s.slug}.png`);
-      if (img.ok) {
-        const up = await call(`${session.pds}/xrpc/com.atproto.repo.uploadBlob`, { method: 'POST', headers: { ...auth, 'Content-Type': 'image/png' }, body: Buffer.from(await img.arrayBuffer()) });
-        thumb = up.blob;
-      }
+      if (existsSync(path.join(root, 'public/social', s.slug, '01.jpg'))) image = await this.uploadBlob(session, `${SITE_URL}/social/${s.slug}/01.jpg`, 'image/jpeg');
+    } catch (err) {
+      console.log(`  (first post without image: ${err.message})`);
+    }
+    try {
+      thumb = await this.uploadBlob(session, `${SITE_URL}/og/${s.slug}.png`, 'image/png');
     } catch (err) {
       console.log(`  (link card without image: ${err.message})`);
     }
-    let root = null;
+    let threadRoot = null;
     let parent = null;
     for (const [i, text] of posts.entries()) {
       const record = { $type: 'app.bsky.feed.post', text, createdAt: new Date().toISOString(), langs: ['en'] };
       const facets = this.facets(text);
       if (facets.length) record.facets = facets;
-      if (i === 0) record.embed = { $type: 'app.bsky.embed.external', external: { uri: articleUrl(s), title: s.headline, description: s.dek, ...(thumb ? { thumb } : {}) } };
-      if (root) record.reply = { root, parent };
+      if (i === 0 && image) {
+        record.embed = { $type: 'app.bsky.embed.images', images: [{ image, alt: `${s.headline}: Donald Trump’s post on Truth Social and the presidential version, side by side (satire).`, aspectRatio: { width: 1080, height: 1350 } }] };
+      }
+      if (i === posts.length - 1 || (i === 0 && !image)) {
+        record.embed = { $type: 'app.bsky.embed.external', external: { uri: articleUrl(s), title: s.headline, description: s.dek, ...(thumb ? { thumb } : {}) } };
+      }
+      if (threadRoot) record.reply = { root: threadRoot, parent };
       const res = await call(`${session.pds}/xrpc/com.atproto.repo.createRecord`, { method: 'POST', headers: auth, json: { repo: session.did, collection: 'app.bsky.feed.post', record } });
       parent = { uri: res.uri, cid: res.cid };
-      if (!root) root = parent;
+      if (!threadRoot) threadRoot = parent;
     }
-    return { id: root.uri };
+    return { id: threadRoot.uri };
   },
 };
 
