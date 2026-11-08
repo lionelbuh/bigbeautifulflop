@@ -16,5 +16,23 @@
       "at": "2026-11-08T22:14:03.945Z",
       "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3mztgourdyc2w"
     }
+  },
+  "sixty-minutes-tonight": {
+    "bluesky": {
+      "at": "2026-11-08T23:04:41.044Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3mztjjeuoh622"
+    },
+    "threads": {
+      "at": "2026-11-08T23:05:56.483Z",
+      "id": "18111999623631099"
+    },
+    "facebook": {
+      "at": "2026-11-08T23:06:00.706Z",
+      "id": "1493669080487032_122095495017549416"
+    },
+    "instagram": {
+      "at": "2026-11-08T23:06:41.238Z",
+      "id": "17933397513414505"
+    }
   }
 }
