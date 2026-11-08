@@ -114,3 +114,15 @@ used for the longest time. Earlier statements may have more versions (the first 
   Diplomat is elegant, polite, understated and occasionally dry; the French Diplomat is eloquent, principled
   and European, with a taste for grand words and summits; the Swiss President is neutral,
   conciliatory, pragmatic and leaves the last word to the people. No insults, no self-praise.
+
+## Social networks
+
+After each deploy, `.github/workflows/social.yml` posts the **new** statements (published on or after
+`start` in `content/social/config.json`) on Bluesky and Threads (a short thread), Facebook (a post with
+the link) and Instagram (the carousel in `public/social/<slug>/`, made by `npm run images`). Each
+network posts a statement once: `content/social/posted.json` keeps track. Since statements only reach
+`main` after the owner’s OK, nothing is posted without it. By hand, from the Actions tab: mode
+`check` (tests the keys), `preview` (shows the texts) or `publish` (optionally one `slug`). Keys are
+GitHub secrets: BLUESKY_HANDLE, BLUESKY_APP_PASSWORD, THREADS_TOKEN (60 days: a reminder issue
+opens from day 50; update `threadsTokenCreated` when renewed), FACEBOOK_PAGE_ID, FACEBOOK_PAGE_TOKEN,
+INSTAGRAM_USER_ID, INSTAGRAM_TOKEN.

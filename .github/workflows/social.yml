@@ -1,0 +1,102 @@
+name: Social networks
+
+# Posts new statements on Bluesky, Threads, Facebook and Instagram, once the site is deployed (the
+# posts link to the article and use its images). Only statements published since `start`
+# (content/social/config.json) and not yet in content/social/posted.json are posted; the log is
+# committed back with [skip ci], so it does not redeploy the site.
+#
+# By hand (Actions → Social networks → Run workflow):
+#   mode "check"   tests every key and shows which account it reaches; posts nothing
+#   mode "preview" shows the texts that would be posted; posts nothing
+#   mode "publish" posts (optionally one statement: slug; some networks: bluesky,threads,…)
+on:
+  schedule:
+    - cron: '17 16 * * 1' # Mondays: Threads key reminder only
+  workflow_run:
+    workflows: ['Deploy to GitHub Pages']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'check, preview or publish'
+        required: true
+        default: check
+        type: choice
+        options: [check, preview, publish]
+      slug:
+        description: 'One statement (its slug), optional'
+        required: false
+        default: ''
+      networks:
+        description: 'Networks, comma-separated (default: all)'
+        required: false
+        default: 'bluesky,threads,facebook,instagram'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: social
+  cancel-in-progress: false
+
+jobs:
+  social:
+    # after a deploy: only if it succeeded, and not for the nightly rebuild (no new content)
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Post
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          THREADS_TOKEN: ${{ secrets.THREADS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          MODE: ${{ inputs.mode || 'publish' }}
+          SLUG: ${{ inputs.slug }}
+          NETWORKS: ${{ inputs.networks || 'bluesky,threads,facebook,instagram' }}
+        run: |
+          if [ -n "$SLUG" ]; then
+            node scripts/social/publish.mjs --mode "$MODE" --slug "$SLUG" --networks "$NETWORKS"
+          else
+            node scripts/social/publish.mjs --mode "$MODE" --networks "$NETWORKS"
+          fi
+      - name: Save the log of posts
+        if: always()
+        run: |
+          if ! git diff --quiet content/social/posted.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add content/social/posted.json
+            git commit -m "Social: log of posts [skip ci]"
+            git push
+          fi
+
+  # The Threads key lasts 60 days: a reminder (an issue) from day 50, checked every Monday.
+  threads-reminder:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remind to renew the Threads key
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          created=$(jq -r .threadsTokenCreated content/social/config.json)
+          age=$(( ( $(date +%s) - $(date -d "$created" +%s) ) / 86400 ))
+          echo "Threads key: $age days old"
+          if [ "$age" -ge 50 ] && [ -z "$(gh issue list --state open --search 'Renew the Threads key in:title' --json number -q '.[].number')" ]; then
+            gh issue create --title "Renew the Threads key (created $created, expires after 60 days)" \
+              --body "Meta app → Threads use case → User Token Generator → Generate access token, then replace the THREADS_TOKEN secret and update threadsTokenCreated in content/social/config.json."
+          fi
