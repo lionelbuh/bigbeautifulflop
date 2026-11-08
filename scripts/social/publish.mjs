@@ -149,6 +149,7 @@ const facebook = {
   ready: () => env.FACEBOOK_PAGE_ID && env.FACEBOOK_PAGE_TOKEN,
   async check() {
     const page = await graphGet(GRAPH, `/${env.FACEBOOK_PAGE_ID}?fields=id,name`, env.FACEBOOK_PAGE_TOKEN);
+    console.log(`  (FACEBOOK_PAGE_ID ends with …${String(env.FACEBOOK_PAGE_ID).slice(-4)})`);
     // a page key answers /me with the page itself: only such a key can post
     const token = await this.pageToken();
     const me = await graphGet(GRAPH, '/me?fields=id,name', token);
@@ -174,8 +175,19 @@ const facebook = {
       if (page.access_token) return page.access_token;
       this.lastError = 'Facebook returned no access_token for the page';
     } catch (err) {
-      // already a page key, or no access to the field: use the secret as it is
+      // already a page key, or no access to the field: try the list of pages below
       this.lastError = err.message;
+    }
+    // second way: the pages this (system) user manages
+    try {
+      const { data = [] } = await graphGet(GRAPH, '/me/accounts?fields=id,name,access_token', env.FACEBOOK_PAGE_TOKEN);
+      const match = data.find((p) => String(p.id) === String(env.FACEBOOK_PAGE_ID));
+      if (match?.access_token) return match.access_token;
+      this.lastError += data.length
+        ? ` / the key manages other pages: ${data.map((p) => `“${p.name}” (ID ending …${String(p.id).slice(-4)})`).join(', ')}; check FACEBOOK_PAGE_ID`
+        : ' / the key manages no page at all: the page is not assigned to this system user';
+    } catch (err) {
+      this.lastError += ` / ${err.message}`;
     }
     return env.FACEBOOK_PAGE_TOKEN;
   },
