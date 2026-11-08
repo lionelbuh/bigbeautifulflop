@@ -11,7 +11,7 @@
  * statements that no longer exist (or have left the front page) are removed.
  */
 import { createRequire } from 'node:module';
-import { mkdtempSync, writeFileSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -159,7 +159,10 @@ await shot(icon(32, { square: false }), path.join(root, 'public/favicon-32.png')
 
 // Instagram carousels of the front-page statements (JPEG, as Instagram requires)
 const socialDir = path.join(root, 'public/social');
-const { recent } = splitLatest(statements);
+// the front-page statements, plus older ones listed in content/social/config.json ("extraCarousels")
+const extra = JSON.parse(readFileSync(path.join(root, 'content/social/config.json'), 'utf8')).extraCarousels || [];
+const recent = [...splitLatest(statements).recent, ...statements.filter((s) => extra.includes(s.slug))]
+  .filter((s, i, all) => all.indexOf(s) === i);
 await page.setViewportSize({ width: 1080, height: 1350 });
 for (const s of recent) {
   const dir = path.join(socialDir, s.slug);
