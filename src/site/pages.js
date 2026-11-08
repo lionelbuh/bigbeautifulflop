@@ -374,7 +374,7 @@ function about() {
     <h2>Contact and corrections</h2>
     <p>Write to ${emailLink()}. If we have quoted a statement inaccurately, tell us: we check it against the source and correct it promptly.</p>
     <h2>Privacy</h2>
-    <p>This site sets no cookies, uses no analytics or advertising trackers, and collects no personal data. It is hosted on GitHub Pages (GitHub, Inc.), whose servers may keep technical logs, such as IP addresses, for security; see GitHub’s privacy statement.</p>
+    <p>This site sets no cookies, shows no advertising and collects no personal data. To count visits, it uses Cloudflare Web Analytics, which uses no cookies and does not track visitors across sites; it is not loaded if your browser asks not to be tracked (Do Not Track or Global Privacy Control). The site is hosted on GitHub Pages (GitHub, Inc.), whose servers may keep technical logs, such as IP addresses, for security.</p>
   </div>`;
 }
 

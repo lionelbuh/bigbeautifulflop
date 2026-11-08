@@ -108,3 +108,18 @@ for (const box of document.querySelectorAll('[data-tabs]')) {
     select(row[(keys[event.key] + row.length) % row.length], { focus: true });
   });
 }
+
+/**
+ * Audience measurement: Cloudflare Web Analytics (no cookies, no personal data). Only on the live
+ * domain, and never for visitors who ask not to be tracked (Do Not Track, Global Privacy Control).
+ * The token is public by design.
+ */
+const ANALYTICS_TOKEN = 'f99cc3011b7f474d80e03e9ffce0cec8';
+const optedOut = navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl === true;
+if (ANALYTICS_TOKEN && window.location.hostname === 'bigbeautifulflop.com' && !optedOut) {
+  const beacon = document.createElement('script');
+  beacon.defer = true;
+  beacon.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+  beacon.dataset.cfBeacon = JSON.stringify({ token: ANALYTICS_TOKEN });
+  document.head.append(beacon);
+}
