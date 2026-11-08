@@ -42,7 +42,7 @@
   },
   "editions": {
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Bon. Il dit qu’on menace ses amis de destitution sans raison, et que c’est de l’extorsion « au plus haut niveau ». Chez nous, le plus haut niveau, ce sont les Diablerets, et on y monte à pied, sans menacer personne.",
         "Qui a raison ? Faut voir. Mais crier « en prison » à tout bout de champ, ça joue pas trop, ou bien ?"
@@ -56,7 +56,7 @@
       ]
     },
     "neuchatelois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Il dit que ses adversaires menacent tout le monde de destitution, alors qu’il n’y aurait rien à reprocher à personne.",
         "Ici, quand on soupçonne une montre de mal fonctionner, on ne crie pas au sabotage : on l’ouvre, on regarde, et on laisse l’horloger trancher. Les procès, c’est pareil. On laisse le juge ouvrir le boîtier."
@@ -67,7 +67,7 @@
       ]
     },
     "fribourgeois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Salut les gaillards ! Il dit qu’on menace ses amis et ses donateurs, et que c’est de l’extorsion.",
         "Chez nous, à Fribourg, on a deux langues et on s’entend quand même. Quand ça chauffe, on ne crie pas « en prison » : on fait une fondue moitié-moitié. Moitié pour toi, moitié pour moi. Ça calme tout le monde."
@@ -78,7 +78,7 @@
       ]
     },
     "breton": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Il dit qu’on menace ses amis, que c’est de l’extorsion, et que la prison, c’est pour les autres. Bon.",
         "Ici, on dit qu’il ne faut pas crier contre le vent : ça vous revient dans la figure. Envoyez donc les lettres à la justice, et laissez-la faire son travail. Elle aussi, elle aime le calme."
@@ -89,7 +89,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "« De l’extorsion au plus haut niveau », « du lawfare à un autre niveau »… Il aime bien les niveaux. Moi aussi : j’habite au sixième sans ascenseur.",
         "Bref, si quelqu’un menace quelqu’un, il y a des juges pour ça. Ordonner une enquête au ministère de la Justice par communiqué, c’est très pratique. Pas sûr que ce soit très indépendant."
@@ -100,7 +100,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Oh, quelle histoire ! On menace ses donateurs, des gens parmi les plus respectés du monde entier, de l’univers même ! Et la destitution, et la prison, et tout !",
         "Moi je dis : du calme. Ici, quand deux voisins se disputent pour une boule de pétanque, avant de crier, on mesure."
@@ -111,7 +111,7 @@
       ]
     },
     "midwest": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Well, sounds like an awful lot of folks are upset with each other right now. Threatening letters aren’t very neighborly, whoever’s sending them.",
         "But ordering the Justice Department around from your phone? That’s not how we’d go about it either. Out here we’d sit everybody down, put on a pot of coffee and let the judge figure it out."
@@ -122,7 +122,7 @@
       ]
     },
     "california": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Okay, so everyone’s threatening everyone with impeachment and prison and “lawfare at another level”? That is a lot of energy for one Saturday.",
         "Maybe everybody takes a breath, goes for a hike and lets the courts do their thing. Ordering an investigation by social media post is, like, not the vibe."
@@ -133,7 +133,7 @@
       ]
     },
     "london": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Extortion at the highest level, lawfare at another level, weaponization at yet another. One does admire the floor plan.",
         "In London we’d say that’s a lot of levels for one building, and suggest someone check the planning permission. As for ordering the Justice Department about by press release: brave."
@@ -144,7 +144,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "His Majesty’s Government does not comment on the domestic political affairs of our closest ally, and will therefore confine itself to a general observation.",
         "Impeachment, prosecution and imprisonment are serious matters. In our experience they are best decided by parliaments and courts respectively, and only rarely by press release."
@@ -155,7 +155,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France follows with attention, and with deep respect for American institutions, the debates currently under way in Washington.",
         "Political confrontation is the lifeblood of democracy; independent courts are its guarantee. We trust that the Department of Justice will act with the independence that American democracy rightly expects of it."
@@ -166,7 +166,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council does not comment on the internal politics of friendly countries.",
         "We would only recall that in Switzerland there is no impeachment of a member of the government: Parliament simply decides, every four years, whether to re-elect them. And the people vote four times a year, which leaves very little time for threatening letters."

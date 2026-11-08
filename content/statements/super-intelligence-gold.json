@@ -107,7 +107,7 @@
       ]
     },
     "fribourgeois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Salut les gaillards ! La super-intelligence, moi je suis pour. Cent pour cent. Les cantons qui la veulent vont devenir riches, c’est de l’or, je vous dis.",
         "Bon, à Fribourg on est prudents. On l’essaiera d’abord d’un côté de la Sarine, et si ça marche, on lui apprendra l’allemand pour l’autre côté.",
@@ -124,7 +124,7 @@
       ]
     },
     "neuchatelois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "La super-intelligence, c’est de l’or ? Chez nous, on a déjà vu passer une révolution qui devait rendre tout le monde riche : la montre à quartz. Elle a failli nous ruiner, puis on a appris à faire avec.",
         "Alors oui, on est pour. Mais on va d’abord la démonter pièce par pièce pour comprendre comment elle marche, et la remonter mieux."
@@ -138,7 +138,7 @@
       ]
     },
     "chti": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Eh biloute, la super-intelligence, ch’est de l’or, qu’i dit ! Ichi, de l’or, on en a eu : du noir, le charbon.",
         "Alors les richesses promises, on connaît, et on sait qui finit par les ramasser. Mais bon, si elle sait faire des frites, on la prend."
@@ -152,7 +152,7 @@
       ]
     },
     "lyonnais": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "La super-intelligence, de l’or ? Ici, on a inventé le cinéma, et le métier à tisser à cartes perforées, l’ancêtre de l’ordinateur. Alors l’intelligence des machines, c’est un peu un gone de chez nous.",
         "On est pour, évidemment. Mais on en reparle au bouchon : si elle n’est pas fichue de choisir entre un saint-marcellin et une cervelle de canut, elle n’est pas si super que ça."
@@ -167,7 +167,7 @@
       ]
     },
     "breton": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "La super-intelligence, de l’or ? Peut-être. Ici, on a vu passer beaucoup de choses qui devaient tout changer. La marée, elle, revient toujours deux fois par jour.",
         "On veut bien essayer. Mais si elle ne sait pas prévoir le temps de demain à Brest, on garde notre baromètre."
@@ -181,7 +181,7 @@
       ]
     },
     "new-york": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Super intelligence? Great. Love it. Bring it. You know what else is gold around here? A one-bedroom with a window. Nobody can afford that either.",
         "Any state that says no is foolish? Buddy, I’ve been called worse by a guy selling pretzels on Sixth Avenue. We’ll take the AI. Just don’t park it in the bike lane."
@@ -192,7 +192,7 @@
       ]
     },
     "texas": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "I’m a hundred percent for super intelligence, and in Texas a hundred percent means a hundred and ten. We’ve got the land, we’ve got the power plants and we’ve got the attitude.",
         "Any state that wants to get rich can come on down. The ones that say no can watch us build it from their porch. Everything’s bigger here, data centers included."
@@ -206,7 +206,7 @@
       ]
     },
     "deep-south": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Well, bless his heart. He is just a hundred percent for super intelligence, and so are we, we surely are.",
         "Now, calling the states that say no “foolish”? My grandmother always said you catch more investors with sweet tea than with name-calling. So y’all come on down: we’ll have the AI, the sweet tea and the manners."
@@ -220,7 +220,7 @@
       ]
     },
     "california": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Super intelligence? Honestly, we’re kind of already on it. Half of it is being built in a garage in Palo Alto right now, and the other half is on a podcast about itself.",
         "So yeah, a hundred percent. The “foolish” thing is a bit of a vibe, though. Out here we’d just say the other states are on a different journey."
@@ -231,7 +231,7 @@
       ]
     },
     "boston": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Super intelligence. Fine. We’ve had it here since 1636. It’s called Harvard. Then MIT showed up across the river to argue with it.",
         "So yeah, we’re in. But you want to call somebody foolish? Get in line, pal. Around here we were doing that before the country existed."
@@ -245,7 +245,7 @@
       ]
     },
     "midwest": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Well, that sounds real nice. Super intelligence, huh? We’d be happy to have some, if it’s not too much trouble. We’ve got the land, the power and plenty of folks glad to help.",
         "Now, I wouldn’t call anybody foolish. That’s not really how we do things. We’d just say, “Oh, that’s an interesting choice,” and bring them a hotdish."
@@ -259,7 +259,7 @@
       ]
     },
     "london": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Super intelligence, one hundred per cent in favour. How refreshing. We’ve had something similar in London for years: it’s called the Tube map, and nobody understands that either.",
         "Places that say no are foolish, apparently. Bold. Over here we’d simply raise an eyebrow and let the rent do the talking."
@@ -270,7 +270,7 @@
       ]
     },
     "liverpool": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Super intelligence? Go ’ed then, we’ll have a bit of that. Gold, he says.",
         "Listen, lad, we’ve heard “this’ll make yous all rich” before. The only thing that ever really did was four fellas with guitars. If it can write a song half as good, it’s welcome round ours."
@@ -284,7 +284,7 @@
       ]
     },
     "manchester": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Super intelligence? Yeah, we’re in. Bit late, mind. We built the first stored-program computer here in 1948, so technically it’s ours and he’s just catching up.",
         "Calling folk foolish for saying no, though? Not very clever for a super intelligence fan, is it?"
@@ -298,7 +298,7 @@
       ]
     },
     "yorkshire": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Gold, is it? We’ll see. In Yorkshire we don’t say no to riches, but we don’t say yes till we’ve seen the price. If it’s free, we’ll have two.",
         "And as for calling folk foolish: round here, that word is reserved for a man who pays full price."
@@ -312,7 +312,7 @@
       ]
     },
     "scotland": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "A hundred per cent in favour of super intelligence? Aye, nae bother. We invented half the modern world already: the telephone, the television, penicillin, the pedal bicycle. You’re welcome.",
         "As for calling folk foolish for saying no, we’ve a much richer vocabulary for that in Scotland. But this is a family website."
@@ -326,7 +326,7 @@
       ]
     },
     "wales": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Super intelligence, is it? Lovely. We’ll have some, now in a minute. Gold, he says.",
         "We had the gold too, mind: Welsh gold goes into the royal wedding rings. So we know what matters with gold. Not who finds it, but who gets to keep it."
@@ -341,7 +341,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "His Majesty’s Government notes with interest the President’s enthusiasm for super intelligence, which we share, if perhaps at a slightly lower volume.",
         "The potential benefits for prosperity are considerable, and we look forward to working with partners who wish to realise them. We would gently observe that those who choose a different course are rarely persuaded by being called foolish. In our experience, a cup of tea and a consultation paper go further."
@@ -352,7 +352,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France welcomes the US President’s interest in artificial intelligence, a field in which French researchers and companies are among the best in the world. We share the conviction that these technologies will bring prosperity.",
         "But France also believes that power only makes sense if it serves people. That is why, with our European partners, we stand for artificial intelligence that is both ambitious and regulated. As for those who hesitate, we do not call them foolish: we invite them to a summit in Paris, and we all come out with a joint declaration."
@@ -366,7 +366,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council is following developments in artificial intelligence with great attention. These technologies offer real opportunities for our economy, our research and our jobs.",
         "As is our tradition, each canton will decide for itself, and the Confederation will support those that wish to move forward. In Switzerland, we do not consider those who prefer caution to be foolish: we consider them part of the conversation. Should the question become important enough, the people will have the last word."

@@ -41,7 +41,7 @@
   },
   "editions": {
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Bon. Paraît que des gens d’en face embêtent nos donateurs. Moi je dis rien, mais c’est pas joli-joli.",
         "Alors vous faites quoi ? Vous écrivez à la justice. Ou bien, si ça vous arrange, vous m’écrivez à moi, directement. Pas de souci, je lis tout. Enfin, je fais lire. Et merci de votre attention, hein."
@@ -52,7 +52,7 @@
       ]
     },
     "genevois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "À Genève, quand quelqu’un se sent menacé, il porte plainte auprès du Ministère public, et l’affaire suit son cours. Lentement, comme il se doit.",
         "Lui propose qu’on lui envoie les lettres directement, à lui. C’est original. Nous, on a un Palais de justice et une Poste : deux bâtiments différents. On peut lui envoyer les deux adresses."
@@ -63,7 +63,7 @@
       ]
     },
     "valaisan": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Adieu ! Il paraît que des gens d’en bas menacent nos amis. Chez nous, une affaire comme ça, on la règle au café du village, avec le président de commune et un verre de fendant.",
         "Lui, il veut qu’on lui envoie les lettres à lui. Bon. Mais à la montagne, on sait une chose : celui qui crie le plus fort au sommet, c’est rarement celui qui a fait le chemin."
@@ -74,7 +74,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Des menaces contre nos donateurs ? Envoyez-les au ministère de la Justice. Ou à moi. Ou au ministère, avec moi en copie. Bref, à moi.",
         "Et traiter les gens de « sales types » avant tout procès, c’est un peu rapide, non ? Merci de votre attention à ce sujet. Je dis toujours ça à la fin : c’est mon côté bien élevé."
@@ -85,7 +85,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Oh, c’est une honte, une honte comme on n’en a jamais vu depuis l’invention de l’aïoli ! On menace nos amis ! Envoyez tout à la justice, et tout de suite !",
         "Ou envoyez-le-moi, à moi, votre Président : je m’en occupe personnellement, comme un pastis, sans attendre et sans eau. Ces fadas, en prison ! Bon, après le procès, hein. S’il y en a un."
@@ -99,7 +99,7 @@
       ]
     },
     "chti": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Eh biloute, paraît qu’y a des gens qui reçoivent des lettres pas gentilles. Ichi, une lettre pas gentille, on l’amène au commissariat. Pas à la mairie, et encore moins au président.",
         "Et on dit pas « en prison » avant d’avoir écouté l’aut’ côté. Ch’est comme ça qu’on fait dans l’Nord : on s’engueule, puis on boit un coup ensemble."
@@ -110,7 +110,7 @@
       ]
     },
     "new-york": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Somebody’s threatening donors? Okay. In New York, you get a threatening letter, you call a lawyer, you call the cops, and maybe you call your cousin. You don’t mail it to the President. He’s busy.",
         "Also, “sleazebags”? Pal, around here that’s what we call the guy who takes up two seats on the subway. Let the courts sort it out."
@@ -121,7 +121,7 @@
       ]
     },
     "deep-south": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Well, if somebody’s sending ugly letters, that’s just bad manners, and we don’t hold with bad manners. Take it to the sheriff, honey.",
         "But calling folks sleazebags and hollering “jail” before anybody’s had their day in court? My mama would’ve said that’s no way to talk. President or not."
@@ -132,7 +132,7 @@
       ]
     },
     "yorkshire": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Threatening letters, is it? Then take them to the police, love. That’s what they’re for. Sending them to the President is a long way to post something, and dear on stamps.",
         "As for “sleazebags” and “jail”, we’d want to hear both sides first. Round here, you don’t call a man a crook till you’ve seen his accounts."
@@ -143,7 +143,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "His Majesty’s Government has every confidence that, where threats against citizens are reported, the appropriate authorities will look into them. It is, if we may say so, a matter best left to the police and the courts rather than to the personal post of a Head of State.",
         "Strong language has its place in politics. We find it is usually in the second draft, shortly before it is removed."
@@ -154,7 +154,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France condemns, without reservation, any intimidation aimed at citizens because of their political commitments, wherever it comes from. In a democracy, such matters belong to independent justice, and to it alone.",
         "We would add, with all the friendship that unites our two republics, that justice is best served when it is not asked to act “IMMEDIATELY” by the head of state himself."
@@ -165,7 +165,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes seriously any threat against citizens who take part in political life. In Switzerland, such cases are reported to the police and handled by independent prosecutors, whatever the party of those involved.",
         "We are attached to the separation of powers, and we have found that it works best when each power keeps its own letterbox."
