@@ -130,8 +130,13 @@ const facebook = {
   ready: () => env.FACEBOOK_PAGE_ID && env.FACEBOOK_PAGE_TOKEN,
   async check() {
     const page = await graphGet(GRAPH, `/${env.FACEBOOK_PAGE_ID}?fields=id,name`, env.FACEBOOK_PAGE_TOKEN);
-    const own = (await this.pageToken()) !== env.FACEBOOK_PAGE_TOKEN;
-    return `page “${page.name}” (${own ? 'page key obtained from the secret' : 'secret used as the page key'})`;
+    // a page key answers /me with the page itself: only such a key can post
+    const token = await this.pageToken();
+    const me = await graphGet(GRAPH, '/me?fields=id,name', token);
+    if (String(me.id) !== String(env.FACEBOOK_PAGE_ID)) {
+      throw new Error(`the key can read page “${page.name}” but is not its page key (it belongs to “${me.name}”), so it cannot post. Put the page’s own access_token in FACEBOOK_PAGE_TOKEN.`);
+    }
+    return `page “${page.name}” (page key ✓, can post)`;
   },
   /**
    * Posting needs the page's own key. If the secret holds a user or system-user key, ask Facebook for
