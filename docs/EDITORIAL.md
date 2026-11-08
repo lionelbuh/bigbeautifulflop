@@ -118,8 +118,9 @@ used for the longest time. Earlier statements may have more versions (the first 
 ## Social networks
 
 After each deploy, `.github/workflows/social.yml` posts the **new** statements (published on or after
-`start` in `content/social/config.json`) on Bluesky and Threads (a thread of five posts: Trump and the
-American President; one American or British satire; two Swiss; two French, all in English; the link),
+`start` in `content/social/config.json`) on Bluesky and Threads (a thread of seven posts: Trump and the
+American President; one American or British satire; two Swiss and two French, one per post, in full in
+French with an English line when there is room; the link),
 Facebook (a post with the link) and Instagram (a carousel of six images in `public/social/<slug>/`, made
 by `npm run images`: Trump and the President; Swiss; French; American and British; diplomats; link). Each
 network posts a statement once: `content/social/posted.json` keeps track. Since statements only reach

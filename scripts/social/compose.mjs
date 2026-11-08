@@ -51,21 +51,28 @@ const quote = (t) => `“${t}”`;
 /** Versions of one country, in the site's order. */
 const ofCountry = (s, country) => versionsOf(s).filter((v) => v.region.country === country);
 
-/** Several versions in one post, each given an equal share of the room left. */
-function grouped(title, list, max) {
-  const lines = list.map((v) => `${v.region.name}: `);
-  const room = Math.floor((max - chars(title) - list.length * 3 - lines.reduce((n, l) => n + chars(l), 0)) / list.length);
-  return `${title}${list.map((v, i) => `\n${lines[i]}${quote(excerpt(englishOf(v.region, v.edition), room))}`).join('')}`;
+export const PRESIDENTIAL_LABEL = 'The presidential version: how a statesmanlike president would say it';
+
+/**
+ * One French version in one post: the French text in full (cut only if the network’s limit requires
+ * it), then a short English line if there is room left.
+ */
+function frenchPost(flag, v, max) {
+  const head = `${flag} ${regionLabel(v.region)}, satire:\n`;
+  const fr = quote(excerpt(v.edition.text, max - chars(head) - 2));
+  const left = max - chars(head) - chars(fr) - chars('\n\nIn English: ') - 2;
+  const en = v.edition.en?.length && left >= 60 ? `\n\nIn English: ${quote(excerpt(v.edition.en, left))}` : '';
+  return `${head}${fr}${en}`;
 }
 
 /**
- * Bluesky and Threads: a thread of five posts. Trump and the American President side by side, one
- * American or British satire, two Swiss, two French (all in English), then the link.
+ * Bluesky and Threads: a thread of seven posts. Trump and the American President side by side, one
+ * American or British satire, two Swiss and two French (one per post, in French), then the link.
  */
 export function threadPosts(s, max) {
   const url = articleUrl(s);
   const head = `${s.headline}\n\nTrump on Truth Social: `;
-  const mid = '\n\nA statesmanlike American President (satire): ';
+  const mid = `\n\n${PRESIDENTIAL_LABEL} (satire): `;
   const room = max - chars(head) - chars(mid) - 4;
   const trumpRoom = Math.floor(room * 0.55);
   const posts = [`${head}${quote(excerpt(s.original.text, trumpRoom))}${mid}${quote(excerpt(s.presidential.en, room - trumpRoom))}`];
@@ -74,10 +81,8 @@ export function threadPosts(s, max) {
     const h = `${regionLabel(anglo.region)}, satire: `;
     posts.push(`${h}${quote(excerpt(anglo.edition.text, max - chars(h) - 2))}`);
   }
-  const swiss = ofCountry(s, 'switzerland').slice(0, 2);
-  if (swiss.length) posts.push(grouped('🇨🇭 Switzerland, in English (satire):', swiss, max));
-  const french = ofCountry(s, 'france').slice(0, 2);
-  if (french.length) posts.push(grouped('🇫🇷 France, in English (satire):', french, max));
+  for (const v of ofCountry(s, 'switzerland').slice(0, 2)) posts.push(frenchPost('🇨🇭', v, max));
+  for (const v of ofCountry(s, 'france').slice(0, 2)) posts.push(frenchPost('🇫🇷', v, max));
   const n = versionsOf(s).length + 1;
   const last = `All ${n} versions, with three diplomats (British, French, Swiss): ${url}\n\n${SATIRE_NOTE}`;
   posts.push(chars(last) <= max ? last : `All ${n} versions: ${url}`);
@@ -90,7 +95,7 @@ export function facebookPost(s) {
   const parts = [
     s.headline,
     `Trump on Truth Social: ${quote(excerpt(s.original.text, 600))}`,
-    `How a statesmanlike American President would have said it: ${quote(excerpt(s.presidential.en, 500))}`,
+    `${PRESIDENTIAL_LABEL}: ${quote(excerpt(s.presidential.en, 500))}`,
     lead ? `${regionLabel(lead.region)} (satire): ${quote(excerpt(englishOf(lead.region, lead.edition), 400))}` : '',
     `All ${versionsOf(s).length + 1} versions: ${articleUrl(s)}`,
     SATIRE_NOTE,
@@ -137,7 +142,7 @@ export function carouselCards(s) {
   return [
     [
       { kind: 'original', label: 'Donald J. Trump · Truth Social', text: excerpt(s.original.text, 420) },
-      { kind: 'presidential', label: 'The American President', text: excerpt(s.presidential.en, 380) },
+      { kind: 'presidential', label: 'The American President', note: PRESIDENTIAL_LABEL, text: excerpt(s.presidential.en, 360) },
     ],
     ...groups.map((g) => g.map((v) => card(v, g.length > 2 ? 300 : 360))),
   ];

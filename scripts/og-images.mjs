@@ -90,6 +90,7 @@ h1 { font-family: F; font-weight: 500; font-size: 58px; line-height: 1.05; lette
 .card--presidential { background: #e6ebf1; border-color: #c4cfdc; }
 .card--presidential .badge { color: #1f3a5f; }
 .text { font-size: 30px; line-height: 1.38; }
+.note { margin: -6px 0 12px; font-size: 21px; font-style: italic; color: #1f3a5f; }
 .local { font-family: F; font-size: 29px; line-height: 1.36; color: #171614; margin-bottom: 14px; }
 .local + .en + .text { font-size: 23px; line-height: 1.35; color: #57524a; }
 .en { font-size: 15px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #1f3a5f; margin-bottom: 4px; }
@@ -113,10 +114,11 @@ function cardHtml(c) {
       ? '<span class="av" style="background:#1f3a5f">★</span>'
       : `<span class="av" style="background:linear-gradient(135deg,${c.chip[0]} 50%,${c.chip[1]} 50%);box-shadow:inset 0 0 0 2px rgba(0,0,0,.15)"></span>`;
   const badge = c.kind === 'original' ? 'Original' : 'Satire';
+  const note = c.note ? `<p class="note">${e(c.note)}</p>` : '';
   const body = c.local
     ? `<p class="local">“${e(c.local)}”</p><p class="en">In English</p><p class="text">${e(c.text)}</p>`
     : `<p class="text">${c.kind === 'original' ? `“${e(c.text)}”` : e(c.text)}</p>`;
-  return `<div class="card card--${c.kind}"><div class="head">${avatar}<span class="name">${e(c.label)}</span><span class="badge">${badge}</span></div>${body}</div>`;
+  return `<div class="card card--${c.kind}"><div class="head">${avatar}<span class="name">${e(c.label)}</span><span class="badge">${badge}</span></div>${note}${body}</div>`;
 }
 
 function slideHtml(s, cards, i, total) {
