@@ -153,7 +153,14 @@ const facebook = {
     const token = await this.pageToken();
     const me = await graphGet(GRAPH, '/me?fields=id,name', token);
     if (String(me.id) !== String(env.FACEBOOK_PAGE_ID)) {
-      throw new Error(`the key can read page “${page.name}” but is not its page key (it belongs to “${me.name}”), so it cannot post. Put the page’s own access_token in FACEBOOK_PAGE_TOKEN.`);
+      let perms = '';
+      try {
+        const granted = await graphGet(GRAPH, '/me/permissions', env.FACEBOOK_PAGE_TOKEN);
+        perms = granted.data.filter((x) => x.status === 'granted').map((x) => x.permission).join(', ');
+      } catch {
+        perms = '(could not list)';
+      }
+      throw new Error(`the key can read page “${page.name}” but is not its page key (it belongs to “${me.name}”), so it cannot post. Asking Facebook for the page key failed: ${this.lastError}. Permissions of the key: ${perms}.`);
     }
     return `page “${page.name}” (page key ✓, can post)`;
   },
@@ -165,8 +172,10 @@ const facebook = {
     try {
       const page = await graphGet(GRAPH, `/${env.FACEBOOK_PAGE_ID}?fields=access_token`, env.FACEBOOK_PAGE_TOKEN);
       if (page.access_token) return page.access_token;
-    } catch {
+      this.lastError = 'Facebook returned no access_token for the page';
+    } catch (err) {
       // already a page key, or no access to the field: use the secret as it is
+      this.lastError = err.message;
     }
     return env.FACEBOOK_PAGE_TOKEN;
   },
