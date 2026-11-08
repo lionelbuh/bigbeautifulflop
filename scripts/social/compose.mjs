@@ -116,13 +116,18 @@ export function instagramCaption(s) {
  * the French; the American and British; the diplomats. (The closing image is added by the renderer.)
  */
 export function carouselCards(s) {
-  const card = ({ region, edition }, size) => ({
-    kind: region.country === 'diplomat' ? 'diplomat' : 'satire',
-    label: regionLabel(region),
-    text: excerpt(englishOf(region, edition), size),
-    local: region.lang.startsWith('fr') ? excerpt(edition.text, 170) : null,
-    chip: region.chip,
-  });
+  // French versions: the French text in full (the flavour), the English as a shorter summary;
+  // English versions: the text itself.
+  const card = ({ region, edition }, size) => {
+    const french = region.lang.startsWith('fr');
+    return {
+      kind: region.country === 'diplomat' ? 'diplomat' : 'satire',
+      label: regionLabel(region),
+      local: french ? excerpt(edition.text, 520) : null,
+      text: excerpt(englishOf(region, edition), french ? 170 : size),
+      chip: region.chip,
+    };
+  };
   const groups = [
     ofCountry(s, 'switzerland').slice(0, 2),
     ofCountry(s, 'france').slice(0, 2),

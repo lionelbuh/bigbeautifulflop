@@ -90,7 +90,8 @@ h1 { font-family: F; font-weight: 500; font-size: 58px; line-height: 1.05; lette
 .card--presidential { background: #e6ebf1; border-color: #c4cfdc; }
 .card--presidential .badge { color: #1f3a5f; }
 .text { font-size: 30px; line-height: 1.38; }
-.local { font-family: F; font-size: 26px; line-height: 1.35; color: #57524a; margin-bottom: 12px; }
+.local { font-family: F; font-size: 29px; line-height: 1.36; color: #171614; margin-bottom: 14px; }
+.local + .en + .text { font-size: 23px; line-height: 1.35; color: #57524a; }
 .en { font-size: 15px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #1f3a5f; margin-bottom: 4px; }
 .foot { margin-top: auto; display: flex; justify-content: space-between; font-size: 21px; color: #57524a; }
 .n3 { gap: 20px; }
