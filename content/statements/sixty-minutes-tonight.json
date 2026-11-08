@@ -41,7 +41,7 @@
   },
   "editions": {
     "neuchatelois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Ce soir, je passe à « 60 Minutes ». J’espère qu’ils montreront tout ce que j’ai fait de bien en deux ans, sans compter le premier mandat, qui était incroyable.",
         "Bon, chez nous, une montre, on ne la juge pas sur ce que l’horloger en dit à la télé : on la porte quelques années, et on voit si elle retarde. Moi, je ne retarde jamais. Enfin, presque. Et si le Sénat me donne un coup de main, on fera des choses à faire tourner toutes les aiguilles."
@@ -52,7 +52,7 @@
       ]
     },
     "fribourgeois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Salut les gaillards ! Ce soir je passe à la télé, à « 60 Minutes ». J’espère qu’ils montreront tout le bon travail.",
         "Chez nous, une heure, c’est juste le temps d’une fondue moitié-moitié. Et le meilleur, c’est à la fin : la religieuse, au fond du caquelon. Alors gardez le meilleur pour la fin, et demandez un coup de main au Sénat, comme on demande au voisin de passer le pain."
@@ -66,7 +66,7 @@
       ]
     },
     "breton": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Ce soir, je passe à « 60 Minutes ». J’espère qu’ils montreront le bon côté de deux ans de travail.",
         "Ici, on dit qu’il faut attendre la fin de la marée pour voir ce que la mer a laissé sur la plage. Moi, je préfère qu’on regarde à marée haute. Et si le Sénat veut bien ramer avec moi, on ira loin, même par vent contraire."
@@ -77,7 +77,7 @@
       ]
     },
     "lyonnais": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Ce soir, je passe à « 60 Minutes ». J’espère qu’ils montreront tout le bon.",
         "Mes deux ans, c’est comme un bouchon lyonnais : on vient pour la carte, on reste pour l’assiette. Et le premier mandat, c’était le tablier de sapeur : incroyable. Si le Sénat m’aide, je commande un deuxième pot, et là, les gones, ce sera inoubliable."
@@ -94,7 +94,7 @@
       ]
     },
     "california": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "So I’m doing 60 Minutes tonight. Hopefully they show all the good stuff from the past two years. Honestly, it’s been a whole journey. The first term? Incredible. Very on-brand.",
         "If the Senate gets on board, we can totally manifest some unbelievable things. Let’s just keep the energy positive."
@@ -105,7 +105,7 @@
       ]
     },
     "midwest": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Well, I’ll be on 60 Minutes tonight, if anybody’s interested. I sure hope they show some of the good things we’ve done these past two years.",
         "I don’t like to brag, but the first term went pretty darn well too. And if the folks in the Senate could lend a hand, why, we could get a whole lot done. No pressure."
@@ -116,7 +116,7 @@
       ]
     },
     "manchester": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "I’m on 60 Minutes tonight. Hopefully they show all the good bits of the last two years, and the first term, which was class, to be fair.",
         "Mind, I know how telly works: you give them an hour and they keep the twelve minutes where you said something daft. So if the Senate could back me up, cheers, that’d be top."
@@ -127,7 +127,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "His Majesty’s Government notes that the President will appear this evening on a respected American current affairs programme, and trusts that the exchange will be as illuminating as these occasions so often are.",
         "We would observe, gently, that one rarely chooses which parts of an interview are broadcast. That, after all, is rather the point of a free press."
@@ -138,7 +138,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France welcomes every opportunity for a head of state to account for his record before a free press. An hour of questions on national television is a demanding exercise, and a healthy one for democracy.",
         "We would only add, in friendship, that history tends to judge a record over decades rather than in a single broadcast, however well edited."
@@ -149,7 +149,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council has taken note of this television interview.",
         "In Switzerland, the President of the Confederation changes every year, which leaves little time for a two-year retrospective. Our record is set out in the Federal Council’s annual report to Parliament: several hundred pages, rarely broadcast in prime time."
