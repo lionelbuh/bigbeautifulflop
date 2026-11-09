@@ -42,7 +42,7 @@
   },
   "editions": {
     "neuchatelois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Trois cents pièces, toutes à leur place. On va *ouvrir le boîtier.*",
       "hookEn": "Three hundred parts, all in place. Let’s *open the case.*",
       "text": [
@@ -58,7 +58,7 @@
       ]
     },
     "genevois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "On crée une commission. *Dans dix ans, on saura.*",
       "hookEn": "We set up a commission. *In ten years, we’ll know.*",
       "text": [
@@ -74,7 +74,7 @@
       ]
     },
     "breton": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Quand le bateau ne rentre pas, *on ne dit pas que la mer a triché.*",
       "hookEn": "When the boat doesn’t come home, *you don’t say the sea cheated.*",
       "text": [
@@ -90,7 +90,7 @@
       ]
     },
     "chti": {
-      "review": "draft",
+      "review": "approved",
       "hook": "On recompte *tant qu’il reste des gaufres.*",
       "hookEn": "We recount *as long as there are waffles left.*",
       "text": [
@@ -106,7 +106,7 @@
       ]
     },
     "california": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Every machine has a bug. *Usually it’s the user.*",
       "text": [
         "Does anyone honestly believe that “election” was legit? Like, how were the polls that off? I’m hearing some early-vote “drops” were so huge you literally couldn’t win.",
@@ -118,7 +118,7 @@
       ]
     },
     "midwest": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Gary counts everything twice. *That’s suspicious too.*",
       "text": [
         "Well, I don’t want to make a fuss, but does anybody really think that “election” was on the up-and-up? Those polls sure missed by a country mile. And I hear some of those early-vote “dumps” were awful big.",
@@ -130,7 +130,7 @@
       ]
     },
     "london": {
-      "review": "draft",
+      "review": "approved",
       "hook": "It wasn’t me. *It was signal failure at Baker Street.*",
       "text": [
         "Does anyone seriously believe that “election” was honest? How could the polls be that wrong? Apparently, some of the early-vote “dumps” were so big you simply couldn’t win.",
@@ -142,7 +142,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Polls are opinions. *Ballots are counted.*",
       "text": [
         "His Majesty’s Government has every confidence in the ability of the United States to count its own votes, as it has done, with occasional excitement, for the best part of two and a half centuries.",
@@ -154,7 +154,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France has full confidence in American democracy, and in the officials and volunteers who count the votes in every county.",
         "In France, most ballots are still counted by hand, in public, in schools and town halls, and any citizen may watch. It is slow, a little old-fashioned, and very hard to argue with."
@@ -168,7 +168,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes note of the President’s concerns.",
         "In Switzerland, most citizens vote by post, several weeks in advance. The envelopes arrive in the communes in great numbers; we have never thought of calling them dumps. The results are counted and published commune by commune, and the people accept them, sometimes grumbling, which is also a Swiss tradition."
