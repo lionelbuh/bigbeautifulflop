@@ -38,6 +38,11 @@ function html(s, series) {
   const chip = `linear-gradient(135deg,${region.chip[0]} 50%,${region.chip[1]} 50%)`;
   const text = english ? excerpt(edition.text, series.id === 'diplomat' ? 460 : 380) : `“${excerpt(edition.text, 400)}”`;
   const title = videoTitle(s, series);
+  // the hook: the version’s punchline, readable from the very first frame (*words* in gold)
+  const mark = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  const hook = edition.hook
+    ? `<p class="k">${e(title.title)} · satire</p><p class="h">${mark(edition.hook)}</p>${edition.hookEn ? `<p class="s">${mark(edition.hookEn)}</p>` : ''}`
+    : `<p class="k">${e(series.kicker)}</p><p class="t">${e(title.title)}</p><p class="s">${e(title.sub)}</p>`;
   const box = series.id === 'diplomat' ? excerpt(edition.en, 220) : excerpt(series.id === 'swiss' || series.id === 'france' ? englishOf(region, edition) : edition.en, 260);
   return `<!doctype html><meta charset="utf-8"><style>
 @font-face{font-family:F;src:url('${font('fraunces-latin-opsz-normal.woff2')}');font-weight:100 900}
@@ -70,7 +75,11 @@ h1{position:absolute;left:70px;right:70px;top:310px;font-family:F;font-weight:50
 #title .k{font-size:32px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#f2cf78}
 #title .t{font-family:F;font-weight:500;font-size:112px;line-height:1.02;letter-spacing:-.02em}
 #title .s{font-size:40px;line-height:1.35;color:#d7dfe9}
-#title .t{animation:up .7s ease-out .2s both}#title .s{animation:fadein .6s ease-out .9s both}
+#title .h{font-family:F;font-weight:500;font-size:${(edition.hook || '').length > 60 ? 92 : 108}px;line-height:1.06;letter-spacing:-.02em}
+#title em{font-style:normal;color:#f2cf78}
+#title .s em{color:#fff}
+#title .chip{width:96px;height:96px;border-radius:50%;background:${chip};box-shadow:0 0 0 6px rgba(255,255,255,.18)}
+${edition.hook ? '' : '#title .t{animation:up .7s ease-out .2s both}#title .s{animation:fadein .6s ease-out .9s both}'}
 #title{animation:hide .4s ease-in 2.9s forwards}
 #end{position:absolute;inset:0;background:#f6f2ea;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;text-align:center}
 #end svg{width:220px;height:220px}
@@ -90,7 +99,7 @@ h1{position:absolute;left:70px;right:70px;top:310px;font-family:F;font-weight:50
 .foot{animation:hide .4s ease-in 9.5s forwards,fadein .5s ease-out 16.6s forwards}
 #end{animation:fadein .6s ease-out ${END}s both}
 </style>
-<div id="title">${logoFlop({ font: 'F' })}<p class="k">${e(series.kicker)}</p><p class="t">${e(title.title)}</p><p class="s">${e(title.sub)}</p></div>
+<div id="title">${edition.hook ? '<span class="chip"></span>' : logoFlop({ font: 'F' })}${hook}</div>
 <div class="top">${logoFlop({ font: 'F' })}<span class="brand">Big Beautiful <i>Flop</i></span></div>
 <p class="kicker">${e(series.kicker)}</p>
 <h1>${e(s.headline)}</h1>
@@ -140,7 +149,7 @@ const wanted = all.filter((s) => (only ? s.slug === only : videosPending(s, log,
 // the videos of statements already posted everywhere are deleted: the repository stays small
 for (const s of all) {
   if (s.slug === only || videosPending(s, log, config.start)) continue;
-  for (const f of ['video-1.mp4', 'video-2.mp4', 'videos.json']) rmSync(path.join(root, 'public/social', s.slug, f), { force: true });
+  for (const f of ['video-1.mp4', 'video-2.mp4', 'cover-1.jpg', 'cover-2.jpg', 'videos.json']) rmSync(path.join(root, 'public/social', s.slug, f), { force: true });
 }
 // series take turns: a statement keeps the series it was given (its first video may be posted
 // already); a new one takes the next ones in the rotation
@@ -169,6 +178,7 @@ for (const s of wanted) {
     next[i + 1] = { series: sr.id, hash };
     if (meta[i + 1]?.hash === hash && existsSync(file)) continue;
     await render(page, work, html(s, sr), file);
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-frames:v', '1', '-q:v', '3', path.join(dir, `cover-${i + 1}.jpg`)]);
     built += 1;
     console.log(`${s.slug}: video ${i + 1} (${sr.kicker})`);
   }
