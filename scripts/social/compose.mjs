@@ -195,7 +195,7 @@ export function videoSeriesFor(s, index) {
 export function secondVideoPost(s, series, max, tags = '') {
   const v = seriesVersion(s, series);
   const head = `${series.kicker}: ${s.headline}`;
-  const body = `Trump’s original and the presidential version, then ${regionLabel(v.region)} (satire).`;
+  const body = `${regionLabel(v.region)} (satire), then Trump’s original and the presidential version.`;
   const tail = `All versions: ${articleUrl(s)}\n\n${SATIRE_NOTE}${tags ? `\n\n${tags}` : ''}`;
   const full = `${head}\n\n${body}\n\n${tail}`;
   return chars(full) <= max ? full : `${head}\n\n${tail}`.slice(0, max);
@@ -211,4 +211,37 @@ export function videosPending(s, log, start) {
   if (!(s.published >= start)) return false;
   const entry = log?.[s.slug] || {};
   return SOCIAL_NETWORKS.some((name) => !entry[name] || (entry[name].video && !entry[`${name}:video2`]));
+}
+
+/** The title card that opens a video: in the version's language, with an English line under it. */
+const VIDEO_TITLES = {
+  vaudois: ['Les Vaudoiseries de Trump', 'in Vaud'],
+  valaisan: ['Trump à la valaisanne', 'in Valais'],
+  genevois: ['Trump à la genevoise', 'in Geneva'],
+  fribourgeois: ['Trump à la fribourgeoise', 'in Fribourg'],
+  neuchatelois: ['Trump à la neuchâteloise', 'in Neuchâtel'],
+  parisien: ['Trump à la parisienne', 'in Paris'],
+  sud: ['Trump avec l’accent du Sud', 'in the South of France'],
+  chti: ['Trump chez les Ch’tis', 'in the North of France'],
+  lyonnais: ['Trump à la lyonnaise', 'in Lyon'],
+  breton: ['Trump à la bretonne', 'in Brittany'],
+  'new-york': ['Trump, New York style', 'in New York'],
+  texas: ['Trump, Texas style', 'in Texas'],
+  'deep-south': ['Trump, Deep South style', 'in the Deep South'],
+  california: ['Trump, California style', 'in California'],
+  boston: ['Trump, Boston style', 'in Boston'],
+  midwest: ['Trump, Midwest style', 'in the Midwest'],
+  london: ['Trump, London style', 'in London'],
+  liverpool: ['Trump, Scouse style', 'in Liverpool'],
+  manchester: ['Trump, Manc style', 'in Manchester'],
+  yorkshire: ['Trump, Yorkshire style', 'in Yorkshire'],
+  scotland: ['Trump, Scottish style', 'in Scotland'],
+  wales: ['Trump, Welsh style', 'in Wales'],
+};
+
+export function videoTitle(s, series) {
+  if (series.id === 'diplomat') return { title: 'Trump and the Diplomats', sub: 'The same post, the diplomatic way' };
+  const { region } = seriesVersion(s, series);
+  const [title, where] = VIDEO_TITLES[region.id] || [`Trump, ${region.name} style`, `in ${region.name}`];
+  return { title, sub: `The same post, retold ${where}` };
 }
