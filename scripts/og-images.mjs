@@ -159,7 +159,7 @@ await shot(icon(32, { square: false }), path.join(root, 'public/favicon-32.png')
 
 // Instagram carousels of the front-page statements (JPEG, as Instagram requires)
 const socialDir = path.join(root, 'public/social');
-const clearImages = (dir) => { for (const f of readdirSync(dir)) if (f.endsWith('.jpg')) rmSync(path.join(dir, f)); };
+const clearImages = (dir) => { for (const f of readdirSync(dir)) if (/^\d+\.jpg$/.test(f)) rmSync(path.join(dir, f)); };
 // the front-page statements, plus older ones listed in content/social/config.json ("extraCarousels")
 const extra = JSON.parse(readFileSync(path.join(root, 'content/social/config.json'), 'utf8')).extraCarousels || [];
 const recent = [...splitLatest(statements).recent, ...statements.filter((s) => extra.includes(s.slug))]

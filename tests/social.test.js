@@ -72,4 +72,13 @@ describe('social posts', () => {
     expect(videosPending(s, { x: { ...all, bluesky: { id: 1, video: 1 } } }, '2026-11-08')).toBe(true);
     expect(videosPending(s, { x: { ...all, bluesky: { id: 1, video: 1 }, 'bluesky:video2': { id: 5 } } }, '2026-11-08')).toBe(false);
   });
+  it('keeps video hooks short, with an English line for the French ones', () => {
+    for (const s of statements) {
+      for (const [id, ed] of Object.entries(s.editions)) {
+        if (!ed.hook) continue;
+        expect(chars(ed.hook.replace(/\*/g, ''))).toBeLessThanOrEqual(80);
+        if (!['british-diplomat'].includes(id) && /[àâçéèêëîïôûù’]/.test(ed.hook + ed.text.join(' ')) && ed.text.join(' ').match(/ (le|la|les|et|est) /)) expect(ed.hookEn).toBeTruthy();
+      }
+    }
+  });
 });

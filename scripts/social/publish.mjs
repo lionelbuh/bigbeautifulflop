@@ -58,6 +58,8 @@ const SECOND_VIDEO_DELAY = 4 * 3600 * 1000; // the second video goes out about f
 const videoFile = (s, n) => path.join(root, 'public/social', s.slug, `video-${n}.mp4`);
 const hasVideo = (s, n) => existsSync(videoFile(s, n));
 const videoUrl = (s, n) => `${SITE_URL}/social/${s.slug}/video-${n}.mp4`;
+const coverFile = (s, n) => path.join(root, 'public/social', s.slug, `cover-${n}.jpg`);
+const coverUrl = (s, n) => `${SITE_URL}/social/${s.slug}/cover-${n}.jpg`;
 function videoSeries(s, n) {
   const meta = path.join(root, 'public/social', s.slug, 'videos.json');
   const id = existsSync(meta) ? JSON.parse(readFileSync(meta, 'utf8'))[n]?.series : null;
@@ -351,7 +353,7 @@ const instagram = {
   /** A Reel (also shown in the feed). */
   async reel(s, n, caption) {
     const ig = env.INSTAGRAM_USER_ID;
-    const container = await graphPost(GRAPH, `/${ig}/media`, env.INSTAGRAM_TOKEN, { media_type: 'REELS', video_url: videoUrl(s, n), caption, share_to_feed: 'true' });
+    const container = await graphPost(GRAPH, `/${ig}/media`, env.INSTAGRAM_TOKEN, { media_type: 'REELS', video_url: videoUrl(s, n), caption, share_to_feed: 'true', ...(existsSync(coverFile(s, n)) ? { cover_url: coverUrl(s, n) } : {}) });
     await this.waitReady(container.id, 60);
     const post = await graphPost(GRAPH, `/${ig}/media_publish`, env.INSTAGRAM_TOKEN, { creation_id: container.id });
     return { id: post.id };
