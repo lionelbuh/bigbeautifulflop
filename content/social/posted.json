@@ -92,5 +92,27 @@
       "id": "17922770760463160",
       "video": 1
     }
+  },
+  "fox-news-poll-hit-job": {
+    "bluesky": {
+      "at": "2026-11-09T07:27:56.077Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3mzufnbipgc2x",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-09T07:29:27.167Z",
+      "id": "17893386861458024",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-09T07:29:33.085Z",
+      "id": "1694928591966990",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-09T07:30:34.171Z",
+      "id": "17969736639194417",
+      "video": 1
+    }
   }
 }
