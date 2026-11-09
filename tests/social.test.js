@@ -50,6 +50,8 @@ describe('social posts', () => {
       const series = videoSeriesFor(s, i);
       expect(series.length).toBeGreaterThan(0);
       expect(new Set(series.map((x) => x.id)).size).toBe(series.length);
+      const langs = new Set(VIDEO_SERIES.filter((x) => seriesVersion(s, x)).map((x) => x.lang));
+      for (const start of [0, 1, 2, 3, 4]) expect(new Set(videoSeriesFor(s, start).map((x) => x.lang)).size).toBe(langs.size);
       for (const sr of series) {
         expect(VIDEO_SERIES).toContain(sr);
         expect(seriesVersion(s, sr)).not.toBeNull();
