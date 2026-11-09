@@ -55,6 +55,23 @@ const graphPost = (base, p, token, form) => call(`${base}${p}`, { method: 'POST'
 
 /* ---------------- videos (public/social/<slug>/video-1.mp4, video-2.mp4: npm run videos) ---------------- */
 const SECOND_VIDEO_DELAY = 4 * 3600 * 1000; // the second video goes out about four hours after the first
+
+/**
+ * The networks fetch the share image and the video from the site: right after a deploy, GitHub Pages
+ * can take a few minutes to serve the new files. Wait (up to ten minutes) until they answer.
+ */
+const online = new Set();
+async function waitOnline(s) {
+  if (online.has(s.slug)) return;
+  const urls = [`${SITE_URL}/og/${s.slug}.png`, ...(hasVideo(s, 1) ? [videoUrl(s, 1)] : [])];
+  for (let i = 0; i < 40; i += 1) {
+    const codes = await Promise.all(urls.map((u) => fetch(u, { method: 'HEAD' }).then((r) => r.status, () => 0)));
+    if (codes.every((c) => c === 200)) { online.add(s.slug); return; }
+    if (i === 0) console.log(`  waiting for the site to serve ${s.slug} (${codes.join(', ')})…`);
+    await new Promise((r) => setTimeout(r, 15000));
+  }
+  throw new Error('the site does not serve the share image or the video yet');
+}
 const videoFile = (s, n) => path.join(root, 'public/social', s.slug, `video-${n}.mp4`);
 const hasVideo = (s, n) => existsSync(videoFile(s, n));
 const videoUrl = (s, n) => `${SITE_URL}/social/${s.slug}/video-${n}.mp4`;
@@ -459,6 +476,7 @@ async function main() {
       const net = NETWORKS[name];
       if (!net.ready()) continue;
       try {
+        await waitOnline(s);
         const res = await net.publish(s);
         log[s.slug] = { ...log[s.slug], [name]: { at: new Date().toISOString(), id: res.id, ...(res.video ? { video: res.video } : {}) } };
         writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
