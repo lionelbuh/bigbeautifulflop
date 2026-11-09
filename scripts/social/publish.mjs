@@ -235,9 +235,9 @@ const threads = {
   /** Media containers need a moment before they can be published. */
   async waitReady(id, tries = 20) {
     for (let i = 0; i < tries; i += 1) {
-      const { status } = await graphGet(THREADS, `/${id}?fields=status`, env.THREADS_TOKEN);
+      const { status, error_message: why } = await graphGet(THREADS, `/${id}?fields=status,error_message`, env.THREADS_TOKEN);
       if (status === 'FINISHED') return;
-      if (status === 'ERROR' || status === 'EXPIRED') throw new Error(`Threads container ${status}`);
+      if (status === 'ERROR' || status === 'EXPIRED') throw new Error(`Threads container ${status}${why ? `: ${why}` : ''}`);
       await sleep(i < 5 ? 3000 : 6000);
     }
     throw new Error('Threads container not ready in time');
@@ -356,13 +356,13 @@ const instagram = {
   },
   images(s) {
     const dir = path.join(root, 'public/social', s.slug);
-    return existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.jpg')).sort().map((f) => `${SITE_URL}/social/${s.slug}/${f}`) : [];
+    return existsSync(dir) ? readdirSync(dir).filter((f) => /^\d+\.jpg$/.test(f)).sort().map((f) => `${SITE_URL}/social/${s.slug}/${f}`) : [];
   },
   async waitReady(id, tries = 20) {
     for (let i = 0; i < tries; i += 1) {
-      const { status_code: status } = await graphGet(GRAPH, `/${id}?fields=status_code`, env.INSTAGRAM_TOKEN);
+      const { status_code: status, status: why } = await graphGet(GRAPH, `/${id}?fields=status_code,status`, env.INSTAGRAM_TOKEN);
       if (status === 'FINISHED') return;
-      if (status === 'ERROR' || status === 'EXPIRED') throw new Error(`Instagram container ${status}`);
+      if (status === 'ERROR' || status === 'EXPIRED') throw new Error(`Instagram container ${status}${why ? `: ${why}` : ''}`);
       await sleep(i < 5 ? 3000 : 6000);
     }
     throw new Error('Instagram container not ready in time');
