@@ -150,7 +150,7 @@ people stop scrolling. The first frame is also the Reel’s cover on Instagram (
 for every regional version and for the British Diplomat. The sound logo (`scripts/social/jingle.py`): a fanfare at the start,
 the same fanfare that flops at the end. Series take turns from one statement to the next: The Diplomat
 Desk (British Diplomat), Le Suisse de la semaine, Meanwhile in Britain, Pendant ce temps en France,
-Across America.
+Across America. One of the two videos is always in English and the other in French (Swiss or French series).
 
 When a statement has videos, video 1 replaces the images: a Reel on Instagram, a video post on
 Facebook, the first post of the thread on Bluesky and Threads. Video 2 is posted alone about **four

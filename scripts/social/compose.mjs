@@ -165,11 +165,11 @@ export function carouselCards(s) {
 
 /** The video series, in their order of rotation. */
 export const VIDEO_SERIES = [
-  { id: 'diplomat', kicker: 'The Diplomat Desk', countries: ['diplomat'], prefer: ['british-diplomat'], box: 'What he really means' },
-  { id: 'swiss', kicker: 'Le Suisse de la semaine', countries: ['switzerland'], box: 'In English' },
-  { id: 'uk', kicker: 'Meanwhile in Britain', countries: ['united-kingdom'], box: 'In plain English' },
-  { id: 'france', kicker: 'Pendant ce temps en France', countries: ['france'], box: 'In English' },
-  { id: 'us', kicker: 'Across America', countries: ['united-states'], box: 'In plain English' },
+  { id: 'diplomat', kicker: 'The Diplomat Desk', countries: ['diplomat'], prefer: ['british-diplomat'], lang: 'en', box: 'What he really means' },
+  { id: 'swiss', kicker: 'Le Suisse de la semaine', countries: ['switzerland'], lang: 'fr', box: 'In English' },
+  { id: 'uk', kicker: 'Meanwhile in Britain', countries: ['united-kingdom'], lang: 'en', box: 'In plain English' },
+  { id: 'france', kicker: 'Pendant ce temps en France', countries: ['france'], lang: 'fr', box: 'In English' },
+  { id: 'us', kicker: 'Across America', countries: ['united-states'], lang: 'en', box: 'In plain English' },
 ];
 
 /** The version a series shows for a statement (null if the statement has none in that series). */
@@ -180,17 +180,25 @@ export function seriesVersion(s, series) {
 }
 
 /**
- * The two video series of a statement: the first two, from position `start` of VIDEO_SERIES, that the
- * statement has a version for. The renderer keeps the position in content/social/video-rotation.json,
- * so series take turns from one statement to the next.
+ * The two video series of a statement: the first one, from position `start` of VIDEO_SERIES, that the
+ * statement has a version for, then the next one in the other language, so that there is always one
+ * video in English and one in French (when the statement has both). The renderer keeps the position in
+ * content/social/video-rotation.json, so series take turns from one statement to the next.
  */
 export function videoSeriesFor(s, start = 0) {
-  const picks = [];
-  for (let k = 0; k < VIDEO_SERIES.length && picks.length < 2; k += 1) {
-    const series = VIDEO_SERIES[(start + k) % VIDEO_SERIES.length];
-    if (seriesVersion(s, series)) picks.push(series);
-  }
-  return picks;
+  const n = VIDEO_SERIES.length;
+  const from = (i, ok) => {
+    for (let k = 0; k < n; k += 1) {
+      const series = VIDEO_SERIES[(i + k) % n];
+      if (ok(series) && seriesVersion(s, series)) return series;
+    }
+    return null;
+  };
+  const first = from(start, () => true);
+  if (!first) return [];
+  const at = VIDEO_SERIES.indexOf(first) + 1;
+  const second = from(at, (x) => x.lang !== first.lang) || from(at, (x) => x !== first);
+  return second ? [first, second] : [first];
 }
 
 /** Text of the second video's post (posted about four hours after the first). */
