@@ -41,7 +41,7 @@
   },
   "editions": {
     "genevois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Le sondage de Fox News, toujours le pire, avec des questions qui me vexent. Chaque question est un coup monté, et chaque réponse, c’est « des foutaises ! ». Et ça dure depuis des années.",
         "Remarquez, à Genève, on a l’habitude des grandes conférences où chacun trouve les questions de l’autre insultantes. On en tire une déclaration finale de quarante pages, on la signe au bord du lac, et le soir tout le monde dîne ensemble. Moi, je veux bien signer : à condition qu’on supprime les questions."
@@ -55,7 +55,7 @@
       ]
     },
     "fribourgeois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Le sondage de Fox News, toujours le pire, me pose des questions insultantes. Chaque question est un coup monté, et chaque réponse, c’est « n’importe quoi ! ». Ça dure depuis des années.",
         "Chez nous, à la Bénichon, il y a un sondage tous les ans, avec une seule question : « Encore un peu de cuchaule avec la moutarde ? » Personne ne la trouve insultante, et tout le monde répond oui. Voilà un sondage sérieux. Fox News devrait venir voir comment on fait."
@@ -69,7 +69,7 @@
       ]
     },
     "chti": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Le sondage de Fox News, toujours le pire, avec ses questions qui m’insultent. Chaque question, c’est un coup monté, et chaque réponse, c’est « des carabistouilles ! ». Et ça dure depuis des années, biloute.",
         "Chez nous, si un sondeur sonne à la porte, on le fait entrer, on lui sert un café et une part de tarte au sucre, et à la fin, c’est lui qui répond à nos questions. Fox News, viens donc à la maison : on causera, et tu repartiras avec la bonne réponse."
@@ -83,7 +83,7 @@
       ]
     },
     "lyonnais": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Le sondage de Fox News, toujours le pire, me pose des questions insultantes. Chaque question est un coup monté, et chaque réponse, c’est « des bêtises ! ». Ça dure depuis des années.",
         "À Lyon, on connaît ce théâtre : c’est Guignol. Le gendarme pose les questions, et Guignol répond à coups de bâton. Les enfants applaudissent depuis deux siècles. Moi, je fais pareil avec Fox News, et franchement, les gones, j’attends toujours les applaudissements."
@@ -97,7 +97,7 @@
       ]
     },
     "new-york": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Fox News poll, always the worst. The questions? Insulting. Every one’s a hit job, and every answer is a word I can’t repeat, and believe me, I’ve heard them all on the subway.",
         "This has been going on for years. You want a real poll? Get in a cab. The driver will tell you what he thinks of everybody, for free, whether you asked or not."
@@ -108,7 +108,7 @@
       ]
     },
     "deep-south": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Now, I don’t like to speak ill of anybody, but the Fox News poll, bless its heart, is always the worst. Every question they ask is just plain ugly, and every answer is a word my mama would have washed out with soap.",
         "This has been going on for years. A gentleman never holds a grudge. He just remembers everything, forever. More sweet tea?"
@@ -119,7 +119,7 @@
       ]
     },
     "wales": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Fox News poll, always the worst, with insulting questions. Every one’s a hit job, and every answer is something you wouldn’t say in chapel.",
         "Been going on for years, mind. Here we’d settle it properly: a male voice choir, four-part harmony, and the answer sung so loud nobody can hear the question. Tidy."
@@ -130,7 +130,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "His Majesty’s Government has noted the President’s views on the Fox News poll, and on the wording of its questions.",
         "In Britain, too, polls are occasionally wrong, and politicians occasionally say so. It is customary, however, to wait until the results are in."
@@ -141,7 +141,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France considers the freedom to ask questions, including uncomfortable ones, to be the very foundation of public debate.",
         "We would gently add that in France, polls may not be published on the day before the vote or on polling day itself. The rule spares candidates a great deal of irritation, and voters a great deal of noise."
@@ -155,7 +155,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes note of the President’s views on opinion polls.",
         "In Switzerland, the people answer the real questions themselves, up to four times a year, in popular votes. The questions are sometimes long and difficult, and voters sometimes find them irritating. They answer anyway, and the Federal Council respects the answer, whatever it is."

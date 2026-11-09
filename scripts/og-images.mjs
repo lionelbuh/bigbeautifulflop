@@ -159,6 +159,7 @@ await shot(icon(32, { square: false }), path.join(root, 'public/favicon-32.png')
 
 // Instagram carousels of the front-page statements (JPEG, as Instagram requires)
 const socialDir = path.join(root, 'public/social');
+const clearImages = (dir) => { for (const f of readdirSync(dir)) if (f.endsWith('.jpg')) rmSync(path.join(dir, f)); };
 // the front-page statements, plus older ones listed in content/social/config.json ("extraCarousels")
 const extra = JSON.parse(readFileSync(path.join(root, 'content/social/config.json'), 'utf8')).extraCarousels || [];
 const recent = [...splitLatest(statements).recent, ...statements.filter((s) => extra.includes(s.slug))]
@@ -166,8 +167,8 @@ const recent = [...splitLatest(statements).recent, ...statements.filter((s) => e
 await page.setViewportSize({ width: 1080, height: 1350 });
 for (const s of recent) {
   const dir = path.join(socialDir, s.slug);
-  rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
+  clearImages(dir);
   const slides = carouselCards(s);
   const total = slides.length + 1;
   const pages = [...slides.map((cards, i) => slideHtml(s, cards, i, total)), endSlideHtml(s, total)];
@@ -180,7 +181,12 @@ for (const s of recent) {
   }
 }
 mkdirSync(socialDir, { recursive: true });
-for (const d of readdirSync(socialDir)) if (!recent.some((s) => s.slug === d)) rmSync(path.join(socialDir, d), { recursive: true, force: true });
+// other statements lose their carousel images, never their videos (scripts/social/videos.mjs)
+for (const d of readdirSync(socialDir)) {
+  if (recent.some((s) => s.slug === d)) continue;
+  clearImages(path.join(socialDir, d));
+  if (!readdirSync(path.join(socialDir, d)).length) rmSync(path.join(socialDir, d), { recursive: true, force: true });
+}
 await browser.close();
 rmSync(work, { recursive: true, force: true });
 
