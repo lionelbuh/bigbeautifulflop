@@ -22,7 +22,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
 import { logoFlop } from '../../src/site/logo.js';
 import { escapeHtml as e } from '../../src/site/html.js';
-import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle } from './compose.mjs';
+import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle, VIDEO_SERIES } from './compose.mjs';
 
 const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -142,7 +142,12 @@ for (const s of all) {
   if (s.slug === only || videosPending(s, log, config.start)) continue;
   for (const f of ['video-1.mp4', 'video-2.mp4', 'videos.json']) rmSync(path.join(root, 'public/social', s.slug, f), { force: true });
 }
-const oldestFirst = [...all].reverse();
+// series take turns: a statement keeps the series it was given (its first video may be posted
+// already); a new one takes the next ones in the rotation
+const rotationFile = path.join(root, 'content/social/video-rotation.json');
+let turn = existsSync(rotationFile) ? JSON.parse(readFileSync(rotationFile, 'utf8')).next : 0;
+const byId = (id) => VIDEO_SERIES.find((x) => x.id === id);
+wanted.sort((a, b) => `${a.published} ${a.original.date}T${a.original.time}`.localeCompare(`${b.published} ${b.original.date}T${b.original.time}`));
 const work = mkdtempSync(path.join(tmpdir(), 'bbf-video-'));
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
@@ -152,7 +157,11 @@ for (const s of wanted) {
   mkdirSync(dir, { recursive: true });
   const metaFile = path.join(dir, 'videos.json');
   const meta = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, 'utf8')) : {};
-  const series = videoSeriesFor(s, oldestFirst.indexOf(s));
+  let series = [meta[1]?.series, meta[2]?.series].filter(Boolean).map(byId);
+  if (!series.length || series.some((x) => !x || !seriesVersion(s, x))) {
+    series = videoSeriesFor(s, turn);
+    turn = (VIDEO_SERIES.indexOf(series.at(-1)) + 1) % VIDEO_SERIES.length;
+  }
   const next = {};
   for (const [i, sr] of series.entries()) {
     const file = path.join(dir, `video-${i + 1}.mp4`);
@@ -166,5 +175,6 @@ for (const s of wanted) {
   writeFileSync(metaFile, `${JSON.stringify(next, null, 2)}\n`);
 }
 await browser.close();
+writeFileSync(rotationFile, `${JSON.stringify({ next: turn }, null, 2)}\n`);
 rmSync(work, { recursive: true, force: true });
 console.log(`Videos: ${built} rendered, ${wanted.length} statements.`);
