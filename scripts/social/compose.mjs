@@ -180,15 +180,17 @@ export function seriesVersion(s, series) {
 }
 
 /**
- * The two video series of a statement: they take turns from one statement to the next (`index` is the
- * statement's position, oldest first), skipping series the statement has no version for.
+ * The two video series of a statement: the first two, from position `start` of VIDEO_SERIES, that the
+ * statement has a version for. The renderer keeps the position in content/social/video-rotation.json,
+ * so series take turns from one statement to the next.
  */
-export function videoSeriesFor(s, index) {
-  const available = VIDEO_SERIES.filter((series) => seriesVersion(s, series));
-  if (!available.length) return [];
-  const start = (index * 2) % available.length;
-  const picks = [available[start], available[(start + 1) % available.length]];
-  return picks.filter((x, i) => picks.indexOf(x) === i);
+export function videoSeriesFor(s, start = 0) {
+  const picks = [];
+  for (let k = 0; k < VIDEO_SERIES.length && picks.length < 2; k += 1) {
+    const series = VIDEO_SERIES[(start + k) % VIDEO_SERIES.length];
+    if (seriesVersion(s, series)) picks.push(series);
+  }
+  return picks;
 }
 
 /** Text of the second video's post (posted about four hours after the first). */

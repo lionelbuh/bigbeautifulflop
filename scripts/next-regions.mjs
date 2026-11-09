@@ -13,7 +13,8 @@ import { COUNTRIES, regionsOf } from '../content/regions.js';
 export const FORMAT = { switzerland: 2, france: 2, 'united-states': 2, 'united-kingdom': 1 };
 
 export function nextRegions(statements, format = FORMAT) {
-  const stamp = (s) => `${s.original.date}T${s.original.time || '00:00'}`;
+  // by publication date (a post can be added days after it was written), then by the post’s own time
+  const stamp = (s) => `${s.published} ${s.original.date}T${s.original.time || "00:00"}`;
   const lastUsed = (id) => statements.filter((s) => s.editions?.[id]).map(stamp).sort().pop() || '';
   return Object.fromEntries(Object.entries(format).map(([country, n]) => [
     country,
