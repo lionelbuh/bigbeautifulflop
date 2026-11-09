@@ -1,9 +1,10 @@
 /**
- * Social videos (vertical 1080 × 1920, 30 s, H.264 + AAC), two per statement, from two series that take
- * turns (see videoSeriesFor in compose.mjs). Screen 1 always shows Trump’s original and the presidential
- * version together; then the series’ version and its English (or “What he really means”); then the end
- * card. The sound logo (scripts/social/jingle.py) opens with a fanfare and ends with the same fanfare
- * that flops.
+ * Social videos (vertical 1080 × 1920, 31 s, H.264 + AAC), two per statement, from two series that take
+ * turns (see videoSeriesFor in compose.mjs). A title card first (“Les Vaudoiseries de Trump”, so the
+ * second video does not look like a repeat), then the series’ version and its English (or “What he
+ * really means”), then Trump’s original, always on the same screen as the presidential version, then
+ * the end card. The sound logo (scripts/social/jingle.py) opens with a fanfare and ends with the same
+ * fanfare that flops.
  *
  *   npm run videos     after npm run images: the videos of statements waiting to be posted (others are deleted);
  *                      --slug <slug> renders one statement's videos
@@ -21,12 +22,13 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
 import { logoFlop } from '../../src/site/logo.js';
 import { escapeHtml as e } from '../../src/site/html.js';
-import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending } from './compose.mjs';
+import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle } from './compose.mjs';
 
 const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const FPS = 30;
-const DURATION = 30;
+const DURATION = 31;
+const END = 27; // the end card and the ending fanfare
 const SELF = readFileSync(fileURLToPath(import.meta.url), 'utf8');
 const font = (f) => pathToFileURL(path.join(root, 'node_modules/@fontsource-variable/fraunces/files', f)).href;
 
@@ -35,6 +37,7 @@ function html(s, series) {
   const english = !region.lang.startsWith('fr');
   const chip = `linear-gradient(135deg,${region.chip[0]} 50%,${region.chip[1]} 50%)`;
   const text = english ? excerpt(edition.text, series.id === 'diplomat' ? 460 : 380) : `“${excerpt(edition.text, 400)}”`;
+  const title = videoTitle(s, series);
   const box = series.id === 'diplomat' ? excerpt(edition.en, 220) : excerpt(series.id === 'swiss' || series.id === 'france' ? englishOf(region, edition) : edition.en, 260);
   return `<!doctype html><meta charset="utf-8"><style>
 @font-face{font-family:F;src:url('${font('fraunces-latin-opsz-normal.woff2')}');font-weight:100 900}
@@ -62,6 +65,13 @@ h1{position:absolute;left:70px;right:70px;top:310px;font-family:F;font-weight:50
 .box .lab{font-size:26px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#f2cf78;margin-bottom:12px}
 .box .text{font-family:F;font-size:${series.id === 'diplomat' ? 46 : 38}px;line-height:1.24}
 .foot{position:absolute;left:70px;right:70px;bottom:250px;display:flex;justify-content:space-between;font-size:28px;color:#57524a}
+#title{position:absolute;inset:0;z-index:2;background:#1f3a5f;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:44px;text-align:center;padding:0 80px}
+#title svg{width:170px;height:170px}
+#title .k{font-size:32px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#f2cf78}
+#title .t{font-family:F;font-weight:500;font-size:112px;line-height:1.02;letter-spacing:-.02em}
+#title .s{font-size:40px;line-height:1.35;color:#d7dfe9}
+#title .t{animation:up .7s ease-out .2s both}#title .s{animation:fadein .6s ease-out .9s both}
+#title{animation:hide .4s ease-in 2.9s forwards}
 #end{position:absolute;inset:0;background:#f6f2ea;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;text-align:center}
 #end svg{width:220px;height:220px}
 #end .big{font-family:F;font-size:88px;line-height:1.08}
@@ -70,15 +80,17 @@ h1{position:absolute;left:70px;right:70px;top:310px;font-family:F;font-weight:50
 @keyframes up{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 @keyframes out{to{opacity:0;transform:translateY(-60px)}}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
-.kicker,h1{animation:up .7s ease-out both}h1{animation-delay:.3s}
-#s1 .trump{animation:up .8s ease-out 1.5s both}
-#s1 .pres{animation:up .8s ease-out 4.5s both}
-#s1{animation:out .6s ease-in 13.2s forwards}
-#s2 .card{animation:up .8s ease-out 13.8s both}
-#s2 .box{animation:up .8s ease-out 20.5s both}
-.foot{animation:out .4s ease-in 20.2s forwards}
-#end{animation:fadein .6s ease-out 26.5s both}
+@keyframes hide{to{opacity:0}}
+.kicker,h1{animation:up .7s ease-out 3.1s both}h1{animation-delay:3.3s}
+#s2 .card{animation:up .8s ease-out 3.8s both}
+#s2 .box{animation:up .8s ease-out 9.8s both}
+#s2{animation:out .6s ease-in 16s forwards}
+#s1 .trump{animation:up .8s ease-out 16.6s both}
+#s1 .pres{animation:up .8s ease-out 18.6s both}
+.foot{animation:hide .4s ease-in 9.5s forwards,fadein .5s ease-out 16.6s forwards}
+#end{animation:fadein .6s ease-out ${END}s both}
 </style>
+<div id="title">${logoFlop({ font: 'F' })}<p class="k">${e(series.kicker)}</p><p class="t">${e(title.title)}</p><p class="s">${e(title.sub)}</p></div>
 <div class="top">${logoFlop({ font: 'F' })}<span class="brand">Big Beautiful <i>Flop</i></span></div>
 <p class="kicker">${e(series.kicker)}</p>
 <h1>${e(s.headline)}</h1>
@@ -115,7 +127,7 @@ async function render(page, work, markup, file) {
   const sound = path.join(root, 'scripts/social/sound');
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%04d.jpg'),
     '-i', path.join(sound, 'bbf-opening.wav'), '-i', path.join(sound, 'bbf-ending.wav'),
-    '-filter_complex', `[2:a]adelay=26500|26500[a2];[1:a][a2]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:${DURATION},afade=t=out:st=${DURATION - 0.4}:d=0.4[a]`,
+    '-filter_complex', `[2:a]adelay=${END * 1000}|${END * 1000}[a2];[1:a][a2]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:${DURATION},afade=t=out:st=${DURATION - 0.4}:d=0.4[a]`,
     '-map', '0:v', '-map', '[a]', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '21', '-c:a', 'aac', '-b:a', '160k',
     '-t', String(DURATION), '-movflags', '+faststart', file]);
 }

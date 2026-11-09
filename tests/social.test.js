@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { loadStatements } from '../src/site/content.js';
-import { excerpt, threadPosts, threadFor, facebookPost, instagramCaption, carouselCards, VIDEO_SERIES, videoSeriesFor, secondVideoPost, seriesVersion, videosPending } from '../scripts/social/compose.mjs';
+import { excerpt, threadPosts, threadFor, facebookPost, instagramCaption, carouselCards, VIDEO_SERIES, videoSeriesFor, secondVideoPost, seriesVersion, videosPending, videoTitle } from '../scripts/social/compose.mjs';
 
 const statements = loadStatements(path.resolve('content/statements'));
 const chars = (t) => [...t].length;
@@ -53,6 +53,7 @@ describe('social posts', () => {
       for (const sr of series) {
         expect(VIDEO_SERIES).toContain(sr);
         expect(seriesVersion(s, sr)).not.toBeNull();
+        expect(videoTitle(s, sr).title).toMatch(/Trump/);
         for (const max of [300, 500, 2200]) {
           const post = secondVideoPost(s, sr, max, max === 300 ? '#Trump' : '');
           expect(chars(post)).toBeLessThanOrEqual(max);

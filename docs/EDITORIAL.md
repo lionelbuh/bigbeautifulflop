@@ -140,9 +140,10 @@ INSTAGRAM_USER_ID, INSTAGRAM_TOKEN.
 ### Videos
 
 Each new statement gets **two vertical videos** (30 s, no voice), made by `npm run videos` after
-`npm run images` (`public/social/<slug>/video-1.mp4`, `video-2.mp4`). Screen 1 always shows Trump’s
-original **together with** the presidential version (never Trump alone); then one version of a series,
-with its English; then the end card. The sound logo (`scripts/social/jingle.py`): a fanfare at the start,
+`npm run images` (`public/social/<slug>/video-1.mp4`, `video-2.mp4`). Four screens: a title card
+(“Les Vaudoiseries de Trump”, “Trump, Texas style”, “Trump and the Diplomats”…, so that the second video
+does not look like a repeat of the first); one version of a series, with its English; Trump’s original,
+always **together with** the presidential version (never Trump alone); the end card. The sound logo (`scripts/social/jingle.py`): a fanfare at the start,
 the same fanfare that flops at the end. Series take turns from one statement to the next: The Diplomat
 Desk (British Diplomat), Le Suisse de la semaine, Meanwhile in Britain, Pendant ce temps en France,
 Across America.
