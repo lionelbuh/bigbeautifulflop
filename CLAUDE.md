@@ -9,7 +9,8 @@
 - New statements follow the standard format in `docs/EDITORIAL.md` (11 versions); pick regions with
   `npm run regions`. Times pasted from Truth Social are Pacific: store them in Eastern time.
 - After adding or changing a statement: `npm run images` (share images in `public/og/`, uses the
-  pre-installed Playwright), then commit them with the content.
+  pre-installed Playwright), then `npm run videos` (two social videos per statement waiting to be posted,
+  in `public/social/<slug>/`; deletes the videos of statements already posted), and commit them with the content.
 - Before pushing: `npm test` and `npm run build` must pass.
 - Editorial rules are in `docs/EDITORIAL.md`: never invent or alter a quote; adaptations are always labelled satire.
 - Morges.info is a separate project: never modify it from here.

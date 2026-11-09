@@ -136,3 +136,18 @@ network posts a statement once: `content/social/posted.json` keeps track. Since 
 GitHub secrets: BLUESKY_HANDLE, BLUESKY_APP_PASSWORD, THREADS_TOKEN (60 days: a reminder issue
 opens from day 50; update `threadsTokenCreated` when renewed), FACEBOOK_PAGE_ID, FACEBOOK_PAGE_TOKEN,
 INSTAGRAM_USER_ID, INSTAGRAM_TOKEN.
+
+### Videos
+
+Each new statement gets **two vertical videos** (30 s, no voice), made by `npm run videos` after
+`npm run images` (`public/social/<slug>/video-1.mp4`, `video-2.mp4`). Screen 1 always shows Trump’s
+original **together with** the presidential version (never Trump alone); then one version of a series,
+with its English; then the end card. The sound logo (`scripts/social/jingle.py`): a fanfare at the start,
+the same fanfare that flops at the end. Series take turns from one statement to the next: The Diplomat
+Desk (British Diplomat), Le Suisse de la semaine, Meanwhile in Britain, Pendant ce temps en France,
+Across America.
+
+When a statement has videos, video 1 replaces the images: a Reel on Instagram, a video post on
+Facebook, the first post of the thread on Bluesky and Threads. Video 2 is posted alone about **four
+hours later** (the workflow checks every hour; `<network>:video2` in `posted.json`). Video files are
+kept only while a statement waits to be posted: the next `npm run videos` deletes the others.

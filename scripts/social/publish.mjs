@@ -16,7 +16,9 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
-import { SITE_URL, articleUrl, threadFor, facebookPost, instagramCaption } from './compose.mjs';
+import {
+  SITE_URL, articleUrl, threadFor, facebookPost, instagramCaption, secondVideoPost, VIDEO_SERIES, THREADS_TOPIC, BLUESKY_TAGS,
+} from './compose.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const CONFIG = JSON.parse(readFileSync(path.join(root, 'content/social/config.json'), 'utf8'));
@@ -51,6 +53,17 @@ async function call(url, { method = 'GET', form, json, headers = {}, body } = {}
 const graphGet = (base, pathAndQuery, token) => call(`${base}${pathAndQuery}${pathAndQuery.includes('?') ? '&' : '?'}access_token=${encodeURIComponent(token)}`);
 const graphPost = (base, p, token, form) => call(`${base}${p}`, { method: 'POST', form: { ...form, access_token: token } });
 
+/* ---------------- videos (public/social/<slug>/video-1.mp4, video-2.mp4: npm run videos) ---------------- */
+const SECOND_VIDEO_DELAY = 4 * 3600 * 1000; // the second video goes out about four hours after the first
+const videoFile = (s, n) => path.join(root, 'public/social', s.slug, `video-${n}.mp4`);
+const hasVideo = (s, n) => existsSync(videoFile(s, n));
+const videoUrl = (s, n) => `${SITE_URL}/social/${s.slug}/video-${n}.mp4`;
+function videoSeries(s, n) {
+  const meta = path.join(root, 'public/social', s.slug, 'videos.json');
+  const id = existsSync(meta) ? JSON.parse(readFileSync(meta, 'utf8'))[n]?.series : null;
+  return VIDEO_SERIES.find((x) => x.id === id) || null;
+}
+
 /* ---------------- Bluesky ---------------- */
 const bluesky = {
   ready: () => env.BLUESKY_HANDLE && env.BLUESKY_APP_PASSWORD,
@@ -82,6 +95,49 @@ const bluesky = {
     });
     return up.blob;
   },
+  /**
+   * Videos go through Bluesky's video service (which prepares them for playback): a short-lived
+   * service key from our server, the upload, then the processed blob. Falls back to a plain upload.
+   */
+  async uploadVideo(session, file) {
+    const bytes = readFileSync(file);
+    try {
+      const aud = `did:web:${new URL(session.pds).host}`;
+      const exp = Math.floor(Date.now() / 1000) + 1800;
+      const { token } = await call(`${session.pds}/xrpc/com.atproto.server.getServiceAuth?aud=${encodeURIComponent(aud)}&lxm=com.atproto.repo.uploadBlob&exp=${exp}`, { headers: { Authorization: `Bearer ${session.accessJwt}` } });
+      const res = await fetch(`https://video.bsky.app/xrpc/app.bsky.video.uploadVideo?did=${encodeURIComponent(session.did)}&name=${encodeURIComponent(path.basename(file))}`, {
+        method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'video/mp4' }, body: bytes,
+      });
+      const job = JSON.parse(await res.text());
+      const jobId = job.jobId || job.jobStatus?.jobId;
+      if (!jobId) throw new Error(`video service: ${JSON.stringify(job).slice(0, 200)}`);
+      for (let i = 0; i < 60; i += 1) {
+        const { jobStatus } = await call(`https://video.bsky.app/xrpc/app.bsky.video.getJobStatus?jobId=${encodeURIComponent(jobId)}`);
+        if (jobStatus?.blob) return jobStatus.blob;
+        if (jobStatus?.state === 'JOB_STATE_FAILED') throw new Error(`video processing failed: ${jobStatus.error || ''}`);
+        await sleep(3000);
+      }
+      throw new Error('video processing took more than 3 minutes');
+    } catch (err) {
+      console.log(`  (Bluesky video service: ${err.message}; plain upload instead)`);
+      const up = await call(`${session.pds}/xrpc/com.atproto.repo.uploadBlob`, {
+        method: 'POST', headers: { Authorization: `Bearer ${session.accessJwt}`, 'Content-Type': 'video/mp4' }, body: bytes,
+      });
+      return up.blob;
+    }
+  },
+  videoEmbed(blob, s) {
+    return { $type: 'app.bsky.embed.video', video: blob, aspectRatio: { width: 1080, height: 1920 }, alt: `${s.headline}: Donald Trump’s post and its satirical versions (video, no voice).` };
+  },
+  /** The second video, alone, about four hours after the thread. */
+  async publishVideo(s, n, text) {
+    const session = await this.session();
+    const record = { $type: 'app.bsky.feed.post', text, createdAt: new Date().toISOString(), langs: ['en'], embed: this.videoEmbed(await this.uploadVideo(session, videoFile(s, n)), s) };
+    const facets = this.facets(text);
+    if (facets.length) record.facets = facets;
+    const res = await call(`${session.pds}/xrpc/com.atproto.repo.createRecord`, { method: 'POST', headers: { Authorization: `Bearer ${session.accessJwt}` }, json: { repo: session.did, collection: 'app.bsky.feed.post', record } });
+    return { id: res.uri };
+  },
   /** Deletes a thread of ours: the first post and every reply of the same account. */
   async remove(entry) {
     const session = await this.session();
@@ -110,9 +166,11 @@ const bluesky = {
     const auth = { Authorization: `Bearer ${session.accessJwt}` };
     const posts = threadFor('bluesky', s);
     let image = null;
+    let video = null;
     let thumb = null;
+    if (hasVideo(s, 1)) video = await this.uploadVideo(session, videoFile(s, 1));
     try {
-      if (existsSync(path.join(root, 'public/social', s.slug, '01.jpg'))) image = await this.uploadBlob(session, `${SITE_URL}/social/${s.slug}/01.jpg`, 'image/jpeg');
+      if (!video && existsSync(path.join(root, 'public/social', s.slug, '01.jpg'))) image = await this.uploadBlob(session, `${SITE_URL}/social/${s.slug}/01.jpg`, 'image/jpeg');
     } catch (err) {
       console.log(`  (first post without image: ${err.message})`);
     }
@@ -130,7 +188,8 @@ const bluesky = {
       if (i === 0 && image) {
         record.embed = { $type: 'app.bsky.embed.images', images: [{ image, alt: `${s.headline}: Donald Trump’s post on Truth Social and the presidential version, side by side (satire).`, aspectRatio: { width: 1080, height: 1350 } }] };
       }
-      if (i === posts.length - 1 || (i === 0 && !image)) {
+      if (i === 0 && video) record.embed = this.videoEmbed(video, s);
+      if (i === posts.length - 1 || (i === 0 && !image && !video)) {
         record.embed = { $type: 'app.bsky.embed.external', external: { uri: articleUrl(s), title: s.headline, description: s.dek, ...(thumb ? { thumb } : {}) } };
       }
       if (threadRoot) record.reply = { root: threadRoot, parent };
@@ -138,7 +197,7 @@ const bluesky = {
       parent = { uri: res.uri, cid: res.cid };
       if (!threadRoot) threadRoot = parent;
     }
-    return { id: threadRoot.uri };
+    return { id: threadRoot.uri, ...(video ? { video: 1 } : {}) };
   },
 };
 
@@ -155,14 +214,21 @@ const threads = {
     return 'first post deleted (replies, if any remain, can be deleted in the app)';
   },
   /** Media containers need a moment before they can be published. */
-  async waitReady(id) {
-    for (let i = 0; i < 20; i += 1) {
+  async waitReady(id, tries = 20) {
+    for (let i = 0; i < tries; i += 1) {
       const { status } = await graphGet(THREADS, `/${id}?fields=status`, env.THREADS_TOKEN);
       if (status === 'FINISHED') return;
       if (status === 'ERROR' || status === 'EXPIRED') throw new Error(`Threads container ${status}`);
-      await sleep(3000);
+      await sleep(i < 5 ? 3000 : 6000);
     }
-    throw new Error('Threads container not ready after 60 s');
+    throw new Error('Threads container not ready in time');
+  },
+  /** The second video, alone, about four hours after the thread. */
+  async publishVideo(s, n, text) {
+    const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, { media_type: 'VIDEO', video_url: videoUrl(s, n), text });
+    await this.waitReady(container.id, 60);
+    const post = await graphPost(THREADS, '/me/threads_publish', env.THREADS_TOKEN, { creation_id: container.id });
+    return { id: post.id };
   },
   async publish(s) {
     const posts = threadFor('threads', s);
@@ -173,17 +239,18 @@ const threads = {
     let previous = null;
     for (const [i, text] of posts.entries()) {
       const form = { text, ...(previous ? { reply_to_id: previous } : {}) };
-      if (i === 0) Object.assign(form, { media_type: 'IMAGE', image_url: image });
+      if (i === 0 && hasVideo(s, 1)) Object.assign(form, { media_type: 'VIDEO', video_url: videoUrl(s, 1) });
+      else if (i === 0) Object.assign(form, { media_type: 'IMAGE', image_url: image });
       else form.media_type = 'TEXT';
       if (i === posts.length - 1) form.link_attachment = articleUrl(s);
       const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, form);
-      if (i === 0) await this.waitReady(container.id);
+      if (i === 0) await this.waitReady(container.id, hasVideo(s, 1) ? 60 : 20);
       else await sleep(4000); // Threads asks for a short wait between creating and publishing
       const post = await graphPost(THREADS, '/me/threads_publish', env.THREADS_TOKEN, { creation_id: container.id });
       previous = post.id;
       first = first || post.id;
     }
-    return { id: first };
+    return { id: first, ...(hasVideo(s, 1) ? { video: 1 } : {}) };
   },
 };
 
@@ -244,10 +311,20 @@ const facebook = {
     }
     return env.FACEBOOK_PAGE_TOKEN;
   },
+  /** A video on the page (Facebook shows vertical videos as Reels), its text holding the link. */
+  async postVideo(s, n, description) {
+    const token = await this.pageToken();
+    const res = await graphPost('https://graph-video.facebook.com/v23.0', `/${this.pageId || env.FACEBOOK_PAGE_ID}/videos`, token, { file_url: videoUrl(s, n), description });
+    return { id: res.id };
+  },
   async publish(s) {
+    if (hasVideo(s, 1)) return { ...(await this.postVideo(s, 1, facebookPost(s).message)), video: 1 };
     const token = await this.pageToken();
     const post = await graphPost(GRAPH, `/${this.pageId || env.FACEBOOK_PAGE_ID}/feed`, token, facebookPost(s));
     return { id: post.id };
+  },
+  async publishVideo(s, n, text) {
+    return this.postVideo(s, n, text);
   },
 };
 
@@ -262,16 +339,28 @@ const instagram = {
     const dir = path.join(root, 'public/social', s.slug);
     return existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.jpg')).sort().map((f) => `${SITE_URL}/social/${s.slug}/${f}`) : [];
   },
-  async waitReady(id) {
-    for (let i = 0; i < 20; i += 1) {
+  async waitReady(id, tries = 20) {
+    for (let i = 0; i < tries; i += 1) {
       const { status_code: status } = await graphGet(GRAPH, `/${id}?fields=status_code`, env.INSTAGRAM_TOKEN);
       if (status === 'FINISHED') return;
       if (status === 'ERROR' || status === 'EXPIRED') throw new Error(`Instagram container ${status}`);
-      await sleep(3000);
+      await sleep(i < 5 ? 3000 : 6000);
     }
-    throw new Error('Instagram container not ready after 60 s');
+    throw new Error('Instagram container not ready in time');
+  },
+  /** A Reel (also shown in the feed). */
+  async reel(s, n, caption) {
+    const ig = env.INSTAGRAM_USER_ID;
+    const container = await graphPost(GRAPH, `/${ig}/media`, env.INSTAGRAM_TOKEN, { media_type: 'REELS', video_url: videoUrl(s, n), caption, share_to_feed: 'true' });
+    await this.waitReady(container.id, 60);
+    const post = await graphPost(GRAPH, `/${ig}/media_publish`, env.INSTAGRAM_TOKEN, { creation_id: container.id });
+    return { id: post.id };
+  },
+  async publishVideo(s, n, text) {
+    return this.reel(s, n, text);
   },
   async publish(s) {
+    if (hasVideo(s, 1)) return { ...(await this.reel(s, 1, instagramCaption(s))), video: 1 };
     const urls = this.images(s);
     if (urls.length < 2) throw new Error(`no carousel images in public/social/${s.slug}/ (run npm run images)`);
     const ig = env.INSTAGRAM_USER_ID;
@@ -369,12 +458,36 @@ async function main() {
       if (!net.ready()) continue;
       try {
         const res = await net.publish(s);
-        log[s.slug] = { ...log[s.slug], [name]: { at: new Date().toISOString(), id: res.id } };
+        log[s.slug] = { ...log[s.slug], [name]: { at: new Date().toISOString(), id: res.id, ...(res.video ? { video: res.video } : {}) } };
         writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
         console.log(`${s.slug} · ${name}: posted (${res.id})`);
       } catch (err) {
         failed += 1;
         console.log(`${s.slug} · ${name}: FAILED ${err.message}`);
+      }
+    }
+  }
+  // second videos: about four hours after a first post that carried video 1
+  const LIMITS = { bluesky: [300, BLUESKY_TAGS], threads: [500, THREADS_TOPIC], facebook: [5000, ''], instagram: [2200, ''] };
+  if (mode === 'publish') {
+    for (const s of statements.filter((x) => !slug || x.slug === slug)) {
+      const series = videoSeries(s, 2);
+      if (!series || !hasVideo(s, 2)) continue;
+      for (const name of chosen) {
+        const first = log[s.slug]?.[name];
+        const key = `${name}:video2`;
+        if (!first?.video || log[s.slug][key] || !NETWORKS[name].ready()) continue;
+        if (Date.now() - Date.parse(first.at) < SECOND_VIDEO_DELAY) continue;
+        try {
+          const [max, tags] = LIMITS[name];
+          const res = await NETWORKS[name].publishVideo(s, 2, secondVideoPost(s, series, max, tags));
+          log[s.slug] = { ...log[s.slug], [key]: { at: new Date().toISOString(), id: res.id } };
+          writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
+          console.log(`${s.slug} · ${name}: second video posted (${res.id})`);
+        } catch (err) {
+          failed += 1;
+          console.log(`${s.slug} · ${name}: second video FAILED ${err.message}`);
+        }
       }
     }
   }

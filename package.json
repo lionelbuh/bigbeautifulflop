@@ -12,7 +12,8 @@
     "check": "npm test && npm run build",
     "new": "node scripts/new-statement.mjs",
     "images": "node scripts/og-images.mjs",
-    "regions": "node scripts/next-regions.mjs"
+    "regions": "node scripts/next-regions.mjs",
+    "videos": "node scripts/social/videos.mjs"
   },
   "engines": {
     "node": ">=20"

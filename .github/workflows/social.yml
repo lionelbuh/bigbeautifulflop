@@ -3,7 +3,8 @@ name: Social networks
 # Posts new statements on Bluesky, Threads, Facebook and Instagram, once the site is deployed (the
 # posts link to the article and use its images). Only statements published since `start`
 # (content/social/config.json) and not yet in content/social/posted.json are posted; the log is
-# committed back with [skip ci], so it does not redeploy the site.
+# committed back with [skip ci], so it does not redeploy the site. Each statement has two videos: the
+# first goes with the posts, the second about four hours later (checked every hour).
 #
 # By hand (Actions → Social networks → Run workflow):
 #   mode "check"   tests every key and shows which account it reaches; posts nothing
@@ -13,6 +14,7 @@ name: Social networks
 on:
   schedule:
     - cron: '17 16 * * 1' # Mondays: Threads key reminder only
+    - cron: '41 * * * *' # hourly: the second video of a statement, about four hours after the first
   workflow_run:
     workflows: ['Deploy to GitHub Pages']
     types: [completed]
@@ -44,7 +46,8 @@ concurrency:
 jobs:
   social:
     # after a deploy: only if it succeeded, and not for the nightly rebuild (no new content)
-    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    # hourly: posts second videos that are due (nothing else is new then)
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '41 * * * *' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -84,7 +87,7 @@ jobs:
 
   # The Threads key lasts 60 days: a reminder (an issue) from day 50, checked every Monday.
   threads-reminder:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event.schedule == '17 16 * * 1' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       issues: write

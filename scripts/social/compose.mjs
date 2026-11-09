@@ -160,3 +160,55 @@ export function carouselCards(s) {
     ...groups.map((g) => g.map((v) => card(v, g.length > 2 ? 300 : 360))),
   ];
 }
+
+/* ---------------- videos ---------------- */
+
+/** The video series, in their order of rotation. */
+export const VIDEO_SERIES = [
+  { id: 'diplomat', kicker: 'The Diplomat Desk', countries: ['diplomat'], prefer: ['british-diplomat'], box: 'What he really means' },
+  { id: 'swiss', kicker: 'Le Suisse de la semaine', countries: ['switzerland'], box: 'In English' },
+  { id: 'uk', kicker: 'Meanwhile in Britain', countries: ['united-kingdom'], box: 'In plain English' },
+  { id: 'france', kicker: 'Pendant ce temps en France', countries: ['france'], box: 'In English' },
+  { id: 'us', kicker: 'Across America', countries: ['united-states'], box: 'In plain English' },
+];
+
+/** The version a series shows for a statement (null if the statement has none in that series). */
+export function seriesVersion(s, series) {
+  const list = versionsOf(s).filter((v) => series.countries.includes(v.region.country));
+  if (series.prefer) return list.find((v) => series.prefer.includes(v.region.id) && v.edition.en?.length) || null;
+  return list.find((v) => v.edition.en?.length) || null;
+}
+
+/**
+ * The two video series of a statement: they take turns from one statement to the next (`index` is the
+ * statement's position, oldest first), skipping series the statement has no version for.
+ */
+export function videoSeriesFor(s, index) {
+  const available = VIDEO_SERIES.filter((series) => seriesVersion(s, series));
+  if (!available.length) return [];
+  const start = (index * 2) % available.length;
+  const picks = [available[start], available[(start + 1) % available.length]];
+  return picks.filter((x, i) => picks.indexOf(x) === i);
+}
+
+/** Text of the second video's post (posted about four hours after the first). */
+export function secondVideoPost(s, series, max, tags = '') {
+  const v = seriesVersion(s, series);
+  const head = `${series.kicker}: ${s.headline}`;
+  const body = `Trump’s original and the presidential version, then ${regionLabel(v.region)} (satire).`;
+  const tail = `All versions: ${articleUrl(s)}\n\n${SATIRE_NOTE}${tags ? `\n\n${tags}` : ''}`;
+  const full = `${head}\n\n${body}\n\n${tail}`;
+  return chars(full) <= max ? full : `${head}\n\n${tail}`.slice(0, max);
+}
+
+export const SOCIAL_NETWORKS = ['bluesky', 'threads', 'facebook', 'instagram'];
+
+/**
+ * Whether a statement still needs its videos: published since `start` and not posted yet on some
+ * network, or posted with video 1 and still waiting for video 2. Other statements keep no video files.
+ */
+export function videosPending(s, log, start) {
+  if (!(s.published >= start)) return false;
+  const entry = log?.[s.slug] || {};
+  return SOCIAL_NETWORKS.some((name) => !entry[name] || (entry[name].video && !entry[`${name}:video2`]));
+}
