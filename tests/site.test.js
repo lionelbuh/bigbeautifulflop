@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { mkdtempSync, readFileSync, existsSync } from 'node:fs';
+import { describe, expect, it, onTestFinished } from 'vitest';
+import { mkdtempSync, readFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { loadStatements, validateStatement, splitLatest, leadStatement } from '../src/site/content.js';
@@ -61,6 +61,7 @@ describe('edition of the day', () => {
 describe('build', () => {
   it('writes one page per article and per regional edition, and never marks an adaptation as a quote', async () => {
     process.env.OUT_DIR = mkdtempSync(path.join(tmpdir(), 'bbf-'));
+    onTestFinished(() => rmSync(process.env.OUT_DIR, { recursive: true, force: true }));
     const { build } = await import('../scripts/build.mjs');
     const { out } = build({ date: '2026-11-06' });
     for (const s of statements) {

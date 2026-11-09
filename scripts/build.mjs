@@ -18,7 +18,7 @@ import { dayNumber } from '../src/site/rotation.js';
 import { e } from '../src/site/html.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const out = path.join(root, process.env.OUT_DIR || 'dist');
+const out = path.resolve(root, process.env.OUT_DIR || 'dist');
 
 export function build({ date = process.env.BUILD_DATE } = {}) {
   const now = date ? new Date(`${date}T12:00:00Z`) : new Date();
