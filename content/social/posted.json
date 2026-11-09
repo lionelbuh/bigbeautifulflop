@@ -70,5 +70,27 @@
       "at": "2026-11-08T23:22:20.383Z",
       "id": "18114960200608945"
     }
+  },
+  "landslide-not-on-the-ballot": {
+    "bluesky": {
+      "at": "2026-11-09T05:56:31.885Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3mzuajsn33a2p",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-09T05:58:06.433Z",
+      "id": "18102131339071199",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-09T05:58:11.845Z",
+      "id": "1093588456777746",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-09T05:58:49.742Z",
+      "id": "17922770760463160",
+      "video": 1
+    }
   }
 }
