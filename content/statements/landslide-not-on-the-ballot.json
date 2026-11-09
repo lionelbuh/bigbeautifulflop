@@ -40,7 +40,7 @@
   },
   "editions": {
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "J’étais pas sur le bulletin. Et si j’y avais été, on aurait gagné, et pas qu’un peu : un raz-de-marée.",
         "Bon, je dis ça, je dis rien. Chez nous on dit « y en a point comme nous », mais on le dit doucement, entre deux verres de chasselas, pas en majuscules. Alors disons qu’on aurait gagné… faut voir. Merci de votre attention, quand vous aurez un moment."
@@ -54,7 +54,7 @@
       ]
     },
     "valaisan": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "Adieu ! J’étais pas sur le bulletin. Si j’y avais été, on gagnait par avalanche. Pas par glissement de terrain : par avalanche.",
         "Ceux d’en bas peuvent bien voter ce qu’ils veulent. Chez nous, on monte voter à pied, on redescend pour la raclette, et le résultat, on le connaît avant même d’ouvrir l’urne. Merci de votre attention, et fermez la porte, vous laissez entrer le froid."
@@ -68,7 +68,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "J’étais même pas sur le bulletin. Et si j’y avais été, on gagnait par K.-O., direct, au premier tour.",
         "Mais bon, voter, faut y aller : la ligne 13 est blindée, le bureau de vote est au fond d’une école, et l’assesseur te regarde comme si tu lui devais de l’argent. Moi, j’aurais gagné sans même me déplacer. Merci de votre attention, enfin, si vous avez cinq minutes, parce que moi je suis pressé."
@@ -82,7 +82,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "J’étais pas sur le bulletin. Mais si j’y avais été, peuchère, on gagnait cent mille à zéro. Que dis-je : un million.",
         "Les autres, ils faisaient Fanny, devant tout le monde, sur la place du village. Et je vous le dis sans exagérer, moi je n’exagère jamais : on en aurait parlé jusqu’à Marseille, et même jusqu’à Toulon. Merci pour votre attention, et ça, c’est pas une galéjade."
@@ -96,7 +96,7 @@
       ]
     },
     "texas": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "I wasn’t even on the ballot. And if I had been, we would’ve won so big you’d need a bigger map. Texas-sized. Bigger than Texas, and I don’t say that lightly around here.",
         "Folks, a landslide is for amateurs. We’d have won a stampede. Thank you kindly for your attention to this matter."
@@ -107,7 +107,7 @@
       ]
     },
     "boston": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "I wasn’t on the ballot. If I was, we’d have won in a landslide. A wicked big one. Bigger than the ’04 comeback.",
         "And don’t give me the polls. This town was arguing about taxes before there was a country to vote in. Thanks for your attention, now get outta the way, I’m double-parked."
@@ -118,7 +118,7 @@
       ]
     },
     "scotland": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "I wasn’t even on the ballot. And if I had been, we’d have won in a landslide. A proper one, not a wee one.",
         "Mind you, we know a thing or two about results up here. We gave the world the television you watched them on, and the telephone you’d have phoned to complain. Anyone who says I wouldn’t have won? Aye, right. Thanks for your attention to this matter."
@@ -129,7 +129,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "His Majesty’s Government notes that the President was not a candidate in these elections, and that he has nonetheless taken a close interest in their outcome.",
         "In our experience, hypothetical elections are the most reliably won. We wish the newly elected members of Congress every success."
@@ -140,7 +140,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France has followed these midterm elections with the greatest interest: they are a moment of democratic vitality for our oldest ally.",
         "In France, too, the Constitution limits the President to two consecutive terms. We have learned that a leader’s legacy is measured less by the elections he imagines winning than by the institutions he leaves stronger behind him."
@@ -154,7 +154,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes note of these elections.",
         "In Switzerland, the members of the Federal Council are never on a ballot: they are elected by Parliament. The people, meanwhile, vote on the issues themselves, several times a year. Landslides are rare; we find this restful."
