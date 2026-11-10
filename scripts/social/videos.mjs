@@ -327,6 +327,9 @@ function shortHtml(s, series, { intro = '' } = {}) {
   const [question, ask] = endQuestion(series);
   const key = s.original.key || excerpt(s.original.text, 110);
   const presKey = s.presidential.key || excerpt(s.presidential.en, 110);
+  // long key lines: smaller type, so both cards always fit above the footer
+  const total = [...key].length + [...presKey].length;
+  const keySize = total > 280 ? 44 : total > 230 ? 50 : total > 180 ? 54 : 60;
   return `<!doctype html><meta charset="utf-8"><style>
 ${styles({ stageTop: 330, boxSize: 38, hookSize: (edition.hook || '').length > 60 ? 92 : 108, titleAnim: !edition.hook })}
 #title{animation:hide .3s ease-in 2.5s forwards}
@@ -336,7 +339,7 @@ ${first.css}
 .stage .scene{align-self:center}
 #a{gap:40px}
 #a .card{padding:40px 46px}
-#a .card .text{font-size:60px;line-height:1.2}
+#a .card .text{font-size:${keySize}px;line-height:1.2}
 #a .name{font-size:36px}
 #a .trump{animation:up .7s ease-out 2.9s both}
 #a .pres{animation:up .7s ease-out 4.6s both}
