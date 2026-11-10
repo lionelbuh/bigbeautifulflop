@@ -119,7 +119,7 @@ export function whatsappLink(s, region, ed) {
   const french = region.lang.startsWith('fr');
   const words = (ed.hook || '').replace(/\*/g, '') || cut(ed.text.join(' '), 160);
   const who = region.country === 'diplomat' ? region.name : regionTitle(region).title;
-  const text = `« ${words} »\n— ${who} (satire)\n${SITE_URL}${editionPath(s, region)}`.replace(/^« (.*) »/, french ? '« $1 »' : '“$1”');
+  const text = `« ${words} »\n— ${who} (satire)\n${SITE_URL}${editionPath(s, region)}?utm_source=whatsapp`.replace(/^« (.*) »/, french ? '« $1 »' : '“$1”');
   return `<a class="share-wa" href="https://wa.me/?text=${encodeURIComponent(text)}" rel="noopener" target="_blank">${french ? 'Partager sur WhatsApp' : 'Share on WhatsApp'}</a>`;
 }
 

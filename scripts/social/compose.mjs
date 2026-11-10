@@ -10,7 +10,9 @@
 import { REGIONS, getCountry } from '../../content/regions.js';
 
 export const SITE_URL = 'https://bigbeautifulflop.com';
-export const articleUrl = (s) => `${SITE_URL}/statements/${s.slug}/`;
+/** The article’s address; `source` marks where the visitor came from (utm_source, for the visit counts). */
+export const articleUrl = (s, source = '') => `${SITE_URL}/statements/${s.slug}/${source ? `?utm_source=${source}` : ''}`;
+const siteUrl = (source = '') => `${SITE_URL}/${source ? `?utm_source=${source}` : ''}`;
 export const SATIRE_NOTE = 'Independent satire: only the original is a quotation.';
 
 const chars = (t) => [...t].length;
@@ -74,12 +76,12 @@ export const BLUESKY_TAGS = '#Trump #PoliticalSatire #Satire';
 
 /** Threads: one topic tag on the first post. Bluesky: three hashtags on the last post. */
 export function threadFor(network, s) {
-  if (network === 'threads') return threadPosts(s, 500, { firstTag: THREADS_TOPIC });
-  return threadPosts(s, 300, { lastTag: BLUESKY_TAGS });
+  if (network === 'threads') return threadPosts(s, 500, { firstTag: THREADS_TOPIC, source: 'threads' });
+  return threadPosts(s, 300, { lastTag: BLUESKY_TAGS, source: 'bluesky' });
 }
 
-export function threadPosts(s, max, { firstTag = '', lastTag = '' } = {}) {
-  const url = articleUrl(s);
+export function threadPosts(s, max, { firstTag = '', lastTag = '', source = '' } = {}) {
+  const url = articleUrl(s, source);
   const head = `${s.headline}\n\nTrump on Truth Social: `;
   const mid = `\n\n${PRESIDENTIAL_LABEL} (satire): `;
   const tail = firstTag ? `\n\n${firstTag}` : '';
@@ -108,10 +110,10 @@ export function facebookPost(s) {
     `Trump on Truth Social: ${quote(excerpt(s.original.text, 600))}`,
     `${PRESIDENTIAL_LABEL}: ${quote(excerpt(s.presidential.en, 500))}`,
     lead ? `${regionLabel(lead.region)} (satire): ${quote(excerpt(englishOf(lead.region, lead.edition), 400))}` : '',
-    `All ${versionsOf(s).length + 1} versions: ${articleUrl(s)}`,
+    `All ${versionsOf(s).length + 1} versions: ${articleUrl(s, 'facebook')}`,
     SATIRE_NOTE,
   ];
-  return { message: parts.filter(Boolean).join('\n\n'), link: articleUrl(s) };
+  return { message: parts.filter(Boolean).join('\n\n'), link: articleUrl(s, 'facebook') };
 }
 
 /**
@@ -202,11 +204,11 @@ export function videoSeriesFor(s, start = 0) {
 }
 
 /** Text of the second video's post (posted about four hours after the first). */
-export function secondVideoPost(s, series, max, tags = '') {
+export function secondVideoPost(s, series, max, tags = '', source = '') {
   const v = seriesVersion(s, series);
   const head = `${series.kicker}: ${s.headline}`;
   const body = `${regionLabel(v.region)} (satire), then Trump’s original and the presidential version.`;
-  const tail = `All versions: ${articleUrl(s)}\n\n${SATIRE_NOTE}${tags ? `\n\n${tags}` : ''}`;
+  const tail = `All versions: ${articleUrl(s, source)}\n\n${SATIRE_NOTE}${tags ? `\n\n${tags}` : ''}`;
   const full = `${head}\n\n${body}\n\n${tail}`;
   return chars(full) <= max ? full : `${head}\n\n${tail}`.slice(0, max);
 }
@@ -278,7 +280,7 @@ export function youtubeDescription(s, series) {
     `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 900))}`,
     `${PRESIDENTIAL_LABEL} (satire): ${quote(excerpt(s.presidential.en, 700))}`,
     v ? `Then: ${regionLabel(v.region)} (satire).` : '',
-    `All versions: ${articleUrl(s)}`,
+    `All versions: ${articleUrl(s, 'youtube')}`,
     SATIRE_NOTE,
     '#PoliticalSatire #Satire',
   ].filter(Boolean).join('\n\n');
@@ -319,11 +321,11 @@ export function weeklyPicks(statements, sunday, override = {}) {
 const DAY = (d) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' });
 
 /** The post that goes with the Sunday video. */
-export function weeklyPost(p, max, tags = '') {
+export function weeklyPost(p, max, tags = '', source = '') {
   const who = [p.swiss, p.france].filter(Boolean).map((v) => regionTitle(v.region).title);
   const head = `The Flop of the week (${DAY(p.from)} – ${DAY(p.to)}): Trump’s post and the presidential version${who.length ? `, then ${who.join(' and ')}` : ''}.`;
   const ask = who.length > 1 ? 'Switzerland or France: which one wins? Tell us in the comments.' : '';
-  const tail = `All versions: ${SITE_URL}\n\n${SATIRE_NOTE}${tags ? `\n\n${tags}` : ''}`;
+  const tail = `All versions: ${siteUrl(source)}\n\n${SATIRE_NOTE}${tags ? `\n\n${tags}` : ''}`;
   const full = [head, ask, tail].filter(Boolean).join('\n\n');
   return chars(full) <= max ? full : `${excerpt(head, max - chars(tail) - 2)}\n\n${tail}`;
 }

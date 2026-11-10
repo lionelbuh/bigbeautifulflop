@@ -219,7 +219,7 @@ const bluesky = {
       }
       if (i === 0 && video) record.embed = this.videoEmbed(video, clipOf(s, 1));
       if (i === posts.length - 1 || (i === 0 && !image && !video)) {
-        record.embed = { $type: 'app.bsky.embed.external', external: { uri: articleUrl(s), title: s.headline, description: s.dek, ...(thumb ? { thumb } : {}) } };
+        record.embed = { $type: 'app.bsky.embed.external', external: { uri: articleUrl(s, 'bluesky'), title: s.headline, description: s.dek, ...(thumb ? { thumb } : {}) } };
       }
       if (threadRoot) record.reply = { root: threadRoot, parent };
       const res = await call(`${session.pds}/xrpc/com.atproto.repo.createRecord`, { method: 'POST', headers: auth, json: { repo: session.did, collection: 'app.bsky.feed.post', record } });
@@ -295,7 +295,7 @@ const threads = {
       if (i === 0 && hasVideo(s, 1)) Object.assign(form, { media_type: 'VIDEO', video_url: videoUrl(s, 1) });
       else if (i === 0) Object.assign(form, { media_type: 'IMAGE', image_url: image });
       else form.media_type = 'TEXT';
-      if (i === posts.length - 1) form.link_attachment = articleUrl(s);
+      if (i === posts.length - 1) form.link_attachment = articleUrl(s, 'threads');
       const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, form);
       if (i === 0) await this.waitReady(container.id, hasVideo(s, 1) ? 60 : 20);
       else await sleep(4000); // Threads asks for a short wait between creating and publishing
@@ -588,7 +588,7 @@ async function main() {
         if (Date.now() - Date.parse(first.at) < SECOND_VIDEO_DELAY) continue;
         try {
           const [max, tags] = LIMITS[name];
-          const res = await NETWORKS[name].publishVideo({ ...clipOf(s, 2), description: secondVideoPost(s, series, 5000, '') }, secondVideoPost(s, series, max, tags));
+          const res = await NETWORKS[name].publishVideo({ ...clipOf(s, 2), description: secondVideoPost(s, series, 5000, '', name) }, secondVideoPost(s, series, max, tags, name));
           log[s.slug] = { ...log[s.slug], [key]: { at: new Date().toISOString(), id: res.id } };
           writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
           console.log(`${s.slug} · ${name}: second video posted (${res.id})`);
@@ -620,7 +620,7 @@ async function main() {
         try {
           await waitOnlineUrls(`weekly ${date}`, [clip.url]);
           const [max, tags] = LIMITS[name];
-          const res = await NETWORKS[name].publishVideo({ ...clip, description: weeklyPost(p, 5000, '#PoliticalSatire #Satire') }, weeklyPost(p, max, tags));
+          const res = await NETWORKS[name].publishVideo({ ...clip, description: weeklyPost(p, 5000, '#PoliticalSatire #Satire', name) }, weeklyPost(p, max, tags, name));
           log.weekly = { ...log.weekly, [date]: { ...log.weekly?.[date], [name]: { at: new Date().toISOString(), id: res.id } } };
           writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
           console.log(`Sunday video ${date} · ${name}: posted (${res.id})`);

@@ -32,7 +32,7 @@ describe('social posts', () => {
       const bs = threadFor('bluesky', s);
       for (const p of [...th.map((x) => [x, 500]), ...bs.map((x) => [x, 300])]) expect(chars(p[0])).toBeLessThanOrEqual(p[1]);
       expect(bs.at(-1)).toContain('#Trump #PoliticalSatire #Satire');
-      expect(facebookPost(s).link).toBe(`https://bigbeautifulflop.com/statements/${s.slug}/`);
+      expect(facebookPost(s).link).toBe(`https://bigbeautifulflop.com/statements/${s.slug}/?utm_source=facebook`);
     }
   });
 
