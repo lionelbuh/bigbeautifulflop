@@ -109,6 +109,16 @@ def stamp():
     slap = np.diff(np.random.default_rng(5).normal(size=t.size), prepend=0) * np.exp(-t * 45) * 0.5
     return thump + slap
 
+def scribble():
+    # a felt marker on paper: rough noise in short strokes
+    dur = 1.0
+    t = np.arange(int(dur * SR)) / SR
+    noise = np.random.default_rng(11).normal(size=t.size)
+    noise = np.convolve(noise, np.ones(6) / 6, mode='same')      # softer, papery
+    strokes = (np.sin(2 * np.pi * 7 * t) > -0.2).astype(float)
+    strokes = np.convolve(strokes, np.ones(400) / 400, mode='same')
+    return 0.8 * noise * strokes * np.clip((dur - t) / 0.1, 0, 1)
+
 def save(name, sig):
     sig = sig / (np.abs(sig).max() + 1e-9) * 0.8
     pcm = (sig * 32767).astype(np.int16)
@@ -121,4 +131,5 @@ save(f'{out}/bbf-ending.wav', ending())
 save(f'{out}/bbf-bed.wav', bed())
 save(f'{out}/bbf-cowbell.wav', cowbell())
 save(f'{out}/bbf-stamp.wav', stamp())
+save(f'{out}/bbf-scribble.wav', scribble())
 print('ok')

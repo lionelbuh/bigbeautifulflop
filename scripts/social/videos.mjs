@@ -134,7 +134,7 @@ ${styles({ stageTop: s.headline.length > 30 ? 560 : 470, boxSize: series.id === 
  * Frame by frame: every animation is paused and set to the frame's time. Several tabs share the work
  * (one per processor, up to four): GitHub's machines are much slower than a laptop.
  */
-async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, fx = [] } = {}) {
+async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, fx = [], coverAt = 0 } = {}) {
   const frames = path.join(work, 'frames');
   rmSync(frames, { recursive: true, force: true });
   mkdirSync(frames, { recursive: true });
@@ -168,7 +168,7 @@ async function render(page, work, markup, file, { duration = DURATION, end = END
     '-map', '0:v', '-map', '[a]', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '21', '-c:a', 'aac', '-b:a', '160k',
     '-t', String(duration), '-movflags', '+faststart', file]);
   // the first frame: the cover of the Reel on Instagram
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-frames:v', '1', '-q:v', '3', file.replace(/video(-\d)?\.mp4$/, (m, n) => `cover${n || ''}.jpg`)]);
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-ss', String(coverAt), '-i', file, '-frames:v', '1', '-q:v', '3', file.replace(/video(-\d)?\.mp4$/, (m, n) => `cover${n || ''}.jpg`)]);
 }
 
 /* ---------------- the short format (about 18 s, little to read) ---------------- */
@@ -196,6 +196,19 @@ const OBJECTS = {
   'united-kingdom': `<svg viewBox="0 0 280 220" aria-hidden="true"><path d="M50 60 H200 L185 190 Q125 215 65 190 Z" fill="#fff" stroke="#1f3a5f" stroke-width="8"/><path d="M200 90 Q260 95 245 140 Q235 165 192 160" fill="none" stroke="#1f3a5f" stroke-width="12"/><ellipse cx="125" cy="62" rx="75" ry="14" fill="#8b5a2b"/><path d="M100 30 q10 -20 0 -30 M140 30 q10 -20 0 -30" stroke="#bbb" stroke-width="5" fill="none"/></svg>`,
   diplomat: `<svg viewBox="0 0 300 160" aria-hidden="true"><path d="M0 120 L300 120 L270 160 L30 160 Z" fill="#a50d24"/><rect x="20" y="40" width="260" height="84" rx="10" fill="#c8102e"/><path d="M20 82 H280" stroke="#f2cf78" stroke-width="6"/></svg>`,
 };
+/* the trophy “THE BEST EVER”, then what the region makes of it */
+const TROPHY = `<svg viewBox="0 0 300 380" aria-hidden="true"><path d="M70 20 H230 Q232 150 150 190 Q68 150 70 20 Z" fill="#e8b923"/><path d="M90 30 H150 Q140 140 120 170 Q85 140 90 30 Z" fill="#f6d55c"/><path d="M70 40 Q10 40 20 100 Q30 140 85 140" fill="none" stroke="#c99a12" stroke-width="16"/><path d="M230 40 Q290 40 280 100 Q270 140 215 140" fill="none" stroke="#c99a12" stroke-width="16"/><rect x="132" y="185" width="36" height="70" fill="#c99a12"/><rect x="70" y="250" width="160" height="40" rx="6" fill="#e8b923"/><rect x="40" y="290" width="220" height="80" rx="8" fill="#3a2a14"/><rect x="58" y="306" width="184" height="48" rx="4" fill="#e8b923"/><text x="150" y="339" text-anchor="middle" font-family="I" font-weight="900" font-size="24" fill="#3a2a14">THE BEST EVER</text></svg>`;
+const CHEESE = `<svg viewBox="0 0 320 220" aria-hidden="true"><ellipse cx="160" cy="160" rx="150" ry="50" fill="#d9a520"/><rect x="10" y="80" width="300" height="80" fill="#e8b52e"/><ellipse cx="160" cy="80" rx="150" ry="50" fill="#f7d774"/><ellipse cx="160" cy="80" rx="118" ry="36" fill="none" stroke="#e8c25a" stroke-width="4"/><text x="160" y="90" text-anchor="middle" font-family="F" font-weight="700" font-size="34" fill="#9a6e10">GRUYÈRE</text></svg>`;
+const MODEST = { switzerland: 'pas mal', france: 'bof', 'united-kingdom': 'not bad', 'united-states': 'pretty good', diplomat: 'noted' };
+const font2 = (pkg, f) => pathToFileURL(path.join(root, 'node_modules/@fontsource', pkg, 'files', f)).href;
+const HANDS = `@font-face{font-family:M;src:url('${font2('permanent-marker', 'permanent-marker-latin-400-normal.woff2')}')}
+@font-face{font-family:C;src:url('${font2('caveat', 'caveat-latin-700-normal.woff2')}');font-weight:700}`;
+/* the hook in two parts: what he shouts, and the region’s quiet answer (the *gold* part) */
+const hookParts = (hook) => {
+  const m = (hook || '').match(/^(.*?)\s*\*([^*]+)\*\s*$/);
+  return m ? [m[1], m[2]] : [hook || '', ''];
+};
+
 /* the stamp: what the version is “translated into” */
 const STAMPS = {
   vaudois: 'Traduit en vaudois', valaisan: 'Traduit en valaisan', genevois: 'Traduit en genevois', fribourgeois: 'Traduit en fribourgeois', neuchatelois: 'Traduit en neuchâtelois',
@@ -205,7 +218,7 @@ const STAMPS = {
 };
 
 /** The first screen and its sounds, for each intro: "lectern" (animated), "stamp", or the plain title card. */
-function introOf(intro, region, series) {
+function introOf(intro, region, series, s) {
   if (intro === 'lectern') {
     const obj = OBJECTS[region.country] || '';
     return {
@@ -223,6 +236,59 @@ function introOf(intro, region, series) {
       art: `${SUIT}${TIE}${LECTERN}${obj ? `<div class="obj">${obj}</div>` : ''}`,
       logo: false,
       fx: region.country === 'switzerland' ? [{ file: 'bbf-cowbell.wav', at: 1.15, volume: 0.9 }] : [{ file: 'bbf-stamp.wav', at: 1.15, volume: 0.8 }],
+    };
+  }
+  if (intro === 'marker') {
+    // a felt marker rewrites the hook in CAPITALS, then the region adds its quiet answer by hand
+    const ed = seriesVersion(s, series).edition;
+    const [loud, quiet] = hookParts(ed.hook);
+    const caps = `${loud.replace(/[\s.,;:!?…]+$/, '').toUpperCase()}${region.lang.startsWith('fr') ? ' ' : ''}!!!`;
+    const answer = quiet ? quiet.charAt(0).toLowerCase() + quiet.slice(1) : '';
+    return {
+      css: `${HANDS}
+#title{background:#f6f2ea;color:#171614;justify-content:flex-start;padding-top:230px;gap:30px}
+#title .k{color:#b3121a}
+#title .caps{position:relative;font-family:M;font-size:${caps.length > 34 ? 96 : 116}px;line-height:1.05;color:#111;transform:rotate(-4deg);max-width:960px;clip-path:inset(0 100% 0 0);animation:write 1s steps(24,end) .2s forwards}
+#title .pen{position:absolute;top:330px;left:40px;width:150px;animation:pen 1s linear .2s both,away .3s ease-in 1.25s forwards}
+#title .quiet{font-family:C;font-weight:700;font-size:92px;color:#1f3a5f;transform:rotate(3deg);animation:fadein .35s ease-out 1.45s both}
+#title .quiet::before{content:'↳ ';color:#b3121a}
+#title .s{color:#57524a;animation:fadein .4s ease-out 1.7s both}
+#title .lectern{position:absolute;left:300px;bottom:-60px;width:480px;height:480px;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both}
+#title .suit{position:absolute;left:345px;bottom:290px;width:390px;height:306px;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both}
+#title .tie{position:absolute;left:510px;bottom:280px;width:60px;height:224px;transform-origin:50% 0;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both,swing 1.1s ease-in-out .45s infinite alternate}
+@keyframes write{to{clip-path:inset(0 0 0 0)}}
+@keyframes pen{from{transform:translate(0,40px) rotate(20deg)}to{transform:translate(820px,120px) rotate(20deg)}}
+@keyframes away{to{transform:translate(1200px,-300px) rotate(60deg);opacity:0}}
+@keyframes rise{from{transform:translateY(700px)}to{transform:none}}
+@keyframes swing{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}`,
+      text: `<p class="caps">${e(caps)}</p>${answer ? `<p class="quiet">${e(answer)}</p>` : ''}${ed.hookEn ? `<p class="s">${e(ed.hookEn.replace(/\*/g, ''))}</p>` : ''}`,
+      art: `<svg class="pen" viewBox="0 0 150 420" aria-hidden="true"><rect x="45" y="0" width="60" height="300" rx="14" fill="#1a1a1a"/><rect x="45" y="60" width="60" height="30" fill="#e8e8e8"/><path d="M50 300 H100 L88 370 H62 Z" fill="#333"/><path d="M66 370 H84 L78 410 H72 Z" fill="#000"/></svg>${SUIT}${TIE}${LECTERN}`,
+      logo: false,
+      coverAt: 2.0,
+      fx: [{ file: 'bbf-scribble.wav', at: 0.2, volume: 0.9 }],
+    };
+  }
+  if (intro === 'trophy') {
+    const obj = region.country === 'switzerland' ? CHEESE : OBJECTS[region.country] || CHEESE;
+    return {
+      css: `#title{justify-content:flex-start;padding-top:230px;gap:36px}
+#title .h{font-size:92px}
+#title .lectern{position:absolute;left:220px;bottom:-40px;width:640px;height:640px;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both}
+#title .suit{position:absolute;left:260px;bottom:430px;width:560px;height:440px;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both}
+#title .tie{position:absolute;left:497px;bottom:420px;width:86px;height:320px;transform-origin:50% 0;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both,swing 1.1s ease-in-out .45s infinite alternate}
+#title .trophy{position:absolute;left:600px;bottom:490px;width:280px;animation:drop .6s cubic-bezier(.3,0,.4,1) .5s both,gone .25s ease-in 1.55s forwards}
+#title .trophy svg,#title .after svg{width:100%;height:auto}
+#title .after{position:absolute;left:590px;bottom:490px;width:300px;animation:popin .35s cubic-bezier(.2,.8,.3,1.4) 1.65s both}
+#title .tag{position:absolute;left:640px;bottom:690px;font-family:I;font-weight:800;font-size:44px;color:#171614;background:#f2cf78;padding:8px 22px;border-radius:12px;transform:rotate(-6deg);animation:popin .3s cubic-bezier(.2,.8,.3,1.4) 1.95s both}
+@keyframes rise{from{transform:translateY(700px)}to{transform:none}}
+@keyframes swing{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@keyframes drop{0%{transform:translateY(-1500px)}70%{transform:translateY(0)}85%{transform:translateY(-50px)}100%{transform:none}}
+@keyframes gone{to{transform:scale(0) rotate(30deg);opacity:0}}
+@keyframes popin{from{transform:scale(0);opacity:0}to{transform:none;opacity:1}}`,
+      art: `${SUIT}${TIE}${LECTERN}<div class="trophy">${TROPHY}</div><div class="after">${obj}</div><p class="tag">${e(MODEST[region.country] || 'not bad')}</p>`,
+      logo: false,
+      coverAt: 1.2,
+      fx: [{ file: 'bbf-cowbell.wav', at: 0.95, volume: 0.45 }, { file: 'bbf-stamp.wav', at: 1.65, volume: 0.5 }],
     };
   }
   if (intro === 'stamp') {
@@ -245,8 +311,8 @@ function shortHtml(s, series, { intro = '' } = {}) {
   const french = region.lang.startsWith('fr');
   const title = videoTitle(s, series);
   const mark = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  const first = introOf(intro, region, series);
-  const hook = edition.hook
+  const first = introOf(intro, region, series, s);
+  const hook = first.text ? `<p class="k">${e(title.title)} · satire</p>${first.text}` : edition.hook
     ? `<p class="k">${e(title.title)} · satire</p>${first.stamp || ''}<p class="h">${mark(edition.hook)}</p>${edition.hookEn ? `<p class="s">${mark(edition.hookEn)}</p>` : ''}`
     : `<p class="k">${e(series.kicker)}</p>${first.stamp || ''}<p class="t">${e(title.title)}</p><p class="s">${e(title.sub)}</p>`;
   // the region’s punchline, word by word; the *gold* part comes last
@@ -417,7 +483,7 @@ async function main() {
     const browser = await chromium.launch();
     const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
     const { region } = seriesVersion(s, series);
-    await render(page, work, shortHtml(s, series, { intro }), path.resolve(out), { ...SHORT, fx: introOf(intro, region, series).fx });
+    await render(page, work, shortHtml(s, series, { intro }), path.resolve(out), { ...SHORT, fx: introOf(intro, region, series, s).fx, coverAt: introOf(intro, region, series, s).coverAt });
     await browser.close();
     rmSync(work, { recursive: true, force: true });
     console.log(`Short format: ${slug} video ${n} (${series.kicker}) → ${out}`);
