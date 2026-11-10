@@ -134,7 +134,7 @@ ${styles({ stageTop: s.headline.length > 30 ? 560 : 470, boxSize: series.id === 
  * Frame by frame: every animation is paused and set to the frame's time. Several tabs share the work
  * (one per processor, up to four): GitHub's machines are much slower than a laptop.
  */
-async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false } = {}) {
+async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, fx = [] } = {}) {
   const frames = path.join(work, 'frames');
   rmSync(frames, { recursive: true, force: true });
   mkdirSync(frames, { recursive: true });
@@ -155,11 +155,15 @@ async function render(page, work, markup, file, { duration = DURATION, end = END
   await Promise.all(pages.slice(1).map((pg) => pg.close()));
   const sound = path.join(root, 'scripts/social/sound');
   // the opening fanfare, the ending fanfare that flops, and (short format) a light music bed in between
-  const mix = bed
-    ? `[2:a]adelay=${end * 1000}|${end * 1000}[a2];[3:a]atrim=0:${end - 2.2},afade=t=out:st=${end - 3.2}:d=1,volume=0.32,adelay=2200|2200[a3];[1:a][a2][a3]amix=inputs=3:duration=longest:normalize=0,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`
-    : `[2:a]adelay=${end * 1000}|${end * 1000}[a2];[1:a][a2]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`;
+  // inputs: 1 opening, 2 ending, 3 music bed (short format), then the sound effects of the first screen
+  const inputs = ['bbf-opening.wav', 'bbf-ending.wav', ...(bed ? ['bbf-bed.wav'] : []), ...fx.map((x) => x.file)];
+  const chains = [`[2:a]adelay=${end * 1000}|${end * 1000}[a2]`];
+  if (bed) chains.push(`[3:a]atrim=0:${end - 2.2},afade=t=out:st=${end - 3.2}:d=1,volume=0.32,adelay=2200|2200[a3]`);
+  fx.forEach((x, k) => chains.push(`[${(bed ? 4 : 3) + k}:a]volume=${x.volume ?? 1},adelay=${Math.round(x.at * 1000)}|${Math.round(x.at * 1000)}[f${k}]`));
+  const labels = ['[1:a]', '[a2]', ...(bed ? ['[a3]'] : []), ...fx.map((_, k) => `[f${k}]`)];
+  const mix = `${chains.join(';')};${labels.join('')}amix=inputs=${labels.length}:duration=longest:normalize=0,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`;
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%04d.jpg'),
-    '-i', path.join(sound, 'bbf-opening.wav'), '-i', path.join(sound, 'bbf-ending.wav'), ...(bed ? ['-i', path.join(sound, 'bbf-bed.wav')] : []),
+    ...inputs.flatMap((f) => ['-i', path.join(sound, f)]),
     '-filter_complex', mix,
     '-map', '0:v', '-map', '[a]', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '21', '-c:a', 'aac', '-b:a', '160k',
     '-t', String(duration), '-movflags', '+faststart', file]);
@@ -181,14 +185,70 @@ export function endQuestion(series) {
   }[series.id] || ['Which version wins?', 'Tell us in the comments'];
 }
 
-function shortHtml(s, series) {
+/* the animated first screen: a presidential lectern with a red tie, then the region’s object drops on it */
+const LECTERN = `<svg class="lectern" viewBox="0 0 640 640" aria-hidden="true"><rect x="300" y="10" width="8" height="110" fill="#2b2b2b"/><rect x="332" y="10" width="8" height="110" fill="#2b2b2b"/><rect x="292" y="0" width="24" height="34" rx="12" fill="#3a3a3a"/><rect x="324" y="0" width="24" height="34" rx="12" fill="#3a3a3a"/><path d="M90 150 H550 L515 640 H125 Z" fill="#6b4a2b"/><path d="M110 170 H530 L500 620 H140 Z" fill="#7d5634"/><rect x="40" y="110" width="560" height="44" rx="8" fill="#8b6239"/><circle cx="320" cy="370" r="96" fill="#1f3a5f" stroke="#f2cf78" stroke-width="8"/><path d="M320 300 l18 52 h55 l-44 32 17 53 -46 -33 -46 33 17 -53 -44 -32 h55 z" fill="#f2cf78"/></svg>`;
+const SUIT = `<svg class="suit" viewBox="0 0 560 440" aria-hidden="true"><path d="M20 440 Q30 120 170 70 L230 40 H330 L390 70 Q530 120 540 440 Z" fill="#16233a"/><path d="M230 40 L280 230 L330 40 Z" fill="#f6f2ea"/><path d="M230 40 L200 120 L262 170 Z M330 40 L360 120 L298 170 Z" fill="#e6e1d6"/><path d="M170 70 L232 300 L200 440 M390 70 L328 300 L360 440" fill="none" stroke="#0e1828" stroke-width="10"/></svg>`;
+const TIE = `<svg class="tie" viewBox="0 0 140 520" aria-hidden="true"><path d="M40 0 H100 L112 50 L70 82 L28 50 Z" fill="#a50d24"/><path d="M48 78 H92 L132 430 L70 520 L8 430 Z" fill="#c8102e"/><path d="M58 120 L120 300" stroke="#a50d24" stroke-width="10" opacity=".5"/><path d="M40 260 L128 400" stroke="#a50d24" stroke-width="10" opacity=".5"/></svg>`;
+const OBJECTS = {
+  switzerland: `<svg viewBox="0 0 240 300" aria-hidden="true"><path d="M60 40 Q120 -20 180 40" fill="none" stroke="#c8102e" stroke-width="22"/><path d="M60 40 Q120 -20 180 40" fill="none" stroke="#fff" stroke-width="6" stroke-dasharray="14 12"/><path d="M70 50 H170 L205 250 Q120 285 35 250 Z" fill="#b8b2a6"/><path d="M80 60 H120 L110 250 Q70 255 45 245 Z" fill="#d9d4c9"/><path d="M35 250 Q120 285 205 250" fill="none" stroke="#7d776c" stroke-width="10"/><circle cx="120" cy="268" r="20" fill="#5a554c"/></svg>`,
+  france: `<svg viewBox="0 0 300 200" aria-hidden="true"><ellipse cx="150" cy="130" rx="140" ry="50" fill="#1d1d1f"/><ellipse cx="150" cy="105" rx="120" ry="70" fill="#2a2a2d"/><rect x="142" y="18" width="16" height="30" rx="6" fill="#1d1d1f"/></svg>`,
+  'united-states': `<svg viewBox="0 0 340 200" aria-hidden="true"><path d="M10 140 Q170 210 330 140 Q300 175 170 180 Q40 175 10 140 Z" fill="#8a5a2b"/><path d="M90 150 Q80 40 130 30 Q170 60 210 30 Q260 40 250 150 Z" fill="#a46c37"/><path d="M95 130 H245" stroke="#5a3a1a" stroke-width="12"/></svg>`,
+  'united-kingdom': `<svg viewBox="0 0 280 220" aria-hidden="true"><path d="M50 60 H200 L185 190 Q125 215 65 190 Z" fill="#fff" stroke="#1f3a5f" stroke-width="8"/><path d="M200 90 Q260 95 245 140 Q235 165 192 160" fill="none" stroke="#1f3a5f" stroke-width="12"/><ellipse cx="125" cy="62" rx="75" ry="14" fill="#8b5a2b"/><path d="M100 30 q10 -20 0 -30 M140 30 q10 -20 0 -30" stroke="#bbb" stroke-width="5" fill="none"/></svg>`,
+  diplomat: `<svg viewBox="0 0 300 160" aria-hidden="true"><path d="M0 120 L300 120 L270 160 L30 160 Z" fill="#a50d24"/><rect x="20" y="40" width="260" height="84" rx="10" fill="#c8102e"/><path d="M20 82 H280" stroke="#f2cf78" stroke-width="6"/></svg>`,
+};
+/* the stamp: what the version is “translated into” */
+const STAMPS = {
+  vaudois: 'Traduit en vaudois', valaisan: 'Traduit en valaisan', genevois: 'Traduit en genevois', fribourgeois: 'Traduit en fribourgeois', neuchatelois: 'Traduit en neuchâtelois',
+  parisien: 'Traduit en parisien', sud: 'Traduit en marseillais', chti: 'Traduit en ch’ti', lyonnais: 'Traduit en lyonnais', breton: 'Traduit en breton',
+  'new-york': 'Translated into New Yorker', texas: 'Translated into Texan', 'deep-south': 'Translated into Southern', california: 'Translated into Californian', boston: 'Translated into Bostonian', midwest: 'Translated into Midwestern',
+  london: 'Translated into Londoner', liverpool: 'Translated into Scouse', manchester: 'Translated into Manc', yorkshire: 'Translated into Yorkshire', scotland: 'Translated into Scottish', wales: 'Translated into Welsh',
+};
+
+/** The first screen and its sounds, for each intro: "lectern" (animated), "stamp", or the plain title card. */
+function introOf(intro, region, series) {
+  if (intro === 'lectern') {
+    const obj = OBJECTS[region.country] || '';
+    return {
+      css: `#title{justify-content:flex-start;padding-top:230px;gap:36px}
+#title .h{font-size:92px}
+#title .lectern{position:absolute;left:220px;bottom:-40px;width:640px;height:640px;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both}
+#title .suit{position:absolute;left:260px;bottom:430px;width:560px;height:440px;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both}
+#title .tie{position:absolute;left:497px;bottom:420px;width:86px;height:320px;transform-origin:50% 0;animation:rise .45s cubic-bezier(.2,.8,.3,1.2) both,swing 1.1s ease-in-out .45s infinite alternate}
+#title .obj{position:absolute;left:630px;bottom:490px;width:240px;animation:drop .7s cubic-bezier(.3,0,.4,1) .55s both,wobble .25s ease-in-out 1.25s 5 alternate}
+#title .obj svg{width:240px;height:auto}
+@keyframes rise{from{transform:translateY(700px)}to{transform:none}}
+@keyframes swing{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@keyframes drop{0%{transform:translateY(-1500px) rotate(-25deg)}70%{transform:translateY(0) rotate(4deg)}85%{transform:translateY(-60px) rotate(-3deg)}100%{transform:none}}
+@keyframes wobble{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}`,
+      art: `${SUIT}${TIE}${LECTERN}${obj ? `<div class="obj">${obj}</div>` : ''}`,
+      logo: false,
+      fx: region.country === 'switzerland' ? [{ file: 'bbf-cowbell.wav', at: 1.15, volume: 0.9 }] : [{ file: 'bbf-stamp.wav', at: 1.15, volume: 0.8 }],
+    };
+  }
+  if (intro === 'stamp') {
+    const label = series.id === 'diplomat' ? 'Translated into diplomatic' : STAMPS[region.id] || `Translated into ${region.name}`;
+    return {
+      css: `.stamp{font-size:64px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#e0233f;border:10px double #e0233f;border-radius:18px;padding:18px 34px;background:rgba(246,242,234,.96);transform:rotate(-8deg);animation:stamp .28s cubic-bezier(.5,0,.8,.4) .35s both}
+#title{inset:-40px;animation:shake .32s linear .63s,hide .3s ease-in 2.5s forwards}
+@keyframes stamp{from{opacity:0;transform:rotate(-14deg) scale(3.2)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+@keyframes shake{0%,100%{transform:none}20%{transform:translate(-14px,8px)}40%{transform:translate(12px,-10px)}60%{transform:translate(-8px,6px)}80%{transform:translate(6px,-4px)}}`,
+      stamp: `<p class="stamp">${e(label)}</p>`,
+      logo: true,
+      fx: [{ file: 'bbf-stamp.wav', at: 0.6, volume: 1 }],
+    };
+  }
+  return { css: '', art: '', logo: true, fx: [] };
+}
+
+function shortHtml(s, series, { intro = '' } = {}) {
   const { region, edition } = seriesVersion(s, series);
   const french = region.lang.startsWith('fr');
   const title = videoTitle(s, series);
   const mark = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  const first = introOf(intro, region, series);
   const hook = edition.hook
-    ? `<p class="k">${e(title.title)} · satire</p><p class="h">${mark(edition.hook)}</p>${edition.hookEn ? `<p class="s">${mark(edition.hookEn)}</p>` : ''}`
-    : `<p class="k">${e(series.kicker)}</p><p class="t">${e(title.title)}</p><p class="s">${e(title.sub)}</p>`;
+    ? `<p class="k">${e(title.title)} · satire</p>${first.stamp || ''}<p class="h">${mark(edition.hook)}</p>${edition.hookEn ? `<p class="s">${mark(edition.hookEn)}</p>` : ''}`
+    : `<p class="k">${e(series.kicker)}</p>${first.stamp || ''}<p class="t">${e(title.title)}</p><p class="s">${e(title.sub)}</p>`;
   // the region’s punchline, word by word; the *gold* part comes last
   const short = edition.short || excerpt(edition.text, 150);
   const shortEn = series.id === 'diplomat' ? (edition.shortEn || excerpt(edition.en, 110)) : french ? (edition.shortEn || excerpt(englishOf(region, edition), 120)) : '';
@@ -204,6 +264,7 @@ function shortHtml(s, series) {
   return `<!doctype html><meta charset="utf-8"><style>
 ${styles({ stageTop: 330, boxSize: 38, hookSize: (edition.hook || '').length > 60 ? 92 : 108, titleAnim: !edition.hook })}
 #title{animation:hide .3s ease-in 2.5s forwards}
+${first.css}
 .kicker{top:250px;animation:up .6s ease-out 2.7s both}
 .stage{top:330px;bottom:300px}
 .stage .scene{align-self:center}
@@ -227,7 +288,7 @@ ${styles({ stageTop: 330, boxSize: 38, hookSize: (edition.hook || '').length > 6
 #end .ask{font-size:40px;color:#b3121a;font-weight:700}
 #end{animation:fadein .5s ease-out ${SHORT.end}s both}
 </style>
-<div id="title">${logoFlop({ font: 'F' })}${hook}</div>
+<div id="title">${first.logo ? logoFlop({ font: 'F' }) : ''}${hook}${first.art || ''}</div>
 <div class="top">${logoFlop({ font: 'F' })}<span class="brand">Big Beautiful <i>Flop</i></span></div>
 <p class="kicker">${e(s.headline)}</p>
 <div class="stage">
@@ -348,14 +409,15 @@ async function main() {
 
   // --test-short <slug> <1|2> <file.mp4>: one video in the short format, written outside the site
   if (argv.includes('--test-short')) {
-    const [slug, n, out] = argv.slice(argv.indexOf('--test-short') + 1);
+    const [slug, n, out, intro = ''] = argv.slice(argv.indexOf('--test-short') + 1);
     const s = all.find((x) => x.slug === slug);
     const meta = JSON.parse(readFileSync(path.join(root, 'public/social', slug, 'videos.json'), 'utf8'));
     const series = VIDEO_SERIES.find((x) => x.id === meta[n].series);
     const work = mkdtempSync(path.join(tmpdir(), 'bbf-short-'));
     const browser = await chromium.launch();
     const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
-    await render(page, work, shortHtml(s, series), path.resolve(out), SHORT);
+    const { region } = seriesVersion(s, series);
+    await render(page, work, shortHtml(s, series, { intro }), path.resolve(out), { ...SHORT, fx: introOf(intro, region, series).fx });
     await browser.close();
     rmSync(work, { recursive: true, force: true });
     console.log(`Short format: ${slug} video ${n} (${series.kicker}) → ${out}`);

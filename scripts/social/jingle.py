@@ -90,6 +90,25 @@ def bed(dur=16.0, bpm=104):
     fade = np.clip(np.arange(track.size) / (0.6 * SR), 0, 1) * np.clip((track.size - np.arange(track.size)) / (1.2 * SR), 0, 1)
     return track * fade
 
+def cowbell():
+    # a Swiss cowbell: two inharmonic partials, a bright strike, a long ring with a slight wobble
+    dur = 1.6
+    t = np.arange(int(dur * SR)) / SR
+    wob = 1 + 0.004 * np.sin(2 * np.pi * 6 * t)
+    sig = (np.sign(np.sin(2 * np.pi * 562 * wob * t)) * 0.5 + np.sin(2 * np.pi * 845 * wob * t)
+           + 0.4 * np.sin(2 * np.pi * 1310 * t) * np.exp(-t * 12))
+    env = np.exp(-t * 3.2) * np.clip(t / 0.002, 0, 1)
+    strike = np.diff(np.random.default_rng(3).normal(size=t.size), prepend=0) * np.exp(-t * 60) * 0.6
+    return env * sig * 0.5 + strike
+
+def stamp():
+    # a rubber stamp on a desk: a low thump and a short slap
+    dur = 0.6
+    t = np.arange(int(dur * SR)) / SR
+    thump = np.sin(2 * np.pi * (95 * np.exp(-t * 8) + 45) * t) * np.exp(-t * 14)
+    slap = np.diff(np.random.default_rng(5).normal(size=t.size), prepend=0) * np.exp(-t * 45) * 0.5
+    return thump + slap
+
 def save(name, sig):
     sig = sig / (np.abs(sig).max() + 1e-9) * 0.8
     pcm = (sig * 32767).astype(np.int16)
@@ -100,4 +119,6 @@ out = sys.argv[1]
 save(f'{out}/bbf-opening.wav', opening())
 save(f'{out}/bbf-ending.wav', ending())
 save(f'{out}/bbf-bed.wav', bed())
+save(f'{out}/bbf-cowbell.wav', cowbell())
+save(f'{out}/bbf-stamp.wav', stamp())
 print('ok')
