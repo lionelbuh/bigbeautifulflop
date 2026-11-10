@@ -78,7 +78,6 @@ h1{position:absolute;left:70px;right:70px;top:310px;font-family:F;font-weight:50
 #title .h{font-family:F;font-weight:500;font-size:${(edition.hook || '').length > 60 ? 92 : 108}px;line-height:1.06;letter-spacing:-.02em}
 #title em{font-style:normal;color:#f2cf78}
 #title .s em{color:#fff}
-#title .chip{width:96px;height:96px;border-radius:50%;background:${chip};box-shadow:0 0 0 6px rgba(255,255,255,.18)}
 ${edition.hook ? '' : '#title .t{animation:up .7s ease-out .2s both}#title .s{animation:fadein .6s ease-out .9s both}'}
 #title{animation:hide .4s ease-in 2.9s forwards}
 #end{position:absolute;inset:0;background:#f6f2ea;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;text-align:center}
@@ -99,7 +98,7 @@ ${edition.hook ? '' : '#title .t{animation:up .7s ease-out .2s both}#title .s{an
 .foot{animation:hide .4s ease-in 9.5s forwards,fadein .5s ease-out 16.6s forwards}
 #end{animation:fadein .6s ease-out ${END}s both}
 </style>
-<div id="title">${edition.hook ? '<span class="chip"></span>' : logoFlop({ font: 'F' })}${hook}</div>
+<div id="title">${logoFlop({ font: 'F' })}${hook}</div>
 <div class="top">${logoFlop({ font: 'F' })}<span class="brand">Big Beautiful <i>Flop</i></span></div>
 <p class="kicker">${e(series.kicker)}</p>
 <h1>${e(s.headline)}</h1>
