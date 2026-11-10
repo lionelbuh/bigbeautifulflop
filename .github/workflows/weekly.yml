@@ -14,6 +14,10 @@ on:
         description: 'The Sunday (YYYY-MM-DD), optional'
         required: false
         default: ''
+      dry_run:
+        description: 'Only render (test): nothing is committed or posted'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -41,8 +45,11 @@ jobs:
           npx playwright install --with-deps chromium
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - name: Render the Sunday video
-        run: node scripts/social/videos.mjs --weekly ${{ inputs.date }}
+        run: |
+          node scripts/social/videos.mjs --weekly ${{ inputs.date }}
+          ls -la public/social/weekly/*/ || true
       - name: Commit and redeploy
+        if: ${{ !inputs.dry_run }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
