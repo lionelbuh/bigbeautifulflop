@@ -223,7 +223,8 @@ export function videosPending(s, log, start, youtubeStart = null) {
   if (!(s.published >= start)) return false;
   const entry = log?.[s.slug] || {};
   // YouTube counts only from the day it was switched on (content/social/config.json, youtubeStart)
-  const networks = youtubeStart && s.published >= youtubeStart ? [...SOCIAL_NETWORKS, 'youtube'] : SOCIAL_NETWORKS;
+  // (or for an older statement whose videos were sent to YouTube afterwards, by hand)
+  const networks = (youtubeStart && s.published >= youtubeStart) || entry.youtube ? [...SOCIAL_NETWORKS, 'youtube'] : SOCIAL_NETWORKS;
   return networks.some((name) => !entry[name] || (entry[name].video && !entry[`${name}:video2`]));
 }
 

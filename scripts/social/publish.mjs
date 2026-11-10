@@ -562,7 +562,8 @@ async function main() {
       const net = NETWORKS[name];
       if (!net.ready()) continue;
       // YouTube takes only videos, from the day it was switched on
-      if (name === 'youtube' && (!hasVideo(s, 1) || !CONFIG.youtubeStart || s.published < CONFIG.youtubeStart)) continue;
+      // (an older statement only when asked for by name: --slug)
+      if (name === 'youtube' && (!hasVideo(s, 1) || !CONFIG.youtubeStart || (!slug && s.published < CONFIG.youtubeStart))) continue;
       try {
         await waitOnline(s);
         const res = await net.publish(s);

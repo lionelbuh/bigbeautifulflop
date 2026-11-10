@@ -274,12 +274,13 @@ async function main() {
     return;
   }
 
-  const only = opt('slug');
+  // --slug a,b: render these statements' videos (for example to send older ones to YouTube)
+  const only = (opt('slug') || '').split(',').filter(Boolean);
   const pending = (s) => videosPending(s, log, config.start, config.youtubeStart);
-  const wanted = all.filter((s) => (only ? s.slug === only : pending(s)));
+  const wanted = all.filter((s) => (only.length ? only.includes(s.slug) : pending(s)));
   // the videos of statements already posted everywhere are deleted: the repository stays small
   for (const s of all) {
-    if (s.slug === only || pending(s)) continue;
+    if (only.includes(s.slug) || pending(s)) continue;
     for (const f of ['video-1.mp4', 'video-2.mp4', 'cover-1.jpg', 'cover-2.jpg', 'videos.json']) rmSync(path.join(root, 'public/social', s.slug, f), { force: true });
   }
   cleanWeekly(log, networks);
