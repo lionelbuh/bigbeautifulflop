@@ -42,6 +42,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
     page({ pageId: 'archives', path: '/archives/', title: 'Archives', description: 'Every statement, day by day, with all its versions.', main: archives(ctx) }),
     page({ pageId: 'about', path: '/about/', title: 'About', description: DISCLAIMER, main: about(ctx) }),
+    page({ pageId: 'about', path: '/privacy/', title: 'Privacy policy', description: 'Big Beautiful Flop sets no cookies, shows no advertising and collects no personal data.', main: privacy() }),
     page({ pageId: 'press', path: '/press/', title: 'Press', description: 'Big Beautiful Flop in brief, for journalists: what it is, who makes it, images and contact. En français aussi.', main: press(ctx) }),
     { path: '/404.html', lang: 'en', listed: false, html: renderPage({ pageId: '', header, head: { title: 'Page not found', description: 'This page does not exist.', path: '/404.html', noindex: true, assets }, main: notFound() }) },
   ];
@@ -375,7 +376,28 @@ function about() {
     <h2>Contact and corrections</h2>
     <p>Write to ${emailLink()}. If we have quoted a statement inaccurately, tell us: we check it against the source and correct it promptly.</p>
     <h2>Privacy</h2>
-    <p>This site sets no cookies, shows no advertising and collects no personal data. To count visits, it uses Cloudflare Web Analytics, which uses no cookies and does not track visitors across sites; it is not loaded if your browser asks not to be tracked (Do Not Track or Global Privacy Control). The site is hosted on GitHub Pages (GitHub, Inc.), whose servers may keep technical logs, such as IP addresses, for security.</p>
+    <p>See our <a href="/privacy/">privacy policy</a>. In short: this site sets no cookies, shows no advertising and collects no personal data. To count visits, it uses Cloudflare Web Analytics, which uses no cookies and does not track visitors across sites; it is not loaded if your browser asks not to be tracked (Do Not Track or Global Privacy Control). The site is hosted on GitHub Pages (GitHub, Inc.), whose servers may keep technical logs, such as IP addresses, for security.</p>
+  </div>`;
+}
+
+/** The privacy policy (also required by Google for the YouTube publishing tool). */
+function privacy() {
+  return `${sectionHead('Privacy', 'Privacy policy', 'Short, because there is little to say: we collect nothing about you.')}
+  <div class="prose">
+    <h2>This website</h2>
+    <p>Big Beautiful Flop sets no cookies, shows no advertising and collects no personal data. There are no accounts, no forms and no comments on the site.</p>
+    <p>To count visits, the site uses Cloudflare Web Analytics, which uses no cookies, does not track visitors across sites and does not collect personal data. It is not loaded at all if your browser asks not to be tracked (Do Not Track or Global Privacy Control).</p>
+    <p>The site is hosted on GitHub Pages (GitHub, Inc.), whose servers may keep technical logs, such as IP addresses, for security. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>.</p>
+    <h2>Sharing buttons</h2>
+    <p>“Share on WhatsApp” is a plain link: it opens WhatsApp with a message ready to send. The site sends nothing to WhatsApp and loads nothing from it.</p>
+    <h2>Our publishing tool and YouTube</h2>
+    <p>We publish our own videos on our own social media accounts with a small tool of our own (“BBF Publisher”). It uses the YouTube API Services only to upload videos to the Big Beautiful Flop YouTube channel and to read that channel’s name. It does not access, collect, store or share any data about other YouTube users or viewers.</p>
+    <p>By watching our videos on YouTube, you are subject to the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a> and the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>. Access granted to our tool can be revoked at any time from the <a href="https://security.google.com/settings/security/permissions">Google security settings</a> page.</p>
+    <h2>Social networks</h2>
+    <p>When you follow or read us on Instagram, Facebook, Threads, Bluesky or YouTube, those services apply their own privacy policies; we receive only the public counts and comments they show to every account owner.</p>
+    <h2>Contact</h2>
+    <p>Questions about privacy: ${emailLink()}.</p>
+    <p class="muted">Last updated: 10 November 2026.</p>
   </div>`;
 }
 
