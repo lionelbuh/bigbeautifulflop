@@ -393,6 +393,9 @@ function privacy() {
     <h2>Our publishing tool and YouTube</h2>
     <p>We publish our own videos on our own social media accounts with a small tool of our own (“BBF Publisher”). It uses the YouTube API Services only to upload videos to the Big Beautiful Flop YouTube channel and to read that channel’s name. It does not access, collect, store or share any data about other YouTube users or viewers.</p>
     <p>By watching our videos on YouTube, you are subject to the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a> and the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>. Access granted to our tool can be revoked at any time from the <a href="https://security.google.com/settings/security/permissions">Google security settings</a> page.</p>
+    <h2>Data retention and deletion</h2>
+    <p>The only YouTube data our tool keeps is the identifier and upload time of each video we uploaded to our own channel, in a log used to avoid posting twice. It is never shared and never combined with other data. It is deleted when the video is removed from our channel, and in any case on request: write to the address below and we delete it within seven days. If access to our tool is revoked in the Google security settings, the tool stops working and keeps nothing.</p>
+    <p>We hold no data about visitors or viewers, so there is nothing about you to delete; if you believe otherwise, write to us and we will answer within seven days.</p>
     <h2>Social networks</h2>
     <p>When you follow or read us on Instagram, Facebook, Threads, Bluesky or YouTube, those services apply their own privacy policies; we receive only the public counts and comments they show to every account owner.</p>
     <h2>Contact</h2>
