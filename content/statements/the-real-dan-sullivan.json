@@ -43,7 +43,7 @@
   },
   "editions": {
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Il y a un faux Dan Sullivan ! *Chez nous, il y a trois Pittet par village.*",
       "hookEn": "There’s a fake Dan Sullivan! *Round here there are three Pittets in every village.*",
       "short": "Chez nous, il y a trois Pittet par village : celui du haut, celui de la poste, celui de la laiterie. *Personne ne s’est jamais trompé de Pittet.*",
@@ -61,7 +61,7 @@
       ]
     },
     "neuchatelois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Un faux Dan Sullivan ! *Chez nous, une fausse montre, on la reconnaît à l’œil.*",
       "hookEn": "A fake Dan Sullivan! *Round here we spot a fake watch at a glance.*",
       "short": "Chez nous, une contrefaçon, on la reconnaît à la loupe : le mouvement, le poinçon, le tic-tac. *Les électeurs aussi ont une loupe.*",
@@ -79,7 +79,7 @@
       ]
     },
     "breton": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Le faux Dan Sullivan ! *C’est comme le beurre doux : fait pour embrouiller.*",
       "hookEn": "The fake Dan Sullivan! *Like unsalted butter: made to confuse people.*",
       "short": "Chez nous, il y a le vrai beurre, le salé, et le doux, qui ressemble au vrai pour embrouiller les gens. *On n’a jamais rendu le doux au salé.*",
@@ -97,7 +97,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Un faux Dan Sullivan ! *À Paris, les faux, on les vend au Trocadéro.*",
       "hookEn": "A fake Dan Sullivan! *In Paris, fakes are sold at the Trocadéro.*",
       "short": "À Paris, les faux, on connaît : la tour Eiffel en plastique au Trocadéro, le sac de luxe sur un drap. *Mais on n’a jamais rendu l’argent au vrai.*",
@@ -115,7 +115,7 @@
       ]
     },
     "california": {
-      "review": "draft",
+      "review": "approved",
       "hook": "A fake Dan Sullivan! *In LA we call that a stunt double.*",
       "short": "In Hollywood, every star has a stunt double who looks just like him. *And the double never gets the credits. Or the votes.*",
       "text": [
@@ -128,7 +128,7 @@
       ]
     },
     "midwest": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Two Dan Sullivans! *Back home we just say “Dan, no, the other Dan.”*",
       "short": "Back home there are four Ole Johnsons at every church supper. *We just say “Ole, no, the other Ole,” and pass the hotdish.*",
       "text": [
@@ -141,7 +141,7 @@
       ]
     },
     "manchester": {
-      "review": "draft",
+      "review": "approved",
       "hook": "There’s a fake Dan Sullivan! *We’ve two clubs here. Nobody mixes them up.*",
       "short": "Manchester’s had two big clubs for over a century, both called Manchester. *Nobody’s ever cheered for the wrong one by mistake.*",
       "text": [
@@ -154,7 +154,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Give the votes to the Real Dan Sullivan! *Voters usually know who they meant.*",
       "short": "Our ballot papers print each candidate’s party next to the name, precisely so that namesakes can be told apart. *It generally works.*",
       "shortEn": "He thinks some votes went to the wrong Dan Sullivan. *The voters may disagree.*",
@@ -168,7 +168,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France has full confidence in the American institutions that count and certify the vote.",
         "In France, a ballot counts for the name printed on it, and for no other; disputes go to the judge of the election. It is sometimes frustrating, and always reassuring."
@@ -182,7 +182,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes note of the President’s concerns.",
         "In Switzerland, namesakes are common: on our lists for the National Council, each candidate appears with first name, year of birth, profession and place of residence. Voters choose; nobody moves their votes afterwards."
