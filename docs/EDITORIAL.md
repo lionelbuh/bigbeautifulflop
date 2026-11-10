@@ -160,7 +160,10 @@ kept only while a statement waits to be posted: the next `npm run videos` delete
 ### The short format (statements published from 10 November 2026)
 
 New statements get videos in the short format: about 18 seconds and about forty words. In order:
-- the hook, on the title card;
+- the hook, on the first screen: a felt marker rewrites what he shouts in CAPITALS (“ON AURAIT GAGNÉ UN
+  RAZ-DE-MARÉE !!!”), then the region answers by hand with the `*gold*` part (“↳ enfin… faut voir.”), above
+  an empty suit with a red tie behind a lectern. So the hook must have both parts: the shout, then
+  `*the quiet answer*`. The Reel cover is the frame where the joke is complete;
 - the key lines: `original.key`, a sentence copied word for word from the original (the tests check it),
   next to `presidential.key`;
 - the version’s punchline, word by word, with `*the last words*` in red: `editions.<region>.short`, 170

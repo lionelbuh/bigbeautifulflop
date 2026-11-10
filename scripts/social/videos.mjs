@@ -541,7 +541,13 @@ async function main() {
       const hash = createHash('sha256').update(JSON.stringify(s) + sr.id + SELF).digest('hex').slice(0, 16);
       next[i + 1] = { series: sr.id, hash };
       if (meta[i + 1]?.hash === hash && existsSync(file)) continue;
-      if (format === 'short') await render(page, work, shortHtml(s, sr), file, SHORT);
+      if (format === 'short') {
+        // the first screen: the felt marker that rewrites the hook in capitals (owner's choice), when there is a hook
+        const { region, edition } = seriesVersion(s, sr);
+        const intro = edition.hook ? 'marker' : '';
+        const first = introOf(intro, region, sr, s);
+        await render(page, work, shortHtml(s, sr, { intro }), file, { ...SHORT, fx: first.fx, coverAt: first.coverAt || 0 });
+      }
       else await render(page, work, html(s, sr), file);
       built += 1;
       console.log(`${s.slug}: video ${i + 1} (${sr.kicker})`);
