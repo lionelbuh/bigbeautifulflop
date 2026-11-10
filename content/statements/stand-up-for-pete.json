@@ -41,7 +41,7 @@
   },
   "editions": {
     "fribourgeois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "À la désalpe, toutes les vaches redescendent. *Record absolu.*",
       "hookEn": "At the cattle descent, every cow comes home. *An all-time record.*",
       "text": [
@@ -57,7 +57,7 @@
       ]
     },
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Davel a eu sa statue. *Il a juste fallu attendre 175 ans.*",
       "hookEn": "Davel got his statue. *We only had to wait 175 years.*",
       "text": [
@@ -73,7 +73,7 @@
       ]
     },
     "lyonnais": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Quand un gone travaille bien, *on lui paye un mâchon, pas un procès.*",
       "hookEn": "When a lad does a good job, *you buy him breakfast, not a trial.*",
       "text": [
@@ -89,7 +89,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Napoléon dort aux Invalides. *Personne n’est venu le destituer.*",
       "hookEn": "Napoleon sleeps at Les Invalides. *Nobody has come to impeach him.*",
       "text": [
@@ -105,7 +105,7 @@
       ]
     },
     "new-york": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Two victories? That’s a ticker-tape parade. *Not a hearing.*",
       "text": [
         "Thomas Massie, a defeated congressman, a total loser, wants to impeach Pete Hegseth, my Secretary of War, maybe the most popular military guy in the country. Recruitment? All-time high, I’m telling you. Two victories, Venezuela and Iran.",
@@ -117,7 +117,7 @@
       ]
     },
     "deep-south": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Down here we give a soldier a pound cake. *Not an impeachment.*",
       "text": [
         "Now, that Thomas Massie, who just lost, poor thing, wants to impeach Pete Hegseth, my Secretary of War, the most popular military man in the country, if you ask me. Recruitment’s at an all-time high, I’m told, and we’ve had two victories, Venezuela and Iran.",
@@ -129,7 +129,7 @@
       ]
     },
     "liverpool": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Two trophies and they want him sacked? *You’ll never walk alone, Pete.*",
       "text": [
         "Thomas Massie, lad, who got beaten, a proper loser, and now he wants Pete Hegseth impeached. My Secretary of War! Most popular military fella in the country, I reckon. Recruitment’s never been higher, I’m telling you, and two wins: Venezuela and Iran.",
@@ -141,7 +141,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Congress may disagree. *That is rather the point of Congress.*",
       "text": [
         "His Majesty’s Government notes with interest the debate in Congress concerning the Secretary of War, and the title itself: our own War Office became the Ministry of Defence in 1964, and we have grown rather attached to the more modest name.",
@@ -153,7 +153,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France follows the debates of the American Congress with the greatest respect.",
         "It was a Frenchman, Montesquieu, who wrote that power must check power, and the authors of the American Constitution read him closely. We are always moved to see the idea still at work, even when it is inconvenient for someone."
@@ -167,7 +167,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes note of this debate.",
         "In Switzerland, the department in charge of the army is also responsible for civil protection and for sport. No one has ever tried to impeach its head: our law does not provide for it, and the Federal Council takes its decisions together, so there would be seven people to impeach. We find it simpler to hold a vote."
