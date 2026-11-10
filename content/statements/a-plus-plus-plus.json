@@ -44,7 +44,7 @@
   },
   "editions": {
     "valaisan": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Un A plus, plus, plus ! *Chez nous, c’est un 6. Et c’est déjà beaucoup.*",
       "hookEn": "An A plus, plus, plus! *Round here it’s a 6. And that’s already a lot.*",
       "short": "Chez nous, à l’école, il n’y a pas de A : la meilleure note, c’est 6. *Alors disons 6. Plus, plus, plus.*",
@@ -62,7 +62,7 @@
       ]
     },
     "genevois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Un A plus, plus, plus ! *Ici, on dit triple A. Et on le range au coffre.*",
       "hookEn": "An A plus, plus, plus! *Here we say triple A. And we lock it in the vault.*",
       "short": "À Genève, un A plus, plus, plus, on appelle ça un triple A. On le range au coffre, sans en parler. *Moi, j’en parle.*",
@@ -80,7 +80,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "hook": "25 sur 20 ! *Oui, ça existe. Ici.*",
       "hookEn": "25 out of 20! *Yes, that exists. Down here.*",
       "short": "Chez nous, la note maximale, c’est 20. Moi, je lui mets 25 sur 20. *Oui, ça existe. Ici.*",
@@ -98,7 +98,7 @@
       ]
     },
     "chti": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Un A plus, plus, plus ! *Chez nous, c’est des moules-frites à volonté.*",
       "hookEn": "An A plus, plus, plus! *Up north, that’s all-you-can-eat mussels and fries.*",
       "short": "Dans le Nord, la meilleure note, c’est une place à la braderie avec une montagne de moules-frites. *Massie, toi, tu fais la vaisselle.*",
@@ -116,7 +116,7 @@
       ]
     },
     "texas": {
-      "review": "draft",
+      "review": "approved",
       "hook": "A plus, plus, plus! *In Texas we hand out a belt buckle. Size of a dinner plate.*",
       "short": "In Texas we don’t give A’s. We give rodeo belt buckles. Pete gets one the size of a dinner plate. *Massie gets a participation ribbon.*",
       "text": [
@@ -129,7 +129,7 @@
       ]
     },
     "boston": {
-      "review": "draft",
+      "review": "approved",
       "hook": "A plus, plus, plus! *Harvard doesn’t even give an A plus.*",
       "short": "Across the river at Harvard, the top grade is an A. No plus. *Pete just got three pluses Harvard won’t even give.*",
       "text": [
@@ -142,7 +142,7 @@
       ]
     },
     "yorkshire": {
-      "review": "draft",
+      "review": "approved",
       "hook": "A plus, plus, plus! *Round here we’d say he’s done all right.*",
       "short": "Round here the highest praise is “he’s done all right”. Anything more and folk wonder what you’re after. *Pete: you’ve done all right.*",
       "text": [
@@ -155,7 +155,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "hook": "A plus, plus, plus! *We would have written “satisfactory”.*",
       "short": "In British school reports, the usual words are “satisfactory” and “could do better”. *The latter applies, sooner or later, to almost everyone.*",
       "shortEn": "He likes his Secretary. *In capital letters.*",
@@ -169,7 +169,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France follows the debates of the American Congress with respect, and takes note of the President’s high opinion of his Secretary of War.",
         "In French schools, an old saying holds that twenty out of twenty is for God, nineteen for the teacher and eighteen for the best pupil. We would therefore suggest, in friendship, a little restraint in the grading."
@@ -180,7 +180,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes note of the President’s assessment.",
         "The Federal Council does not grade its members. It meets every week, takes its decisions together, and none of its members has ever received a plus, let alone three."
