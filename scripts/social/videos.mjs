@@ -17,7 +17,7 @@ import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { tmpdir } from 'node:os';
+import { cpus, tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
@@ -130,18 +130,29 @@ ${styles({ stageTop: s.headline.length > 30 ? 560 : 470, boxSize: series.id === 
 <div id="end">${logoFlop({ font: 'F' })}<p class="big">Trump’s posts,<br>made presidential.</p><p class="url">bigbeautifulflop.com</p><p class="small">Swiss, French, American and British versions, and three diplomats. Independent satire.</p></div>`;
 }
 
+/**
+ * Frame by frame: every animation is paused and set to the frame's time. Several tabs share the work
+ * (one per processor, up to four): GitHub's machines are much slower than a laptop.
+ */
 async function render(page, work, markup, file, { duration = DURATION, end = END } = {}) {
   const frames = path.join(work, 'frames');
   rmSync(frames, { recursive: true, force: true });
   mkdirSync(frames, { recursive: true });
   writeFileSync(path.join(work, 'video.html'), markup);
-  await page.goto(pathToFileURL(path.join(work, 'video.html')).href);
-  await page.evaluate(() => document.fonts.ready);
-  await page.evaluate(() => document.getAnimations().forEach((a) => a.pause()));
-  for (let i = 0; i < FPS * duration; i += 1) {
-    await page.evaluate((t) => document.getAnimations().forEach((a) => { a.currentTime = t; }), (i * 1000) / FPS);
-    await page.screenshot({ path: path.join(frames, `${String(i).padStart(4, '0')}.jpg`), type: 'jpeg', quality: 92 });
-  }
+  const total = FPS * duration;
+  const tabs = Math.max(1, Math.min(4, cpus().length));
+  const pages = [page, ...(await Promise.all(Array.from({ length: tabs - 1 }, () => page.context().browser().newPage())))];
+  await Promise.all(pages.map(async (pg, k) => {
+    await pg.setViewportSize({ width: 1080, height: 1920 });
+    await pg.goto(pathToFileURL(path.join(work, 'video.html')).href);
+    await pg.evaluate(() => document.fonts.ready);
+    await pg.evaluate(() => document.getAnimations().forEach((a) => a.pause()));
+    for (let i = k; i < total; i += tabs) {
+      await pg.evaluate((t) => document.getAnimations().forEach((a) => { a.currentTime = t; }), (i * 1000) / FPS);
+      await pg.screenshot({ path: path.join(frames, `${String(i).padStart(4, '0')}.jpg`), type: 'jpeg', quality: 92 });
+    }
+  }));
+  await Promise.all(pages.slice(1).map((pg) => pg.close()));
   const sound = path.join(root, 'scripts/social/sound');
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%04d.jpg'),
     '-i', path.join(sound, 'bbf-opening.wav'), '-i', path.join(sound, 'bbf-ending.wav'),
