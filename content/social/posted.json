@@ -184,5 +184,22 @@
       "at": "2026-11-09T23:35:13.716Z",
       "id": "18118219814326694"
     }
+  },
+  "stand-up-for-pete": {
+    "bluesky": {
+      "at": "2026-11-10T02:19:14.814Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3mzweu7ak6q2h",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-10T02:20:51.620Z",
+      "id": "2201016173858051",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-10T02:21:35.741Z",
+      "id": "18083077340444514",
+      "video": 1
+    }
   }
 }
