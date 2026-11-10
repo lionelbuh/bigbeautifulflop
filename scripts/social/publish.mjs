@@ -232,6 +232,26 @@ const threads = {
     await call(`${THREADS}/${entry.id}?access_token=${encodeURIComponent(env.THREADS_TOKEN)}`, { method: 'DELETE' });
     return 'first post deleted (replies, if any remain, can be deleted in the app)';
   },
+  /** The ids of the posts of this thread already on Threads (from an earlier, interrupted run). */
+  async alreadyPosted(posts) {
+    const same = (x, y) => (x || '').replace(/\s+/g, ' ').trim().slice(0, 60) === (y || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+    try {
+      const mine = await graphGet(THREADS, '/me/threads?fields=id,text&limit=25', env.THREADS_TOKEN);
+      const top = (mine.data || []).find((p) => same(p.text, posts[0]));
+      if (!top) return [];
+      const replies = (await graphGet(THREADS, '/me/replies?fields=id,text,replied_to&limit=50', env.THREADS_TOKEN)).data || [];
+      const ids = [top.id];
+      for (const text of posts.slice(1)) {
+        const next = replies.find((r) => r.replied_to?.id === ids.at(-1) && same(r.text, text));
+        if (!next) break;
+        ids.push(next.id);
+      }
+      return ids;
+    } catch (err) {
+      console.log(`  (Threads: could not look for an earlier partial thread: ${err.message.slice(0, 120)})`);
+      return [];
+    }
+  },
   /** Media containers need a moment before they can be published. */
   async waitReady(id, tries = 20) {
     for (let i = 0; i < tries; i += 1) {
@@ -254,9 +274,13 @@ const threads = {
     // the first post carries image 1 of the carousel (Trump and the American President side by side);
     // the last one, with the link, shows the article's preview card
     const image = existsSync(path.join(root, 'public/social', s.slug, '01.jpg')) ? `${SITE_URL}/social/${s.slug}/01.jpg` : `${SITE_URL}/og/${s.slug}.png`;
-    let first = null;
-    let previous = null;
+    // a thread cut short by an error is finished, not started again
+    const done = await this.alreadyPosted(posts);
+    if (done.length) console.log(`  (Threads: ${done.length} posts already there, finishing the thread)`);
+    let first = done[0] || null;
+    let previous = done.at(-1) || null;
     for (const [i, text] of posts.entries()) {
+      if (i < done.length) continue;
       const form = { text, ...(previous ? { reply_to_id: previous } : {}) };
       if (i === 0 && hasVideo(s, 1)) Object.assign(form, { media_type: 'VIDEO', video_url: videoUrl(s, 1) });
       else if (i === 0) Object.assign(form, { media_type: 'IMAGE', image_url: image });
@@ -265,7 +289,18 @@ const threads = {
       const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, form);
       if (i === 0) await this.waitReady(container.id, hasVideo(s, 1) ? 60 : 20);
       else await sleep(4000); // Threads asks for a short wait between creating and publishing
-      const post = await graphPost(THREADS, '/me/threads_publish', env.THREADS_TOKEN, { creation_id: container.id });
+      let post;
+      try {
+        post = await graphPost(THREADS, '/me/threads_publish', env.THREADS_TOKEN, { creation_id: container.id });
+      } catch (err) {
+        if (!form.link_attachment) throw err;
+        // Threads sometimes refuses the link card: the address is in the text anyway
+        console.log(`  (Threads refused the link card, posting without it: ${err.message.slice(0, 120)})`);
+        delete form.link_attachment;
+        const retry = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, form);
+        await sleep(4000);
+        post = await graphPost(THREADS, '/me/threads_publish', env.THREADS_TOKEN, { creation_id: retry.id });
+      }
       previous = post.id;
       first = first || post.id;
     }
