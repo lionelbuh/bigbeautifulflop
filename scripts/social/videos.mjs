@@ -134,7 +134,7 @@ ${styles({ stageTop: s.headline.length > 30 ? 560 : 470, boxSize: series.id === 
  * Frame by frame: every animation is paused and set to the frame's time. Several tabs share the work
  * (one per processor, up to four): GitHub's machines are much slower than a laptop.
  */
-async function render(page, work, markup, file, { duration = DURATION, end = END } = {}) {
+async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false } = {}) {
   const frames = path.join(work, 'frames');
   rmSync(frames, { recursive: true, force: true });
   mkdirSync(frames, { recursive: true });
@@ -154,13 +154,98 @@ async function render(page, work, markup, file, { duration = DURATION, end = END
   }));
   await Promise.all(pages.slice(1).map((pg) => pg.close()));
   const sound = path.join(root, 'scripts/social/sound');
+  // the opening fanfare, the ending fanfare that flops, and (short format) a light music bed in between
+  const mix = bed
+    ? `[2:a]adelay=${end * 1000}|${end * 1000}[a2];[3:a]atrim=0:${end - 2.2},afade=t=out:st=${end - 3.2}:d=1,volume=0.32,adelay=2200|2200[a3];[1:a][a2][a3]amix=inputs=3:duration=longest:normalize=0,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`
+    : `[2:a]adelay=${end * 1000}|${end * 1000}[a2];[1:a][a2]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`;
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%04d.jpg'),
-    '-i', path.join(sound, 'bbf-opening.wav'), '-i', path.join(sound, 'bbf-ending.wav'),
-    '-filter_complex', `[2:a]adelay=${end * 1000}|${end * 1000}[a2];[1:a][a2]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`,
+    '-i', path.join(sound, 'bbf-opening.wav'), '-i', path.join(sound, 'bbf-ending.wav'), ...(bed ? ['-i', path.join(sound, 'bbf-bed.wav')] : []),
+    '-filter_complex', mix,
     '-map', '0:v', '-map', '[a]', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '21', '-c:a', 'aac', '-b:a', '160k',
     '-t', String(duration), '-movflags', '+faststart', file]);
   // the first frame: the cover of the Reel on Instagram
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-frames:v', '1', '-q:v', '3', file.replace(/video(-\d)?\.mp4$/, (m, n) => `cover${n || ''}.jpg`)]);
+}
+
+/* ---------------- the short format (about 18 s, little to read) ---------------- */
+const SHORT = { duration: 18, end: 14.5, bed: true };
+
+/** The question of the end card: it asks for a comment and a like. */
+export function endQuestion(series) {
+  return {
+    swiss: ['Quel canton fait le meilleur Trump ?', 'Dis-le en commentaire · Like si c’est le tien'],
+    france: ['Quelle région fait le meilleur Trump ?', 'Dis-le en commentaire · Like si c’est la tienne'],
+    uk: ['Which city does the best Trump?', 'Tell us in the comments · Like if it’s yours'],
+    us: ['Which state does the best Trump?', 'Tell us in the comments · Like if it’s yours'],
+    diplomat: ['Which diplomat would you hire?', 'Tell us in the comments · Like if you agree'],
+  }[series.id] || ['Which version wins?', 'Tell us in the comments'];
+}
+
+function shortHtml(s, series) {
+  const { region, edition } = seriesVersion(s, series);
+  const french = region.lang.startsWith('fr');
+  const title = videoTitle(s, series);
+  const mark = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  const hook = edition.hook
+    ? `<p class="k">${e(title.title)} · satire</p><p class="h">${mark(edition.hook)}</p>${edition.hookEn ? `<p class="s">${mark(edition.hookEn)}</p>` : ''}`
+    : `<p class="k">${e(series.kicker)}</p><p class="t">${e(title.title)}</p><p class="s">${e(title.sub)}</p>`;
+  // the region’s punchline, word by word; the *gold* part comes last
+  const short = edition.short || excerpt(edition.text, 150);
+  const shortEn = series.id === 'diplomat' ? (edition.shortEn || excerpt(edition.en, 110)) : french ? (edition.shortEn || excerpt(englishOf(region, edition), 120)) : '';
+  let i = 0;
+  const words = nb(short).split(/(\*[^*]+\*)/).filter(Boolean).map((part) => {
+    const gold = part.startsWith('*');
+    return part.replace(/\*/g, '').split(/\s+/).filter(Boolean).map((w) => `<span class="w${gold ? ' g' : ''}" style="animation-delay:${(8.7 + 0.13 * i++).toFixed(2)}s">${e(w)}</span>`).join(' ');
+  }).join(' ');
+  const enAt = Math.min(12.6, 8.9 + 0.13 * i);
+  const [question, ask] = endQuestion(series);
+  const key = s.original.key || excerpt(s.original.text, 110);
+  const presKey = s.presidential.key || excerpt(s.presidential.en, 110);
+  return `<!doctype html><meta charset="utf-8"><style>
+${styles({ stageTop: 330, boxSize: 38, hookSize: (edition.hook || '').length > 60 ? 92 : 108, titleAnim: !edition.hook })}
+#title{animation:hide .3s ease-in 2.5s forwards}
+.kicker{top:250px;animation:up .6s ease-out 2.7s both}
+.stage{top:330px;bottom:300px}
+.stage .scene{align-self:center}
+#a{gap:40px}
+#a .card{padding:40px 46px}
+#a .card .text{font-size:60px;line-height:1.2}
+#a .name{font-size:36px}
+#a .trump{animation:up .7s ease-out 2.9s both}
+#a .pres{animation:up .7s ease-out 4.6s both}
+#a{animation:out .5s ease-in 8.1s forwards}
+#b{gap:40px}
+#b .on{font-size:36px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#b3121a;animation:up .6s ease-out 8.5s both}
+#b .big{font-family:F;font-weight:500;font-size:96px;line-height:1.14;letter-spacing:-.015em;color:#171614}
+#b .w{display:inline-block;animation:pop .35s ease-out both}
+#b .g{color:#b3121a}
+#b .en{font-size:44px;line-height:1.35;color:#1f3a5f;animation:fadein .6s ease-out ${enAt.toFixed(1)}s both}
+#b .en em{font-style:normal;font-weight:700}
+@keyframes pop{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.foot{animation:fadein .5s ease-out 2.9s both}
+#end .q{font-family:F;font-size:96px;line-height:1.06;letter-spacing:-.02em;max-width:900px}
+#end .ask{font-size:40px;color:#b3121a;font-weight:700}
+#end{animation:fadein .5s ease-out ${SHORT.end}s both}
+</style>
+<div id="title">${logoFlop({ font: 'F' })}${hook}</div>
+<div class="top">${logoFlop({ font: 'F' })}<span class="brand">Big Beautiful <i>Flop</i></span></div>
+<p class="kicker">${e(s.headline)}</p>
+<div class="stage">
+ <div class="scene" id="a">
+  <div class="card trump"><div class="head"><span class="av" style="background:#6b665e">DT</span><span class="name">Donald J. Trump · Truth Social</span><span class="badge">Original</span></div>
+   <p class="text">“${e(key)}”</p></div>
+  <div class="card pres"><div class="head"><span class="av" style="background:#1f3a5f">★</span><span class="name">The American President</span><span class="badge">Satire</span></div>
+   <p class="note">How a statesmanlike president would say it</p>
+   <p class="text">${e(presKey)}</p></div>
+ </div>
+ <div class="scene" id="b">
+  <p class="on">${e(title.title)} · satire</p>
+  <p class="big">${words}</p>
+  ${shortEn ? `<p class="en">${mark(shortEn)}</p>` : ''}
+ </div>
+</div>
+<p class="foot"><span>Independent satire · only the original is a quotation</span><span>bigbeautifulflop.com</span></p>
+<div id="end">${logoFlop({ font: 'F' })}<p class="q">${e(question)}</p><p class="ask">${e(ask)}</p><p class="url">bigbeautifulflop.com</p></div>`;
 }
 
 /* ---------------- the Sunday video ---------------- */
@@ -260,6 +345,22 @@ async function main() {
   const argv = process.argv.slice(2);
   const opt = (name) => (argv.includes(`--${name}`) ? argv[argv.indexOf(`--${name}`) + 1] : null);
   const networks = [...SOCIAL_NETWORKS, ...(config.youtubeStart ? ['youtube'] : [])];
+
+  // --test-short <slug> <1|2> <file.mp4>: one video in the short format, written outside the site
+  if (argv.includes('--test-short')) {
+    const [slug, n, out] = argv.slice(argv.indexOf('--test-short') + 1);
+    const s = all.find((x) => x.slug === slug);
+    const meta = JSON.parse(readFileSync(path.join(root, 'public/social', slug, 'videos.json'), 'utf8'));
+    const series = VIDEO_SERIES.find((x) => x.id === meta[n].series);
+    const work = mkdtempSync(path.join(tmpdir(), 'bbf-short-'));
+    const browser = await chromium.launch();
+    const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
+    await render(page, work, shortHtml(s, series), path.resolve(out), SHORT);
+    await browser.close();
+    rmSync(work, { recursive: true, force: true });
+    console.log(`Short format: ${slug} video ${n} (${series.kicker}) → ${out}`);
+    return;
+  }
 
   if (argv.includes('--weekly')) {
     // the Sunday of this week (UTC), or the date given

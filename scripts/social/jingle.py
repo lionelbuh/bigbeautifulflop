@@ -61,6 +61,35 @@ def ending():
         t += d if i < 3 else 0
     return track
 
+def pluck(freq, dur, vel=1.0):
+    t = np.arange(int(dur * SR)) / SR
+    env = np.exp(-t * 7) * np.clip(t / 0.005, 0, 1)
+    return vel * env * (np.sin(2 * np.pi * freq * t) + 0.3 * np.sin(4 * np.pi * freq * t))
+
+def tick(vel=0.12):
+    t = np.arange(int(0.05 * SR)) / SR
+    noise = np.diff(np.random.default_rng(7).normal(size=t.size), prepend=0)
+    return vel * noise * np.exp(-t * 90)
+
+def bed(dur=16.0, bpm=104):
+    # a light walking bass with soft brass stabs on the off-beats: it plays under the words, between the fanfares
+    track = np.zeros(int(dur * SR))
+    beat = 60 / bpm
+    bars = [('Bb2', ['Bb3', 'D4', 'F4']), ('F2', ['A3', 'C4', 'F4']), ('G2', ['Bb3', 'D4', 'G4']), ('Eb2', ['Bb3', 'Eb4', 'G4'])]
+    k = 0
+    t = 0.0
+    while t < dur - beat:
+        root, stab = bars[(k // 4) % 4]
+        f = note_freq(root) * (1.5 if k % 4 == 2 else 1)         # root, root, fifth, root
+        place(track, pluck(f, beat * 0.95, 0.9), t)
+        place(track, tick(), t + beat / 2)
+        if k % 2 == 1:
+            place(track, chord(stab, beat * 0.35, vel=0.35), t + beat / 2)
+        k += 1
+        t += beat
+    fade = np.clip(np.arange(track.size) / (0.6 * SR), 0, 1) * np.clip((track.size - np.arange(track.size)) / (1.2 * SR), 0, 1)
+    return track * fade
+
 def save(name, sig):
     sig = sig / (np.abs(sig).max() + 1e-9) * 0.8
     pcm = (sig * 32767).astype(np.int16)
@@ -70,4 +99,5 @@ def save(name, sig):
 out = sys.argv[1]
 save(f'{out}/bbf-opening.wav', opening())
 save(f'{out}/bbf-ending.wav', ending())
+save(f'{out}/bbf-bed.wav', bed())
 print('ok')

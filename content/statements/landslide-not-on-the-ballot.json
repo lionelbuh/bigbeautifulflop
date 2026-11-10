@@ -26,7 +26,8 @@
     "verification": {
       "status": "verified",
       "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 9 November 2026 (shown as Nov 03, 2026, 7:37 PM Pacific)."
-    }
+    },
+    "key": "I wasn’t on the Ballot and if I was, we would have won IN A LANDSLIDE!"
   },
   "presidential": {
     "en": [
@@ -36,7 +37,8 @@
     "fr": [
       "Je n’étais pas candidat aux élections de ce soir, mais notre programme était soumis au vote dans chaque État, et je reste convaincu qu’il a le soutien d’un très grand nombre d’Américains.",
       "Je remercie toutes celles et tous ceux qui ont voté. Le travail continue, avec le Congrès que les Américains ont choisi."
-    ]
+    ],
+    "key": "I was not a candidate in tonight’s elections, but our agenda was on the ballot in every state."
   },
   "editions": {
     "vaudois": {
@@ -51,7 +53,11 @@
       ],
       "notes": [
         "“Y en a point comme nous” (“there’s nobody like us”) is the Vaud motto of cheerful self-satisfaction; Chasselas is the white grape of the Lavaux vineyards. “Faut voir” (“we’ll see”) is the classic Vaudois non-answer."
-      ]
+      ],
+      "hook": "On aurait gagné un raz-de-marée. *Enfin… faut voir.*",
+      "hookEn": "We’d have won by a landslide. *Well… we’ll see.*",
+      "short": "Chez nous, on dit « y en a point comme nous ». Mais on le dit doucement, entre deux verres de chasselas. *Pas en majuscules.*",
+      "shortEn": "Round here we say “there’s nobody like us”. But quietly, over a glass of Chasselas. *Not in capital letters.*"
     },
     "valaisan": {
       "review": "approved",
