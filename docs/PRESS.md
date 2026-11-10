@@ -190,3 +190,19 @@ What would Donald Trump sound like if he were from Vaud, Valais or Geneva? Big B
 word, then rewrites them as a statesmanlike president would say them, and as if he were Swiss, French,
 American or British, with the President of the Swiss Confederation replying. [rest of the English
 message]
+
+## Newsroom addresses (found on each outlet’s own site, 10 November 2026)
+
+| Outlet | Where to send | Found on | Note |
+| --- | --- | --- | --- |
+| Le Temps | **info@letemps.ch** (“Rédaction”); culture: culture@letemps.ch; Lausanne: lausanne@letemps.ch | letemps.ch/contact and /impressum | For us, culture@ or lausanne@ is probably the best desk. |
+| Watson Romandie | **news@watson.ch** (also redaktion@watson.ch) | watson.ch/fr/u/impressum | Editorial address of the Lausanne office. |
+| La Liberté | **redaction@laliberte.ch** (Bulle desk: bulle@laliberte.ch) | laliberte.ch/pages/contact-157656 | Bulle is the Gruyère desk: good for the Fribourg version. |
+| Swissinfo (SWI) | **contact@swissinfo.ch** | swissinfo.ch impressum (FR and EN) | “Newsroom contact”: send the English message. |
+| Le Nouvelliste | Form: https://www.lenouvelliste.ch/pages/formulairecontact/ | lenouvelliste.ch/pages/contact/ → “Contacter la rédaction” | No newsroom e-mail published. Paste the message in the form. |
+| ArcInfo | Form: https://www.arcinfo.ch/pages/formulairecontact/ | arcinfo.ch/pages/contact/ → “Contacter la rédaction” | No newsroom e-mail published. Paste the message in the form. |
+| 24 heures | No general newsroom address published | 24heures.ch impressum | The only addresses are for confidential investigations (cellule-enquete@tamedia.ch: not for this) and letters to the editor (courrierdeslecteurs@24heures.ch). Better: write to a journalist of the Vaud or culture pages (their name is under their articles), or via LinkedIn. |
+| Tribune de Genève | No general newsroom address published | tdg.ch impressum | Same as 24 heures (Tamedia): letters go to courrier@tdg.ch. Better: a journalist of the Geneva or culture pages. |
+| RTS | Form: https://www.rts.ch/entreprise/contact/ | rts.ch/entreprise/contact/ | Answered by the customer service; no newsroom, Couleur 3 or La 1ère address published. Better: write to the show directly via its Instagram page. |
+
+Never use the investigations (tips) addresses for a pitch: they are for confidential information.
