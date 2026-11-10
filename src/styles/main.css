@@ -528,6 +528,21 @@ h3 {
 .post-foot a {
   color: var(--ink-soft);
 }
+.post-foot .share-wa {
+  color: #128c4a;
+  font-weight: 600;
+  text-decoration: none;
+}
+.post-foot .share-wa::before {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 0.35em;
+  border-radius: 50%;
+  background: currentColor;
+  vertical-align: 0.05em;
+}
 .verify-flag {
   font-style: italic;
 }
@@ -1142,4 +1157,18 @@ a.cal-day:focus-visible {
 }
 .post--diplomat .avatar {
   box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px var(--navy);
+}
+.press-figure {
+  margin: 1rem 0 1.5rem;
+}
+.press-figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule-soft);
+}
+.press-figure figcaption {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
 }

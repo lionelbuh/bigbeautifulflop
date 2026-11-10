@@ -1,5 +1,5 @@
 /**
- * Posts statements on Bluesky, Threads, Facebook and Instagram (run by .github/workflows/social.yml
+ * Posts statements on Bluesky, Threads, Facebook, Instagram and YouTube (videos only) (run by .github/workflows/social.yml
  * after each deploy, or by hand from the Actions tab).
  *
  *   node scripts/social/publish.mjs --mode check      tests every key: which account it reaches; posts nothing
@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
 import {
   SITE_URL, articleUrl, threadFor, facebookPost, instagramCaption, secondVideoPost, VIDEO_SERIES, THREADS_TOPIC, BLUESKY_TAGS,
+  youtubeTitle, youtubeDescription, weeklyPicks, weeklyPost,
 } from './compose.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -61,22 +62,31 @@ const SECOND_VIDEO_DELAY = 4 * 3600 * 1000; // the second video goes out about f
  * can take a few minutes to serve the new files. Wait (up to ten minutes) until they answer.
  */
 const online = new Set();
-async function waitOnline(s) {
-  if (online.has(s.slug)) return;
-  const urls = [`${SITE_URL}/og/${s.slug}.png`, ...(hasVideo(s, 1) ? [videoUrl(s, 1)] : [])];
+async function waitOnlineUrls(name, urls) {
+  if (online.has(name)) return;
   for (let i = 0; i < 40; i += 1) {
     const codes = await Promise.all(urls.map((u) => fetch(u, { method: 'HEAD' }).then((r) => r.status, () => 0)));
-    if (codes.every((c) => c === 200)) { online.add(s.slug); return; }
-    if (i === 0) console.log(`  waiting for the site to serve ${s.slug} (${codes.join(', ')})…`);
+    if (codes.every((c) => c === 200)) { online.add(name); return; }
+    if (i === 0) console.log(`  waiting for the site to serve ${name} (${codes.join(', ')})…`);
     await new Promise((r) => setTimeout(r, 15000));
   }
   throw new Error('the site does not serve the share image or the video yet');
 }
+const waitOnline = (s) => waitOnlineUrls(s.slug, [`${SITE_URL}/og/${s.slug}.png`, ...(hasVideo(s, 1) ? [videoUrl(s, 1)] : [])]);
 const videoFile = (s, n) => path.join(root, 'public/social', s.slug, `video-${n}.mp4`);
 const hasVideo = (s, n) => existsSync(videoFile(s, n));
 const videoUrl = (s, n) => `${SITE_URL}/social/${s.slug}/video-${n}.mp4`;
 const coverFile = (s, n) => path.join(root, 'public/social', s.slug, `cover-${n}.jpg`);
 const coverUrl = (s, n) => `${SITE_URL}/social/${s.slug}/cover-${n}.jpg`;
+/** A video to post: its file, its address on the site, its cover, its title and its description for the blind. */
+function clipOf(s, n) {
+  const series = videoSeries(s, n);
+  return {
+    file: videoFile(s, n), url: videoUrl(s, n), cover: existsSync(coverFile(s, n)) ? coverUrl(s, n) : null,
+    alt: `${s.headline}: Donald Trump’s post and its satirical versions (video, no voice).`,
+    title: youtubeTitle(s, series),
+  };
+}
 function videoSeries(s, n) {
   const meta = path.join(root, 'public/social', s.slug, 'videos.json');
   const id = existsSync(meta) ? JSON.parse(readFileSync(meta, 'utf8'))[n]?.series : null;
@@ -145,13 +155,13 @@ const bluesky = {
       return up.blob;
     }
   },
-  videoEmbed(blob, s) {
-    return { $type: 'app.bsky.embed.video', video: blob, aspectRatio: { width: 1080, height: 1920 }, alt: `${s.headline}: Donald Trump’s post and its satirical versions (video, no voice).` };
+  videoEmbed(blob, clip) {
+    return { $type: 'app.bsky.embed.video', video: blob, aspectRatio: { width: 1080, height: 1920 }, alt: clip.alt };
   },
-  /** The second video, alone, about four hours after the thread. */
-  async publishVideo(s, n, text) {
+  /** A video alone: the second video, about four hours after the thread, or the Sunday video. */
+  async publishVideo(clip, text) {
     const session = await this.session();
-    const record = { $type: 'app.bsky.feed.post', text, createdAt: new Date().toISOString(), langs: ['en'], embed: this.videoEmbed(await this.uploadVideo(session, videoFile(s, n)), s) };
+    const record = { $type: 'app.bsky.feed.post', text, createdAt: new Date().toISOString(), langs: ['en'], embed: this.videoEmbed(await this.uploadVideo(session, clip.file), clip) };
     const facets = this.facets(text);
     if (facets.length) record.facets = facets;
     const res = await call(`${session.pds}/xrpc/com.atproto.repo.createRecord`, { method: 'POST', headers: { Authorization: `Bearer ${session.accessJwt}` }, json: { repo: session.did, collection: 'app.bsky.feed.post', record } });
@@ -207,7 +217,7 @@ const bluesky = {
       if (i === 0 && image) {
         record.embed = { $type: 'app.bsky.embed.images', images: [{ image, alt: `${s.headline}: Donald Trump’s post on Truth Social and the presidential version, side by side (satire).`, aspectRatio: { width: 1080, height: 1350 } }] };
       }
-      if (i === 0 && video) record.embed = this.videoEmbed(video, s);
+      if (i === 0 && video) record.embed = this.videoEmbed(video, clipOf(s, 1));
       if (i === posts.length - 1 || (i === 0 && !image && !video)) {
         record.embed = { $type: 'app.bsky.embed.external', external: { uri: articleUrl(s), title: s.headline, description: s.dek, ...(thumb ? { thumb } : {}) } };
       }
@@ -263,8 +273,8 @@ const threads = {
     throw new Error('Threads container not ready in time');
   },
   /** The second video, alone, about four hours after the thread. */
-  async publishVideo(s, n, text) {
-    const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, { media_type: 'VIDEO', video_url: videoUrl(s, n), text });
+  async publishVideo(clip, text) {
+    const container = await graphPost(THREADS, '/me/threads', env.THREADS_TOKEN, { media_type: 'VIDEO', video_url: clip.url, text });
     await this.waitReady(container.id, 60);
     const post = await graphPost(THREADS, '/me/threads_publish', env.THREADS_TOKEN, { creation_id: container.id });
     return { id: post.id };
@@ -366,19 +376,19 @@ const facebook = {
     return env.FACEBOOK_PAGE_TOKEN;
   },
   /** A video on the page (Facebook shows vertical videos as Reels), its text holding the link. */
-  async postVideo(s, n, description) {
+  async postVideo(clip, description) {
     const token = await this.pageToken();
-    const res = await graphPost('https://graph-video.facebook.com/v23.0', `/${this.pageId || env.FACEBOOK_PAGE_ID}/videos`, token, { file_url: videoUrl(s, n), description });
+    const res = await graphPost('https://graph-video.facebook.com/v23.0', `/${this.pageId || env.FACEBOOK_PAGE_ID}/videos`, token, { file_url: clip.url, description });
     return { id: res.id };
   },
   async publish(s) {
-    if (hasVideo(s, 1)) return { ...(await this.postVideo(s, 1, facebookPost(s).message)), video: 1 };
+    if (hasVideo(s, 1)) return { ...(await this.postVideo(clipOf(s, 1), facebookPost(s).message)), video: 1 };
     const token = await this.pageToken();
     const post = await graphPost(GRAPH, `/${this.pageId || env.FACEBOOK_PAGE_ID}/feed`, token, facebookPost(s));
     return { id: post.id };
   },
-  async publishVideo(s, n, text) {
-    return this.postVideo(s, n, text);
+  async publishVideo(clip, text) {
+    return this.postVideo(clip, text);
   },
 };
 
@@ -403,18 +413,18 @@ const instagram = {
     throw new Error('Instagram container not ready in time');
   },
   /** A Reel (also shown in the feed). */
-  async reel(s, n, caption) {
+  async reel(clip, caption) {
     const ig = env.INSTAGRAM_USER_ID;
-    const container = await graphPost(GRAPH, `/${ig}/media`, env.INSTAGRAM_TOKEN, { media_type: 'REELS', video_url: videoUrl(s, n), caption, share_to_feed: 'true', ...(existsSync(coverFile(s, n)) ? { cover_url: coverUrl(s, n) } : {}) });
+    const container = await graphPost(GRAPH, `/${ig}/media`, env.INSTAGRAM_TOKEN, { media_type: 'REELS', video_url: clip.url, caption, share_to_feed: 'true', ...(clip.cover ? { cover_url: clip.cover } : {}) });
     await this.waitReady(container.id, 60);
     const post = await graphPost(GRAPH, `/${ig}/media_publish`, env.INSTAGRAM_TOKEN, { creation_id: container.id });
     return { id: post.id };
   },
-  async publishVideo(s, n, text) {
-    return this.reel(s, n, text);
+  async publishVideo(clip, text) {
+    return this.reel(clip, text);
   },
   async publish(s) {
-    if (hasVideo(s, 1)) return { ...(await this.reel(s, 1, instagramCaption(s))), video: 1 };
+    if (hasVideo(s, 1)) return { ...(await this.reel(clipOf(s, 1), instagramCaption(s))), video: 1 };
     const urls = this.images(s);
     if (urls.length < 2) throw new Error(`no carousel images in public/social/${s.slug}/ (run npm run images)`);
     const ig = env.INSTAGRAM_USER_ID;
@@ -431,7 +441,47 @@ const instagram = {
   },
 };
 
-export const NETWORKS = { bluesky, threads, facebook, instagram };
+/* ---------------- YouTube (Shorts: the videos only) ---------------- */
+const youtube = {
+  ready: () => env.YOUTUBE_CLIENT_ID && env.YOUTUBE_CLIENT_SECRET && env.YOUTUBE_REFRESH_TOKEN,
+  async token() {
+    const res = await call('https://oauth2.googleapis.com/token', {
+      method: 'POST', form: { client_id: env.YOUTUBE_CLIENT_ID, client_secret: env.YOUTUBE_CLIENT_SECRET, refresh_token: env.YOUTUBE_REFRESH_TOKEN, grant_type: 'refresh_token' },
+    });
+    return res.access_token;
+  },
+  async check() {
+    const token = await this.token();
+    const res = await call('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', { headers: { Authorization: `Bearer ${token}` } });
+    return res.items?.[0]?.snippet?.title ? `channel “${res.items[0].snippet.title}”` : 'no channel on this account';
+  },
+  /** A vertical video under a minute is a Short. Resumable upload: the details, then the file. */
+  async upload(clip, title, description) {
+    const token = await this.token();
+    const bytes = readFileSync(clip.file);
+    const meta = {
+      snippet: { title: title.slice(0, 100), description: description.slice(0, 4900), categoryId: '23', tags: ['satire', 'political satire', 'Trump', 'Big Beautiful Flop'], defaultLanguage: 'en' },
+      status: { privacyStatus: 'public', selfDeclaredMadeForKids: false },
+    };
+    const start = await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json; charset=UTF-8', 'X-Upload-Content-Type': 'video/mp4', 'X-Upload-Content-Length': String(bytes.length) },
+      body: JSON.stringify(meta),
+    });
+    if (!start.ok) throw new Error(`YouTube upload → HTTP ${start.status}: ${(await start.text()).slice(0, 300)}`);
+    const res = await call(start.headers.get('location'), { method: 'PUT', headers: { 'Content-Type': 'video/mp4' }, body: bytes });
+    return { id: res.id };
+  },
+  async publish(s) {
+    const clip = clipOf(s, 1);
+    return { ...(await this.upload(clip, clip.title, youtubeDescription(s, videoSeries(s, 1)))), video: 1 };
+  },
+  async publishVideo(clip, text) {
+    return this.upload(clip, clip.title, clip.description || text);
+  },
+};
+
+export const NETWORKS = { bluesky, threads, facebook, instagram, youtube };
 
 /* ---------------- run ---------------- */
 function args() {
@@ -506,10 +556,13 @@ async function main() {
         if (name === 'bluesky' || name === 'threads') threadFor(name, s).forEach((t, i) => console.log(`--- post ${i + 1} (${[...t].length} chars)\n${t}`));
         if (name === 'facebook') console.log(facebookPost(s).message);
         if (name === 'instagram') console.log(`${instagram.images(s).length} images\n${instagramCaption(s)}`);
+        if (name === 'youtube') console.log(hasVideo(s, 1) ? `${clipOf(s, 1).title}\n${youtubeDescription(s, videoSeries(s, 1))}` : '(no video: nothing for YouTube)');
         continue;
       }
       const net = NETWORKS[name];
       if (!net.ready()) continue;
+      // YouTube takes only videos, from the day it was switched on
+      if (name === 'youtube' && (!hasVideo(s, 1) || !CONFIG.youtubeStart || s.published < CONFIG.youtubeStart)) continue;
       try {
         await waitOnline(s);
         const res = await net.publish(s);
@@ -523,7 +576,7 @@ async function main() {
     }
   }
   // second videos: about four hours after a first post that carried video 1
-  const LIMITS = { bluesky: [300, BLUESKY_TAGS], threads: [500, THREADS_TOPIC], facebook: [5000, ''], instagram: [2200, ''] };
+  const LIMITS = { bluesky: [300, BLUESKY_TAGS], threads: [500, THREADS_TOPIC], facebook: [5000, ''], instagram: [2200, ''], youtube: [5000, ''] };
   if (mode === 'publish') {
     for (const s of statements.filter((x) => !slug || x.slug === slug)) {
       const series = videoSeries(s, 2);
@@ -535,13 +588,45 @@ async function main() {
         if (Date.now() - Date.parse(first.at) < SECOND_VIDEO_DELAY) continue;
         try {
           const [max, tags] = LIMITS[name];
-          const res = await NETWORKS[name].publishVideo(s, 2, secondVideoPost(s, series, max, tags));
+          const res = await NETWORKS[name].publishVideo({ ...clipOf(s, 2), description: secondVideoPost(s, series, 5000, '') }, secondVideoPost(s, series, max, tags));
           log[s.slug] = { ...log[s.slug], [key]: { at: new Date().toISOString(), id: res.id } };
           writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
           console.log(`${s.slug} · ${name}: second video posted (${res.id})`);
         } catch (err) {
           failed += 1;
           console.log(`${s.slug} · ${name}: second video FAILED ${err.message}`);
+        }
+      }
+    }
+  }
+  // the Sunday video (public/social/weekly/<date>/, made by .github/workflows/weekly.yml)
+  const weeklyBase = path.join(root, 'public/social/weekly');
+  if (mode === 'publish' && !slug && existsSync(weeklyBase)) {
+    for (const date of readdirSync(weeklyBase).sort()) {
+      const dir = path.join(weeklyBase, date);
+      if (!existsSync(path.join(dir, 'video.mp4')) || !existsSync(path.join(dir, 'weekly.json'))) continue;
+      const meta = JSON.parse(readFileSync(path.join(dir, 'weekly.json'), 'utf8'));
+      const p = weeklyPicks(statements, date, meta);
+      if (!p) continue;
+      const clip = {
+        file: path.join(dir, 'video.mp4'), url: `${SITE_URL}/social/weekly/${date}/video.mp4`,
+        cover: existsSync(path.join(dir, 'cover.jpg')) ? `${SITE_URL}/social/weekly/${date}/cover.jpg` : null,
+        alt: `The Flop of the week: Donald Trump’s post of the week, the presidential version, and Swiss and French satirical versions (video, no voice).`,
+        title: 'The Flop of the week: Trump, made presidential, Swiss and French #Shorts',
+      };
+      for (const name of chosen) {
+        if (log.weekly?.[date]?.[name] || !NETWORKS[name].ready()) continue;
+        if (name === 'youtube' && !CONFIG.youtubeStart) continue;
+        try {
+          await waitOnlineUrls(`weekly ${date}`, [clip.url]);
+          const [max, tags] = LIMITS[name];
+          const res = await NETWORKS[name].publishVideo({ ...clip, description: weeklyPost(p, 5000, '#PoliticalSatire #Satire') }, weeklyPost(p, max, tags));
+          log.weekly = { ...log.weekly, [date]: { ...log.weekly?.[date], [name]: { at: new Date().toISOString(), id: res.id } } };
+          writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
+          console.log(`Sunday video ${date} · ${name}: posted (${res.id})`);
+        } catch (err) {
+          failed += 1;
+          console.log(`Sunday video ${date} · ${name}: FAILED ${err.message}`);
         }
       }
     }

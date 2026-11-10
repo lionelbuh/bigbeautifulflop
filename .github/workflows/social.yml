@@ -1,6 +1,6 @@
 name: Social networks
 
-# Posts new statements on Bluesky, Threads, Facebook and Instagram, once the site is deployed (the
+# Posts new statements on Bluesky, Threads, Facebook, Instagram and YouTube (videos), once the site is deployed (the
 # posts link to the article and use its images). Only statements published since `start`
 # (content/social/config.json) and not yet in content/social/posted.json are posted; the log is
 # committed back with [skip ci], so it does not redeploy the site. Each statement has two videos: the
@@ -34,7 +34,7 @@ on:
       networks:
         description: 'Networks, comma-separated (default: all)'
         required: false
-        default: 'bluesky,threads,facebook,instagram'
+        default: 'bluesky,threads,facebook,instagram,youtube'
 
 permissions:
   contents: write
@@ -65,9 +65,12 @@ jobs:
           FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
           INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
           INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           MODE: ${{ inputs.mode || 'publish' }}
           SLUG: ${{ inputs.slug }}
-          NETWORKS: ${{ inputs.networks || 'bluesky,threads,facebook,instagram' }}
+          NETWORKS: ${{ inputs.networks || 'bluesky,threads,facebook,instagram,youtube' }}
         run: |
           if [ -n "$SLUG" ]; then
             node scripts/social/publish.mjs --mode "$MODE" --slug "$SLUG" --networks "$NETWORKS"

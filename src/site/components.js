@@ -5,10 +5,11 @@
  * each version sits behind a link ("English version", "In plain English", "What he really means").
  */
 import { e, paras, formatDate, frenchSpacing } from './html.js';
-import { chip, flag } from './layout.js';
+import { chip, flag, SITE_URL } from './layout.js';
 import { REGIONS, CATEGORIES, getCountry, englishLabel } from '../../content/regions.js';
 import { editionsFor } from './content.js';
 import { editionIndex } from './rotation.js';
+import { regionTitle } from '../../scripts/social/compose.mjs';
 
 export const articlePath = (s) => `/statements/${s.slug}/`;
 export const editionPath = (s, region) => `/statements/${s.slug}/${region.id}/`;
@@ -92,6 +93,7 @@ export function regionalPost(s, region, { permalink = true, notes = false, engli
     : '';
   const draft = ed.review !== 'approved' ? '<span class="verify-flag">draft</span>' : '';
   const link = permalink ? `<a href="${editionPath(s, region)}">Permalink</a>` : '';
+  const share = whatsappLink(s, region, ed);
   // English edition: the English adaptation of French versions; English-language versions as written
   const showEnglish = english && isFrench;
   const label = englishLabel(region);
@@ -105,9 +107,28 @@ export function regionalPost(s, region, { permalink = true, notes = false, engli
     body: showEnglish ? paras(ed.en) : paras(ed.text, '', { french: isFrench }),
     translate: english || !label || !ed.en?.length ? null : paras(ed.en),
     translateLabel: label,
-    footer: [link, draft].filter(Boolean).join(' · ') + french + noteList,
+    footer: [link, share, draft].filter(Boolean).join(' · ') + french + noteList,
   });
 }
+
+/**
+ * “Share on WhatsApp”: the version’s punchline (or its first words) and the link to its page, in the
+ * version’s language. Opens WhatsApp (app or web) with the message ready; nothing is sent by the site.
+ */
+export function whatsappLink(s, region, ed) {
+  const french = region.lang.startsWith('fr');
+  const words = (ed.hook || '').replace(/\*/g, '') || cut(ed.text.join(' '), 160);
+  const who = region.country === 'diplomat' ? region.name : regionTitle(region).title;
+  const text = `« ${words} »\n— ${who} (satire)\n${SITE_URL}${editionPath(s, region)}`.replace(/^« (.*) »/, french ? '« $1 »' : '“$1”');
+  return `<a class="share-wa" href="https://wa.me/?text=${encodeURIComponent(text)}" rel="noopener" target="_blank">${french ? 'Partager sur WhatsApp' : 'Share on WhatsApp'}</a>`;
+}
+
+const cut = (t, max) => {
+  const x = t.replace(/\s+/g, ' ').trim();
+  if (x.length <= max) return x;
+  const c = x.slice(0, max - 1);
+  return `${c.slice(0, c.lastIndexOf(' ')).replace(/[\s,;:.–—-]+$/, '')}…`;
+};
 
 /**
  * The versions of a statement in the given countries, in the order of the day. `grouped` (for display):

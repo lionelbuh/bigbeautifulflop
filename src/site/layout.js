@@ -136,7 +136,7 @@ export function renderFooter() {
       <p class="footer-disclaimer">${e(DISCLAIMER)}</p>
       <p class="footer-contact">Contact: ${emailLink()}</p>
     </div>
-    <nav aria-label="Sections"><ul class="footer-links">${links}<li><a href="/english/">English Edition</a></li><li><a href="/feed.xml">RSS feed</a></li></ul></nav>
+    <nav aria-label="Sections"><ul class="footer-links">${links}<li><a href="/english/">English Edition</a></li><li><a href="/press/">Press</a></li><li><a href="/feed.xml">RSS feed</a></li></ul></nav>
   </div>
 </footer>`;
 }

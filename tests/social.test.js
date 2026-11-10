@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { loadStatements } from '../src/site/content.js';
-import { excerpt, threadPosts, threadFor, facebookPost, instagramCaption, carouselCards, VIDEO_SERIES, videoSeriesFor, secondVideoPost, seriesVersion, videosPending, videoTitle } from '../scripts/social/compose.mjs';
+import { excerpt, threadPosts, threadFor, facebookPost, instagramCaption, carouselCards, VIDEO_SERIES, videoSeriesFor, secondVideoPost, seriesVersion, videosPending, videoTitle, youtubeTitle, weeklyPicks, weeklyPost } from '../scripts/social/compose.mjs';
 
 const statements = loadStatements(path.resolve('content/statements'));
 const chars = (t) => [...t].length;
@@ -82,5 +82,15 @@ describe('social posts', () => {
         if (!['british-diplomat'].includes(id) && /[àâçéèêëîïôûù’]/.test(ed.hook + ed.text.join(' ')) && ed.text.join(' ').match(/ (le|la|les|et|est) /)) expect(ed.hookEn).toBeTruthy();
       }
     }
+  });
+  it('gives YouTube a short title, and picks the Sunday video from the week', () => {
+    for (const s of statements) for (const sr of VIDEO_SERIES) if (seriesVersion(s, sr)) expect(chars(youtubeTitle(s, sr))).toBeLessThanOrEqual(100);
+    const sunday = statements[0].published;
+    const p = weeklyPicks(statements, sunday);
+    expect(p.original.published >= p.from).toBe(true);
+    if (p.swiss) expect(p.swiss.region.country).toBe('switzerland');
+    if (p.france) expect(p.france.region.country).toBe('france');
+    for (const max of [300, 500, 2200]) expect(chars(weeklyPost(p, max, '#Trump'))).toBeLessThanOrEqual(max);
+    expect(weeklyPicks(statements, '2020-01-05')).toBeNull();
   });
 });

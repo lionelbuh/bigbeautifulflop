@@ -42,6 +42,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
     page({ pageId: 'archives', path: '/archives/', title: 'Archives', description: 'Every statement, day by day, with all its versions.', main: archives(ctx) }),
     page({ pageId: 'about', path: '/about/', title: 'About', description: DISCLAIMER, main: about(ctx) }),
+    page({ pageId: 'press', path: '/press/', title: 'Press', description: 'Big Beautiful Flop in brief, for journalists: what it is, who makes it, images and contact. En français aussi.', main: press(ctx) }),
     { path: '/404.html', lang: 'en', listed: false, html: renderPage({ pageId: '', header, head: { title: 'Page not found', description: 'This page does not exist.', path: '/404.html', noindex: true, assets }, main: notFound() }) },
   ];
 
@@ -375,6 +376,42 @@ function about() {
     <p>Write to ${emailLink()}. If we have quoted a statement inaccurately, tell us: we check it against the source and correct it promptly.</p>
     <h2>Privacy</h2>
     <p>This site sets no cookies, shows no advertising and collects no personal data. To count visits, it uses Cloudflare Web Analytics, which uses no cookies and does not track visitors across sites; it is not loaded if your browser asks not to be tracked (Do Not Track or Global Privacy Control). The site is hosted on GitHub Pages (GitHub, Inc.), whose servers may keep technical logs, such as IP addresses, for security.</p>
+  </div>`;
+}
+
+/** For journalists: the project in brief, in English and in French, with images to use. */
+function press({ statements }) {
+  const latest = statements[0];
+  const n = statements.length;
+  const sample = latest ? `<figure class="press-figure"><img src="/og/${latest.slug}.png" alt="${e(latest.headline)}: share image" width="1200" height="630" loading="lazy"><figcaption>Latest statement: <a href="${articlePath(latest)}">${e(latest.headline)}</a></figcaption></figure>` : '';
+  return `${sectionHead('Press', 'Big Beautiful Flop in brief', 'For journalists, editors and podcasters. Pour la presse romande et française : voir plus bas.')}
+  <div class="prose">
+    <h2>In one sentence</h2>
+    <p>Big Beautiful Flop takes Donald Trump’s posts, word for word, and rewrites them twice: as a statesmanlike president would say them, and as if he were from Vaud, Valais, Paris, Marseille, Texas, Boston, Liverpool or Glasgow, with three diplomats (British, French and Swiss) replying.</p>
+    <h2>What makes it different</h2>
+    <ul>
+      <li><strong>The original is never altered.</strong> Each post is quoted verbatim, dated and sourced; everything else is clearly labelled satire.</li>
+      <li><strong>Same message, different manners.</strong> The presidential version keeps the political point and drops the insults: the gap between the two is the joke.</li>
+      <li><strong>Local humour, written for locals.</strong> Twenty-two regional voices in French and English, each with an English adaptation that rebuilds the joke for international readers.</li>
+      <li><strong>Swiss neutrality, applied to satire.</strong> Made by a Swiss-American living in California: no party, no campaign, no advertising.</li>
+    </ul>
+    <h2>Facts</h2>
+    <ul>
+      <li>Launched in November 2026; ${n} statements so far, about eleven versions each.</li>
+      <li>On the site, and as short vertical videos on Instagram, Facebook, Threads and Bluesky (YouTube soon); “The Flop of the week” every Sunday.</li>
+      <li>Independent, non-commercial; no cookies, no advertising.</li>
+    </ul>
+    <h2>Images</h2>
+    <p>You may use these images to illustrate an article about Big Beautiful Flop: <a href="/icon-512.png">the logo (PNG, 512 × 512)</a>, <a href="/og/default.png">the banner (PNG, 1200 × 630)</a>, and the share image of any statement (on its page).</p>
+    ${sample}
+    <h2>Contact</h2>
+    <p>Interviews, questions, corrections: ${emailLink()}. We usually answer within a day.</p>
+    <h2 lang="fr">En bref, en français</h2>
+    <div lang="fr">
+      <p>Big Beautiful Flop reprend les messages de Donald Trump mot pour mot, puis les réécrit deux fois : comme les dirait un président posé et respectueux des institutions, et comme s’il était vaudois, valaisan, genevois, fribourgeois, neuchâtelois, parisien, marseillais, lyonnais, breton ou ch’ti. Trois diplomates, britannique, français et suisse, lui répondent.</p>
+      <p>L’original n’est jamais modifié et tout le reste est signalé comme satire. Le projet est fait par un Suisse-Américain qui vit en Californie, sans parti ni publicité : la neutralité suisse appliquée à la satire. Chaque dimanche, « The Flop of the week » réunit en une vidéo le message de la semaine, sa version présidentielle, une version suisse et une version française.</p>
+      <p>Contact : ${emailLink()}.</p>
+    </div>
   </div>`;
 }
 

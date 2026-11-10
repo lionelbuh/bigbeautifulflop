@@ -69,6 +69,7 @@ describe('build', () => {
       for (const id of Object.keys(s.editions)) {
         const html = readFileSync(path.join(out, 'statements', s.slug, id, 'index.html'), 'utf8');
         expect(html).toContain('An independent satirical project');
+        expect(html).toContain('https://wa.me/?text=');
         // only the original goes in a <blockquote>; the regional text is never presented as a quotation
         expect(html).toContain('class="post post--original"');
         const quotes = html.match(/<blockquote[\s\S]*?<\/blockquote>/g) || [];

@@ -156,3 +156,21 @@ When a statement has videos, video 1 replaces the images: a Reel on Instagram, a
 Facebook, the first post of the thread on Bluesky and Threads. Video 2 is posted alone about **four
 hours later** (the workflow checks every hour; `<network>:video2` in `posted.json`). Video files are
 kept only while a statement waits to be posted: the next `npm run videos` deletes the others.
+
+### YouTube, the Sunday video, WhatsApp, the press
+
+- **YouTube Shorts:** each video also goes to YouTube (title “Les Vaudoiseries de Trump: <headline> #Shorts”,
+  description with the original, the presidential version and the link). Keys: YOUTUBE_CLIENT_ID,
+  YOUTUBE_CLIENT_SECRET, YOUTUBE_REFRESH_TOKEN; switched on by `youtubeStart` (a date) in
+  `content/social/config.json`: only statements published from that day go to YouTube.
+- **The Flop of the week**, every Sunday (`.github/workflows/weekly.yml`, 17:07 UTC): one video with
+  Trump’s post of the week and the presidential version, one Swiss version and one French version (with
+  a hook, from other statements when possible), then “Switzerland or France: which one wins?”. Chosen
+  automatically; to choose yourself, add to `content/social/weekly.json`:
+  `{ "2026-11-15": { "original": "<slug>", "swiss": "<slug>/<region>", "france": "<slug>/<region>" } }`.
+  It is committed to `public/social/weekly/<date>/`, the site is redeployed, and the hourly run posts it
+  on every network (logged under `weekly` in `posted.json`), then deletes it.
+- **WhatsApp:** under each version, “Partager sur WhatsApp” / “Share on WhatsApp” opens WhatsApp with
+  the hook, the title (“Les Vaudoiseries de Trump”) and the link to the version.
+- **Press:** `/press/` (English and French, images to use); the message to send is in `docs/PRESS.md`.
+

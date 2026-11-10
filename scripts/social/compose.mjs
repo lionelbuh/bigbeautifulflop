@@ -217,10 +217,12 @@ export const SOCIAL_NETWORKS = ['bluesky', 'threads', 'facebook', 'instagram'];
  * Whether a statement still needs its videos: published since `start` and not posted yet on some
  * network, or posted with video 1 and still waiting for video 2. Other statements keep no video files.
  */
-export function videosPending(s, log, start) {
+export function videosPending(s, log, start, youtubeStart = null) {
   if (!(s.published >= start)) return false;
   const entry = log?.[s.slug] || {};
-  return SOCIAL_NETWORKS.some((name) => !entry[name] || (entry[name].video && !entry[`${name}:video2`]));
+  // YouTube counts only from the day it was switched on (content/social/config.json, youtubeStart)
+  const networks = youtubeStart && s.published >= youtubeStart ? [...SOCIAL_NETWORKS, 'youtube'] : SOCIAL_NETWORKS;
+  return networks.some((name) => !entry[name] || (entry[name].video && !entry[`${name}:video2`]));
 }
 
 /** The title card that opens a video: in the version's language, with an English line under it. */
@@ -251,7 +253,77 @@ const VIDEO_TITLES = {
 
 export function videoTitle(s, series) {
   if (series.id === 'diplomat') return { title: 'Trump and the Diplomats', sub: 'The same post, the diplomatic way' };
-  const { region } = seriesVersion(s, series);
+  return regionTitle(seriesVersion(s, series).region);
+}
+
+/** “Les Vaudoiseries de Trump”, “Trump, Texas style”, with its English line. */
+export function regionTitle(region) {
   const [title, where] = VIDEO_TITLES[region.id] || [`Trump, ${region.name} style`, `in ${region.name}`];
   return { title, sub: `The same post, retold ${where}` };
+}
+
+/* ---------------- YouTube Shorts ---------------- */
+
+/** The title of a Short (100 characters at most): the series’ title and the headline. */
+export function youtubeTitle(s, series) {
+  const head = series ? `${videoTitle(s, series).title}: ` : '';
+  const title = `${head}${s.headline} #Shorts`;
+  return chars(title) <= 100 ? title : `${excerpt(`${head}${s.headline}`, 91)} #Shorts`;
+}
+
+/** The description of a Short: the original, the presidential version, the link. */
+export function youtubeDescription(s, series) {
+  const v = series ? seriesVersion(s, series) : null;
+  return [
+    `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 900))}`,
+    `${PRESIDENTIAL_LABEL} (satire): ${quote(excerpt(s.presidential.en, 700))}`,
+    v ? `Then: ${regionLabel(v.region)} (satire).` : '',
+    `All versions: ${articleUrl(s)}`,
+    SATIRE_NOTE,
+    '#PoliticalSatire #Satire',
+  ].filter(Boolean).join('\n\n');
+}
+
+/* ---------------- the Sunday video ---------------- */
+
+const addDays = (date, n) => new Date(Date.parse(`${date}T12:00:00Z`) + n * 86400000).toISOString().slice(0, 10);
+
+/**
+ * The Sunday video: Trump’s post of the week with the presidential version, then one Swiss and one
+ * French version (with a hook if possible, from other statements than the first when there are some).
+ * `statements` newest first; `sunday` YYYY-MM-DD; `override` from content/social/weekly.json:
+ * { "original": "<slug>", "swiss": "<slug>/<region>", "france": "<slug>/<region>" }.
+ */
+export function weeklyPicks(statements, sunday, override = {}) {
+  const from = addDays(sunday, -6);
+  const week = statements.filter((s) => s.published >= from && s.published <= sunday);
+  if (!week.length) return null;
+  const bySlug = (slug) => statements.find((s) => s.slug === slug);
+  const ref = (r) => {
+    const [slug, id] = (r || '').split('/');
+    const s = bySlug(slug);
+    return s?.editions?.[id] ? { s, ...versionsOf(s).find((v) => v.region.id === id) } : null;
+  };
+  const original = bySlug(override.original) || week.find((s) => s.featured) || week[0];
+  const pick = (country, avoid) => {
+    const all = week.flatMap((s) => versionsOf(s).filter((v) => v.region.country === country && v.edition.en?.length).map((v) => ({ s, ...v })));
+    // a hook first, then another statement than the original, then than the Swiss version
+    const score = (x) => (x.edition.hook ? 4 : 0) + (x.s.slug !== avoid[0] ? 2 : 0) + (x.s.slug !== avoid[1] ? 1 : 0);
+    return all.sort((a, b) => score(b) - score(a))[0] || null;
+  };
+  const swiss = ref(override.swiss) || pick('switzerland', [original.slug]);
+  const france = ref(override.france) || pick('france', [original.slug, swiss?.s.slug]);
+  return { from, to: sunday, original, swiss, france };
+}
+
+const DAY = (d) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' });
+
+/** The post that goes with the Sunday video. */
+export function weeklyPost(p, max, tags = '') {
+  const who = [p.swiss, p.france].filter(Boolean).map((v) => regionTitle(v.region).title);
+  const head = `The Flop of the week (${DAY(p.from)} – ${DAY(p.to)}): Trump’s post and the presidential version${who.length ? `, then ${who.join(' and ')}` : ''}.`;
+  const ask = who.length > 1 ? 'Switzerland or France: which one wins? Tell us in the comments.' : '';
+  const tail = `All versions: ${SITE_URL}\n\n${SATIRE_NOTE}${tags ? `\n\n${tags}` : ''}`;
+  const full = [head, ask, tail].filter(Boolean).join('\n\n');
+  return chars(full) <= max ? full : `${excerpt(head, max - chars(tail) - 2)}\n\n${tail}`;
 }
