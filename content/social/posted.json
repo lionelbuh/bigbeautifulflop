@@ -209,6 +209,14 @@
     "bluesky:video2": {
       "at": "2026-11-10T06:20:37.170Z",
       "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3mzwsdtppgu2f"
+    },
+    "facebook:video2": {
+      "at": "2026-11-10T06:28:14.268Z",
+      "id": "2638361619940092"
+    },
+    "instagram:video2": {
+      "at": "2026-11-10T06:29:01.748Z",
+      "id": "18117909437132481"
     }
   }
 }
