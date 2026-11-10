@@ -4,6 +4,8 @@ import { logoFlop } from './logo.js';
 
 export const SITE_NAME = 'Big Beautiful Flop';
 export const SITE_URL = 'https://bigbeautifulflop.com';
+/** Our YouTube channel (Shorts). */
+export const YOUTUBE_URL = 'https://www.youtube.com/channel/UCvLa86RwzhHk8dKXHLtOraQ';
 export const MOTTO = 'Making presidential statements presidential again.';
 export const TAGLINE = 'Lost in translation. Found in reality.';
 export const DISCLAIMER =
@@ -135,6 +137,7 @@ export function renderFooter() {
       <p class="footer-tagline">${e(TAGLINE)}</p>
       <p class="footer-disclaimer">${e(DISCLAIMER)}</p>
       <p class="footer-contact">Contact: ${emailLink()}</p>
+      <p class="footer-follow"><a href="${YOUTUBE_URL}" rel="noopener"><svg class="yt-icon" viewBox="0 0 28 20" width="28" height="20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#ff0000"/><path d="M11 5.5v9l8-4.5z" fill="#fff"/></svg>Watch our videos on YouTube</a></p>
     </div>
     <nav aria-label="Sections"><ul class="footer-links">${links}<li><a href="/english/">English Edition</a></li><li><a href="/press/">Press</a></li><li><a href="/privacy/">Privacy</a></li><li><a href="/feed.xml">RSS feed</a></li></ul></nav>
   </div>

@@ -1,6 +1,6 @@
 /** Every page of the site, as { path, lang, html } objects (see scripts/build.mjs). */
 import { e, formatDate, truncate } from './html.js';
-import { renderPage, flag, chip, emailLink, CONTACT_EMAIL, DEFAULT_IMAGE, DISCLAIMER, SITE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
+import { renderPage, flag, chip, emailLink, CONTACT_EMAIL, DEFAULT_IMAGE, DISCLAIMER, SITE_URL, YOUTUBE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
 import { COUNTRIES, REGIONS, CATEGORIES, getCountry, categoryOf, regionsOf, regionPath } from '../../content/regions.js';
 import { editionsFor, leadStatement, splitLatest } from './content.js';
 import {
@@ -94,6 +94,7 @@ const publisher = () => ({
   name: SITE_NAME,
   url: `${SITE_URL}/`,
   logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon-512.png`, width: 512, height: 512 },
+  sameAs: [YOUTUBE_URL],
   email: CONTACT_EMAIL,
 });
 
