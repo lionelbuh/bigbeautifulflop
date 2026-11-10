@@ -157,6 +157,22 @@ Facebook, the first post of the thread on Bluesky and Threads. Video 2 is posted
 hours later** (the workflow checks every hour; `<network>:video2` in `posted.json`). Video files are
 kept only while a statement waits to be posted: the next `npm run videos` deletes the others.
 
+### The short format (statements published from 10 November 2026)
+
+New statements get videos in the short format: about 18 seconds and about forty words. In order:
+- the hook, on the title card;
+- the key lines: `original.key`, a sentence copied word for word from the original (the tests check it),
+  next to `presidential.key`;
+- the version’s punchline, word by word, with `*the last words*` in red: `editions.<region>.short`, 170
+  characters at most, plus `shortEn`, one English line;
+- a question that asks for comments and likes (“Quel canton fait le meilleur Trump ?”), with a light music
+  bed between the two fanfares.
+
+On YouTube the title is a question: “What if Trump were from Vaud? <headline> #Shorts”. Write `hook`,
+`hookEn`, `short` and `shortEn` for every regional version and for the British Diplomat, and `key` for the
+original and the presidential version. The full texts stay on the site. Statements published earlier keep
+the classic format (`videos.json` records the format).
+
 ### YouTube, the Sunday video, WhatsApp, the press
 
 - **YouTube Shorts:** each video also goes to YouTube (title “Les Vaudoiseries de Trump: <headline> #Shorts”,

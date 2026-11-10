@@ -267,9 +267,14 @@ export function regionTitle(region) {
 
 /* ---------------- YouTube Shorts ---------------- */
 
-/** The title of a Short (100 characters at most): the series’ title and the headline. */
-export function youtubeTitle(s, series) {
-  const head = series ? `${videoTitle(s, series).title}: ` : '';
+/**
+ * The title of a Short (100 characters at most): the series’ title and the headline, or, in the short
+ * format, a question (“What if Trump were from Vaud?”).
+ */
+export function youtubeTitle(s, series, { question = false } = {}) {
+  const where = series && series.id !== 'diplomat' ? regionTitle(seriesVersion(s, series).region).sub.replace(/^The same post, retold in /, '') : '';
+  const ask = series?.id === 'diplomat' ? 'What would a diplomat say to Trump? ' : `What if Trump were from ${where}? `;
+  const head = question && series ? ask : series ? `${videoTitle(s, series).title}: ` : '';
   const title = `${head}${s.headline} #Shorts`;
   return chars(title) <= 100 ? title : `${excerpt(`${head}${s.headline}`, 91)} #Shorts`;
 }

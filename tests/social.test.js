@@ -93,4 +93,13 @@ describe('social posts', () => {
     for (const max of [300, 500, 2200]) expect(chars(weeklyPost(p, max, '#Trump'))).toBeLessThanOrEqual(max);
     expect(weeklyPicks(statements, '2020-01-05')).toBeNull();
   });
+  it('quotes key lines word for word, and keeps the short format short', () => {
+    for (const s of statements) {
+      if (s.original.key) expect(s.original.text.join(' ')).toContain(s.original.key);
+      for (const [id, ed] of Object.entries(s.editions)) {
+        if (ed.short) expect(chars(ed.short.replace(/\*/g, ''))).toBeLessThanOrEqual(170);
+        if (ed.shortEn) expect(chars(ed.shortEn.replace(/\*/g, ''))).toBeLessThanOrEqual(140);
+      }
+    }
+  });
 });

@@ -401,17 +401,20 @@ async function main() {
     const metaFile = path.join(dir, 'videos.json');
     const meta = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, 'utf8')) : {};
     let series = [meta[1]?.series, meta[2]?.series].filter(Boolean).map(byId);
+    // the format is chosen once: statements rendered before the short format keep the classic one
+    let format = meta.format || (series.length ? 'classic' : 'short');
     if (!series.length || series.some((x) => !x || !seriesVersion(s, x))) {
       series = videoSeriesFor(s, turn);
       turn = (VIDEO_SERIES.indexOf(series.at(-1)) + 1) % VIDEO_SERIES.length;
     }
-    const next = {};
+    const next = { format };
     for (const [i, sr] of series.entries()) {
       const file = path.join(dir, `video-${i + 1}.mp4`);
       const hash = createHash('sha256').update(JSON.stringify(s) + sr.id + SELF).digest('hex').slice(0, 16);
       next[i + 1] = { series: sr.id, hash };
       if (meta[i + 1]?.hash === hash && existsSync(file)) continue;
-      await render(page, work, html(s, sr), file);
+      if (format === 'short') await render(page, work, shortHtml(s, sr), file, SHORT);
+      else await render(page, work, html(s, sr), file);
       built += 1;
       console.log(`${s.slug}: video ${i + 1} (${sr.kicker})`);
     }

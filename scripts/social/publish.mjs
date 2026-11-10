@@ -81,10 +81,12 @@ const coverUrl = (s, n) => `${SITE_URL}/social/${s.slug}/cover-${n}.jpg`;
 /** A video to post: its file, its address on the site, its cover, its title and its description for the blind. */
 function clipOf(s, n) {
   const series = videoSeries(s, n);
+  const meta = path.join(root, 'public/social', s.slug, 'videos.json');
+  const short = existsSync(meta) && JSON.parse(readFileSync(meta, 'utf8')).format === 'short';
   return {
     file: videoFile(s, n), url: videoUrl(s, n), cover: existsSync(coverFile(s, n)) ? coverUrl(s, n) : null,
     alt: `${s.headline}: Donald Trump’s post and its satirical versions (video, no voice).`,
-    title: youtubeTitle(s, series),
+    title: youtubeTitle(s, series, { question: short }),
   };
 }
 function videoSeries(s, n) {
