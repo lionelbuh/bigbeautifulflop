@@ -205,6 +205,9 @@ export function thread(s, { day, regions = true, first = null } = {}) {
 </div>`;
 }
 
+/** The calm version of a statement: the Neutral Swiss (new format) or the presidential version (earlier). */
+export const calmPost = (s) => (s.neutral ? neutralPost(s) : presidentialPost(s));
+
 /** How a neutral Swiss would put it: in English, with the French behind a link. */
 export function neutralPost(s) {
   const n = s.neutral;

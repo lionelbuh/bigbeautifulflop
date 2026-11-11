@@ -1,11 +1,11 @@
 {
   "1": {
-    "series": "uk",
-    "hash": "a359a9e0a01c26f0"
+    "series": "canton1",
+    "hash": "11e12cad8152d694"
   },
   "2": {
-    "series": "france",
-    "hash": "5622df99b8a9517a"
+    "series": "canton2",
+    "hash": "5519d9edba93fc7c"
   },
   "format": "meme"
 }

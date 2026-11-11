@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
 import {
   SITE_URL, articleUrl, threadFor, facebookPost, instagramCaption, secondVideoPost, VIDEO_SERIES, THREADS_TOPIC, BLUESKY_TAGS,
-  youtubeTitle, youtubeDescription, weeklyPicks, weeklyPost,
+  youtubeTitle, youtubeDescription, weeklyPicks, weeklyPost, ALL_SERIES,
 } from './compose.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -92,7 +92,7 @@ function clipOf(s, n) {
 function videoSeries(s, n) {
   const meta = path.join(root, 'public/social', s.slug, 'videos.json');
   const id = existsSync(meta) ? JSON.parse(readFileSync(meta, 'utf8'))[n]?.series : null;
-  return VIDEO_SERIES.find((x) => x.id === id) || null;
+  return ALL_SERIES.find((x) => x.id === id) || null;
 }
 
 /* ---------------- Bluesky ---------------- */

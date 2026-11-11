@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { loadStatements } from '../src/site/content.js';
-import { excerpt, threadPosts, threadFor, facebookPost, instagramCaption, carouselCards, VIDEO_SERIES, videoSeriesFor, secondVideoPost, seriesVersion, videosPending, videoTitle, youtubeTitle, weeklyPicks, weeklyPost } from '../scripts/social/compose.mjs';
+import { excerpt, threadPosts, threadFor, facebookPost, instagramCaption, carouselCards, VIDEO_SERIES, CANTON_SERIES, videoSeriesFor, secondVideoPost, seriesVersion, videosPending, videoTitle, youtubeTitle, weeklyPicks, weeklyPost } from '../scripts/social/compose.mjs';
 
 const statements = loadStatements(path.resolve('content/statements'));
 const chars = (t) => [...t].length;
@@ -51,9 +51,10 @@ describe('social posts', () => {
       expect(series.length).toBeGreaterThan(0);
       expect(new Set(series.map((x) => x.id)).size).toBe(series.length);
       const langs = new Set(VIDEO_SERIES.filter((x) => seriesVersion(s, x)).map((x) => x.lang));
-      for (const start of [0, 1, 2, 3, 4]) expect(new Set(videoSeriesFor(s, start).map((x) => x.lang)).size).toBe(langs.size);
+      if (!s.neutral) for (const start of [0, 1, 2, 3, 4]) expect(new Set(videoSeriesFor(s, start).map((x) => x.lang)).size).toBe(langs.size);
+      if (s.neutral) expect(series.map((x) => x.id)).toEqual(['canton1', 'canton2']);
       for (const sr of series) {
-        expect(VIDEO_SERIES).toContain(sr);
+        expect([...VIDEO_SERIES, ...CANTON_SERIES]).toContain(sr);
         expect(seriesVersion(s, sr)).not.toBeNull();
         expect(videoTitle(s, sr).title).toMatch(/Trump/);
         for (const max of [300, 500, 2200]) {

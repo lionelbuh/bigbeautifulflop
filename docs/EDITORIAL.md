@@ -1,5 +1,22 @@
 # Editorial workflow
 
+## The Swiss format (from 11 November 2026)
+
+Every new statement has three parts:
+1. **Trump**, the original, verbatim (`original.text`, and `original.key`, one sentence of it, word for word).
+2. **The Neutral Swiss** (`neutral.en`, `neutral.fr`, `neutral.key`, `neutral.keyFr`): the same message as a
+   neutral Swiss would put it. Takes no side, “takes note”, acknowledges both views, suggests a compromise,
+   a mediation in Geneva or a popular vote; keeps the point and the facts, drops insults and capitals;
+   gentle Swiss irony. It replaces the presidential version.
+3. **Two cantons** (`editions.<canton>`), in French, with their English adaptation, `hook`, `short`,
+   `shortEn` and `notes`, in the first person as Trump.
+
+Two meme videos per statement, one canton each, four hours apart: Trump’s key line, the stamp
+“CERTIFIÉ NEUTRE · Swiss certified neutral · satire”, the Neutral Swiss under it (English and French),
+then “Le même, s’il était valaisan :” with the canton’s prop, then the question and the ending fanfare.
+The site shows only the Neutral Swiss and the cantons (menu: Home, The Originals, The Cantons, Archives,
+About); the earlier sections redirect, and earlier statements keep all their versions in the archives.
+
 ## The rules
 
 1. **The original is quoted verbatim**, with its date, channel and a source anyone can check.

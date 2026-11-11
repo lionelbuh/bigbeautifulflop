@@ -6,9 +6,9 @@
     (which also sets every version to `review: "approved"`).
   - **Technical and design changes the owner asked for:** push to the working branch and to `main`
     without asking.
-- New statements follow the standard format in `docs/EDITORIAL.md` (11 versions), with the fields of the
-  short video format (`original.key`, `presidential.key`, and `hook`/`hookEn`/`short`/`shortEn` per version); pick regions with
-  `npm run regions`. Times pasted from Truth Social are Pacific: store them in Eastern time.
+- New statements follow the Swiss format in `docs/EDITORIAL.md` (from 11 November 2026): the original (with
+  `original.key`), the Neutral Swiss (`neutral.en/fr/key/keyFr`) and two cantons (with `hook`/`hookEn`/`short`/
+  `shortEn`); pick the two cantons with `npm run regions`. Times pasted from Truth Social are Pacific: store them in Eastern time.
 - After adding or changing a statement: `npm run images` (share images in `public/og/`, uses the
   pre-installed Playwright), then `npm run videos` (two social videos per statement waiting to be posted,
   in `public/social/<slug>/`; deletes the videos of statements already posted), and commit them with the content.

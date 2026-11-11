@@ -399,32 +399,5 @@
       "at": "2026-11-11T16:17:39.771Z",
       "id": "mFz8YhWPhbc"
     }
-  },
-  "a-rather-important-omission": {
-    "bluesky": {
-      "at": "2026-11-11T16:13:42.288Z",
-      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n22dxaybsr2z",
-      "video": 1
-    },
-    "threads": {
-      "at": "2026-11-11T16:15:24.422Z",
-      "id": "17996170128060976",
-      "video": 1
-    },
-    "facebook": {
-      "at": "2026-11-11T16:15:31.054Z",
-      "id": "1137983538607045",
-      "video": 1
-    },
-    "instagram": {
-      "at": "2026-11-11T16:16:12.534Z",
-      "id": "18094906106497533",
-      "video": 1
-    },
-    "youtube": {
-      "at": "2026-11-11T16:16:15.258Z",
-      "id": "cREJyv06Mjc",
-      "video": 1
-    }
   }
 }

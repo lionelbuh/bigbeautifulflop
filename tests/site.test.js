@@ -88,7 +88,7 @@ describe('build', () => {
     }
     expect(readFileSync(path.join(out, '404.html'), 'utf8')).toContain('noindex');
     const home = readFileSync(path.join(out, 'index.html'), 'utf8');
-    expect(home).toContain('Making presidential statements presidential again.');
+    expect(home).toContain('Making presidential statements neutral again.');
     expect(readFileSync(path.join(out, 'sitemap.xml'), 'utf8')).toContain('/switzerland/vaudois/');
   });
   it('gives Google dates with a time zone, and urls for the author and the shared post', async () => {

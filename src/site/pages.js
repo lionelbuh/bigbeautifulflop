@@ -4,7 +4,7 @@ import { renderPage, flag, chip, emailLink, CONTACT_EMAIL, DEFAULT_IMAGE, DISCLA
 import { COUNTRIES, REGIONS, CATEGORIES, getCountry, categoryOf, regionsOf, regionPath } from '../../content/regions.js';
 import { editionsFor, leadStatement, splitLatest } from './content.js';
 import {
-  articlePath, editionPath, originalPost, presidentialPost, regionalPost, regionsInOrder, regionLinks, thread,
+  articlePath, editionPath, originalPost, presidentialPost, calmPost, regionalPost, regionsInOrder, regionLinks, thread,
   firstRegions, archiveCalendar, dayPath,
 } from './components.js';
 
@@ -15,7 +15,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
   const lead = leadStatement(recent);
   const header = {
     dateLabel: formatDate(today),
-    editionsLabel: 'Swiss · French · American · British',
+    editionsLabel: 'Swiss · Neutral · Satire',
   };
   const page = (o) => ({
     path: o.path,
@@ -53,18 +53,21 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
     pages.push(page({ pageId: 'archives', path: dayPath(date), title: `Statements of ${formatDate(date)}`, description: list.map((s) => s.headline).join(' · '), main: dayPage(ctx, date, list), lastmod: list.map((s) => s.published).sort().pop() }));
   }
 
+  // Since November 2026 the site is Swiss only: the Neutral Swiss and the cantons. The former sections
+  // (Switzerland & France, United States, United Kingdom, The Diplomat) send readers to the front page;
+  // their versions stay on the pages of the statements, in the archives.
   for (const cat of CATEGORIES) {
-    const description = cat.countries.length > 1 ? cat.countries.map((c) => getCountry(c).description).join(' ') : getCountry(cat.countries[0]).description;
-    pages.push(page({ pageId: cat.id, path: cat.path, title: cat.name, description, main: categoryPage(ctx, cat) }));
+    if (cat.path !== '/switzerland/') pages.push({ path: cat.path, lang: 'en', listed: false, html: redirectPage(cat.countries.includes('switzerland') ? '/switzerland/' : '/') });
   }
   for (const country of COUNTRIES) {
-    const cat = categoryOf(country.id);
-    // a country that is a section by itself (United States, ...) already has its page above
-    if (country.path !== cat.path) {
-      pages.push(page({ pageId: cat.id, path: country.path, title: country.name, description: country.description, main: countryPage(ctx, country) }));
+    if (country.id !== 'switzerland') {
+      if (!CATEGORIES.some((c) => c.path === country.path)) pages.push({ path: country.path, lang: 'en', listed: false, html: redirectPage('/') });
+      for (const region of regionsOf(country.id)) pages.push({ path: regionPath(region), lang: 'en', listed: false, html: redirectPage('/') });
+      continue;
     }
+    pages.push(page({ pageId: 'switzerland', path: country.path, title: 'The Cantons', description: country.description, main: countryPage(ctx, country) }));
     for (const region of regionsOf(country.id)) {
-      pages.push(page({ pageId: cat.id, path: regionPath(region), title: editionName(region), description: `${region.name} (${region.place}): ${region.voice}`, main: regionPage(ctx, region), listed: statements.some((s) => s.editions?.[region.id]) }));
+      pages.push(page({ pageId: 'switzerland', path: regionPath(region), title: editionName(region), description: `${region.name} (${region.place}): ${region.voice}`, main: regionPage(ctx, region), listed: statements.some((s) => s.editions?.[region.id]) }));
     }
   }
 
@@ -72,7 +75,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
     const regions = REGIONS.filter((r) => s.editions?.[r.id]);
     pages.push(page({
       pageId: '', path: articlePath(s), type: 'article', title: s.headline, description: s.dek, main: article(ctx, s), lastmod: s.published,
-      docTitle: `${s.headline}: Trump’s post, made presidential`, image: imageOf(s), published: s.published,
+      docTitle: `${s.headline}: Trump’s post, made ${s.neutral ? 'neutral' : 'presidential'}`, image: imageOf(s), published: s.published,
       jsonLd: articleLd(s, imageOf(s)),
     }));
     for (const region of regions) {
@@ -338,7 +341,7 @@ function originals({ statements }) {
 function english({ statements }) {
   return `${sectionHead(`${flag('world')} For the world audience`, 'The English Edition', 'Every version in English: the French ones adapted so the joke still lands, the American and British ones as written.')}
   ${statements.map((s) => `<section class="story story--short">${storyTitle(s)}<div class="thread">
-    ${presidentialPost(s)}
+    ${calmPost(s)}
     ${REGIONS.filter((r) => s.editions?.[r.id]).map((r) => regionalPost(s, r, { english: true })).join('')}
   </div></section>`).join('')}`;
 }
@@ -351,7 +354,8 @@ function countryPage({ statements, day }, country) {
   }).join('');
   const items = statements.filter((s) => editionsFor(s, country.id).length).map((s) => `<section class="story story--short">${storyTitle(s)}<div class="thread">
     ${originalPost(s)}
-    <p class="thread-step">${e(country.name)}</p>
+    ${s.neutral ? `<p class="thread-step">The Neutral Swiss</p>${calmPost(s)}` : ''}
+    <p class="thread-step">Le même, dans les cantons</p>
     ${regionsInOrder(s, day).filter((r) => r.country === country.id).map((r) => regionalPost(s, r)).join('')}
   </div></section>`);
   return `${sectionHead(`${flag(country.flag)} ${e(country.native)}`, country.name, country.description)}
@@ -371,21 +375,22 @@ function regionPage({ statements }, region) {
 }
 
 function about() {
-  const regions = COUNTRIES.map((c) => `<li>${flag(c.flag)} <strong><a href="${c.path}">${e(c.name)}</a></strong>: ${[...(c.id === 'diplomat' ? ['The American President'] : []), ...regionsOf(c.id).map((r) => `<a href="${regionPath(r)}">${e(r.name)}</a>`)].join(', ')}</li>`).join('');
+  const regions = `<li>${flag('ch')} <strong><a href="/switzerland/">The Cantons</a></strong>: ${regionsOf('switzerland').map((r) => `<a href="${regionPath(r)}">${e(r.name)}</a>`).join(', ')}</li>`;
   return `${sectionHead('About', 'An independent satirical publication', TAGLINE)}
   <div class="prose">
-    <p>Big Beautiful Flop takes public statements by Donald Trump and shows them three ways: the original, word for word; the same message as a measured, statesmanlike president would put it; and the way people around the world would actually say it.</p>
+    <p>Big Beautiful Flop takes public statements by Donald Trump and shows them three ways: the original, word for word; the same message as a neutral Swiss would put it, in English and French; and the way it would sound in the cantons of French-speaking Switzerland, in French and English. Trump’s posts, made neutral.</p>
+    <p>Until November 2026, statements were also retold by a statesmanlike American President, in France, the United States and the United Kingdom, and by three diplomats: those versions remain on the pages of the statements, in the <a href="/archives/">archives</a>.</p>
     <h2>Who’s behind this</h2>
     <p>Big Beautiful Flop is made by a Swiss-American living in California: Swiss enough to believe every disagreement can be settled over a fondue, American enough to care how the President talks. As a neutral country, Switzerland has spent centuries translating between quarrelling powers; this is our modest contribution to that tradition. We are not neutral about manners. We are neutral about fondue: moitié-moitié or pure Gruyère, both are welcome.</p>
     <h2>Our rules</h2>
     <ul>
       <li><strong>The original is quoted verbatim</strong>, dated and sourced. No source, no statement.</li>
       <li><strong>We never invent quotes.</strong> Our versions are never attributed to Donald Trump and are always labelled as satire.</li>
-      <li><strong>Same message, different manners.</strong> The presidential version keeps the facts and drops the insults.</li>
+      <li><strong>Same message, neutral manners.</strong> The Neutral Swiss keeps the facts and the point, and drops the insults and the capital letters.</li>
       <li><strong>Local means local.</strong> Each regional version is read by someone from the region before it is approved.</li>
       <li><strong>Humans publish.</strong> AI helps us draft; an editor approves everything.</li>
     </ul>
-    <h2>Regions</h2>
+    <h2>The cantons</h2>
     <ul class="about-regions">${regions}</ul>
     <h2>Parody and commentary</h2>
     <p>Big Beautiful Flop is parody and commentary. Original statements are quoted verbatim for the purpose of criticism and commentary (fair use, 17 U.S.C. § 107; Swiss Copyright Act, art. 25; French Intellectual Property Code, art. L122-5). Satire of public figures is protected speech under the First Amendment to the U.S. Constitution, the Swiss Federal Constitution (art. 16–17), French law on parody and caricature (art. L122-5, 4°) and the European Convention on Human Rights (art. 10).</p>
@@ -430,12 +435,12 @@ function press({ statements }) {
   return `${sectionHead('Press', 'Big Beautiful Flop in brief', 'For journalists, editors and podcasters. Pour la presse romande et française : voir plus bas.')}
   <div class="prose">
     <h2>In one sentence</h2>
-    <p>Big Beautiful Flop takes Donald Trump’s posts, word for word, and rewrites them twice: as a statesmanlike president would say them, and as if he were from Vaud, Valais, Paris, Marseille, Texas, Boston, Liverpool or Glasgow, with three diplomats (British, French and Swiss) replying.</p>
+    <p>Big Beautiful Flop takes Donald Trump’s posts, word for word, and rewrites them twice: as a neutral Swiss would say them, and as if he were from Vaud, Valais, Geneva, Fribourg or Neuchâtel. Trump’s posts, made neutral.</p>
     <h2>What makes it different</h2>
     <ul>
       <li><strong>The original is never altered.</strong> Each post is quoted verbatim, dated and sourced; everything else is clearly labelled satire.</li>
-      <li><strong>Same message, different manners.</strong> The presidential version keeps the political point and drops the insults: the gap between the two is the joke.</li>
-      <li><strong>Local humour, written for locals.</strong> Twenty-two regional voices in French and English, each with an English adaptation that rebuilds the joke for international readers.</li>
+      <li><strong>Same message, neutral manners.</strong> The Neutral Swiss keeps the point and drops the insults and the capital letters: the gap between the two is the joke.</li>
+      <li><strong>Local humour, written for locals.</strong> The cantons of French-speaking Switzerland, in French, each with an English adaptation that rebuilds the joke for international readers.</li>
       <li><strong>Swiss neutrality, applied to satire.</strong> Made by a Swiss-American living in California: no party, no campaign, no advertising.</li>
     </ul>
     <h2>Facts</h2>
@@ -451,8 +456,8 @@ function press({ statements }) {
     <p>Interviews, questions, corrections: ${emailLink()}. We usually answer within a day.</p>
     <h2 lang="fr">En bref, en français</h2>
     <div lang="fr">
-      <p>Big Beautiful Flop reprend les messages de Donald Trump mot pour mot, puis les réécrit deux fois : comme les dirait un président posé et respectueux des institutions, et comme s’il était vaudois, valaisan, genevois, fribourgeois, neuchâtelois, parisien, marseillais, lyonnais, breton ou ch’ti. Trois diplomates, britannique, français et suisse, lui répondent.</p>
-      <p>L’original n’est jamais modifié et tout le reste est signalé comme satire. Le projet est fait par un Suisse-Américain qui vit en Californie, sans parti ni publicité : la neutralité suisse appliquée à la satire. Chaque dimanche, « The Flop of the week » réunit en une vidéo le message de la semaine, sa version présidentielle, une version suisse et une version française.</p>
+      <p>Big Beautiful Flop reprend les messages de Donald Trump mot pour mot, puis les réécrit deux fois : comme les dirait un Suisse neutre, en anglais et en français, et comme s’il était vaudois, valaisan, genevois, fribourgeois ou neuchâtelois. Les messages de Trump, rendus neutres.</p>
+      <p>L’original n’est jamais modifié et tout le reste est signalé comme satire. Le projet est fait par un Suisse-Américain qui vit en Californie, sans parti ni publicité : la neutralité suisse appliquée à la satire. Chaque message a ses vidéos, avec le président invisible à son bureau et le tampon « Certifié neutre ».</p>
       <p>Contact : ${emailLink()}.</p>
     </div>
   </div>`;

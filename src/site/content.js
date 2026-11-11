@@ -22,7 +22,7 @@ export function validateStatement(s, file = s?.slug) {
   need(Array.isArray(o.text) && o.text.length > 0, 'original.text must be a list of paragraphs');
   need(o.medium, 'original.medium is required (where it was said or posted)');
   need(o.source && o.source.label, 'original.source.label is required: no source, no statement');
-  need(s.presidential && Array.isArray(s.presidential.en) && s.presidential.en.length, 'presidential.en is required');
+  need((s.presidential && Array.isArray(s.presidential.en) && s.presidential.en.length) || (s.neutral && Array.isArray(s.neutral.en) && s.neutral.en.length), 'neutral.en (or, before November 2026, presidential.en) is required');
   for (const [id, ed] of Object.entries(s.editions || {})) {
     need(getRegion(id), `edition "${id}" is not a region declared in content/regions.js`);
     need(Array.isArray(ed.text) && ed.text.length, `editions.${id}.text (the version itself) is required`);

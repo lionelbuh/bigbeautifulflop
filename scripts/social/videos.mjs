@@ -23,7 +23,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
 import { logoFlop } from '../../src/site/logo.js';
 import { escapeHtml as e } from '../../src/site/html.js';
-import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle, regionTitle, weeklyPicks, SOCIAL_NETWORKS, VIDEO_SERIES } from './compose.mjs';
+import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle, regionTitle, weeklyPicks, SOCIAL_NETWORKS, VIDEO_SERIES, ALL_SERIES } from './compose.mjs';
 
 const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -445,7 +445,7 @@ ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
 .sub i{display:block;font-style:normal;font-size:27px;color:#ffe3e0;margin-top:10px}
 .neutral ~ .x{}
 #m1s.neutral{animation:fadein .4s ease-out 1.9s both,hide .3s ease-in 9s forwards;top:660px !important}
-.stampn{position:absolute;right:40px;top:470px;width:max-content;font-size:66px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#d52b1e;border:12px double #d52b1e;border-radius:20px;padding:6px 36px 12px;background:rgba(255,255,255,.93);text-align:center;line-height:1;transform:rotate(-8deg);animation:stampin .26s cubic-bezier(.5,0,.8,.4) 1.2s both,hide .3s ease-in 9s forwards}
+.stampn{position:absolute;right:40px;top:470px;width:max-content;font-size:56px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#d52b1e;border:12px double #d52b1e;border-radius:20px;padding:6px 36px 12px;background:rgba(255,255,255,.93);text-align:center;line-height:1;transform:rotate(-8deg);animation:stampin .26s cubic-bezier(.5,0,.8,.4) 1.2s both,hide .3s ease-in 9s forwards}
 .stampn small{display:block;font-size:22px;letter-spacing:.14em;margin-top:6px}
 .flagch{position:absolute;left:90px;top:1210px;width:150px;height:280px}
 @keyframes stampin{from{opacity:0;transform:rotate(-14deg) scale(3)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
@@ -462,7 +462,7 @@ ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
 ${OFFICE}${SUIT}${neutral ? TIE_CH : TIE}<div class="prop">${prop.svg}</div>${DESK}${neutral ? FLAG_CH : ''}
 <p class="tag">Big Beautiful Flop · satire</p>
 <div class="cap" id="m1"><p class="lab">Trump, on Truth Social</p><p class="q">“${e(key)}”</p></div>
-${neutral ? '<p class="stampn">Neutralisé<small>Neutralized · satire</small></p>' : ''}
+${neutral ? '<p class="stampn">Certifié neutre<small>Swiss certified neutral · satire</small></p>' : ''}
 <div class="sub${neutral ? ' neutral' : ''}" id="m1s" style="top:${big === 60 ? 620 : 600}px"><b>${e(presLab)}</b>${e(presKey)}${presFr ? `<i>${e(presFr)}</i>` : ''}</div>
 <div class="cap" id="m2"><p class="lab">${e(ask)}</p><p class="q">${mark(short)}</p></div>
 ${shortEn ? `<div class="sub" id="m2s" style="top:780px">${mark(shortEn)}</div>` : ''}
@@ -589,7 +589,7 @@ async function main() {
     const [slug, n, out] = argv.slice(argv.indexOf('--test-meme') + 1);
     const s = all.find((x) => x.slug === slug);
     const meta = JSON.parse(readFileSync(path.join(root, 'public/social', slug, 'videos.json'), 'utf8'));
-    const series = VIDEO_SERIES.find((x) => x.id === meta[n].series);
+    const series = ALL_SERIES.find((x) => x.id === meta[n].series);
     const { region } = seriesVersion(s, series);
     const work = mkdtempSync(path.join(tmpdir(), 'bbf-meme-'));
     const browser = await chromium.launch();
@@ -629,7 +629,7 @@ async function main() {
   // already); a new one takes the next ones in the rotation
   const rotationFile = path.join(root, 'content/social/video-rotation.json');
   let turn = existsSync(rotationFile) ? JSON.parse(readFileSync(rotationFile, 'utf8')).next : 0;
-  const byId = (id) => VIDEO_SERIES.find((x) => x.id === id);
+  const byId = (id) => ALL_SERIES.find((x) => x.id === id);
   wanted.sort((a, b) => `${a.published} ${a.original.date}T${a.original.time}`.localeCompare(`${b.published} ${b.original.date}T${b.original.time}`));
   const work = mkdtempSync(path.join(tmpdir(), 'bbf-video-'));
   const browser = await chromium.launch();
@@ -645,7 +645,8 @@ async function main() {
     let format = meta.format || (series.length ? 'classic' : 'meme');
     if (!series.length || series.some((x) => !x || !seriesVersion(s, x))) {
       series = videoSeriesFor(s, turn);
-      turn = (VIDEO_SERIES.indexOf(series.at(-1)) + 1) % VIDEO_SERIES.length;
+      // the Swiss format (two cantons) does not move the rotation of the earlier series
+      if (!s.neutral) turn = (VIDEO_SERIES.indexOf(series.at(-1)) + 1) % VIDEO_SERIES.length;
     }
     const next = { format };
     for (const [i, sr] of series.entries()) {
@@ -656,8 +657,8 @@ async function main() {
       if (format === 'meme') {
         // the invisible President at his desk (owner's choice from 11 November 2026)
         const { region } = seriesVersion(s, sr);
-        const fx = [{ file: region.country === 'switzerland' ? 'bbf-cowbell.wav' : 'bbf-stamp.wav', at: 9.75, volume: 0.8 }];
-        await render(page, work, memeHtml(s, sr), file, { ...MEME, fx, coverAt: 12 });
+        const fx = [{ file: region.country === 'switzerland' ? 'bbf-cowbell.wav' : 'bbf-stamp.wav', at: 9.75, volume: 0.8 }, ...(s.neutral ? [{ file: 'bbf-stamp.wav', at: 1.45, volume: 1 }] : [])];
+        await render(page, work, memeHtml(s, sr), file, { ...MEME, fx, coverAt: s.neutral ? 3 : 12 });
       } else if (format === 'short') {
         // the first screen: the felt marker that rewrites the hook in capitals (owner's choice), when there is a hook
         const { region, edition } = seriesVersion(s, sr);

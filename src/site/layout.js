@@ -6,10 +6,10 @@ export const SITE_NAME = 'Big Beautiful Flop';
 export const SITE_URL = 'https://bigbeautifulflop.com';
 /** Our YouTube channel (Shorts). */
 export const YOUTUBE_URL = 'https://www.youtube.com/channel/UCvLa86RwzhHk8dKXHLtOraQ';
-export const MOTTO = 'Making presidential statements presidential again.';
+export const MOTTO = 'Making presidential statements neutral again.';
 export const TAGLINE = 'Lost in translation. Found in reality.';
 export const DISCLAIMER =
-  'An independent satirical project. Original statements are sourced and attributed. All presidential and regional adaptations are fictional, AI-assisted editorial interpretations.';
+  'An independent satirical project. Original statements are sourced and attributed. All neutral, presidential and regional adaptations are fictional, AI-assisted editorial interpretations.';
 
 export const CONTACT_EMAIL = 'hello@bigbeautifulflop.com';
 
@@ -20,7 +20,7 @@ export const CONTACT_EMAIL = 'hello@bigbeautifulflop.com';
 export const GOOGLE_SITE_VERIFICATION = '';
 export const BING_SITE_VERIFICATION = '';
 
-export const DEFAULT_IMAGE = { path: '/og/default.png', alt: 'Big Beautiful Flop: making presidential statements presidential again.' };
+export const DEFAULT_IMAGE = { path: '/og/default.png', alt: 'Big Beautiful Flop: making presidential statements neutral again.' };
 
 /** The address as HTML entities, so simple address-harvesting robots do not pick it up (as on Morges.info). */
 export function emailLink(address = CONTACT_EMAIL) {
@@ -31,10 +31,7 @@ export function emailLink(address = CONTACT_EMAIL) {
 export const NAV = [
   { id: 'home', label: 'Home', path: '/' },
   { id: 'originals', label: 'The Originals', path: '/originals/' },
-  { id: 'switzerland-france', label: 'Switzerland & France', path: '/switzerland-france/' },
-  { id: 'united-states', label: 'United States', path: '/united-states/' },
-  { id: 'united-kingdom', label: 'United Kingdom', path: '/united-kingdom/' },
-  { id: 'diplomat', label: 'The Diplomat', path: '/diplomat/' },
+  { id: 'switzerland', label: 'The Cantons', path: '/switzerland/' },
   { id: 'archives', label: 'Archives', path: '/archives/' },
   { id: 'about', label: 'About', path: '/about/' },
 ];
