@@ -396,8 +396,9 @@ const PROPS = {
   'united-kingdom': { svg: OBJECTS['united-kingdom'], css: 'left:180px;top:1380px;width:190px' },
   diplomat: { svg: OBJECTS.diplomat, css: 'left:380px;top:1440px;width:320px' },
 };
+const FR_ADJ = { vaudois: 'vaudois', valaisan: 'valaisan', genevois: 'genevois', fribourgeois: 'fribourgeois', neuchatelois: 'neuchâtelois', parisien: 'parisien', sud: 'marseillais', chti: 'ch’ti', lyonnais: 'lyonnais', breton: 'breton' };
 const MEME_ASK = {
-  switzerland: (r) => `Le même, s’il était ${r.name.toLowerCase()} :`, france: (r) => `Le même, s’il était ${r.name.toLowerCase()} :`,
+  switzerland: (r) => `Le même, s’il était ${FR_ADJ[r.id] || r.name.toLowerCase()} :`, france: (r) => `Le même, s’il était ${FR_ADJ[r.id] || r.name.toLowerCase()} :`,
   'united-states': (r) => `Same post, if he were from ${r.name}:`, 'united-kingdom': (r) => `Same post, if he were from ${r.name}:`,
   diplomat: () => 'What a diplomat hears:',
 };
@@ -436,7 +437,7 @@ ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
 #m2s{animation-delay:11.5s}
 .tag{position:absolute;right:56px;top:96px;font-size:24px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#57524a}
 @keyframes swing{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
-@keyframes drop{0%{transform:translateY(-1400px) rotate(-20deg)}70%{transform:translateY(0) rotate(4deg)}85%{transform:translateY(-50px) rotate(-3deg)}100%{transform:none}}
+@keyframes drop{0%{transform:translateY(-2400px) rotate(-20deg)}70%{transform:translateY(0) rotate(4deg)}85%{transform:translateY(-50px) rotate(-3deg)}100%{transform:none}}
 @keyframes wobble{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
 #end .q2{font-family:F;font-size:96px;line-height:1.06;letter-spacing:-.02em;max-width:900px}
 #end .ask{font-size:40px;color:#b3121a;font-weight:700}
