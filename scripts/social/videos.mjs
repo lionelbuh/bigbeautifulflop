@@ -378,6 +378,76 @@ ${first.css}
 <div id="end">${logoFlop({ font: 'F' })}<p class="q">${e(question)}</p><p class="ask">${e(ask)}</p><p class="url">bigbeautifulflop.com</p></div>`;
 }
 
+/* ---------------- the meme format: “the invisible President”, at his desk ---------------- */
+const MEME = { duration: 24, end: 20.5, bed: true };
+const OFFICE = `<svg class="office" viewBox="0 0 1080 1920" aria-hidden="true">
+<rect width="1080" height="1920" fill="#e9e1cf"/><rect y="1380" width="1080" height="540" fill="#d8ccb1"/>
+<rect x="330" y="760" width="420" height="520" rx="6" fill="#bcd3e6" stroke="#f6f2ea" stroke-width="22"/><path d="M540 760 V1280 M330 1020 H750" stroke="#f6f2ea" stroke-width="14"/>
+<path d="M330 760 h80 v520 h-80 z M670 760 h80 v520 h-80 z" fill="#8a1c2b" opacity=".9"/>
+<rect x="150" y="820" width="10" height="700" fill="#b8932f"/><path d="M160 840 h170 v200 h-170 z" fill="#f6f2ea"/><path d="M160 840 h170 v22 h-170 z M160 884 h170 v22 h-170 z M160 928 h170 v22 h-170 z M160 972 h170 v22 h-170 z M160 1016 h170 v24 h-170 z" fill="#b22234"/><path d="M160 840 h80 v110 h-80 z" fill="#3c3b6e"/>
+<rect x="920" y="820" width="10" height="700" fill="#b8932f"/><path d="M750 840 h170 v200 h-170 z" fill="#1f3a5f"/><circle cx="835" cy="940" r="46" fill="none" stroke="#f2cf78" stroke-width="8"/>
+</svg>`;
+const DESK = `<svg class="desk" viewBox="0 0 1080 520" aria-hidden="true"><rect x="40" y="0" width="1000" height="46" rx="8" fill="#6b4226"/><rect x="70" y="46" width="940" height="474" fill="#7d5634"/><rect x="120" y="100" width="360" height="360" rx="10" fill="none" stroke="#5e3d22" stroke-width="10"/><rect x="600" y="100" width="360" height="360" rx="10" fill="none" stroke="#5e3d22" stroke-width="10"/><circle cx="540" cy="280" r="58" fill="#1f3a5f" stroke="#f2cf78" stroke-width="7"/><path d="M540 238 l12 34 h36 l-29 21 11 35 -30 -22 -30 22 11 -35 -29 -21 h36 z" fill="#f2cf78"/><rect x="700" y="-60" width="110" height="64" rx="10" fill="#f6f2ea" stroke="#555" stroke-width="6"/><path d="M810 -45 q40 0 30 30 q-8 22 -30 18" fill="none" stroke="#555" stroke-width="6"/></svg>`;
+const PROPS = {
+  switzerland: { svg: OBJECTS.switzerland, css: 'left:470px;top:1250px;width:140px' },
+  france: { svg: OBJECTS.france, css: 'left:400px;top:950px;width:280px' },
+  'united-states': { svg: OBJECTS['united-states'], css: 'left:365px;top:930px;width:350px' },
+  'united-kingdom': { svg: OBJECTS['united-kingdom'], css: 'left:180px;top:1380px;width:190px' },
+  diplomat: { svg: OBJECTS.diplomat, css: 'left:380px;top:1440px;width:320px' },
+};
+const MEME_ASK = {
+  switzerland: (r) => `Le même, s’il était ${r.name.toLowerCase()} :`, france: (r) => `Le même, s’il était ${r.name.toLowerCase()} :`,
+  'united-states': (r) => `Same post, if he were from ${r.name}:`, 'united-kingdom': (r) => `Same post, if he were from ${r.name}:`,
+  diplomat: () => 'What a diplomat hears:',
+};
+
+function memeHtml(s, series) {
+  const { region, edition } = seriesVersion(s, series);
+  const french = region.lang.startsWith('fr');
+  const mark = (x) => e(nb(x)).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  const key = s.original.key || excerpt(s.original.text, 110);
+  const presKey = s.presidential.key || excerpt(s.presidential.en, 110);
+  const short = edition.short || excerpt(edition.text, 150);
+  const shortEn = series.id === 'diplomat' ? (edition.shortEn || '') : french ? (edition.shortEn || '') : '';
+  const prop = PROPS[region.country] || PROPS.switzerland;
+  const ask = (MEME_ASK[region.country] || MEME_ASK.switzerland)(region);
+  const [question, sub] = endQuestion(series);
+  const big = [...key].length > 90 ? 52 : 60;
+  return `<!doctype html><meta charset="utf-8"><style>
+${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
+#title{display:none}
+.office{position:absolute;inset:0;width:1080px;height:1920px}
+.desk{position:absolute;left:0;bottom:-120px;width:1080px;height:520px}
+.suit{position:absolute;left:260px;top:1120px;width:560px;height:440px}
+.tie{position:absolute;left:497px;top:1160px;width:86px;height:320px;transform-origin:50% 0;animation:swing 1.2s ease-in-out infinite alternate}
+.prop{position:absolute;${prop.css};animation:drop .6s cubic-bezier(.3,0,.4,1) 9.3s both,wobble .3s ease-in-out 9.9s 6 alternate}
+.prop svg{width:100%;height:auto}
+.cap{position:absolute;left:56px;right:56px;top:150px;background:#fff;border-radius:26px;padding:34px 40px;text-align:center;box-shadow:0 8px 0 rgba(0,0,0,.12)}
+.cap .lab{font-size:32px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#b3121a;margin-bottom:14px}
+.cap .q{font-size:${big}px;font-weight:800;line-height:1.14;color:#111}
+.cap .q em{font-style:normal;color:#b3121a}
+.sub{position:absolute;left:110px;right:110px;background:#1f3a5f;color:#fff;border-radius:20px;padding:22px 30px;font-size:33px;line-height:1.3;text-align:center}
+.sub b{display:block;font-size:24px;letter-spacing:.12em;text-transform:uppercase;color:#f2cf78;margin-bottom:6px}
+#m1,#m1s{animation:hide .3s ease-in 9s forwards}
+#m2,#m2s{animation:fadein .35s ease-out 9.2s both}
+#m2s{animation-delay:11.5s}
+.tag{position:absolute;right:56px;top:96px;font-size:24px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#57524a}
+@keyframes swing{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+@keyframes drop{0%{transform:translateY(-1400px) rotate(-20deg)}70%{transform:translateY(0) rotate(4deg)}85%{transform:translateY(-50px) rotate(-3deg)}100%{transform:none}}
+@keyframes wobble{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+#end .q2{font-family:F;font-size:96px;line-height:1.06;letter-spacing:-.02em;max-width:900px}
+#end .ask{font-size:40px;color:#b3121a;font-weight:700}
+#end{animation:fadein .5s ease-out ${MEME.end}s both}
+</style>
+${OFFICE}${SUIT}${TIE}<div class="prop">${prop.svg}</div>${DESK}
+<p class="tag">Big Beautiful Flop · satire</p>
+<div class="cap" id="m1"><p class="lab">Trump, on Truth Social</p><p class="q">“${e(key)}”</p></div>
+<div class="sub" id="m1s" style="top:${big === 60 ? 620 : 600}px"><b>A statesmanlike president</b>${e(presKey)}</div>
+<div class="cap" id="m2"><p class="lab">${e(ask)}</p><p class="q">${mark(short)}</p></div>
+${shortEn ? `<div class="sub" id="m2s" style="top:780px">${mark(shortEn)}</div>` : ''}
+<div id="end">${logoFlop({ font: 'F' })}<p class="q2">${e(question)}</p><p class="ask">${e(sub)}</p><p class="url">bigbeautifulflop.com</p></div>`;
+}
+
 /* ---------------- the Sunday video ---------------- */
 const WEEKLY = { duration: 34, end: 30 };
 
@@ -490,6 +560,24 @@ async function main() {
     await browser.close();
     rmSync(work, { recursive: true, force: true });
     console.log(`Short format: ${slug} video ${n} (${series.kicker}) → ${out}`);
+    return;
+  }
+
+  // --test-meme <slug> <1|2> <file.mp4>: one video in the meme format, written outside the site
+  if (argv.includes('--test-meme')) {
+    const [slug, n, out] = argv.slice(argv.indexOf('--test-meme') + 1);
+    const s = all.find((x) => x.slug === slug);
+    const meta = JSON.parse(readFileSync(path.join(root, 'public/social', slug, 'videos.json'), 'utf8'));
+    const series = VIDEO_SERIES.find((x) => x.id === meta[n].series);
+    const { region } = seriesVersion(s, series);
+    const work = mkdtempSync(path.join(tmpdir(), 'bbf-meme-'));
+    const browser = await chromium.launch();
+    const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
+    const fx = [{ file: region.country === 'switzerland' ? 'bbf-cowbell.wav' : 'bbf-stamp.wav', at: 9.75, volume: 0.8 }];
+    await render(page, work, memeHtml(s, series), path.resolve(out), { ...MEME, fx, coverAt: 12 });
+    await browser.close();
+    rmSync(work, { recursive: true, force: true });
+    console.log(`Meme format: ${slug} video ${n} → ${out}`);
     return;
   }
 
