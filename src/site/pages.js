@@ -109,14 +109,31 @@ function siteLd() {
   };
 }
 
+/**
+ * A date and time in Washington (US Eastern), with its offset, as Google asks:
+ * "2026-11-10T08:33:00-05:00" (-04:00 in summer).
+ */
+export function easternIso(date, time = '12:00') {
+  const guess = new Date(`${date}T${time}:00Z`);
+  const name = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', timeZoneName: 'shortOffset' })
+    .formatToParts(guess).find((p) => p.type === 'timeZoneName')?.value || 'GMT-5';
+  const [, sign = '-', h = '5', m = '0'] = name.match(/GMT([+-])(\d+)(?::(\d+))?/) || [];
+  return `${date}T${time}:00${sign}${h.padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}
+
 /** The original post the satire is based on (only it is attributed to its author). */
-const basedOn = (s) => ({
-  '@type': 'SocialMediaPosting',
-  author: { '@type': 'Person', name: s.original.speaker },
-  datePublished: s.original.date,
-  ...(s.original.source.url ? { url: s.original.source.url } : {}),
-  sharedContent: { '@type': 'WebPage', name: s.original.medium },
-});
+const basedOn = (s) => {
+  const profile = s.original.handle && /truth social/i.test(s.original.channel || '') ? `https://truthsocial.com/${s.original.handle}` : s.original.source.url;
+  return {
+    '@type': 'SocialMediaPosting',
+    headline: s.headline,
+    text: s.original.text.join(' '),
+    author: { '@type': 'Person', name: s.original.speaker, ...(profile ? { url: profile } : {}) },
+    datePublished: easternIso(s.original.date, s.original.time || '12:00'),
+    ...(s.original.source.url ? { url: s.original.source.url } : {}),
+    sharedContent: { '@type': 'WebPage', name: s.original.medium, url: s.original.source.url || profile },
+  };
+};
 
 function breadcrumbs(items) {
   return {
@@ -137,8 +154,8 @@ function articleLd(s, image) {
         url,
         mainEntityOfPage: url,
         image: `${SITE_URL}${image.path}`,
-        datePublished: s.published,
-        dateModified: s.published,
+        datePublished: easternIso(s.published),
+        dateModified: easternIso(s.published),
         inLanguage: 'en',
         author: { '@id': `${SITE_URL}/#organization` },
         publisher: publisher(),
@@ -163,7 +180,7 @@ function editionLd(s, region, image) {
         url,
         mainEntityOfPage: url,
         image: `${SITE_URL}${image.path}`,
-        datePublished: s.published,
+        datePublished: easternIso(s.published),
         inLanguage: region.lang,
         author: { '@id': `${SITE_URL}/#organization` },
         publisher: publisher(),

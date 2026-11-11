@@ -91,4 +91,9 @@ describe('build', () => {
     expect(home).toContain('Making presidential statements presidential again.');
     expect(readFileSync(path.join(out, 'sitemap.xml'), 'utf8')).toContain('/switzerland/vaudois/');
   });
+  it('gives Google dates with a time zone, and urls for the author and the shared post', async () => {
+    const { easternIso } = await import('../src/site/pages.js');
+    expect(easternIso('2026-11-10', '08:33')).toBe('2026-11-10T08:33:00-05:00');
+    expect(easternIso('2026-07-04', '12:00')).toBe('2026-07-04T12:00:00-04:00');
+  });
 });
