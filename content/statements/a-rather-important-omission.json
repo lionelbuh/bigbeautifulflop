@@ -42,7 +42,7 @@
   },
   "editions": {
     "neuchatelois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Une omission plutôt importante ! *Comme une montre sans l’aiguille des minutes.*",
       "hookEn": "A rather important omission! *Like a watch without its minute hand.*",
       "short": "Chez nous, une montre sans l’aiguille des minutes, ça donne l’heure. À peu près. *Un article sans le détail important, pareil.*",
@@ -60,7 +60,7 @@
       ]
     },
     "valaisan": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Une omission plutôt importante ! *Comme une raclette sans le fromage.*",
       "hookEn": "A rather important omission! *Like a raclette without the cheese.*",
       "short": "Chez nous, une raclette sans le fromage, ça s’appelle des patates. *Un article sans le détail important, pareil : des patates.*",
@@ -78,7 +78,7 @@
       ]
     },
     "breton": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Fake news ! *Chez nous, même la météo marine n’oublie pas le vent.*",
       "hookEn": "Fake news! *Here even the shipping forecast never leaves out the wind.*",
       "short": "Chez nous, la météo marine donne tout : le vent, la houle, la visibilité. *Un bulletin qui oublie le vent, on ne sort pas en mer avec.*",
@@ -96,7 +96,7 @@
       ]
     },
     "sud": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Une omission ! *À Marseille, on n’enlève jamais rien. On rajoute.*",
       "hookEn": "An omission! *In Marseille we never leave anything out. We add.*",
       "short": "À Marseille, une histoire, on n’en retire jamais un détail. *On en rajoute, ça oui. Mais en retirer ? Jamais.*",
@@ -114,7 +114,7 @@
       ]
     },
     "california": {
-      "review": "draft",
+      "review": "approved",
       "hook": "A rather important omission! *In Hollywood we call that the director’s cut.*",
       "short": "In Hollywood, when they cut the scene that matters, it’s called the director’s cut. *Then everybody argues about it for years.*",
       "text": [
@@ -127,7 +127,7 @@
       ]
     },
     "midwest": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Fake news! *Back home we’d just write a polite letter to the editor.*",
       "short": "Back home, if the paper leaves something out, you write a polite letter. *They print the correction right next to the bake sale.*",
       "text": [
@@ -140,7 +140,7 @@
       ]
     },
     "scotland": {
-      "review": "draft",
+      "review": "approved",
       "hook": "A rather important omission! *Like a Scottish forecast that leaves out the rain.*",
       "short": "Up here, a weather forecast that leaves out the rain isn’t a forecast. *It’s a fairy tale.*",
       "text": [
@@ -153,7 +153,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Fake news! *Our press is free to omit things, and we to complain.*",
       "short": "In Britain the press is free to leave things out, and politicians are free to complain. *It has worked like that for three centuries.*",
       "shortEn": "He would like a sentence added. *Newspapers can be asked.*",
@@ -167,7 +167,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France does not comment on the work of the American press, which it holds in high regard.",
         "We would only add that in France, since a law of 1881, anyone named in a newspaper has a right of reply: the newspaper must publish it, in the same place and in the same type. It is a quieter remedy than capital letters, and it has served the Republic well."
@@ -181,7 +181,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes note of the President’s views on the New York Times.",
         "In Switzerland, anyone who feels a newspaper has been inaccurate can turn to the Swiss Press Council, which examines the complaint and publishes its opinion. It works without capital letters, and usually without exclamation marks."
