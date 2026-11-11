@@ -470,7 +470,13 @@ const youtube = {
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json; charset=UTF-8', 'X-Upload-Content-Type': 'video/mp4', 'X-Upload-Content-Length': String(bytes.length) },
       body: JSON.stringify(meta),
     });
-    if (!start.ok) throw new Error(`YouTube upload → HTTP ${start.status}: ${(await start.text()).slice(0, 300)}`);
+    if (!start.ok) {
+      const body = await start.text();
+      const err = new Error(`YouTube upload → HTTP ${start.status}: ${body.slice(0, 300)}`);
+      // the channel's daily upload limit, or the API quota: not a failure, the hourly run tries again
+      if (/uploadLimitExceeded|quotaExceeded/.test(body)) err.later = true;
+      throw err;
+    }
     const res = await call(start.headers.get('location'), { method: 'PUT', headers: { 'Content-Type': 'video/mp4' }, body: bytes });
     return { id: res.id };
   },
@@ -573,6 +579,7 @@ async function main() {
         writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
         console.log(`${s.slug} · ${name}: posted (${res.id})`);
       } catch (err) {
+        if (err.later) { console.log(`${s.slug} · ${name}: limit reached, will try again later`); continue; }
         failed += 1;
         console.log(`${s.slug} · ${name}: FAILED ${err.message}`);
       }
@@ -596,6 +603,7 @@ async function main() {
           writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
           console.log(`${s.slug} · ${name}: second video posted (${res.id})`);
         } catch (err) {
+          if (err.later) { console.log(`${s.slug} · ${name}: second video: limit reached, will try again later`); continue; }
           failed += 1;
           console.log(`${s.slug} · ${name}: second video FAILED ${err.message}`);
         }
@@ -628,6 +636,7 @@ async function main() {
           writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
           console.log(`Sunday video ${date} · ${name}: posted (${res.id})`);
         } catch (err) {
+          if (err.later) { console.log(`Sunday video ${date} · ${name}: limit reached, will try again later`); continue; }
           failed += 1;
           console.log(`Sunday video ${date} · ${name}: FAILED ${err.message}`);
         }
