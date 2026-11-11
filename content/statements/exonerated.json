@@ -43,7 +43,7 @@
   },
   "editions": {
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "La tentative des démocrates a échoué ! *Bon. Y a pas le feu au lac.*",
       "hookEn": "The Democrats’ attempt has failed! *Well. No need to rush.*",
       "short": "Chez nous, quand on gagne, on ne crie pas en majuscules. On dit « ça a joué » et on reprend un verre. *Y a pas le feu au lac.*",
@@ -61,7 +61,7 @@
       ]
     },
     "fribourgeois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Des listes d’attente pour entrer ! *Chez nous, la lettre arrive à 18 ans.*",
       "hookEn": "Waiting lists to get in! *Round here the letter arrives at 18.*",
       "short": "Une liste d’attente pour l’armée ? Chez nous, pas besoin : le service est obligatoire. *La lettre arrive toute seule, que tu veuilles ou non.*",
@@ -79,7 +79,7 @@
       ]
     },
     "lyonnais": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Un esprit comme on en voit rarement ! *Viens à Lyon le 8 décembre.*",
       "hookEn": "A spirit rarely seen! *Come to Lyon on the 8th of December.*",
       "short": "Un esprit comme on en voit rarement ? Le 8 décembre, toute la ville met des lumignons aux fenêtres. *Et personne ne vote contre.*",
@@ -97,7 +97,7 @@
       ]
     },
     "parisien": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Blanchi ! *Comme le Sacré-Cœur : il suffit qu’il pleuve.*",
       "hookEn": "Cleared! *Like the Sacré-Cœur: all it takes is rain.*",
       "short": "Blanchi ? À Paris, le Sacré-Cœur se blanchit tout seul : sa pierre devient plus blanche à chaque averse. *Pete, il a fallu un vote.*",
@@ -115,7 +115,7 @@
       ]
     },
     "new-york": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Long waiting lists to get in! *In New York, that’s a rent-controlled apartment.*",
       "short": "Long waiting lists to get in? In New York, that’s a rent-controlled apartment. *People wait so long they pass the spot on to their kids.*",
       "text": [
@@ -128,7 +128,7 @@
       ]
     },
     "deep-south": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Spirit like rarely seen before! *Honey, you’ve never been to an SEC game.*",
       "short": "Spirit like rarely seen? Honey, come down on a Saturday in the fall. *A hundred thousand people singing the fight song in the heat.*",
       "text": [
@@ -141,7 +141,7 @@
       ]
     },
     "wales": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Long waiting lists to get in! *Try getting a ticket for Wales against England.*",
       "short": "Long waiting lists to get in? Try getting a ticket for Wales against England in Cardiff. *Now that’s a waiting list.*",
       "text": [
@@ -154,7 +154,7 @@
       ]
     },
     "british-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "hook": "EXONERATION! *In Westminster, ministers are more usually reshuffled.*",
       "short": "Ministers in Westminster are seldom exonerated. *They are more usually reshuffled, which is quieter, and nobody needs capital letters.*",
       "shortEn": "He won the vote. *In capital letters.*",
@@ -168,7 +168,7 @@
       ]
     },
     "french-diplomat": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "France takes note of the outcome of the procedure in the United States Congress.",
         "We would simply observe that when an institution examines the conduct of a minister and reaches a conclusion, it is democracy that has worked, whatever the result. In France, ministers may answer for acts in office before a special court; we have learned that it is a sign of health, not of weakness."
@@ -182,7 +182,7 @@
       ]
     },
     "swiss-president": {
-      "review": "draft",
+      "review": "approved",
       "text": [
         "The Federal Council takes note of the vote.",
         "Switzerland has no Secretary of War, and no general either: Parliament elects one only in time of war. It has done so four times since 1848. In between, the army is run by a civilian department, which also looks after sport."

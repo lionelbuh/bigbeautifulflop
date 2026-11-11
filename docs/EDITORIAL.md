@@ -157,6 +157,18 @@ Facebook, the first post of the thread on Bluesky and Threads. Video 2 is posted
 hours later** (the workflow checks every hour; `<network>:video2` in `posted.json`). Video files are
 kept only while a statement waits to be posted: the next `npm run videos` deletes the others.
 
+### The meme format: “the invisible President” (statements published from 11 November 2026)
+
+Every new video (about 24 seconds, with the music bed): a fixed scene, an empty suit with a red tie behind
+a presidential desk (generic seal, flags, a window). Only the white caption at the top changes, in big bold
+type, as in a meme:
+- 0–9 s: “Trump, on Truth Social”, with `original.key` (word for word) and, under it, `presidential.key`;
+- 9–20 s: “Le même, s’il était vaudois :” (or “Same post, if he were from Texas:”) with `short`, the last
+  words in red; the region’s prop drops onto the scene (a cowbell, a beret, a cowboy hat for Texas, a
+  baseball cap for the other American regions, a teacup, a red carpet for the diplomats); `shortEn` under it;
+- 20–24 s: the question (“Quel canton fait le meilleur Trump ?”) and the ending fanfare.
+`videos.json` records the format: statements published earlier keep theirs.
+
 ### The short format (statements published from 10 November 2026)
 
 New statements get videos in the short format: about 18 seconds and about forty words. In order:

@@ -388,6 +388,7 @@ const OFFICE = `<svg class="office" viewBox="0 0 1080 1920" aria-hidden="true">
 <rect x="920" y="820" width="10" height="700" fill="#b8932f"/><path d="M750 840 h170 v200 h-170 z" fill="#1f3a5f"/><circle cx="835" cy="940" r="46" fill="none" stroke="#f2cf78" stroke-width="8"/>
 </svg>`;
 const DESK = `<svg class="desk" viewBox="0 0 1080 520" aria-hidden="true"><rect x="40" y="0" width="1000" height="46" rx="8" fill="#6b4226"/><rect x="70" y="46" width="940" height="474" fill="#7d5634"/><rect x="120" y="100" width="360" height="360" rx="10" fill="none" stroke="#5e3d22" stroke-width="10"/><rect x="600" y="100" width="360" height="360" rx="10" fill="none" stroke="#5e3d22" stroke-width="10"/><circle cx="540" cy="280" r="58" fill="#1f3a5f" stroke="#f2cf78" stroke-width="7"/><path d="M540 238 l12 34 h36 l-29 21 11 35 -30 -22 -30 22 11 -35 -29 -21 h36 z" fill="#f2cf78"/><rect x="700" y="-60" width="110" height="64" rx="10" fill="#f6f2ea" stroke="#555" stroke-width="6"/><path d="M810 -45 q40 0 30 30 q-8 22 -30 18" fill="none" stroke="#555" stroke-width="6"/></svg>`;
+const CAP = `<svg viewBox="0 0 320 180" aria-hidden="true"><path d="M60 120 Q60 20 170 20 Q270 20 275 120 Z" fill="#1f3a5f"/><path d="M160 22 V118" stroke="#16233a" stroke-width="6"/><circle cx="168" cy="22" r="10" fill="#16233a"/><path d="M40 118 H300 Q300 150 230 150 H60 Q30 150 40 118 Z" fill="#16233a"/></svg>`;
 const PROPS = {
   switzerland: { svg: OBJECTS.switzerland, css: 'left:470px;top:1250px;width:140px' },
   france: { svg: OBJECTS.france, css: 'left:400px;top:950px;width:280px' },
@@ -403,13 +404,15 @@ const MEME_ASK = {
 
 function memeHtml(s, series) {
   const { region, edition } = seriesVersion(s, series);
+  // the cowboy hat belongs to Texas; other American regions get a baseball cap
+  const capFor = region.country === 'united-states' && region.id !== 'texas' ? { svg: CAP, css: 'left:390px;top:1010px;width:300px' } : null;
   const french = region.lang.startsWith('fr');
   const mark = (x) => e(nb(x)).replace(/\*([^*]+)\*/g, '<em>$1</em>');
   const key = s.original.key || excerpt(s.original.text, 110);
   const presKey = s.presidential.key || excerpt(s.presidential.en, 110);
   const short = edition.short || excerpt(edition.text, 150);
   const shortEn = series.id === 'diplomat' ? (edition.shortEn || '') : french ? (edition.shortEn || '') : '';
-  const prop = PROPS[region.country] || PROPS.switzerland;
+  const prop = capFor || PROPS[region.country] || PROPS.switzerland;
   const ask = (MEME_ASK[region.country] || MEME_ASK.switzerland)(region);
   const [question, sub] = endQuestion(series);
   const big = [...key].length > 90 ? 52 : 60;
@@ -621,7 +624,7 @@ async function main() {
     const meta = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, 'utf8')) : {};
     let series = [meta[1]?.series, meta[2]?.series].filter(Boolean).map(byId);
     // the format is chosen once: statements rendered before the short format keep the classic one
-    let format = meta.format || (series.length ? 'classic' : 'short');
+    let format = meta.format || (series.length ? 'classic' : 'meme');
     if (!series.length || series.some((x) => !x || !seriesVersion(s, x))) {
       series = videoSeriesFor(s, turn);
       turn = (VIDEO_SERIES.indexOf(series.at(-1)) + 1) % VIDEO_SERIES.length;
@@ -632,7 +635,12 @@ async function main() {
       const hash = createHash('sha256').update(JSON.stringify(s) + sr.id + SELF).digest('hex').slice(0, 16);
       next[i + 1] = { series: sr.id, hash };
       if (meta[i + 1]?.hash === hash && existsSync(file)) continue;
-      if (format === 'short') {
+      if (format === 'meme') {
+        // the invisible President at his desk (owner's choice from 11 November 2026)
+        const { region } = seriesVersion(s, sr);
+        const fx = [{ file: region.country === 'switzerland' ? 'bbf-cowbell.wav' : 'bbf-stamp.wav', at: 9.75, volume: 0.8 }];
+        await render(page, work, memeHtml(s, sr), file, { ...MEME, fx, coverAt: 12 });
+      } else if (format === 'short') {
         // the first screen: the felt marker that rewrites the hook in capitals (owner's choice), when there is a hook
         const { region, edition } = seriesVersion(s, sr);
         const intro = edition.hook ? 'marker' : '';
