@@ -36,7 +36,9 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
 
   const pages = [
     page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} What Trump says, what a real president would say, and how the rest of the world would put it.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
-    page({ pageId: 'originals', path: '/originals/', title: 'The Originals', description: 'Every statement we adapt, quoted verbatim with its date and source.', main: originals(ctx) }),
+    page({ pageId: 'neutral', path: '/neutral/', title: 'The Neutral Swiss', description: 'Every statement as it was posted, then the same message the neutral Swiss way: no sides, no capitals.', main: neutralPage(ctx) }),
+    // the former page of the originals now leads to the Neutral Swiss, which shows each original with its neutral version
+    { path: '/originals/', lang: 'en', listed: false, html: redirectPage('/neutral/') },
     // the former "Presidential Edition" now lives in The Diplomat
     { path: '/presidential/', lang: 'en', listed: false, html: redirectPage('/diplomat/') },
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
@@ -333,9 +335,14 @@ function sectionHead(kicker, title, intro) {
 
 const storyTitle = (s) => `<h2 class="story-title story-title--small"><a href="${articlePath(s)}">${e(s.headline)}</a></h2>`;
 
-function originals({ statements }) {
-  return `${sectionHead('Verbatim · sourced · dated', 'The Originals', 'What was actually said or posted, word for word. The only part of the site that is not satire.')}
-  ${statements.map((s) => `<section class="story story--short">${storyTitle(s)}<div class="thread">${originalPost(s)}</div></section>`).join('')}`;
+/** The Neutral Swiss: each statement as posted, then made neutral (the presidential version for earlier ones). */
+function neutralPage({ statements }) {
+  return `${sectionHead(`${flag('ch')} Certifié neutre`, 'The Neutral Swiss', 'Each statement as it was posted, then the same message the neutral way: no sides, no capitals, no insults. Before November 2026, the calm version was a statesmanlike American President.')}
+  ${statements.map((s) => `<section class="story story--short">${storyTitle(s)}<div class="thread">
+    ${originalPost(s)}
+    <p class="thread-step">${s.neutral ? 'The Neutral Swiss' : 'The presidential version'}</p>
+    ${calmPost(s)}
+  </div></section>`).join('')}`;
 }
 
 function english({ statements }) {
