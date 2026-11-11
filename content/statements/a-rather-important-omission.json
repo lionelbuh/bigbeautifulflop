@@ -1,0 +1,198 @@
+{
+  "slug": "a-rather-important-omission",
+  "status": "published",
+  "published": "2026-11-11",
+  "headline": "A rather important omission",
+  "dek": "The President accuses the New York Times of leaving out, in an article about a lawsuit settled at his golf club in Bedminster, that the case did not involve him, and calls it fake news.",
+  "topics": [
+    "media",
+    "New York Times"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-11",
+    "time": "01:47",
+    "text": [
+      "The failing New York Times wrote about the “settling of a sexual harassment suit brought years ago by a waitress at President Trump’s golf club in Bedminster, N.J.” What they fail to say is that it did not involve President Trump, a rather important omission. FAKE NEWS!!!"
+    ],
+    "key": "What they fail to say is that it did not involve President Trump, a rather important omission. FAKE NEWS!!!",
+    "context": "Posted late on 10 November 2026 (Pacific time). The President quotes a New York Times article about the settlement of a lawsuit brought by a former employee of his golf club in Bedminster, New Jersey, and says the case did not involve him. Our versions are about the newspaper and the omission he points to, not about the case.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 11 November 2026 (shown as Nov 10, 2026, 10:47 PM Pacific)."
+    }
+  },
+  "presidential": {
+    "en": [
+      "A recent New York Times article about the settlement of a lawsuit at one of my clubs did not make clear that, as I understand it, the case did not concern me personally.",
+      "I have asked the newspaper to clarify this. A free press is essential to our democracy, and so is accuracy."
+    ],
+    "fr": [
+      "Un récent article du New York Times sur le règlement d’une plainte dans l’un de mes clubs n’a pas précisé que, selon moi, l’affaire ne me concernait pas personnellement.",
+      "J’ai demandé au journal de le préciser. Une presse libre est essentielle à notre démocratie, et l’exactitude l’est tout autant."
+    ],
+    "key": "I have asked the newspaper to clarify this. A free press is essential to our democracy, and so is accuracy."
+  },
+  "editions": {
+    "neuchatelois": {
+      "review": "draft",
+      "hook": "Une omission plutôt importante ! *Comme une montre sans l’aiguille des minutes.*",
+      "hookEn": "A rather important omission! *Like a watch without its minute hand.*",
+      "short": "Chez nous, une montre sans l’aiguille des minutes, ça donne l’heure. À peu près. *Un article sans le détail important, pareil.*",
+      "shortEn": "Round here a watch without a minute hand still tells the time. Roughly. *An article without the key detail, same thing.*",
+      "text": [
+        "Le New York Times, ce journal en faillite, je le dis, a écrit sur une affaire réglée dans mon club de golf. Mais il a oublié de préciser que ça ne me concernait pas. Une omission plutôt importante. Fake news !",
+        "Chez nous, une montre sans l’aiguille des minutes, ça donne encore l’heure. À peu près. Un horloger ne la vendrait jamais. Un article sans le détail important, c’est pareil : on ne le livre pas, on le renvoie à l’atelier."
+      ],
+      "en": [
+        "The New York Times, a failing paper, I say, wrote about a case settled at my golf club. But it forgot to say it didn’t involve me. A rather important omission. Fake news!",
+        "Round here, a watch without a minute hand still tells the time. Roughly. No watchmaker would ever sell it. An article without the key detail is the same: you don’t deliver it, you send it back to the workshop."
+      ],
+      "notes": [
+        "Neuchâtel and its Jura mountains are the heart of Swiss watchmaking, where a watch is checked to the second before it leaves the workshop."
+      ]
+    },
+    "valaisan": {
+      "review": "draft",
+      "hook": "Une omission plutôt importante ! *Comme une raclette sans le fromage.*",
+      "hookEn": "A rather important omission! *Like a raclette without the cheese.*",
+      "short": "Chez nous, une raclette sans le fromage, ça s’appelle des patates. *Un article sans le détail important, pareil : des patates.*",
+      "shortEn": "Round here a raclette without the cheese is called potatoes. *An article without the key detail: potatoes.*",
+      "text": [
+        "Adieu ! Le New York Times a écrit sur une affaire réglée dans mon club de golf, mais il a oublié de dire que ça ne me concernait pas, à ce que je dis. Une omission plutôt importante. Fake news !",
+        "Chez nous, une raclette sans le fromage, ça s’appelle des patates. Et personne ne te remercie pour des patates. Un article sans le détail important, c’est pareil : des patates. Bon, avec un verre de fendant, ça passe mieux."
+      ],
+      "en": [
+        "Adieu! The New York Times wrote about a case settled at my golf club, but forgot to say it didn’t involve me, or so I say. A rather important omission. Fake news!",
+        "Round here, a raclette without the cheese is called potatoes. And nobody thanks you for potatoes. An article without the key detail is the same: potatoes. Well, with a glass of Fendant it goes down better."
+      ],
+      "notes": [
+        "Raclette, cheese melted by the fire and scraped onto boiled potatoes, comes from Valais; Fendant is the Valais name for the Chasselas white wine."
+      ]
+    },
+    "breton": {
+      "review": "draft",
+      "hook": "Fake news ! *Chez nous, même la météo marine n’oublie pas le vent.*",
+      "hookEn": "Fake news! *Here even the shipping forecast never leaves out the wind.*",
+      "short": "Chez nous, la météo marine donne tout : le vent, la houle, la visibilité. *Un bulletin qui oublie le vent, on ne sort pas en mer avec.*",
+      "shortEn": "Here the shipping forecast gives everything: wind, swell, visibility. *Leave out the wind and nobody goes to sea.*",
+      "text": [
+        "Le New York Times a écrit sur une affaire réglée dans mon club de golf, et il a oublié de dire que ça ne me concernait pas. C’est ce que je dis, et c’est une omission plutôt importante. Fake news !",
+        "Chez nous, la météo marine donne tout : le vent, la houle, la visibilité, l’état de la mer. Un bulletin qui oublie le vent, personne ne sort en mer avec. Alors un journal qui oublie le principal, moi, je reste au port."
+      ],
+      "en": [
+        "The New York Times wrote about a case settled at my golf club, and forgot to say it didn’t involve me. That’s what I say, and it’s a rather important omission. Fake news!",
+        "Here the shipping forecast gives everything: wind, swell, visibility, sea state. A forecast that leaves out the wind, nobody goes to sea on it. So a paper that leaves out the main point, I’m staying in harbour."
+      ],
+      "notes": [
+        "Brittany lives by the sea, and the marine weather bulletin, read on the radio, is followed closely by every fisherman and sailor."
+      ]
+    },
+    "sud": {
+      "review": "draft",
+      "hook": "Une omission ! *À Marseille, on n’enlève jamais rien. On rajoute.*",
+      "hookEn": "An omission! *In Marseille we never leave anything out. We add.*",
+      "short": "À Marseille, une histoire, on n’en retire jamais un détail. *On en rajoute, ça oui. Mais en retirer ? Jamais.*",
+      "shortEn": "In Marseille you never take a detail out of a story. *You add some, sure. But take one out? Never.*",
+      "text": [
+        "Le New York Times a écrit sur une affaire réglée dans mon club de golf, et il a oublié de dire que ça ne me concernait pas, je vous le dis ! Une omission énorme, monumentale, la plus grande de l’histoire du journalisme. Fake news !",
+        "Remarquez, à Marseille, une histoire, on n’en retire jamais un détail. On en rajoute, ça oui, trois ou quatre, pour le goût. Mais en retirer ? Jamais. Ça, c’est du journalisme sérieux."
+      ],
+      "en": [
+        "The New York Times wrote about a case settled at my golf club, and forgot to say it didn’t involve me, I’m telling you! A huge omission, monumental, the biggest in the history of journalism. Fake news!",
+        "Mind you, in Marseille you never take a detail out of a story. You add some, sure, three or four, for flavour. But take one out? Never. Now that’s serious journalism."
+      ],
+      "notes": [
+        "Marseille is proverbially fond of exaggeration: the sardine that blocked the port is its most famous tall tale."
+      ]
+    },
+    "california": {
+      "review": "draft",
+      "hook": "A rather important omission! *In Hollywood we call that the director’s cut.*",
+      "short": "In Hollywood, when they cut the scene that matters, it’s called the director’s cut. *Then everybody argues about it for years.*",
+      "text": [
+        "So the New York Times wrote about a case settled at my golf club and, like, totally left out that it didn’t involve me. That’s what I’m saying, anyway. A rather important omission. Fake news!",
+        "Honestly, in Hollywood, when they cut the scene that matters, it’s called the director’s cut. Then everybody argues about it for years and it comes out again on streaming. I’d like the extended edition, please."
+      ],
+      "en": [
+        "He says the newspaper left out that the case did not involve him, and calls it fake news.",
+        "In Hollywood terms, leaving out the key scene is the “director’s cut”; he would like the “extended edition” with the missing part."
+      ]
+    },
+    "midwest": {
+      "review": "draft",
+      "hook": "Fake news! *Back home we’d just write a polite letter to the editor.*",
+      "short": "Back home, if the paper leaves something out, you write a polite letter. *They print the correction right next to the bake sale.*",
+      "text": [
+        "Well, I don’t want to make a fuss, but the New York Times wrote about a case at my golf club and didn’t mention it didn’t involve me. That’s kind of a big thing to leave out, don’t you think? Fake news, I’d call it.",
+        "Back home, if the paper leaves something out, you write a nice letter to the editor. Polite, short, signed. They print the correction right next to the bake sale announcement, and everybody reads both."
+      ],
+      "en": [
+        "Very politely, he complains that the newspaper left out that the case did not involve him.",
+        "In a small Midwestern town, you would write a courteous letter to the local paper, which would print the correction among the community notices."
+      ]
+    },
+    "scotland": {
+      "review": "draft",
+      "hook": "A rather important omission! *Like a Scottish forecast that leaves out the rain.*",
+      "short": "Up here, a weather forecast that leaves out the rain isn’t a forecast. *It’s a fairy tale.*",
+      "text": [
+        "The New York Times wrote about a case settled at my golf club and never said it didn’t involve me. That’s what I’m telling you. A rather important omission. Fake news!",
+        "Up here, a weather forecast that leaves out the rain isn’t a forecast. It’s a fairy tale. And we know a fairy tale when we hear one: we’ve been telling them for centuries."
+      ],
+      "en": [
+        "He says the newspaper left out the most important detail: that the case did not involve him.",
+        "In Scotland, leaving out the rain would make any forecast pure fiction: an omission nobody could miss."
+      ]
+    },
+    "british-diplomat": {
+      "review": "draft",
+      "hook": "Fake news! *Our press is free to omit things, and we to complain.*",
+      "short": "In Britain the press is free to leave things out, and politicians are free to complain. *It has worked like that for three centuries.*",
+      "shortEn": "He would like a sentence added. *Newspapers can be asked.*",
+      "text": [
+        "His Majesty’s Government does not comment on the editorial choices of foreign newspapers.",
+        "We would simply note that our own press is entirely free to leave things out, and our politicians entirely free to complain about it. The arrangement has served us well for some three centuries."
+      ],
+      "en": [
+        "He would like the newspaper to add a sentence.",
+        "Newspapers can be asked. That is rather the point of a free press."
+      ]
+    },
+    "french-diplomat": {
+      "review": "draft",
+      "text": [
+        "France does not comment on the work of the American press, which it holds in high regard.",
+        "We would only add that in France, since a law of 1881, anyone named in a newspaper has a right of reply: the newspaper must publish it, in the same place and in the same type. It is a quieter remedy than capital letters, and it has served the Republic well."
+      ],
+      "fr": [
+        "La France ne commente pas le travail de la presse américaine, qu’elle tient en haute estime.",
+        "Nous ajouterons seulement qu’en France, depuis une loi de 1881, toute personne nommée dans un journal dispose d’un droit de réponse : le journal doit le publier, à la même place et dans les mêmes caractères. C’est un remède plus discret que les majuscules, et il a bien servi la République."
+      ],
+      "notes": [
+        "The French press law of 29 July 1881 gives anyone named or designated in a newspaper a right of reply, which must be published in the same place and type."
+      ]
+    },
+    "swiss-president": {
+      "review": "draft",
+      "text": [
+        "The Federal Council takes note of the President’s views on the New York Times.",
+        "In Switzerland, anyone who feels a newspaper has been inaccurate can turn to the Swiss Press Council, which examines the complaint and publishes its opinion. It works without capital letters, and usually without exclamation marks."
+      ],
+      "fr": [
+        "Le Conseil fédéral prend acte de l’avis du Président sur le New York Times.",
+        "En Suisse, quiconque estime qu’un journal a manqué d’exactitude peut s’adresser au Conseil suisse de la presse, qui examine la plainte et publie sa prise de position. Cela fonctionne sans majuscules, et en général sans points d’exclamation."
+      ],
+      "notes": [
+        "The Swiss Press Council, the media’s self-regulation body, examines complaints about journalistic ethics and publishes its opinions."
+      ]
+    }
+  }
+}
