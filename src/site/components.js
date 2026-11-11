@@ -187,12 +187,37 @@ function sectionTabs(s, { day, first, idPrefix }) {
 
 /** The whole thread: the original, the American President, then the four sections as tabs. */
 export function thread(s, { day, regions = true, first = null } = {}) {
+  // the Swiss format: the original, the Neutral Swiss, then the cantons
+  if (s.neutral) {
+    const cantons = REGIONS.filter((r) => r.country === 'switzerland' && s.editions?.[r.id]);
+    return `<div class="thread">
+  ${originalPost(s)}
+  <p class="thread-step">The Neutral Swiss</p>
+  ${neutralPost(s)}
+  ${regions && cantons.length ? `<p class="thread-step">Le même, dans les cantons</p>${cantons.map((r) => regionalPost(s, r)).join('')}` : ''}
+</div>`;
+  }
   return `<div class="thread">
   ${originalPost(s)}
   <p class="thread-step">The presidential version</p>
   ${presidentialPost(s)}
   ${regions ? sectionTabs(s, { day, first, idPrefix: `t-${s.slug}` }) : ''}
 </div>`;
+}
+
+/** How a neutral Swiss would put it: in English, with the French behind a link. */
+export function neutralPost(s) {
+  const n = s.neutral;
+  return post({
+    variant: 'neutral',
+    avatar: '<span class="avatar avatar--neutral" aria-hidden="true"></span>',
+    name: 'The Neutral Swiss',
+    meta: 'The same message, the neutral way: no sides, no capitals',
+    badge: 'Satire',
+    body: paras(n.en),
+    translate: null,
+    footer: n.fr?.length ? `<details class="post-translate post-translate--inline"><summary>Version française</summary><div lang="fr">${paras(n.fr, '', { french: true })}</div></details>` : '',
+  });
 }
 
 /**

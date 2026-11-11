@@ -403,6 +403,10 @@ const MEME_ASK = {
   diplomat: () => 'What a diplomat hears:',
 };
 
+/* the Swiss format: the tie with a white cross, a Swiss flag on the desk, the “NEUTRALISÉ” stamp */
+const TIE_CH = `<svg class="tie" viewBox="0 0 140 520" aria-hidden="true"><path d="M40 0 H100 L112 50 L70 82 L28 50 Z" fill="#a8201a"/><path d="M48 78 H92 L132 430 L70 520 L8 430 Z" fill="#d52b1e"/><path d="M62 250 h16 v-22 h22 v-16 h-22 v-22 h-16 v22 h-22 v16 h22 z" fill="#fff"/></svg>`;
+const FLAG_CH = `<svg class="flagch" viewBox="0 0 140 260" aria-hidden="true"><rect x="10" y="20" width="8" height="240" fill="#b8932f"/><rect x="18" y="20" width="110" height="110" fill="#d52b1e"/><path d="M63 40 h20 v25 h25 v20 h-25 v25 h-20 v-25 h-25 v-20 h25 z" fill="#fff"/><circle cx="14" cy="16" r="8" fill="#b8932f"/></svg>`;
+
 function memeHtml(s, series) {
   const { region, edition } = seriesVersion(s, series);
   // the cowboy hat belongs to Texas; other American regions get a baseball cap
@@ -410,7 +414,10 @@ function memeHtml(s, series) {
   const french = region.lang.startsWith('fr');
   const mark = (x) => e(nb(x)).replace(/\*([^*]+)\*/g, '<em>$1</em>');
   const key = s.original.key || excerpt(s.original.text, 110);
-  const presKey = s.presidential.key || excerpt(s.presidential.en, 110);
+  const neutral = s.neutral;
+  const presKey = neutral ? (neutral.key || excerpt(neutral.en, 110)) : (s.presidential.key || excerpt(s.presidential.en, 110));
+  const presLab = neutral ? 'The Neutral Swiss' : 'A statesmanlike president';
+  const presFr = neutral ? (neutral.keyFr || '') : '';
   const short = edition.short || excerpt(edition.text, 150);
   const shortEn = series.id === 'diplomat' ? (edition.shortEn || '') : french ? (edition.shortEn || '') : '';
   const prop = capFor || PROPS[region.country] || PROPS.switzerland;
@@ -433,6 +440,15 @@ ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
 .sub{position:absolute;left:110px;right:110px;background:#1f3a5f;color:#fff;border-radius:20px;padding:22px 30px;font-size:33px;line-height:1.3;text-align:center}
 .sub b{display:block;font-size:24px;letter-spacing:.12em;text-transform:uppercase;color:#f2cf78;margin-bottom:6px}
 #m1,#m1s{animation:hide .3s ease-in 9s forwards}
+.sub.neutral{background:#d52b1e}
+.sub.neutral b{color:#fff}
+.sub i{display:block;font-style:normal;font-size:27px;color:#ffe3e0;margin-top:10px}
+.neutral ~ .x{}
+#m1s.neutral{animation:fadein .4s ease-out 1.9s both,hide .3s ease-in 9s forwards;top:660px !important}
+.stampn{position:absolute;right:40px;top:470px;width:max-content;font-size:66px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#d52b1e;border:12px double #d52b1e;border-radius:20px;padding:6px 36px 12px;background:rgba(255,255,255,.93);text-align:center;line-height:1;transform:rotate(-8deg);animation:stampin .26s cubic-bezier(.5,0,.8,.4) 1.2s both,hide .3s ease-in 9s forwards}
+.stampn small{display:block;font-size:22px;letter-spacing:.14em;margin-top:6px}
+.flagch{position:absolute;left:90px;top:1210px;width:150px;height:280px}
+@keyframes stampin{from{opacity:0;transform:rotate(-14deg) scale(3)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
 #m2,#m2s{animation:fadein .35s ease-out 9.2s both}
 #m2s{animation-delay:11.5s}
 .tag{position:absolute;right:56px;top:96px;font-size:24px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#57524a}
@@ -443,10 +459,11 @@ ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
 #end .ask{font-size:40px;color:#b3121a;font-weight:700}
 #end{animation:fadein .5s ease-out ${MEME.end}s both}
 </style>
-${OFFICE}${SUIT}${TIE}<div class="prop">${prop.svg}</div>${DESK}
+${OFFICE}${SUIT}${neutral ? TIE_CH : TIE}<div class="prop">${prop.svg}</div>${DESK}${neutral ? FLAG_CH : ''}
 <p class="tag">Big Beautiful Flop · satire</p>
 <div class="cap" id="m1"><p class="lab">Trump, on Truth Social</p><p class="q">“${e(key)}”</p></div>
-<div class="sub" id="m1s" style="top:${big === 60 ? 620 : 600}px"><b>A statesmanlike president</b>${e(presKey)}</div>
+${neutral ? '<p class="stampn">Neutralisé<small>Neutralized · satire</small></p>' : ''}
+<div class="sub${neutral ? ' neutral' : ''}" id="m1s" style="top:${big === 60 ? 620 : 600}px"><b>${e(presLab)}</b>${e(presKey)}${presFr ? `<i>${e(presFr)}</i>` : ''}</div>
 <div class="cap" id="m2"><p class="lab">${e(ask)}</p><p class="q">${mark(short)}</p></div>
 ${shortEn ? `<div class="sub" id="m2s" style="top:780px">${mark(shortEn)}</div>` : ''}
 <div id="end">${logoFlop({ font: 'F' })}<p class="q2">${e(question)}</p><p class="ask">${e(sub)}</p><p class="url">bigbeautifulflop.com</p></div>`;
@@ -577,8 +594,8 @@ async function main() {
     const work = mkdtempSync(path.join(tmpdir(), 'bbf-meme-'));
     const browser = await chromium.launch();
     const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
-    const fx = [{ file: region.country === 'switzerland' ? 'bbf-cowbell.wav' : 'bbf-stamp.wav', at: 9.75, volume: 0.8 }];
-    await render(page, work, memeHtml(s, series), path.resolve(out), { ...MEME, fx, coverAt: 12 });
+    const fx = [{ file: region.country === 'switzerland' ? 'bbf-cowbell.wav' : 'bbf-stamp.wav', at: 9.75, volume: 0.8 }, ...(s.neutral ? [{ file: 'bbf-stamp.wav', at: 1.45, volume: 1 }] : [])];
+    await render(page, work, memeHtml(s, series), path.resolve(out), { ...MEME, fx, coverAt: s.neutral ? 3 : 12 });
     await browser.close();
     rmSync(work, { recursive: true, force: true });
     console.log(`Meme format: ${slug} video ${n} → ${out}`);

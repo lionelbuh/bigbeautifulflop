@@ -1184,3 +1184,14 @@ a.cal-day:focus-visible {
 .footer-follow .yt-icon {
   flex: none;
 }
+.avatar--neutral {
+  background:
+    linear-gradient(#fff, #fff) center / 56% 18% no-repeat,
+    linear-gradient(#fff, #fff) center / 18% 56% no-repeat,
+    #d52b1e;
+  border-radius: 8px;
+}
+.post--neutral {
+  border-color: #e7b3ae;
+  background: #fff7f6;
+}

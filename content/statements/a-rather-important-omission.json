@@ -194,5 +194,17 @@
         "The Swiss Press Council, the media’s self-regulation body, examines complaints about journalistic ethics and publishes its opinions."
       ]
     }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland takes note that the President and the New York Times disagree about what the article should have said.",
+      "We would suggest a quiet solution: the newspaper adds one sentence, the President removes three exclamation marks, and everyone meets in Geneva over a fondue. Neutrality is mostly a matter of punctuation."
+    ],
+    "fr": [
+      "La Suisse prend acte que le Président et le New York Times ne sont pas d’accord sur ce que l’article aurait dû dire.",
+      "Nous suggérons une solution discrète : le journal ajoute une phrase, le Président retire trois points d’exclamation, et tout le monde se retrouve à Genève autour d’une fondue. La neutralité est surtout une affaire de ponctuation."
+    ],
+    "key": "The newspaper adds one sentence, the President removes three exclamation marks, and everyone meets in Geneva over a fondue.",
+    "keyFr": "Le journal ajoute une phrase, le Président retire trois points d’exclamation, et tout le monde se retrouve à Genève autour d’une fondue."
   }
 }
