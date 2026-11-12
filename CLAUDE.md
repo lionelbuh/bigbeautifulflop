@@ -3,7 +3,8 @@
 - **Publishing:** `main` deploys automatically (GitHub Actions → GitHub Pages).
   - **New statements (content):** write them on the working branch only, send the owner one full-page
     screenshot per statement (all versions visible), and push to `main` only after the owner's “OK”
-    (which also sets every version to `review: "approved"`).
+    (which also sets every version to `review: "approved"`). Always wait for that “OK” after the
+    preparation, even if the owner asked in advance to post: the owner rereads every statement first.
   - **Technical and design changes the owner asked for:** push to the working branch and to `main`
     without asking.
 - New statements follow the Swiss format in `docs/EDITORIAL.md` (from 11 November 2026): the original (with
