@@ -447,6 +447,10 @@ ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
 #m1s.neutral{animation:fadein .4s ease-out 1.9s both,hide .3s ease-in 9s forwards;top:660px !important}
 .stampn{position:absolute;right:40px;top:470px;width:max-content;font-size:56px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#d52b1e;border:12px double #d52b1e;border-radius:20px;padding:6px 36px 12px;background:rgba(255,255,255,.93);text-align:center;line-height:1;transform:rotate(-8deg);animation:stampin .26s cubic-bezier(.5,0,.8,.4) 1.2s both,hide .3s ease-in 9s forwards}
 .stampn small{display:block;font-size:22px;letter-spacing:.14em;margin-top:6px}
+.stack{position:absolute;left:56px;right:56px;top:150px;display:flex;flex-direction:column;gap:22px;z-index:1}
+.stack .cap,.stack .sub{position:static}
+.stack .sub{margin:0 54px}
+.stack .stampn{position:static;align-self:flex-end;margin:-58px -14px -10px 0}
 .flagch{position:absolute;left:90px;top:1210px;width:150px;height:280px}
 @keyframes stampin{from{opacity:0;transform:rotate(-14deg) scale(3)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
 #m2,#m2s{animation:fadein .35s ease-out 9.2s both}
@@ -461,9 +465,9 @@ ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
 </style>
 ${OFFICE}${SUIT}${neutral ? TIE_CH : TIE}<div class="prop">${prop.svg}</div>${DESK}${neutral ? FLAG_CH : ''}
 <p class="tag">Big Beautiful Flop · satire</p>
-<div class="cap" id="m1"><p class="lab">Trump, on Truth Social</p><p class="q">“${e(key)}”</p></div>
+${neutral ? '<div class="stack">' : ''}<div class="cap" id="m1"><p class="lab">Trump, on Truth Social</p><p class="q">“${e(key)}”</p></div>
 ${neutral ? '<p class="stampn">Certifié neutre<small>Swiss certified neutral · satire</small></p>' : ''}
-<div class="sub${neutral ? ' neutral' : ''}" id="m1s" style="top:${big === 60 ? 620 : 600}px"><b>${e(presLab)}</b>${e(presKey)}${presFr ? `<i>${e(presFr)}</i>` : ''}</div>
+<div class="sub${neutral ? ' neutral' : ''}" id="m1s" style="top:${big === 60 ? 620 : 600}px"><b>${e(presLab)}</b>${e(presKey)}${presFr ? `<i>${e(presFr)}</i>` : ''}</div>${neutral ? '</div>' : ''}
 <div class="cap" id="m2"><p class="lab">${e(ask)}</p><p class="q">${mark(short)}</p></div>
 ${shortEn ? `<div class="sub" id="m2s" style="top:780px">${mark(shortEn)}</div>` : ''}
 <div id="end">${logoFlop({ font: 'F' })}<p class="q2">${e(question)}</p><p class="ask">${e(sub)}</p><p class="url">bigbeautifulflop.com</p></div>`;

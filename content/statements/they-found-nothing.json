@@ -1,0 +1,83 @@
+{
+  "slug": "they-found-nothing",
+  "status": "published",
+  "published": "2026-11-12",
+  "headline": "They found nothing",
+  "dek": "The President recalls the fight over his tax returns in his first term, says the accountants found nothing, accuses the Democrats of threatening Republicans with false charges and, without evidence, of cheating to win the midterms.",
+  "topics": [
+    "taxes",
+    "Congress",
+    "midterms"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-12",
+    "time": "06:28",
+    "text": [
+      "Does anybody remember, in my First Term, the relentless effort by the anti-American Dumocrats to get my personal Tax Returns, something that has always been off limits for anyone other than Donald J. Trump. Shockingly, they won this unprecedented right in the U.S. Supreme Court, and hired the best and toughest accountants in the Country to “get Trump.” After one year of intense work, these brilliant Democrat inspired accountants FOUND NOTHING except that I paid my taxes and did everything right. Now, in order to deflect from MASSIVE BLUE STATE CORRUPTION & CRIME, they are at it again, illegally threatening Republicans with knowingly false accusations and charges. Other than cheating, this is how they won the Midterms - But we won’t let our Country go to hell! President DJT"
+    ],
+    "key": "After one year of intense work, these brilliant Democrat inspired accountants FOUND NOTHING except that I paid my taxes and did everything right.",
+    "context": "Posted early on 12 November 2026. The claims about the accountants’ findings and about cheating in the midterms are the President’s.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 12 November 2026 (shown as 11/12/26, 3:28 AM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland takes note of the President’s account of his tax returns, and of his concerns about the midterm elections.",
+      "In Switzerland, when accountants spend a year on a file and find nothing, it is considered excellent news, and nobody shouts about it. We would suggest that everyone let the courts and the auditors finish their work, and then meet for a coffee."
+    ],
+    "fr": [
+      "La Suisse prend acte du récit du Président au sujet de ses déclarations d’impôts, et de ses préoccupations sur les élections de mi-mandat.",
+      "En Suisse, quand des comptables passent un an sur un dossier et ne trouvent rien, c’est considéré comme une excellente nouvelle, et personne ne crie. Nous suggérons de laisser les tribunaux et les réviseurs finir leur travail, puis de se retrouver autour d’un café."
+    ],
+    "key": "In Switzerland, when accountants spend a year on a file and find nothing, it is considered excellent news, and nobody shouts about it.",
+    "keyFr": "En Suisse, quand des comptables passent un an sur un dossier et ne trouvent rien, c’est une excellente nouvelle, et personne ne crie."
+  },
+  "editions": {
+    "vaudois": {
+      "review": "approved",
+      "hook": "Ils n’ont rien trouvé ! *Chez nous, on ne parle pas d’argent. Même en famille.*",
+      "hookEn": "They found nothing! *Round here we don’t talk about money. Not even in the family.*",
+      "short": "Chez nous, l’argent, on n’en parle pas : ni au bistrot, ni en famille, ni au fisc plus que nécessaire. *Un an de comptables ? On aurait proposé un café.*",
+      "shortEn": "Round here we don’t talk about money: not at the pub, not in the family. *A year of accountants? We’d have offered a coffee.*",
+      "text": [
+        "Mes déclarations d’impôts, ils ont tout fait pour les avoir, et ils ont engagé les meilleurs comptables du pays. Un an de travail. Résultat : rien trouvé, à part que j’ai payé mes impôts, je le dis. Et maintenant ils recommencent, et ils ont triché pour gagner, à ce que je dis.",
+        "Remarquez, chez nous, l’argent, on n’en parle pas. Ni au bistrot, ni en famille, ni au fisc plus que nécessaire. Un an de comptables pour regarder dans mes affaires ? On leur aurait proposé un café, et on aurait parlé de la météo."
+      ],
+      "en": [
+        "They did everything to get my tax returns, and hired the best accountants in the country. A year of work. Result: nothing found, except that I paid my taxes, I say. And now they’re at it again, and they cheated to win, or so I say.",
+        "Mind you, round here we don’t talk about money. Not at the pub, not in the family, not to the taxman more than necessary. A year of accountants looking into my affairs? We’d have offered them a coffee and talked about the weather."
+      ],
+      "notes": [
+        "In Vaud, as in much of Switzerland, talking about how much you earn is considered impolite, even among friends."
+      ]
+    },
+    "genevois": {
+      "review": "approved",
+      "hook": "Ils n’ont RIEN trouvé ! *À Genève, ça se facture quand même. À l’heure.*",
+      "hookEn": "They found NOTHING! *In Geneva you still bill for it. By the hour.*",
+      "short": "À Genève, un comptable qui cherche pendant un an et ne trouve rien, ce n’est pas un échec. *C’est une facture. À l’heure.*",
+      "shortEn": "In Geneva, an accountant who searches for a year and finds nothing hasn’t failed. *He has an invoice. By the hour.*",
+      "text": [
+        "Les démocrates voulaient mes déclarations d’impôts, ils ont gagné à la Cour suprême, et ils ont pris les comptables les plus durs du pays. Un an plus tard : rien, je vous le dis. Et ils recommencent, avec de fausses accusations, à ce que je dis.",
+        "Remarquez, à Genève, un comptable qui cherche pendant un an et ne trouve rien, ce n’est pas un échec. C’est une facture. À l’heure, et en francs suisses. On l’envoie, on la paie, et on n’en parle plus."
+      ],
+      "en": [
+        "The Democrats wanted my tax returns, won at the Supreme Court and hired the toughest accountants in the country. A year later: nothing, I tell you. And they’re at it again, with false accusations, or so I say.",
+        "Mind you, in Geneva, an accountant who searches for a year and finds nothing hasn’t failed. He has an invoice. By the hour, in Swiss francs. You send it, you pay it, and nobody mentions it again."
+      ],
+      "notes": [
+        "Geneva is a capital of private banking, wealth management and well-paid advisers, who bill by the hour."
+      ]
+    }
+  }
+}
