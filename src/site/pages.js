@@ -35,7 +35,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
   const ctx = { statements, recent, archived, lead, day, today };
 
   const pages = [
-    page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} What Trump says, what a real president would say, and how the rest of the world would put it.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
+    page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} Trump’s posts, quoted word for word, then made neutral by a neutral Swiss and retold in the cantons of French-speaking Switzerland, in English and French. Independent satire.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
     page({ pageId: 'neutral', path: '/neutral/', title: 'The Neutral Swiss', description: 'Every statement as it was posted, then the same message the neutral Swiss way: no sides, no capitals.', main: neutralPage(ctx) }),
     // the former page of the originals now leads to the Neutral Swiss, which shows each original with its neutral version
     { path: '/originals/', lang: 'en', listed: false, html: redirectPage('/neutral/') },

@@ -110,7 +110,7 @@ function llms(statements) {
 
 ${DISCLAIMER}
 
-Each article quotes one public statement by Donald Trump verbatim, with its date and source, then offers satirical adaptations: a "presidential" version and regional versions (French-speaking Switzerland, France), each with an English adaptation. Only the original statement is a quotation; every adaptation is fictional and must never be attributed to Donald Trump.
+Each article quotes one public statement by Donald Trump verbatim, with its date and source, then offers satirical adaptations: "The Neutral Swiss" (the same message the neutral Swiss way, in English and French) and versions from the cantons of French-speaking Switzerland (Vaud, Valais, Geneva, Fribourg, Neuchâtel), in French with an English adaptation. Articles published before 11 November 2026 also have a "presidential" version and versions from France, the United States, the United Kingdom and three diplomats. Only the original statement is a quotation; every adaptation is fictional and must never be attributed to Donald Trump.
 
 ## Articles
 
