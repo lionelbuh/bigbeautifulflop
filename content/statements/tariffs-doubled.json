@@ -1,0 +1,83 @@
+{
+  "slug": "tariffs-doubled",
+  "status": "published",
+  "published": "2026-11-12",
+  "headline": "Immediately doubled",
+  "dek": "The President says caravans of migrants are forming and heading through Mexico, and warns that tariffs on Mexico will be doubled immediately if Mexico does not stop them.",
+  "topics": [
+    "tariffs",
+    "Mexico",
+    "border"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-12",
+    "time": "07:04",
+    "text": [
+      "Here we go again! With the perceived loss by the Republicans in the Midterms - I WAS NOT ON THE BALLOT- the INVASION of our Country is taking place again. Huge CARAVANS are forming and beginning their illegal march through Mexico. Many of the people in these Caravans are those that various countries don’t want - “Send them to America,” they say - But they will not be accepted! MEXICO MUST STOP THEM, NOW, and if they do not do so, the Tariffs on Mexico will be IMMEDIATELY DOUBLED. MEXICO, THE GOVERNOR OF TEXAS, THE VERY LIBERAL NEW GOVERNOR OF TEXAS, OUR GREAT BORDER PATROL, & ICE, HAVE BEEN SO INFORMED. There will be no leniency! Thank you for your attention to this matter. President DONALD J. TRUMP"
+    ],
+    "key": "MEXICO MUST STOP THEM, NOW, and if they do not do so, the Tariffs on Mexico will be IMMEDIATELY DOUBLED.",
+    "context": "Posted early on 12 November 2026. The description of the caravans and of the new governor of Texas is the President’s. Our versions are about borders and tariffs, not about the people on the move.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 12 November 2026 (shown as 11/12/26, 4:04 AM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland takes note of the President’s concerns about the border, and of his intention to double the tariffs on Mexico.",
+      "Switzerland knows a little about tariffs, having received some of its own. We would suggest a conversation before the doubling: Geneva has many meeting rooms, and the coffee is neutral."
+    ],
+    "fr": [
+      "La Suisse prend acte des préoccupations du Président au sujet de la frontière, et de son intention de doubler les droits de douane sur le Mexique.",
+      "La Suisse connaît un peu les droits de douane, pour en avoir reçu quelques-uns. Nous suggérons une discussion avant le doublement : Genève a beaucoup de salles de réunion, et le café y est neutre."
+    ],
+    "key": "Switzerland knows a little about tariffs, having received some of its own. We would suggest a conversation before the doubling: Geneva has many meeting rooms, and the coffee is neutral.",
+    "keyFr": "La Suisse connaît un peu les droits de douane. Nous suggérons une discussion avant le doublement : à Genève, le café est neutre."
+  },
+  "editions": {
+    "fribourgeois": {
+      "review": "approved",
+      "hook": "Les tarifs doublés ! *Chez nous, la frontière, c’est la Sarine. Sans douane.*",
+      "hookEn": "Tariffs doubled! *Round here the border is the Sarine river. No customs.*",
+      "short": "Chez nous, la frontière, c’est la Sarine : d’un côté on dit « bonjour », de l’autre « grüessech ». *Et personne n’a jamais doublé le prix du pont.*",
+      "shortEn": "Here the border is the Sarine: “bonjour” on one side, “grüessech” on the other. *Nobody ever doubled the price of the bridge.*",
+      "text": [
+        "Et revoilà ! Le Mexique doit arrêter ça, tout de suite, sinon les droits de douane sur le Mexique, je les double, immédiatement. Le Mexique, le gouverneur du Texas, la patrouille des frontières : tout le monde est prévenu, je le dis.",
+        "Remarquez, chez nous, la frontière, c’est la Sarine : d’un côté on dit « bonjour », de l’autre « grüessech ». On la traverse cent fois par jour, pour aller travailler, pour aller boire un verre. Et personne n’a jamais doublé le prix du pont."
+      ],
+      "en": [
+        "Here we go again! Mexico must stop this, right now, or the tariffs on Mexico, I double them, immediately. Mexico, the governor of Texas, the border patrol: everyone has been told, I say.",
+        "Mind you, round here the border is the Sarine: on one side they say “bonjour”, on the other “grüessech”. We cross it a hundred times a day, to go to work, to go for a drink. And nobody ever doubled the price of the bridge."
+      ],
+      "notes": [
+        "The Sarine river, which runs through the city of Fribourg, roughly marks the line between French- and German-speaking Switzerland; “grüessech” is the Bernese German greeting."
+      ]
+    },
+    "neuchatelois": {
+      "review": "approved",
+      "hook": "Les tarifs doublés ! *Nos montres connaissent. Elles donnent l’heure quand même.*",
+      "hookEn": "Tariffs doubled! *Our watches know all about it. They still tell the time.*",
+      "short": "Des droits de douane doublés ? Nos montres en ont déjà eu leur part. *Résultat : elles donnent toujours l’heure. Juste un peu plus cher.*",
+      "shortEn": "Doubled tariffs? Our watches have had their share. *Result: they still tell the time. Just a bit more expensively.*",
+      "text": [
+        "Le Mexique doit arrêter les caravanes, maintenant, à ce que je dis, sinon je double les droits de douane, immédiatement, sans aucune indulgence. Tout le monde a été prévenu.",
+        "Bon, des droits de douane doublés, chez nous, on connaît : nos montres en ont déjà eu leur part. Résultat ? Elles donnent toujours l’heure, à la seconde près. Juste un peu plus cher. Et l’horloger, lui, il continue de travailler, tranquillement, à l’établi."
+      ],
+      "en": [
+        "Mexico must stop the caravans, now, or so I say, or I double the tariffs, immediately, with no leniency. Everyone has been told.",
+        "Well, doubled tariffs, we know all about them round here: our watches have had their share. Result? They still tell the time, to the second. Just a bit more expensively. And the watchmaker keeps working, quietly, at his bench."
+      ],
+      "notes": [
+        "Swiss watches, made largely in the Neuchâtel and Jura mountains, have been hit by American tariffs on Swiss goods."
+      ]
+    }
+  }
+}
