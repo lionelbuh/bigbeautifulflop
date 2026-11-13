@@ -248,8 +248,11 @@ const threads = {
   async alreadyPosted(posts) {
     const same = (x, y) => (x || '').replace(/\s+/g, ' ').trim().slice(0, 60) === (y || '').replace(/\s+/g, ' ').trim().slice(0, 60);
     try {
-      const mine = await graphGet(THREADS, '/me/threads?fields=id,text&limit=25', env.THREADS_TOKEN);
-      const top = (mine.data || []).find((p) => same(p.text, posts[0]));
+      const mine = await graphGet(THREADS, '/me/threads?fields=id,text,timestamp&limit=25', env.THREADS_TOKEN);
+      // only a thread started in the last 90 minutes is ours to finish: an older one with the same start is
+      // an earlier publication (e.g. a statement redone), and a new thread is posted
+      const recent = (p) => Date.now() - Date.parse(p.timestamp || 0) < 90 * 60 * 1000;
+      const top = (mine.data || []).find((p) => same(p.text, posts[0]) && recent(p));
       if (!top) return [];
       const replies = (await graphGet(THREADS, '/me/replies?fields=id,text,replied_to&limit=50', env.THREADS_TOKEN)).data || [];
       const ids = [top.id];
