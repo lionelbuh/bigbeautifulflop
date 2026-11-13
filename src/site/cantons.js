@@ -42,6 +42,6 @@ export const CANTONS = {
     name: 'Canton of Neuchâtel',
     places: 'Neuchâtel · La Chaux-de-Fonds · the Jura',
     flag: `<svg viewBox="0 0 300 300"><rect width="100" height="300" fill="#007A3D"/><rect x="100" width="100" height="300" fill="#fff"/><rect x="200" width="100" height="300" fill="${RED}"/><path d="M240 30 h20 v22 h22 v20 h-22 v22 h-20 v-22 h-22 v-20 h22 z" fill="#fff"/>${frame}</svg>`,
-    geo: `<svg viewBox="0 0 700 240"><circle cx="350" cy="120" r="96" fill="none" stroke="#1f3a5f" stroke-width="4"/><path d="M350 120 L350 50 M350 120 L410 150" stroke="#1f3a5f" stroke-width="5" stroke-linecap="round"/><circle cx="350" cy="120" r="7" fill="${RED}"/><text x="350" y="236" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="26" fill="#1f3a5f">watchmaking, the Jura</text></svg>`,
+    geo: `<svg viewBox="0 0 700 240"><circle cx="350" cy="120" r="96" fill="none" stroke="#1f3a5f" stroke-width="4"/><path d="M350 120 L350 50 M350 120 L410 150" stroke="#1f3a5f" stroke-width="5" stroke-linecap="round"/><circle cx="350" cy="120" r="7" fill="${RED}"/></svg>`,
   },
 };

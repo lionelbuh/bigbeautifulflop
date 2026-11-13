@@ -147,6 +147,8 @@ export async function render(page, work, markup, file, { duration = DURATION, en
     await pg.setViewportSize({ width: 1080, height: 1920 });
     await pg.goto(pathToFileURL(path.join(work, 'video.html')).href);
     await pg.evaluate(() => document.fonts.ready);
+    // a page may fit its layout to its text once the fonts are in (the episode: short or long posts)
+    await pg.evaluate(() => window.fit?.());
     await pg.evaluate(() => document.getAnimations().forEach((a) => a.pause()));
     for (let i = k; i < total; i += tabs) {
       await pg.evaluate((t) => document.getAnimations().forEach((a) => { a.currentTime = t; }), (i * 1000) / FPS);
@@ -477,6 +479,18 @@ ${shortEn ? `<div class="sub" id="m2s" style="top:780px">${mark(shortEn)}</div>`
 
 /* ---------------- the episode (from 13 November 2026): post, Swiss Neutrality, one canton ---------------- */
 export const EPISODE = { duration: 25, end: 21.4, bed: true, fx: [{ file: 'bbf-stamp.wav', at: 5.46, volume: 1 }], coverAt: 6.2 };
+/**
+ * More time to read when there is more text: up to 3 extra seconds on the Swiss Neutrality screen (A)
+ * and on the canton's screen (B), at about 20 characters a second beyond what the standard timing allows.
+ */
+export function episodeExtra(s) {
+  const extra = (lines) => Math.min(3, Math.max(0, Math.round(((lines.join(' ').replace(/\*/g, '').length - 100) / 20) * 2) / 2));
+  return { A: extra(s.episode.neutral), B: extra(s.episode.reaction) };
+}
+export function episodeTiming(s) {
+  const { A, B } = episodeExtra(s);
+  return { ...EPISODE, duration: EPISODE.duration + A + B, end: EPISODE.end + A + B };
+}
 const STAMP_ASSET = readFileSync(path.join(root, 'scripts/social/assets/neutral-swiss-stamp.svg'), 'utf8').replace(/<!--[\s\S]*?-->/, '');
 const RED = '#D71920';
 const GRAIN = `<svg class="grain" viewBox="0 0 1080 1920"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="2"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .5 0"/></filter><rect width="1080" height="1920" filter="url(#g)"/></svg>`;
@@ -484,6 +498,7 @@ const CROSS = (s = 40) => `<svg width="${s}" height="${s}" viewBox="0 0 32 32"><
 /* Canton of Vaud: the flag (white over green, LIBERTÉ ET PATRIE) and the crescent of Lake Geneva */
 
 export function episodeHtml(s) {
+  const { A, B } = episodeExtra(s);
   const ep = s.episode;
   const STAMP = STAMP_ASSET;
   const canton = CANTONS[ep.canton];
@@ -493,6 +508,9 @@ export function episodeHtml(s) {
   // up to three lines, appearing one after the other (the second and third as in the prototype)
   const staged = (list) => list.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('');
   // the post in full, word for word: only the highlight is ours
+  // a short post is shown larger; the longest stay at 30px so they fit in full
+  const n = s.original.text.join(' ').length;
+  const size = n < 350 ? 46 : n < 650 ? 38 : 30;
   const FULL = s.original.text.map((x) => `<p class="t">${ep.highlight ? e(x).replace(e(ep.highlight), `<mark>${e(ep.highlight)}</mark>`) : e(x)}</p>`).join('');
   return `<!doctype html><meta charset="utf-8"><style>
 ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
@@ -510,27 +528,27 @@ body{background:#F4F0E6}
 .big p{margin-top:26px}
 .big em{font-style:italic;color:${RED}}
 /* 1. the original post, as published */
-.post{position:absolute;left:70px;right:70px;top:330px;background:#fffdf8;border:1px solid #171614;padding:34px 40px 30px;box-shadow:8px 8px 0 rgba(23,22,20,.08);transform-origin:50% 75%;animation:zoom 1.6s cubic-bezier(.3,0,.2,1) 1.2s forwards,shrink .7s ease-in-out 4.2s forwards,hide .4s ease-in 11.8s forwards}
+.post{position:absolute;left:70px;right:70px;top:330px;background:#fffdf8;border:1px solid #171614;padding:34px 40px 30px;box-shadow:8px 8px 0 rgba(23,22,20,.08);transform-origin:50% 75%;animation:zoom 1.6s cubic-bezier(.3,0,.2,1) 1.2s forwards,shrink .7s ease-in-out 4.2s forwards,hide .4s ease-in ${11.8 + A}s forwards}
 .post .who{display:flex;align-items:center;gap:16px;margin-bottom:8px;padding-bottom:16px;border-bottom:1px solid #d9d1c3}
 .post .av{width:62px;height:62px;border-radius:50%;background:#6b665e;color:#fff;display:grid;place-items:center;font-weight:700;font-size:24px}
 .post .nm{font-weight:800;font-size:30px}.post .hd{font-size:22px;color:#7a7368}
 .post .tg{margin-left:auto;font-size:18px;font-weight:800;letter-spacing:.16em;color:${RED}}
-.post p.t{font-size:30px;line-height:1.4;margin-top:14px;color:#171614}
+.post p.t{font-size:${size}px;line-height:1.4;margin-top:14px;color:#171614}
 .post mark{background:linear-gradient(transparent 60%,#efd27e 60%);font-weight:800}
 @keyframes zoom{to{transform:scale(1.07)}}
-@keyframes shrink{from{transform:scale(1.07)}to{transform:translateY(-260px) scale(.46)}}
+@keyframes shrink{from{transform:scale(1.07)}to{transform:translateY(var(--ty,-260px)) scale(.46)}}
 .rev{position:absolute;left:70px;right:70px;top:1330px;text-align:center;font-family:F;font-style:italic;font-size:52px;color:#1f3a5f;animation:hide .3s ease-in 4.3s forwards}
 .rev::before{content:'';display:block;width:120px;margin:0 auto 22px;border-top:2px solid #171614}
 /* 2. Swiss neutrality */
 #n .sec{top:960px}
 #n .big{top:1020px}
-#n{animation:fadein .6s ease-out 4.7s both,hide .4s ease-in 12s forwards}
-#n .p2{animation:fadein .5s ease-out 7.2s both}#n .p3{animation:fadein .5s ease-out 9.4s both}
-.stamp{position:absolute;right:56px;top:1620px;width:560px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) 5.2s both,hide .4s ease-in 12s forwards}
+#n{animation:fadein .6s ease-out 4.7s both,hide .4s ease-in ${12 + A}s forwards}
+#n .p2{animation:fadein .5s ease-out ${7.2 + A / 3}s both}#n .p3{animation:fadein .5s ease-out ${9.4 + (2 * A) / 3}s both}
+.stamp{position:absolute;right:56px;top:1620px;width:560px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) 5.2s both,hide .4s ease-in ${12 + A}s forwards}
 .stamp svg{width:100%;height:auto;display:block}
 @keyframes stampin{from{opacity:0;transform:rotate(-13deg) scale(2.6)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
 /* 3. Canton of Vaud */
-#v{animation:fadein .6s ease-out 12.3s both,hide .4s ease-in 21s forwards}
+#v{animation:fadein .6s ease-out ${12.3 + A}s both,hide .4s ease-in ${21 + A + B}s forwards}
 #v .sec{top:420px}
 .crest{position:absolute;left:70px;top:500px;width:250px}
 .crest svg{width:100%;height:auto;display:block}
@@ -538,9 +556,9 @@ body{background:#F4F0E6}
 .geo svg{width:100%;height:auto}
 .geo p{font-size:22px;letter-spacing:.18em;text-transform:uppercase;color:#57524a;margin-top:6px}
 #v .big{top:820px}
-#v .p2{animation:fadein .5s ease-out 14.8s both}#v .p3{animation:fadein .5s ease-out 17s both}
+#v .p2{animation:fadein .5s ease-out ${14.8 + A + B / 3}s both}#v .p3{animation:fadein .5s ease-out ${17 + A + (2 * B) / 3}s both}
 /* the end */
-#end{background:#F4F0E6;animation:fadein .5s ease-out 21.2s both}
+#end{background:#F4F0E6;animation:fadein .5s ease-out ${21.2 + A + B}s both}
 #end .tl{font-family:F;font-size:84px;line-height:1.08;max-width:900px}
 #end .tl2{font-family:F;font-style:italic;font-size:54px;color:${RED};max-width:880px;line-height:1.2}
 #end .rl{width:160px;border-top:2px solid #171614}
@@ -553,7 +571,23 @@ ${FULL}</div>
 <div class="stamp">${STAMP}</div>
 <div id="v"><p class="sec">${e(canton.name)} <small>Satire</small></p><div class="crest">${canton.flag}</div><div class="geo">${canton.geo}<p>${e(canton.places)}</p></div><div class="big">${staged(ep.reaction)}</div></div>
 <div id="end">${CROSS(70)}<p class="tl">${e(tag[0])}</p>${tag[1] ? `<p class="tl2">${e(tag[1])}</p>` : ''}<div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
-${GRAIN}`;
+${GRAIN}<script>
+window.fit = () => {
+  // the post starts centred when it is short, and the review line sits right under it;
+  // once shrunk, the post rests just above the Swiss Neutrality heading (as for the long posts)
+  const post = document.querySelector('.post'), rev = document.querySelector('.rev');
+  const H = post.offsetHeight;
+  const top = Math.max(330, Math.round((1920 - H) / 2 - 170));
+  post.style.top = top + 'px';
+  rev.style.top = (top + H + 140) + 'px';
+  post.style.setProperty('--ty', Math.round(815 - top - 0.865 * H) + 'px');
+  // long lines get a slightly smaller type, so Swiss Neutrality ends above the stamp, and the canton above the bottom
+  for (const [sel, limit] of [['#n .big', 1600], ['#v .big', 1780]]) {
+    const big = document.querySelector(sel);
+    for (let size = 66; size > 46 && big.getBoundingClientRect().bottom > limit; size -= 2) big.style.fontSize = size - 2 + 'px';
+  }
+};
+</script>`;
 }
 
 /* ---------------- the Sunday video ---------------- */
@@ -731,7 +765,7 @@ async function main() {
       const file = path.join(dir, 'video-1.mp4');
       const hash = createHash('sha256').update(JSON.stringify(s) + SELF).digest('hex').slice(0, 16);
       if (!(meta[1]?.hash === hash && existsSync(file))) {
-        await render(page, work, episodeHtml(s), file, EPISODE);
+        await render(page, work, episodeHtml(s), file, episodeTiming(s));
         built += 1;
         console.log(`${s.slug}: episode video`);
       }

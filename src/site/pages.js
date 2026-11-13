@@ -36,10 +36,11 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
 
   const pages = [
     page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} Trump’s posts, quoted word for word. Then Switzerland reviews the request: Swiss Neutrality, and the reaction of a Swiss canton. Independent satire.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
-    page({ pageId: 'episodes', path: '/episodes/', title: 'Episodes', description: 'Every Trump post, word for word, then Swiss Neutrality and a canton’s reaction. Switzerland has reviewed the request.', main: episodesPage(ctx) }),
-    { path: '/neutral/', lang: 'en', listed: false, html: redirectPage('/episodes/') },
+    // the Episodes page (13 November 2026) repeated the home page: its address leads home
+    { path: '/episodes/', lang: 'en', listed: false, html: redirectPage('/') },
+    { path: '/neutral/', lang: 'en', listed: false, html: redirectPage('/') },
     // the former page of the originals now leads to the Neutral Swiss, which shows each original with its neutral version
-    { path: '/originals/', lang: 'en', listed: false, html: redirectPage('/episodes/') },
+    { path: '/originals/', lang: 'en', listed: false, html: redirectPage('/') },
     // the former "Presidential Edition" now lives in The Diplomat
     { path: '/presidential/', lang: 'en', listed: false, html: redirectPage('/diplomat/') },
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
@@ -68,9 +69,9 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
       for (const region of regionsOf(country.id)) pages.push({ path: regionPath(region), lang: 'en', listed: false, html: redirectPage('/') });
       continue;
     }
-    // since the episodes (13 November 2026), the cantons appear in each episode: their pages lead there
-    pages.push({ path: country.path, lang: 'en', listed: false, html: redirectPage('/episodes/') });
-    for (const region of regionsOf(country.id)) pages.push({ path: regionPath(region), lang: 'en', listed: false, html: redirectPage('/episodes/') });
+    // since the episodes (13 November 2026), the cantons appear in each episode: their pages lead to the home page
+    pages.push({ path: country.path, lang: 'en', listed: false, html: redirectPage('/') });
+    for (const region of regionsOf(country.id)) pages.push({ path: regionPath(region), lang: 'en', listed: false, html: redirectPage('/') });
   }
 
   for (const s of statements) {
@@ -334,16 +335,6 @@ function sectionHead(kicker, title, intro) {
 }
 
 const storyTitle = (s) => `<h2 class="story-title story-title--small"><a href="${articlePath(s)}">${e(s.headline)}</a></h2>`;
-
-/** Episodes: every statement as an episode (the earlier ones: the post, then their calm version). */
-function episodesPage({ statements }) {
-  return `${sectionHead(`${flag('ch')} Switzerland has reviewed the request`, 'Episodes', 'A real Trump post, word for word. Then Swiss Neutrality, and the reaction of a Swiss canton. Independent satire.')}
-  ${statements.map((s) => `<section class="story story--short">${storyTitle(s)}${s.episode ? thread(s) : `<div class="thread">
-    ${originalPost(s)}
-    <p class="thread-step">${s.neutral ? 'The Neutral Swiss' : 'The presidential version'}</p>
-    ${calmPost(s)}
-  </div>`}</section>`).join('')}`;
-}
 
 /** The Neutral Swiss: each statement as posted, then made neutral (the presidential version for earlier ones). */
 function neutralPage({ statements }) {
