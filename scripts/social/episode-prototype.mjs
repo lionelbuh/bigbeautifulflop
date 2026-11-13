@@ -36,7 +36,7 @@ body{background:#F4F0E6}
 .big p{margin-top:26px}
 .big em{font-style:italic;color:${RED}}
 /* 1. the original post, as published */
-.post{position:absolute;left:70px;right:70px;top:420px;background:#fffdf8;border:1px solid #171614;padding:34px 40px 30px;box-shadow:8px 8px 0 rgba(23,22,20,.08);transform-origin:50% 75%;animation:zoom 1.6s cubic-bezier(.3,0,.2,1) 1.2s forwards,shrink .7s ease-in-out 4.2s forwards,hide .4s ease-in 11.8s forwards}
+.post{position:absolute;left:70px;right:70px;top:330px;background:#fffdf8;border:1px solid #171614;padding:34px 40px 30px;box-shadow:8px 8px 0 rgba(23,22,20,.08);transform-origin:50% 75%;animation:zoom 1.6s cubic-bezier(.3,0,.2,1) 1.2s forwards,shrink .7s ease-in-out 4.2s forwards,hide .4s ease-in 11.8s forwards}
 .post .who{display:flex;align-items:center;gap:16px;margin-bottom:8px;padding-bottom:16px;border-bottom:1px solid #d9d1c3}
 .post .av{width:62px;height:62px;border-radius:50%;background:#6b665e;color:#fff;display:grid;place-items:center;font-weight:700;font-size:24px}
 .post .nm{font-weight:800;font-size:30px}.post .hd{font-size:22px;color:#7a7368}
@@ -45,8 +45,8 @@ body{background:#F4F0E6}
 .post mark{background:linear-gradient(transparent 60%,#efd27e 60%);font-weight:800}
 @keyframes zoom{to{transform:scale(1.07)}}
 @keyframes shrink{from{transform:scale(1.07)}to{transform:translateY(-260px) scale(.46)}}
-.rev{position:absolute;left:70px;right:70px;top:300px;text-align:center;font-family:F;font-style:italic;font-size:40px;color:#1f3a5f;animation:hide .3s ease-in 4.3s forwards}
-.rev::after{content:'';display:block;width:120px;margin:16px auto 0;border-top:2px solid #171614}
+.rev{position:absolute;left:70px;right:70px;top:1330px;text-align:center;font-family:F;font-style:italic;font-size:52px;color:#1f3a5f;animation:hide .3s ease-in 4.3s forwards}
+.rev::before{content:'';display:block;width:120px;margin:0 auto 22px;border-top:2px solid #171614}
 /* 2. Swiss neutrality */
 #n .sec{top:960px}
 #n .big{top:1020px}
