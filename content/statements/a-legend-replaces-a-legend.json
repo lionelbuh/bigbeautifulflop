@@ -1,0 +1,61 @@
+{
+  "slug": "a-legend-replaces-a-legend",
+  "status": "published",
+  "published": "2026-11-13",
+  "headline": "A Legend replaces a Legend",
+  "dek": "The President announces who should succeed the head of Nvidia: the head of Apple. Switzerland has reviewed the request.",
+  "topics": [
+    "business",
+    "Nvidia",
+    "Apple"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-12",
+    "time": "10:29",
+    "text": [
+      "NOW THAT Nvidia CEO JENSEN HUANG, who has done a fantastic job, has resigned, there is only one man to take his place - TIM COOK of Apple. A Legend replaces a Legend! President DONALD J. TRUMP"
+    ],
+    "key": "there is only one man to take his place - TIM COOK of Apple. A Legend replaces a Legend!",
+    "context": "Posted on 12 November 2026. The resignation and the choice of successor are as the President describes them; Nvidia and Apple are private companies whose boards choose their chief executives.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 13 November 2026 (shown as 11/12/26, 7:29 AM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland congratulates both legends.",
+      "We note that company bosses are now chosen on Truth Social.",
+      "In Switzerland, the government does not even choose its own president. It simply rotates, every year."
+    ],
+    "key": "In Switzerland, the government does not even choose its own president. It simply rotates, every year."
+  },
+  "editions": {},
+  "episode": {
+    "review": "Switzerland has reviewed the request.",
+    "highlight": "A Legend replaces a Legend!",
+    "neutral": [
+      "Switzerland congratulates both legends.",
+      "We note that company bosses are now chosen on Truth Social.",
+      "*In Switzerland, the government does not even choose its own president. It simply rotates, every year.*"
+    ],
+    "canton": "neuchatelois",
+    "reaction": [
+      "Tim Cook? The man who made a watch you charge every night?",
+      "Ours run for three days on their own.",
+      "*And keep going for two hundred years.*"
+    ],
+    "tagline": [
+      "Switzerland: Neutral since 1815.",
+      "On time since forever."
+    ]
+  }
+}

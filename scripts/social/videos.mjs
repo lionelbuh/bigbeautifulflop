@@ -147,6 +147,8 @@ export async function render(page, work, markup, file, { duration = DURATION, en
     await pg.setViewportSize({ width: 1080, height: 1920 });
     await pg.goto(pathToFileURL(path.join(work, 'video.html')).href);
     await pg.evaluate(() => document.fonts.ready);
+    // a page may fit its layout to its text once the fonts are in (the episode: short or long posts)
+    await pg.evaluate(() => window.fit?.());
     await pg.evaluate(() => document.getAnimations().forEach((a) => a.pause()));
     for (let i = k; i < total; i += tabs) {
       await pg.evaluate((t) => document.getAnimations().forEach((a) => { a.currentTime = t; }), (i * 1000) / FPS);
@@ -493,6 +495,9 @@ export function episodeHtml(s) {
   // up to three lines, appearing one after the other (the second and third as in the prototype)
   const staged = (list) => list.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('');
   // the post in full, word for word: only the highlight is ours
+  // a short post is shown larger; the longest stay at 30px so they fit in full
+  const n = s.original.text.join(' ').length;
+  const size = n < 350 ? 46 : n < 650 ? 38 : 30;
   const FULL = s.original.text.map((x) => `<p class="t">${ep.highlight ? e(x).replace(e(ep.highlight), `<mark>${e(ep.highlight)}</mark>`) : e(x)}</p>`).join('');
   return `<!doctype html><meta charset="utf-8"><style>
 ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
@@ -515,10 +520,10 @@ body{background:#F4F0E6}
 .post .av{width:62px;height:62px;border-radius:50%;background:#6b665e;color:#fff;display:grid;place-items:center;font-weight:700;font-size:24px}
 .post .nm{font-weight:800;font-size:30px}.post .hd{font-size:22px;color:#7a7368}
 .post .tg{margin-left:auto;font-size:18px;font-weight:800;letter-spacing:.16em;color:${RED}}
-.post p.t{font-size:30px;line-height:1.4;margin-top:14px;color:#171614}
+.post p.t{font-size:${size}px;line-height:1.4;margin-top:14px;color:#171614}
 .post mark{background:linear-gradient(transparent 60%,#efd27e 60%);font-weight:800}
 @keyframes zoom{to{transform:scale(1.07)}}
-@keyframes shrink{from{transform:scale(1.07)}to{transform:translateY(-260px) scale(.46)}}
+@keyframes shrink{from{transform:scale(1.07)}to{transform:translateY(var(--ty,-260px)) scale(.46)}}
 .rev{position:absolute;left:70px;right:70px;top:1330px;text-align:center;font-family:F;font-style:italic;font-size:52px;color:#1f3a5f;animation:hide .3s ease-in 4.3s forwards}
 .rev::before{content:'';display:block;width:120px;margin:0 auto 22px;border-top:2px solid #171614}
 /* 2. Swiss neutrality */
@@ -553,7 +558,18 @@ ${FULL}</div>
 <div class="stamp">${STAMP}</div>
 <div id="v"><p class="sec">${e(canton.name)} <small>Satire</small></p><div class="crest">${canton.flag}</div><div class="geo">${canton.geo}<p>${e(canton.places)}</p></div><div class="big">${staged(ep.reaction)}</div></div>
 <div id="end">${CROSS(70)}<p class="tl">${e(tag[0])}</p>${tag[1] ? `<p class="tl2">${e(tag[1])}</p>` : ''}<div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
-${GRAIN}`;
+${GRAIN}<script>
+window.fit = () => {
+  // the post starts centred when it is short, and the review line sits right under it;
+  // once shrunk, the post rests just above the Swiss Neutrality heading (as for the long posts)
+  const post = document.querySelector('.post'), rev = document.querySelector('.rev');
+  const H = post.offsetHeight;
+  const top = Math.max(330, Math.round((1920 - H) / 2 - 170));
+  post.style.top = top + 'px';
+  rev.style.top = (top + H + 140) + 'px';
+  post.style.setProperty('--ty', Math.round(815 - top - 0.865 * H) + 'px');
+};
+</script>`;
 }
 
 /* ---------------- the Sunday video ---------------- */
