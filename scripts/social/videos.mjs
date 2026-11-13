@@ -485,7 +485,10 @@ export const EPISODE = { duration: 25, end: 21.4, bed: true, fx: [{ file: 'bbf-s
  */
 export function episodeExtra(s) {
   const extra = (lines) => Math.min(3, Math.max(0, Math.round(((lines.join(' ').replace(/\*/g, '').length - 100) / 20) * 2) / 2));
-  return { A: extra(s.episode.neutral), B: extra(s.episode.reaction) };
+  // and up to 3 more seconds after the last line (the red one, the punchline), so it can be read in full
+  const last = (lines) => Math.min(3, Math.max(0, Math.round(((lines.at(-1).replace(/\*/g, '').length - 50) / 16) * 2) / 2));
+  const SA = extra(s.episode.neutral), SB = extra(s.episode.reaction);
+  return { SA, SB, A: SA + last(s.episode.neutral), B: SB + last(s.episode.reaction) };
 }
 export function episodeTiming(s) {
   const { A, B } = episodeExtra(s);
@@ -498,7 +501,7 @@ const CROSS = (s = 40) => `<svg width="${s}" height="${s}" viewBox="0 0 32 32"><
 /* Canton of Vaud: the flag (white over green, LIBERTÉ ET PATRIE) and the crescent of Lake Geneva */
 
 export function episodeHtml(s) {
-  const { A, B } = episodeExtra(s);
+  const { A, B, SA, SB } = episodeExtra(s);
   const ep = s.episode;
   const STAMP = STAMP_ASSET;
   const canton = CANTONS[ep.canton];
@@ -543,7 +546,7 @@ body{background:#F4F0E6}
 #n .sec{top:960px}
 #n .big{top:1020px}
 #n{animation:fadein .6s ease-out 4.7s both,hide .4s ease-in ${12 + A}s forwards}
-#n .p2{animation:fadein .5s ease-out ${7.2 + A / 3}s both}#n .p3{animation:fadein .5s ease-out ${9.4 + (2 * A) / 3}s both}
+#n .p2{animation:fadein .5s ease-out ${7.2 + SA / 3}s both}#n .p3{animation:fadein .5s ease-out ${9.4 + (2 * SA) / 3}s both}
 .stamp{position:absolute;right:56px;top:1620px;width:560px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) 5.2s both,hide .4s ease-in ${12 + A}s forwards}
 .stamp svg{width:100%;height:auto;display:block}
 @keyframes stampin{from{opacity:0;transform:rotate(-13deg) scale(2.6)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
@@ -556,7 +559,7 @@ body{background:#F4F0E6}
 .geo svg{width:100%;height:auto}
 .geo p{font-size:22px;letter-spacing:.18em;text-transform:uppercase;color:#57524a;margin-top:6px}
 #v .big{top:820px}
-#v .p2{animation:fadein .5s ease-out ${14.8 + A + B / 3}s both}#v .p3{animation:fadein .5s ease-out ${17 + A + (2 * B) / 3}s both}
+#v .p2{animation:fadein .5s ease-out ${14.8 + A + SB / 3}s both}#v .p3{animation:fadein .5s ease-out ${17 + A + (2 * SB) / 3}s both}
 /* the end */
 #end{background:#F4F0E6;animation:fadein .5s ease-out ${21.2 + A + B}s both}
 #end .tl{font-family:F;font-size:84px;line-height:1.08;max-width:900px}
