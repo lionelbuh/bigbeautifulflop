@@ -43,7 +43,7 @@
   },
   "editions": {
     "vaudois": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Un honneur, travailler avec Schumer ! *Chez nous, on gouverne ensemble.*",
       "hookEn": "An honor to work with Schumer! *Round here we govern together.*",
       "short": "Chez nous, au gouvernement, la gauche et la droite siègent à la même table depuis toujours. *On se dispute, puis on va boire un verre.*",
@@ -61,7 +61,7 @@
       ]
     },
     "valaisan": {
-      "review": "draft",
+      "review": "approved",
       "hook": "Des milliards à l’heure ! *Même la Grande Dixence ne débite pas autant.*",
       "hookEn": "Billions an hour! *Not even the Grande Dixence dam lets out that much.*",
       "short": "Des milliards à l’heure ? Chez nous, la Grande Dixence retient 400 millions de mètres cubes d’eau. *Et elle les lâche goutte à goutte.*",
