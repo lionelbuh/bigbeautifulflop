@@ -30,7 +30,6 @@ export function emailLink(address = CONTACT_EMAIL) {
 
 export const NAV = [
   { id: 'home', label: 'Home', path: '/' },
-  { id: 'episodes', label: 'Episodes', path: '/episodes/' },
   { id: 'archives', label: 'Archives', path: '/archives/' },
   { id: 'about', label: 'About', path: '/about/' },
 ];
