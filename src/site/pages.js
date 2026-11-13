@@ -35,10 +35,11 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
   const ctx = { statements, recent, archived, lead, day, today };
 
   const pages = [
-    page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} Trump’s posts, quoted word for word, then made neutral by a neutral Swiss and retold in the cantons of French-speaking Switzerland, in English and French. Independent satire.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
-    page({ pageId: 'neutral', path: '/neutral/', title: 'The Neutral Swiss', description: 'Every statement as it was posted, then the same message the neutral Swiss way: no sides, no capitals.', main: neutralPage(ctx) }),
+    page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} Trump’s posts, quoted word for word. Then Switzerland reviews the request: Swiss Neutrality, and the reaction of a Swiss canton. Independent satire.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
+    page({ pageId: 'episodes', path: '/episodes/', title: 'Episodes', description: 'Every Trump post, word for word, then Swiss Neutrality and a canton’s reaction. Switzerland has reviewed the request.', main: episodesPage(ctx) }),
+    { path: '/neutral/', lang: 'en', listed: false, html: redirectPage('/episodes/') },
     // the former page of the originals now leads to the Neutral Swiss, which shows each original with its neutral version
-    { path: '/originals/', lang: 'en', listed: false, html: redirectPage('/neutral/') },
+    { path: '/originals/', lang: 'en', listed: false, html: redirectPage('/episodes/') },
     // the former "Presidential Edition" now lives in The Diplomat
     { path: '/presidential/', lang: 'en', listed: false, html: redirectPage('/diplomat/') },
     page({ pageId: 'english', path: '/english/', title: 'The English Edition', description: 'The regional versions, adapted back into natural English with the jokes explained.', main: english(ctx) }),
@@ -67,10 +68,9 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
       for (const region of regionsOf(country.id)) pages.push({ path: regionPath(region), lang: 'en', listed: false, html: redirectPage('/') });
       continue;
     }
-    pages.push(page({ pageId: 'switzerland', path: country.path, title: 'The Cantons', description: country.description, main: countryPage(ctx, country) }));
-    for (const region of regionsOf(country.id)) {
-      pages.push(page({ pageId: 'switzerland', path: regionPath(region), title: editionName(region), description: `${region.name} (${region.place}): ${region.voice}`, main: regionPage(ctx, region), listed: statements.some((s) => s.editions?.[region.id]) }));
-    }
+    // since the episodes (13 November 2026), the cantons appear in each episode: their pages lead there
+    pages.push({ path: country.path, lang: 'en', listed: false, html: redirectPage('/episodes/') });
+    for (const region of regionsOf(country.id)) pages.push({ path: regionPath(region), lang: 'en', listed: false, html: redirectPage('/episodes/') });
   }
 
   for (const s of statements) {
@@ -335,6 +335,16 @@ function sectionHead(kicker, title, intro) {
 
 const storyTitle = (s) => `<h2 class="story-title story-title--small"><a href="${articlePath(s)}">${e(s.headline)}</a></h2>`;
 
+/** Episodes: every statement as an episode (the earlier ones: the post, then their calm version). */
+function episodesPage({ statements }) {
+  return `${sectionHead(`${flag('ch')} Switzerland has reviewed the request`, 'Episodes', 'A real Trump post, word for word. Then Swiss Neutrality, and the reaction of a Swiss canton. Independent satire.')}
+  ${statements.map((s) => `<section class="story story--short">${storyTitle(s)}${s.episode ? thread(s) : `<div class="thread">
+    ${originalPost(s)}
+    <p class="thread-step">${s.neutral ? 'The Neutral Swiss' : 'The presidential version'}</p>
+    ${calmPost(s)}
+  </div>`}</section>`).join('')}`;
+}
+
 /** The Neutral Swiss: each statement as posted, then made neutral (the presidential version for earlier ones). */
 function neutralPage({ statements }) {
   return `${sectionHead(`${flag('ch')} Certifié neutre`, 'The Neutral Swiss', 'Each statement as it was posted, then the same message the neutral way: no sides, no capitals, no insults. Before November 2026, the calm version was a statesmanlike American President.')}
@@ -382,23 +392,20 @@ function regionPage({ statements }, region) {
 }
 
 function about() {
-  const regions = `<li>${flag('ch')} <strong><a href="/switzerland/">The Cantons</a></strong>: ${regionsOf('switzerland').map((r) => `<a href="${regionPath(r)}">${e(r.name)}</a>`).join(', ')}</li>`;
   return `${sectionHead('About', 'An independent satirical publication', TAGLINE)}
   <div class="prose">
-    <p>Big Beautiful Flop takes public statements by Donald Trump and shows them three ways: the original, word for word; the same message as a neutral Swiss would put it, in English and French; and the way it would sound in the cantons of French-speaking Switzerland, in French and English. Trump’s posts, made neutral.</p>
-    <p>Until November 2026, statements were also retold by a statesmanlike American President, in France, the United States and the United Kingdom, and by three diplomats: those versions remain on the pages of the statements, in the <a href="/archives/">archives</a>.</p>
+    <p>Big Beautiful Flop is a series of short episodes. Each one starts with a real post by Donald Trump, in full and word for word. Switzerland then reviews the request: first Swiss Neutrality, calm and polite, then the reaction of one Swiss canton. Switzerland: neutral since 1815.</p>
+    <p>Earlier statements were shown in other formats (a neutral Swiss in English and French, regional versions, a statesmanlike American President, three diplomats): they remain on their pages, in the <a href="/archives/">archives</a>.</p>
     <h2>Who’s behind this</h2>
     <p>Big Beautiful Flop is made by a Swiss-American living in California: Swiss enough to believe every disagreement can be settled over a fondue, American enough to care how the President talks. As a neutral country, Switzerland has spent centuries translating between quarrelling powers; this is our modest contribution to that tradition. We are not neutral about manners. We are neutral about fondue: moitié-moitié or pure Gruyère, both are welcome.</p>
     <h2>Our rules</h2>
     <ul>
       <li><strong>The original is quoted verbatim</strong>, dated and sourced. No source, no statement.</li>
       <li><strong>We never invent quotes.</strong> Our versions are never attributed to Donald Trump and are always labelled as satire.</li>
-      <li><strong>Same message, neutral manners.</strong> The Neutral Swiss keeps the facts and the point, and drops the insults and the capital letters.</li>
-      <li><strong>Local means local.</strong> Each regional version is read by someone from the region before it is approved.</li>
+      <li><strong>Same message, neutral manners.</strong> Swiss Neutrality keeps the facts and the point, and drops the insults and the capital letters.</li>
+      <li><strong>No photographs, no imitations.</strong> No altered images, no imitated voice or face: just the post, the text and the stamp.</li>
       <li><strong>Humans publish.</strong> AI helps us draft; an editor approves everything.</li>
     </ul>
-    <h2>The cantons</h2>
-    <ul class="about-regions">${regions}</ul>
     <h2>Parody and commentary</h2>
     <p>Big Beautiful Flop is parody and commentary. Original statements are quoted verbatim for the purpose of criticism and commentary (fair use, 17 U.S.C. § 107; Swiss Copyright Act, art. 25; French Intellectual Property Code, art. L122-5). Satire of public figures is protected speech under the First Amendment to the U.S. Constitution, the Swiss Federal Constitution (art. 16–17), French law on parody and caricature (art. L122-5, 4°) and the European Convention on Human Rights (art. 10).</p>
     <h2>Disclaimer</h2>
@@ -442,18 +449,18 @@ function press({ statements }) {
   return `${sectionHead('Press', 'Big Beautiful Flop in brief', 'For journalists, editors and podcasters. Pour la presse romande et française : voir plus bas.')}
   <div class="prose">
     <h2>In one sentence</h2>
-    <p>Big Beautiful Flop takes Donald Trump’s posts, word for word, and rewrites them twice: as a neutral Swiss would say them, and as if he were from Vaud, Valais, Geneva, Fribourg or Neuchâtel. Trump’s posts, made neutral.</p>
+    <p>Big Beautiful Flop shows Donald Trump’s posts, word for word, then lets Switzerland review the request: Swiss Neutrality first, then the reaction of a Swiss canton, from Vaud to Geneva. Short episodes, in English.</p>
     <h2>What makes it different</h2>
     <ul>
       <li><strong>The original is never altered.</strong> Each post is quoted verbatim, dated and sourced; everything else is clearly labelled satire.</li>
-      <li><strong>Same message, neutral manners.</strong> The Neutral Swiss keeps the point and drops the insults and the capital letters: the gap between the two is the joke.</li>
-      <li><strong>Local humour, written for locals.</strong> The cantons of French-speaking Switzerland, in French, each with an English adaptation that rebuilds the joke for international readers.</li>
+      <li><strong>Same message, neutral manners.</strong> Swiss Neutrality keeps the point and drops the insults and the capital letters: the gap between the two is the joke.</li>
+      <li><strong>Swiss clichés, gently applied.</strong> Each episode ends with a canton: referendums in Vaud, raclette in Valais, precision in Neuchâtel.</li>
       <li><strong>Swiss neutrality, applied to satire.</strong> Made by a Swiss-American living in California: no party, no campaign, no advertising.</li>
     </ul>
     <h2>Facts</h2>
     <ul>
-      <li>Launched in November 2026; ${n} statements so far, about eleven versions each.</li>
-      <li>On the site, and as short vertical videos on Instagram, Facebook, Threads and Bluesky (YouTube soon); “The Flop of the week” every Sunday.</li>
+      <li>Launched in November 2026; ${n} statements so far; episodes since 13 November 2026.</li>
+      <li>On the site, and as short vertical videos on Instagram, Facebook, Threads, Bluesky and YouTube; “The Flop of the week” every Sunday.</li>
       <li>Independent, non-commercial; no cookies, no advertising.</li>
     </ul>
     <h2>Images</h2>
@@ -463,8 +470,8 @@ function press({ statements }) {
     <p>Interviews, questions, corrections: ${emailLink()}. We usually answer within a day.</p>
     <h2 lang="fr">En bref, en français</h2>
     <div lang="fr">
-      <p>Big Beautiful Flop reprend les messages de Donald Trump mot pour mot, puis les réécrit deux fois : comme les dirait un Suisse neutre, en anglais et en français, et comme s’il était vaudois, valaisan, genevois, fribourgeois ou neuchâtelois. Les messages de Trump, rendus neutres.</p>
-      <p>L’original n’est jamais modifié et tout le reste est signalé comme satire. Le projet est fait par un Suisse-Américain qui vit en Californie, sans parti ni publicité : la neutralité suisse appliquée à la satire. Chaque message a ses vidéos, avec le président invisible à son bureau et le tampon « Certifié neutre ».</p>
+      <p>Big Beautiful Flop montre les messages de Donald Trump en entier, mot pour mot, puis la Suisse examine la demande : la neutralité suisse d’abord, puis la réaction d’un canton, de Vaud à Genève. De courts épisodes, en anglais.</p>
+      <p>L’original n’est jamais modifié et tout le reste est signalé comme satire. Le projet est fait par un Suisse-Américain qui vit en Californie, sans parti ni publicité : la neutralité suisse appliquée à la satire. Chaque épisode a sa vidéo, avec le tampon « Neutral Swiss ».</p>
       <p>Contact : ${emailLink()}.</p>
     </div>
   </div>`;

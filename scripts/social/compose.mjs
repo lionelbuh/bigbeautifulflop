@@ -8,6 +8,7 @@
  * - Instagram: a caption for the carousel of images (see scripts/og-images.mjs).
  */
 import { REGIONS, getCountry } from '../../content/regions.js';
+import { CANTONS } from '../../src/site/cantons.js';
 
 export const SITE_URL = 'https://bigbeautifulflop.com';
 /** The article’s address; `source` marks where the visitor came from (utm_source, for the visit counts). */
@@ -58,6 +59,7 @@ export const NEUTRAL_LABEL = 'The Neutral Swiss: the same message, the neutral w
 
 /** The calm version: the Neutral Swiss (from November 2026) or, earlier, the presidential version. */
 export function calmOf(s) {
+  if (s.episode) return { label: 'Swiss Neutrality', short: 'Swiss Neutrality', en: s.neutral.en, key: s.neutral.key };
   return s.neutral
     ? { label: NEUTRAL_LABEL, short: 'The Neutral Swiss', en: s.neutral.en, key: s.neutral.key }
     : { label: PRESIDENTIAL_LABEL, short: 'The presidential version', en: s.presidential.en, key: s.presidential.key };
@@ -88,6 +90,9 @@ export function threadFor(network, s) {
   return threadPosts(s, 300, { lastTag: BLUESKY_TAGS, source: 'bluesky' });
 }
 
+/** Episode lines without the *emphasis* marks. */
+const plain = (list) => list.map((x) => x.replace(/\*/g, ''));
+
 export function threadPosts(s, max, { firstTag = '', lastTag = '', source = '' } = {}) {
   const url = articleUrl(s, source);
   const head = `${s.headline}\n\nTrump on Truth Social: `;
@@ -103,14 +108,20 @@ export function threadPosts(s, max, { firstTag = '', lastTag = '', source = '' }
     const h = `${regionLabel(anglo.region)}, satire: `;
     posts.push(`${h}${quote(excerpt(anglo.edition.text, max - chars(h) - 2))}`);
   }
+  if (s.episode) {
+    const h = `🇨🇭 ${CANTONS[s.episode.canton].name} (satire): `;
+    posts.push(`${h}${quote(excerpt(plain(s.episode.reaction), max - chars(h) - 2))}`);
+  }
   for (const v of ofCountry(s, 'switzerland').slice(0, 2)) posts.push(frenchPost('🇨🇭', v, max));
   for (const v of ofCountry(s, 'france').slice(0, 2)) posts.push(frenchPost('🇫🇷', v, max));
   const n = versionsOf(s).length + 1;
   const tags = lastTag ? `\n\n${lastTag}` : '';
-  const last = s.neutral
+  const last = s.episode
+    ? `${plain(s.episode.tagline || []).join(' ')}\n\nThe full episode: ${url}\n\n${SATIRE_NOTE}${tags}`
+    : s.neutral
     ? `Trump’s post, made neutral, and the cantons: ${url}\n\n${SATIRE_NOTE}${tags}`
     : `All ${n} versions, with three diplomats (British, French, Swiss): ${url}\n\n${SATIRE_NOTE}${tags}`;
-  posts.push(chars(last) <= max ? last : `All ${n} versions: ${url}${tags}`);
+  posts.push(chars(last) <= max ? last : `${s.episode ? 'The full episode' : `All ${n} versions`}: ${url}${tags}`);
   return posts;
 }
 
@@ -122,7 +133,8 @@ export function facebookPost(s) {
     `Trump on Truth Social: ${quote(excerpt(s.original.text, 600))}`,
     `${calmOf(s).label}: ${quote(excerpt(calmOf(s).en, 500))}`,
     lead ? `${regionLabel(lead.region)} (satire): ${quote(excerpt(englishOf(lead.region, lead.edition), 400))}` : '',
-    `All ${versionsOf(s).length + 1} versions: ${articleUrl(s, 'facebook')}`,
+    s.episode ? `${CANTONS[s.episode.canton].name} (satire): ${quote(excerpt(plain(s.episode.reaction), 400))}` : '',
+    s.episode ? `${plain(s.episode.tagline || []).join(' ')}\n\nThe full episode: ${articleUrl(s, 'facebook')}` : `All ${versionsOf(s).length + 1} versions: ${articleUrl(s, 'facebook')}`,
     SATIRE_NOTE,
   ];
   return { message: parts.filter(Boolean).join('\n\n'), link: articleUrl(s, 'facebook') };
@@ -136,7 +148,9 @@ export function instagramCaption(s) {
   const caption = [
     s.headline,
     `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 700))}`,
-    s.neutral
+    s.episode
+      ? 'Switzerland has reviewed the request: Swiss Neutrality, then the reaction of a Swiss canton. Switzerland: neutral since 1815.'
+      : s.neutral
       ? 'Then the same message, the neutral Swiss way, and as it would sound in the cantons of French-speaking Switzerland. Which canton does the best Trump? Tell us in the comments.'
       : 'Swipe for the presidential version (how a statesmanlike president would say it), then the same message as political satire from Switzerland, France, the United States and the United Kingdom, and from three diplomats: British, French and Swiss.',
     'All versions on bigbeautifulflop.com (link in bio).',
@@ -193,7 +207,9 @@ export const CANTON_SERIES = [
   { id: 'canton1', kicker: 'Certifié neutre', countries: ['switzerland'], nth: 0, lang: 'fr', box: 'In English' },
   { id: 'canton2', kicker: 'Certifié neutre', countries: ['switzerland'], nth: 1, lang: 'fr', box: 'In English' },
 ];
-export const ALL_SERIES = [...VIDEO_SERIES, ...CANTON_SERIES];
+/** An episode (from 13 November 2026): one video, the post, Swiss Neutrality, one canton. */
+export const EPISODE_SERIES = { id: 'episode', kicker: 'Switzerland has reviewed the request', countries: [], box: '' };
+export const ALL_SERIES = [...VIDEO_SERIES, ...CANTON_SERIES, EPISODE_SERIES];
 
 /** The version a series shows for a statement (null if the statement has none in that series). */
 export function seriesVersion(s, series) {
@@ -210,6 +226,7 @@ export function seriesVersion(s, series) {
  * content/social/video-rotation.json, so series take turns from one statement to the next.
  */
 export function videoSeriesFor(s, start = 0) {
+  if (s.episode) return [EPISODE_SERIES];
   if (s.neutral) return CANTON_SERIES.filter((series) => seriesVersion(s, series));
   const n = VIDEO_SERIES.length;
   const from = (i, ok) => {
@@ -247,6 +264,8 @@ export const SOCIAL_NETWORKS = ['bluesky', 'threads', 'facebook', 'instagram'];
 export function videosPending(s, log, start, youtubeStart = null) {
   if (!(s.published >= start)) return false;
   const entry = log?.[s.slug] || {};
+  // an episode has a single video
+  if (s.episode) return [...SOCIAL_NETWORKS, ...(youtubeStart && s.published >= youtubeStart ? ['youtube'] : [])].some((name) => !entry[name]);
   // YouTube counts only from the day it was switched on (content/social/config.json, youtubeStart)
   // (or for an older statement whose videos were sent to YouTube afterwards, by hand)
   const networks = (youtubeStart && s.published >= youtubeStart) || entry.youtube ? [...SOCIAL_NETWORKS, 'youtube'] : SOCIAL_NETWORKS;
@@ -297,6 +316,10 @@ export function regionTitle(region) {
  * format, a question (“What if Trump were from Vaud?”).
  */
 export function youtubeTitle(s, series, { question = false } = {}) {
+  if (series?.id === 'episode' || s.episode) {
+    const t = `Switzerland has reviewed the request: ${s.headline} #Shorts`;
+    return chars(t) <= 100 ? t : `${excerpt(`Switzerland has reviewed: ${s.headline}`, 91)} #Shorts`;
+  }
   const where = series && series.id !== 'diplomat' ? regionTitle(seriesVersion(s, series).region).sub.replace(/^The same post, retold in /, '') : '';
   const ask = series?.id === 'diplomat' ? 'What would a diplomat say to Trump? ' : `What if Trump were from ${where}? `;
   const head = question && series ? ask : series ? `${videoTitle(s, series).title}: ` : '';
@@ -306,12 +329,14 @@ export function youtubeTitle(s, series, { question = false } = {}) {
 
 /** The description of a Short: the original, the presidential version, the link. */
 export function youtubeDescription(s, series) {
-  const v = series ? seriesVersion(s, series) : null;
+  const v = series && !s.episode ? seriesVersion(s, series) : null;
   return [
     `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 900))}`,
     `${calmOf(s).label} (satire): ${quote(excerpt(calmOf(s).en, 700))}`,
     v ? `Then: ${regionLabel(v.region)} (satire).` : '',
-    `All versions: ${articleUrl(s, 'youtube')}`,
+    s.episode ? `${CANTONS[s.episode.canton].name} (satire): ${quote(excerpt(plain(s.episode.reaction), 400))}` : '',
+    s.episode ? plain(s.episode.tagline || []).join(' ') : '',
+    `${s.episode ? 'The full episode' : 'All versions'}: ${articleUrl(s, 'youtube')}`,
     SATIRE_NOTE,
     '#PoliticalSatire #Satire',
   ].filter(Boolean).join('\n\n');

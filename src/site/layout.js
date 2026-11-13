@@ -30,8 +30,7 @@ export function emailLink(address = CONTACT_EMAIL) {
 
 export const NAV = [
   { id: 'home', label: 'Home', path: '/' },
-  { id: 'neutral', label: 'The Neutral Swiss', path: '/neutral/' },
-  { id: 'switzerland', label: 'The Cantons', path: '/switzerland/' },
+  { id: 'episodes', label: 'Episodes', path: '/episodes/' },
   { id: 'archives', label: 'Archives', path: '/archives/' },
   { id: 'about', label: 'About', path: '/about/' },
 ];

@@ -23,6 +23,14 @@ export function validateStatement(s, file = s?.slug) {
   need(o.medium, 'original.medium is required (where it was said or posted)');
   need(o.source && o.source.label, 'original.source.label is required: no source, no statement');
   need((s.presidential && Array.isArray(s.presidential.en) && s.presidential.en.length) || (s.neutral && Array.isArray(s.neutral.en) && s.neutral.en.length), 'neutral.en (or, before November 2026, presidential.en) is required');
+  // an episode (from 13 November 2026): the post, Swiss Neutrality, one canton, the tagline
+  if (s.episode) {
+    const ep = s.episode;
+    need(Array.isArray(ep.neutral) && ep.neutral.length, 'episode.neutral (the Swiss Neutrality lines) is required');
+    need(Array.isArray(ep.reaction) && ep.reaction.length, 'episode.reaction (the canton’s lines) is required');
+    need(getRegion(ep.canton)?.country === 'switzerland', 'episode.canton must be a Swiss canton of content/regions.js');
+    need(!ep.highlight || (o.text || []).join(' ').includes(ep.highlight), 'episode.highlight must be words of the original, exactly');
+  }
   for (const [id, ed] of Object.entries(s.editions || {})) {
     need(getRegion(id), `edition "${id}" is not a region declared in content/regions.js`);
     need(Array.isArray(ed.text) && ed.text.length, `editions.${id}.text (the version itself) is required`);

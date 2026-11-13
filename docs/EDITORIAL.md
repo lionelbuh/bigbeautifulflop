@@ -1,6 +1,24 @@
 # Editorial workflow
 
-## The Swiss format (from 11 November 2026)
+## The episode format (from 13 November 2026)
+
+Each new statement is one short episode, all in English, with one video (no second video):
+
+1. **The original**, in full and word for word (`original.text`, plus `original.key` for short posts), with
+   “Switzerland has reviewed the request.” under it from the first frame. Never shorten or alter it.
+2. **Swiss Neutrality** (`episode.neutral`, two or three short lines; copy them without the asterisks into
+   `neutral.en`, and set `neutral.key`). The red “NEUTRAL SWISS” stamp (`scripts/social/assets/neutral-swiss-stamp.svg`)
+   lands on it.
+3. **One canton** (`episode.canton`: vaudois, valaisan, genevois, fribourgeois or neuchatelois, see
+   `src/site/cantons.js`; vary them, `npm run regions` helps), with `episode.reaction`, two or three short lines.
+4. **The tagline** (`episode.tagline`), e.g. “Switzerland: Neutral since 1815.” / “Careful with the budget since forever.”
+
+`episode.highlight` (optional) must be exact words of the original; `*…*` marks the red italic last line.
+`editions` is `{}` and there is no presidential version. Visual direction: ivory paper (#F4F0E6) with grain,
+newspaper typography, red #D71920, flags and abstract maps in SVG; no photographs, no cartoon scenery,
+no imitation of anyone’s face or voice.
+
+## The Swiss format (11–12 November 2026)
 
 Every new statement has three parts:
 1. **Trump**, the original, verbatim (`original.text`, and `original.key`, one sentence of it, word for word).

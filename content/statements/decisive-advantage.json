@@ -3,7 +3,7 @@
   "status": "published",
   "published": "2026-11-13",
   "headline": "The decisive advantage",
-  "dek": "The President says the new Democrat majority will try to block his investment in the military, and asks the Senate to move immediately on a 350 billion dollar reconciliation bill for the armed forces.",
+  "dek": "The President asks the Senate to move immediately on a 350 billion dollar bill for the military. Switzerland has reviewed the request.",
   "topics": [
     "military",
     "Congress",
@@ -34,52 +34,29 @@
   },
   "neutral": {
     "en": [
-      "Switzerland takes note of the President’s wish to strengthen the armed forces, and of the objections of the Democrats.",
-      "We would mention one Swiss habit: when our army wanted new fighter jets, the people voted on it, in 2020. It passed with 50.1 percent. Nobody was entirely happy, which is how we know it was a fair compromise."
-    ],
-    "fr": [
-      "La Suisse prend acte de la volonté du Président de renforcer les forces armées, et des objections des démocrates.",
-      "Nous mentionnerons une habitude suisse : quand notre armée a voulu de nouveaux avions de combat, le peuple a voté, en 2020. Le oui l’a emporté avec 50,1 %. Personne n’était entièrement content, et c’est ainsi que l’on sait que le compromis était juste."
-    ],
-    "key": "When our army wanted new fighter jets, the people voted on it, in 2020. It passed with 50.1 percent. Nobody was entirely happy.",
-    "keyFr": "Quand notre armée a voulu de nouveaux avions, le peuple a voté, en 2020 : oui à 50,1 %. Personne n’était entièrement content."
+      "We appreciate the desire for a strong military.",
+      "But spending $350 billion to prove you’re strong seems… a little aggressive.",
+      "We prefer to remain neutral. And reasonably well insured."
+    ]
   },
-  "editions": {
-    "genevois": {
-      "review": "draft",
-      "hook": "350 milliards pour l’armée ! *À Genève, on a fondé la Croix-Rouge.*",
-      "hookEn": "350 billion for the military! *In Geneva, we founded the Red Cross.*",
-      "short": "À Genève, notre grande contribution militaire, c’est la Croix-Rouge, fondée en 1863. *Et les règles de la guerre, écrites ici, au bord du lac.*",
-      "shortEn": "Geneva’s big military contribution is the Red Cross, founded in 1863. *And the rules of war, written here by the lake.*",
-      "text": [
-        "J’ai reconstruit l’armée pendant mon premier mandat, et je le refais, en plus grand et en mieux. Les démocrates veulent bloquer, je le dis. Alors le Sénat doit voter tout de suite les 350 milliards, pour donner à nos guerriers l’avantage décisif.",
-        "Remarquez, à Genève, notre grande contribution militaire, c’est la Croix-Rouge, fondée en 1863. Et les règles de la guerre, les Conventions de Genève, écrites ici, au bord du lac. On ne fournit pas les avions. On fournit le règlement."
-      ],
-      "en": [
-        "I rebuilt the military in my first term, and I’m doing it again, bigger and better. The Democrats want to block it, I say. So the Senate must pass the 350 billion right away, to give our warriors the decisive advantage.",
-        "Mind you, in Geneva, our big military contribution is the Red Cross, founded in 1863. And the rules of war, the Geneva Conventions, written here, by the lake. We don’t supply the planes. We supply the rulebook."
-      ],
-      "notes": [
-        "The International Committee of the Red Cross was founded in Geneva in 1863; the Geneva Conventions, the core of the law of war, were first signed there in 1864."
-      ]
-    },
-    "fribourgeois": {
-      "review": "draft",
-      "hook": "Un avantage décisif ! *Le nôtre, c’était à Morat. En 1476.*",
-      "hookEn": "A decisive advantage! *Ours was at Morat. In 1476.*",
-      "short": "Chez nous, le dernier avantage décisif, c’était à Morat, en 1476. *Depuis, on est neutres. Ça coûte moins cher.*",
-      "shortEn": "Our last decisive advantage was at Morat, in 1476. *Since then we’ve been neutral. It’s cheaper.*",
-      "text": [
-        "Notre armée, je l’ai reconstruite, et je recommence, plus grand que jamais. Les démocrates veulent tout bloquer, à ce que je dis. Le Sénat doit voter les 350 milliards, maintenant, pour l’avantage décisif de nos guerriers.",
-        "Un avantage décisif ? Chez nous, le dernier, c’était à Morat, en 1476 : les Confédérés ont battu Charles le Téméraire au bord du lac. Depuis, on est devenus neutres. Ça coûte moins cher, et on garde le lac."
-      ],
-      "en": [
-        "Our military, I rebuilt it, and I’m doing it again, bigger than ever. The Democrats want to block everything, I say. The Senate must pass the 350 billion, now, for our warriors’ decisive advantage.",
-        "A decisive advantage? Ours was at Morat, in 1476: the Swiss Confederates beat Charles the Bold by the lake. Since then we’ve become neutral. It’s cheaper, and we kept the lake."
-      ],
-      "notes": [
-        "The battle of Morat (Murten), in today’s canton of Fribourg, was a famous Swiss victory over Charles the Bold, Duke of Burgundy, in 1476."
-      ]
-    }
+  "editions": {},
+  "episode": {
+    "review": "Switzerland has reviewed the request.",
+    "highlight": "350 Billion Dollar Reconciliation Bill",
+    "neutral": [
+      "We appreciate the desire for a strong military.",
+      "But spending $350 billion to prove you’re strong seems… a little aggressive.",
+      "*We prefer to remain neutral. And reasonably well insured.*"
+    ],
+    "canton": "vaudois",
+    "reaction": [
+      "350 billion?",
+      "Have we tried putting this to a referendum first?",
+      "*And perhaps getting three competing quotes?*"
+    ],
+    "tagline": [
+      "Switzerland: Neutral since 1815.",
+      "Careful with the budget since forever."
+    ]
   }
 }

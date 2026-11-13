@@ -48,6 +48,11 @@ describe('social posts', () => {
   it('gives each statement two different video series, in turns, with short enough posts', () => {
     statements.forEach((s, i) => {
       const series = videoSeriesFor(s, i);
+      if (s.episode) {
+        expect(series.map((x) => x.id)).toEqual(['episode']);
+        expect(chars(youtubeTitle(s, series[0]))).toBeLessThanOrEqual(100);
+        return;
+      }
       expect(series.length).toBeGreaterThan(0);
       expect(new Set(series.map((x) => x.id)).size).toBe(series.length);
       const langs = new Set(VIDEO_SERIES.filter((x) => seriesVersion(s, x)).map((x) => x.lang));
@@ -74,6 +79,8 @@ describe('social posts', () => {
     expect(videosPending(s, { x: all }, '2026-11-08')).toBe(false);
     expect(videosPending(s, { x: { ...all, bluesky: { id: 1, video: 1 } } }, '2026-11-08')).toBe(true);
     expect(videosPending(s, { x: { ...all, bluesky: { id: 1, video: 1 }, 'bluesky:video2': { id: 5 } } }, '2026-11-08')).toBe(false);
+    // an episode has a single video
+    expect(videosPending({ ...s, episode: {} }, { x: { ...all, bluesky: { id: 1, video: 1 } } }, '2026-11-08')).toBe(false);
   });
   it('keeps video hooks short, with an English line for the French ones', () => {
     for (const s of statements) {

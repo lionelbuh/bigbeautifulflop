@@ -10,6 +10,32 @@ import { REGIONS, CATEGORIES, getCountry, englishLabel } from '../../content/reg
 import { editionsFor } from './content.js';
 import { editionIndex } from './rotation.js';
 import { regionTitle } from '../../scripts/social/compose.mjs';
+import { readFileSync } from 'node:fs';
+import { CANTONS } from './cantons.js';
+
+/** The recurring signature: the NEUTRAL SWISS rubber stamp (one SVG asset, shared with the videos). */
+const STAMP = readFileSync(new URL('../../scripts/social/assets/neutral-swiss-stamp.svg', import.meta.url), 'utf8').replace(/<!--[\s\S]*?-->/, '');
+const lines = (list) => list.map((x) => `<p>${e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>')}</p>`).join('');
+
+/**
+ * An episode (from 13 November 2026), like the video: the post in full, “Switzerland has reviewed the
+ * request”, Swiss Neutrality with the stamp, one canton’s reaction, the tagline.
+ */
+export function episodeThread(s) {
+  const ep = s.episode;
+  const canton = CANTONS[ep.canton] || { name: ep.canton, flag: '', geo: '', places: '' };
+  return `<div class="episode">
+  ${originalPost(s)}
+  <p class="ep-review">${e(ep.review || 'Switzerland has reviewed the request.')}</p>
+  <section class="ep-card ep-neutral"><p class="ep-label"><span class="ep-cross" aria-hidden="true"></span>Swiss Neutrality <small>Satire</small></p>
+    <div class="ep-lines">${lines(ep.neutral)}</div>
+    <div class="ep-stamp" aria-hidden="true">${STAMP}</div></section>
+  <section class="ep-card ep-canton"><p class="ep-label">${e(canton.name)} <small>Satire</small></p>
+    <div class="ep-art"><div class="ep-flag" aria-hidden="true">${canton.flag}</div><div class="ep-geo" aria-hidden="true">${canton.geo}<p>${e(canton.places)}</p></div></div>
+    <div class="ep-lines">${lines(ep.reaction)}</div></section>
+  ${ep.tagline?.length ? `<p class="ep-tagline">${e(ep.tagline[0])}${ep.tagline[1] ? `<em>${e(ep.tagline[1])}</em>` : ''}</p>` : ''}
+</div>`;
+}
 
 export const articlePath = (s) => `/statements/${s.slug}/`;
 export const editionPath = (s, region) => `/statements/${s.slug}/${region.id}/`;
@@ -187,6 +213,7 @@ function sectionTabs(s, { day, first, idPrefix }) {
 
 /** The whole thread: the original, the American President, then the four sections as tabs. */
 export function thread(s, { day, regions = true, first = null } = {}) {
+  if (s.episode) return episodeThread(s);
   // the Swiss format: the original, the Neutral Swiss, then the cantons
   if (s.neutral) {
     const cantons = REGIONS.filter((r) => r.country === 'switzerland' && s.editions?.[r.id]);

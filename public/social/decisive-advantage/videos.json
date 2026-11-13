@@ -1,11 +1,7 @@
 {
   "1": {
-    "series": "canton1",
-    "hash": "79517a4d1446ffe6"
+    "series": "episode",
+    "hash": "274d84844a1e6a43"
   },
-  "2": {
-    "series": "canton2",
-    "hash": "07334c85dd88101b"
-  },
-  "format": "meme"
+  "format": "episode"
 }
