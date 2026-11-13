@@ -31,7 +31,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const FPS = 30;
 const DURATION = 31;
 const END = 27; // the end card and the ending fanfare
-const SELF = readFileSync(fileURLToPath(import.meta.url), 'utf8');
+// the script and its music: a change to either renders the videos again
+const SELF = readFileSync(fileURLToPath(import.meta.url), 'utf8') + createHash('sha256').update(readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'sound/bbf-bed.wav'))).digest('hex');
 const font = (f) => pathToFileURL(path.join(root, 'node_modules/@fontsource-variable/fraunces/files', f)).href;
 /** French spacing: « and » ; : ? ! never start or end a line alone. */
 const nb = (x) => x.replace(/« /g, '«\u00a0').replace(/ ([»:;?!])/g, '\u00a0$1');

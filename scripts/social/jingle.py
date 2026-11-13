@@ -71,7 +71,8 @@ def tick(vel=0.12):
     noise = np.diff(np.random.default_rng(7).normal(size=t.size), prepend=0)
     return vel * noise * np.exp(-t * 90)
 
-def bed(dur=16.0, bpm=104):
+def bed(dur=46.0, bpm=104):
+    # long enough for the longest video (it is cut to each video's length)
     # a light walking bass with soft brass stabs on the off-beats: it plays under the words, between the fanfares
     track = np.zeros(int(dur * SR))
     beat = 60 / bpm
