@@ -37,7 +37,7 @@ const nb = (x) => x.replace(/« /g, '«\u00a0').replace(/ ([»:;?!])/g, '\u00a0$
 const inter = (f) => pathToFileURL(path.join(root, 'node_modules/@fontsource-variable/inter/files', f)).href;
 
 /** What every video shares: fonts, cards, the title card, the end card and the animations. */
-function styles(o) {
+export function styles(o) {
   return `@font-face{font-family:F;src:url('${font('fraunces-latin-opsz-normal.woff2')}');font-weight:100 900}
 @font-face{font-family:I;src:url('${inter('inter-latin-wght-normal.woff2')}');font-weight:100 900}
 *{box-sizing:border-box;margin:0}
@@ -134,7 +134,7 @@ ${styles({ stageTop: s.headline.length > 30 ? 560 : 470, boxSize: series.id === 
  * Frame by frame: every animation is paused and set to the frame's time. Several tabs share the work
  * (one per processor, up to four): GitHub's machines are much slower than a laptop.
  */
-async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, fx = [], coverAt = 0 } = {}) {
+export async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, fx = [], coverAt = 0 } = {}) {
   const frames = path.join(work, 'frames');
   rmSync(frames, { recursive: true, force: true });
   mkdirSync(frames, { recursive: true });
