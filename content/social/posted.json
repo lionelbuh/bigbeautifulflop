@@ -493,5 +493,32 @@
       "at": "2026-11-12T21:06:19.790Z",
       "id": "9m62jkMA4ZE"
     }
+  },
+  "tariffs-doubled": {
+    "bluesky": {
+      "at": "2026-11-13T01:02:02.368Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n25rwvz7p52o",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-13T01:03:16.990Z",
+      "id": "17979324473932936",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-13T01:03:22.813Z",
+      "id": "1490940159575771",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-13T01:04:11.590Z",
+      "id": "18134406637749522",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-13T01:04:12.982Z",
+      "id": "rUNiovKiVPU",
+      "video": 1
+    }
   }
 }
