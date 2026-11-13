@@ -547,5 +547,32 @@
       "id": "vR_7hcJhNbQ",
       "video": 1
     }
+  },
+  "decisive-advantage": {
+    "bluesky": {
+      "at": "2026-11-13T03:56:48.946Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n263pgq6bh2t",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-13T03:57:51.158Z",
+      "id": "18469147750185855",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-13T03:57:57.246Z",
+      "id": "1588231213107892",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-13T03:58:32.489Z",
+      "id": "18129430694299148",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-13T03:58:34.409Z",
+      "id": "TIHs3LbrfZY",
+      "video": 1
+    }
   }
 }
