@@ -1,4 +1,5 @@
 /** Every page of the site, as { path, lang, html } objects (see scripts/build.mjs). */
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { e, formatDate, truncate } from './html.js';
 import { renderPage, flag, chip, emailLink, CONTACT_EMAIL, DEFAULT_IMAGE, DISCLAIMER, SITE_URL, YOUTUBE_URL, SITE_NAME, MOTTO, TAGLINE } from './layout.js';
 import { COUNTRIES, REGIONS, CATEGORIES, getCountry, categoryOf, regionsOf, regionPath } from '../../content/regions.js';
@@ -47,6 +48,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
     page({ pageId: 'archives', path: '/archives/', title: 'Archives', description: 'Every statement, day by day, with all its versions.', main: archives(ctx) }),
     page({ pageId: 'about', path: '/about/', title: 'About', description: DISCLAIMER, main: about(ctx) }),
     page({ pageId: 'about', path: '/privacy/', title: 'Privacy policy', description: 'Big Beautiful Flop sets no cookies, shows no advertising and collects no personal data.', main: privacy() }),
+    ...specials().map((sp) => page({ pageId: 'priorities', path: `/priorities/${sp.slug}/`, title: `${sp.subject}: The Swiss Priorities Report`, description: `${sp.review} ${sp.verdict.join(' ').replace(/\*/g, '')} A special edition of Big Beautiful Flop. Independent satire.`, main: prioritiesPage(sp), published: sp.published, lastmod: sp.published })),
     page({ pageId: 'press', path: '/press/', title: 'Press', description: 'Big Beautiful Flop in brief, for journalists: what it is, who makes it, images and contact. En français aussi.', main: press(ctx) }),
     { path: '/404.html', lang: 'en', listed: false, html: renderPage({ pageId: '', header, head: { title: 'Page not found', description: 'This page does not exist.', path: '/404.html', noindex: true, assets }, main: notFound() }) },
   ];
@@ -471,4 +473,33 @@ function press({ statements }) {
 function notFound() {
   return `${sectionHead('404', 'This page flopped', 'It does not exist, or it never did. Nobody knew a website could be so complicated.')}
   <p><a class="button" href="/">Back to the front page</a></p>`;
+}
+
+/* ---------------- The Swiss Priorities Report (special editions) ---------------- */
+
+/** The special editions in content/specials/ that are published, newest first. */
+export function specials() {
+  const dir = new URL('../../content/specials/', import.meta.url);
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir).filter((f) => f.endsWith('.json'))
+    .map((f) => JSON.parse(readFileSync(new URL(f, dir), 'utf8')))
+    .filter((sp) => sp.status === 'published')
+    .sort((a, b) => b.published.localeCompare(a.published));
+}
+
+function prioritiesPage(sp) {
+  const mk = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  const video = `/social/priorities/${sp.slug}/video-1.mp4`;
+  return `${sectionHead(`${flag('ch')} The Swiss Priorities Report`, sp.subject, `${sp.tagline.join(' ')} A special edition.`)}
+  <div class="prose">
+    <video controls playsinline preload="none" poster="/social/priorities/${sp.slug}/cover-1.jpg" src="${video}" style="width:100%;max-width:360px;display:block;margin:0 auto 1.5rem;aspect-ratio:9/16;background:#F4F0E6"></video>
+    <h2>The facts</h2>
+    <ul>${sp.facts.map((x) => `<li>${e(x)}</li>`).join('')}</ul>
+    <p class="muted">Sources: ${sp.sources.map((u, i) => `<a href="${e(u)}" rel="noopener">${i + 1}</a>`).join(', ')}</p>
+    <h2>${e(sp.review)}</h2>
+    ${sp.assessment.map((x) => `<p>${mk(x)}</p>`).join('')}
+    <p><em>${e(sp.verdictIntro)}</em></p>
+    <p style="font-size:1.6em;line-height:1.2"><strong>${sp.verdict.map(mk).join(' ')}</strong></p>
+    <p class="muted">Satire. ${e(DISCLAIMER)}</p>
+  </div>`;
 }

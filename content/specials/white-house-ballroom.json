@@ -1,5 +1,7 @@
 {
   "slug": "white-house-ballroom",
+  "status": "published",
+  "published": "2026-11-14",
   "format": "priorities",
   "date": "2026-11-14",
   "subject": "The White House ballroom",
@@ -21,6 +23,12 @@
     "Our Federal Palace in Bern has no ballroom. It has a public gallery, and free guided tours."
   ],
   "verdictIntro": "After careful consideration, the Swiss assessment:",
-  "verdict": ["Nice floor.", "*Questionable priorities.*"],
-  "tagline": ["America has its priorities.", "Switzerland has questions."]
+  "verdict": [
+    "Nice floor.",
+    "*Questionable priorities.*"
+  ],
+  "tagline": [
+    "America has its priorities.",
+    "Switzerland has questions."
+  ]
 }

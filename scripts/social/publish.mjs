@@ -16,6 +16,7 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadStatements } from '../../src/site/content.js';
+import { specials } from '../../src/site/pages.js';
 import {
   SITE_URL, articleUrl, threadFor, facebookPost, instagramCaption, secondVideoPost, VIDEO_SERIES, THREADS_TOPIC, BLUESKY_TAGS,
   youtubeTitle, youtubeDescription, weeklyPicks, weeklyPost, ALL_SERIES,
@@ -654,6 +655,43 @@ async function main() {
           if (err.later) { console.log(`Sunday video ${date} · ${name}: limit reached, will try again later`); continue; }
           failed += 1;
           console.log(`Sunday video ${date} · ${name}: FAILED ${err.message}`);
+        }
+      }
+    }
+  }
+  // The Swiss Priorities Report: special editions (content/specials/, video in public/social/priorities/<slug>/)
+  if ((mode === 'publish' || mode === 'preview') && !slug) {
+    for (const sp of specials()) {
+      const dir = path.join(root, 'public/social/priorities', sp.slug);
+      if (!existsSync(path.join(dir, 'video-1.mp4'))) continue;
+      const base = `${SITE_URL}/social/priorities/${sp.slug}`;
+      const plain = (list) => list.map((x) => x.replace(/\*/g, '')).join(' ');
+      const text = (max, tags, source) => {
+        const link = `${SITE_URL}/priorities/${sp.slug}/${source ? `?utm_source=${source}&utm_medium=social&utm_campaign=priorities` : ''}`;
+        const full = [`THE SWISS PRIORITIES REPORT 🇨🇭 ${sp.subject}`, `${sp.review} ${plain(sp.verdict)}`, plain(sp.tagline), link, 'Independent satire.', tags].filter(Boolean).join('\n\n');
+        return [...full].length <= max ? full : [`🇨🇭 ${sp.subject}: ${plain(sp.verdict)}`, link, tags].filter(Boolean).join('\n\n');
+      };
+      const clip = {
+        file: path.join(dir, 'video-1.mp4'), url: `${base}/video-1.mp4`,
+        cover: existsSync(path.join(dir, 'cover-1.jpg')) ? `${base}/cover-1.jpg` : null,
+        alt: `The Swiss Priorities Report: ${sp.subject}, reviewed by Switzerland (satirical video, no voice).`,
+        title: `The Swiss Priorities Report: ${sp.subject} #Shorts`,
+      };
+      for (const name of chosen) {
+        if (log.priorities?.[sp.slug]?.[name] || !NETWORKS[name].ready()) continue;
+        if (name === 'youtube' && !CONFIG.youtubeStart) continue;
+        const [max, tags] = LIMITS[name];
+        if (mode === 'preview') { console.log(`\n=== priorities/${sp.slug} · ${name} ===\n${clip.title}\n${text(max, tags, name)}`); continue; }
+        try {
+          await waitOnlineUrls(`priorities ${sp.slug}`, [clip.url, `${SITE_URL}/priorities/${sp.slug}/`]);
+          const res = await NETWORKS[name].publishVideo({ ...clip, description: text(5000, '#PoliticalSatire #Satire #Switzerland', name) }, text(max, tags, name));
+          log.priorities = { ...log.priorities, [sp.slug]: { ...log.priorities?.[sp.slug], [name]: { at: new Date().toISOString(), id: res.id } } };
+          writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
+          console.log(`Priorities ${sp.slug} · ${name}: posted (${res.id})`);
+        } catch (err) {
+          if (err.later) { console.log(`Priorities ${sp.slug} · ${name}: limit reached, will try again later`); continue; }
+          failed += 1;
+          console.log(`Priorities ${sp.slug} · ${name}: FAILED ${err.message}`);
         }
       }
     }
