@@ -1,0 +1,43 @@
+name: Truth Social watch
+
+# Every 15 minutes: looks for new posts by @realDonaldTrump and opens one issue (label "truth-social")
+# per new post, with the exact text and the time in Eastern time. GitHub then notifies the owner by
+# e-mail or in the GitHub app. Nothing is published. Close the issues once read (or leave them).
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Only print what would be reported (no issue opened)'
+        type: boolean
+        default: false
+      max_age_hours:
+        description: 'Report posts up to this many hours old'
+        required: false
+        default: '3'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: truth-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/watch
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Look for new posts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          WATCH_MAX_AGE_H: ${{ inputs.max_age_hours || '3' }}
+        run: node scripts/watch/truth.mjs ${{ inputs.dry_run && '--dry' || '' }}
