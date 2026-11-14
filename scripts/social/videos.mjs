@@ -599,6 +599,16 @@ body{background:#F4F0E6}
 @keyframes tip{0%{transform:none}50%{transform:translate(18px,-34px) rotate(16deg)}100%{transform:none}}
 #m4 .arm{animation:wave .9s ease-in-out ${T.endAt + 1.3}s both}
 @keyframes wave{50%{transform:rotate(-120deg)}}
+${mascot ? `/* speech bubbles: Monsieur Neutre says the Swiss lines */
+.bub{background:#fffdf8;border:3px solid #171614;border-radius:38px;padding:2px 34px 30px;box-shadow:6px 6px 0 rgba(23,22,20,.08)}
+.bub::after{content:'';position:absolute;bottom:-46px;width:56px;height:48px;background:#fffdf8;border:3px solid #171614;border-top:0;clip-path:polygon(0 0,100% 0,0 100%);border-left:3px solid #171614}
+#n .bub{font-size:58px}#n .bub::after{left:120px;transform:skewX(-20deg)}
+#v .bub{font-size:58px}#v .bub::after{right:150px;transform:scaleX(-1) skewX(-20deg)}
+.m .mouth{transform:scaleY(.35)}
+@keyframes talk{from{transform:scaleY(.35)}to{transform:scaleY(1.25)}}
+#m2 .mouth{animation:${[4.9, T.n2, T.n3].slice(0, ep.neutral.length).map((t) => `talk .15s ease-in-out ${t}s 12 alternate`).join(',')}}
+#m3 .mouth{animation:${[T.v0 + 0.6, T.v2, T.v3].slice(0, ep.reaction.length).map((t) => `talk .15s ease-in-out ${t}s 12 alternate`).join(',')}}
+` : ''}
 /* the end */
 #end{background:#F4F0E6;animation:fadein .5s ease-out ${T.endAt}s both}
 #end .tl{font-family:F;font-size:84px;line-height:1.08;max-width:900px}
@@ -609,9 +619,9 @@ body{background:#F4F0E6}
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>
 ${FULL}</div>
 <p class="rev">${e(ep.review || 'Switzerland has reviewed the request.')}</p>
-<div id="n"><p class="sec">${CROSS(34)} Swiss Neutrality <small>Satire</small></p><div class="big">${staged(ep.neutral)}</div></div>
+<div id="n"><p class="sec">${CROSS(34)} Swiss Neutrality <small>Satire</small></p><div class="big${mascot ? ' bub' : ''}">${staged(ep.neutral)}</div></div>
 <div class="stamp">${STAMP}</div>
-<div id="v"><p class="sec">${e(canton.name)} <small>Satire</small></p><div class="crest">${canton.flag}</div><div class="geo">${canton.geo}<p>${e(canton.places)}</p></div><div class="big">${staged(ep.reaction)}</div></div>
+<div id="v"><p class="sec">${e(canton.name)} <small>Satire</small></p><div class="crest">${canton.flag}</div><div class="geo">${canton.geo}<p>${e(canton.places)}</p></div><div class="big${mascot ? ' bub' : ''}">${staged(ep.reaction)}</div></div>
 ${mascot ? `<div class="m" id="m1">${monsieurNeutre('loupe')}</div><div class="m" id="m2">${monsieurNeutre('stamp')}</div><div class="m" id="m3">${monsieurNeutre()}</div>` : ''}
 <div id="end">${CROSS(70)}<p class="tl">${e(tag[0])}</p>${tag[1] ? `<p class="tl2">${e(tag[1])}</p>` : ''}<div class="rl"></div><p class="url">bigbeautifulflop.com</p>${mascot ? `<div class="m" id="m4">${monsieurNeutre()}</div>` : ''}</div>
 ${GRAIN}<script>
@@ -628,9 +638,10 @@ window.fit = () => {
   const m1 = document.querySelector('#m1');
   if (m1 && rev.getBoundingClientRect().bottom > 1570) m1.style.display = 'none';
   // long lines get a slightly smaller type, so Swiss Neutrality ends above the stamp, and the canton above the bottom
-  for (const [sel, limit] of [['#n .big', 1600], ['#v .big', 1780]]) {
+  const bub = !!document.querySelector('.bub');
+  for (const [sel, limit] of bub ? [['#n .big', 1535], ['#v .big', 1535]] : [['#n .big', 1600], ['#v .big', 1780]]) {
     const big = document.querySelector(sel);
-    for (let size = 66; size > 46 && big.getBoundingClientRect().bottom > limit; size -= 2) big.style.fontSize = size - 2 + 'px';
+    for (let size = bub ? 58 : 66; size > 46 && big.getBoundingClientRect().bottom > limit; size -= 2) big.style.fontSize = size - 2 + 'px';
   }
 };
 </script>`;

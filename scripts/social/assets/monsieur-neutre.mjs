@@ -30,7 +30,7 @@ export function monsieurNeutre(item = '') {
     <circle cx="88" cy="76" r="12" fill="${PAPER}" stroke="${INK}" stroke-width="3.5"/><circle cx="120" cy="76" r="12" fill="${PAPER}" stroke="${INK}" stroke-width="3.5"/><path d="M100 76 h8" stroke="${INK}" stroke-width="3"/>
     <g class="eyes" style="transform-origin:104px 77px"><circle cx="89" cy="77" r="4" fill="${INK}"/><circle cx="121" cy="77" r="4" fill="${INK}"/></g>
     <path d="M90 100 q14 -6 28 0" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
-    <path d="M96 108 q8 4 16 0" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>
+    <g class="mouth" style="transform-origin:104px 108px"><path d="M96 107 q8 6 16 0 q-8 3 -16 0 z" fill="#7a2a22" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/></g>
     <!-- hat (lifts) -->
     <g class="hat" style="transform-origin:104px 46px"><path d="M58 50 Q104 38 150 50 L146 56 Q104 46 62 56 Z" fill="${SUIT}" stroke="${INK}" stroke-width="3.5"/><path d="M74 50 Q76 18 104 16 Q132 18 134 50 Z" fill="${SUIT}" stroke="${INK}" stroke-width="3.5"/><path d="M75 42 Q104 36 133 42" stroke="${RED}" stroke-width="5" fill="none"/></g>
   </g>
