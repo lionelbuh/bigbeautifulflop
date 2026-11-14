@@ -256,3 +256,11 @@ priorities (the ballroom, his name on everything, gold, portraits…), reviewed 
   Zurich, about CHF 600 million). Never invent numbers of trains, schools or people.
 - Always an illustrative comparison, never money that could be moved; say so on screen.
 - Simple numbers only, with a conversion at the current rate when the currencies differ; sources in the file.
+
+## Monsieur Neutre (from 14 November 2026)
+
+The recurring character of the videos: a small Swiss civil servant drawn in ink (grey suit, red bow tie,
+round glasses, hat with a red band), `scripts/social/assets/monsieur-neutre.mjs`. In every episode he reads
+the post with a magnifier, says the Swiss lines in speech bubbles (Swiss Neutrality, then the canton),
+slams the NEUTRAL SWISS stamp and tips his hat at the end. No voice: the bubbles carry the text. He is
+never a caricature of a real person, and the President's post is never put in his mouth.
