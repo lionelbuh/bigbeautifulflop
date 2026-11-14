@@ -9,6 +9,10 @@ on:
         description: 'Episode (statement slug)'
         required: true
         default: 'trash-island'
+      voices:
+        description: 'Piper voices, separated by spaces'
+        required: false
+        default: 'en_GB-alan-medium en_US-ryan-high'
 
 permissions:
   contents: write
@@ -26,19 +30,19 @@ jobs:
         run: |
           pip install -q piper-tts
           mkdir -p tmp-voice && cd tmp-voice
-          for n in en_GB-alan-medium en_US-ryan-high; do
+          for n in ${{ inputs.voices }}; do
             python3 -m piper.download_voices $n || echo "could not download $n"
-            base=$(python3 -c "import json,sys;v=json.load(open('$n.onnx.json'));print(v.get('dataset',''))" 2>/dev/null || true)
-            echo "$n dataset: $base"
-            python3 -c "import json;v=json.load(open('$n.onnx.json'));print(json.dumps({k:v.get(k) for k in ('dataset','language','audio')}))" > $n.INFO 2>/dev/null || true
+            # the voice's model card (its dataset and licence): en/en_US/ryan/high/MODEL_CARD
+            lang=${n%%-*}; rest=${n#*-}; name=${rest%-*}; q=${rest##*-}
+            curl -sSLf -o $n.MODEL_CARD "https://huggingface.co/rhasspy/piper-voices/resolve/main/${lang%%_*}/$lang/$name/$q/MODEL_CARD" || echo "no model card for $n"
           done
           ls -la
-          python3 - "${{ inputs.slug }}" <<'PY'
+          python3 - "${{ inputs.slug }}" "${{ inputs.voices }}" <<'PY'
           import json, subprocess, sys
           s = json.load(open(f'../content/statements/{sys.argv[1]}.json'))
           lines = [('n', x) for x in s['episode']['neutral']] + [('v', x) for x in s['episode']['reaction']]
           import os
-          for voice in [v for v in ('en_GB-alan-medium', 'en_US-ryan-high') if os.path.exists(f'{v}.onnx')]:
+          for voice in [v for v in sys.argv[2].split() if os.path.exists(f'{v}.onnx')]:
               for i, (part, text) in enumerate(lines):
                   out = f'{voice}-{part}{i}.wav'
                   subprocess.run(['python3', '-m', 'piper', '-m', f'{voice}.onnx', '-f', out, '--length-scale', '1.08'], input=text.replace('*', '').encode(), check=True)
@@ -51,5 +55,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add voice-test
+          git pull -q --rebase || true
           git commit -m "Voice test (Piper): ${{ inputs.slug }} [skip ci]"
           git push
