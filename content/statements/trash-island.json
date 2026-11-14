@@ -1,0 +1,60 @@
+{
+  "slug": "trash-island",
+  "status": "published",
+  "published": "2026-11-14",
+  "headline": "Trash Island",
+  "dek": "The President promises to turn the golf course he calls “Trash Island”, in Washington, into the best golf course in the world, and criticises the judge who is slowing the project. Switzerland has reviewed the request.",
+  "topics": [
+    "Washington, D.C.",
+    "golf"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-14",
+    "time": "14:35",
+    "text": [
+      "Trash Island is currently the Worst Golf Course anywhere in the World, but the Department of the Interior is going to make it into the Best Golf Course anywhere in the World. Unfortunately, Judge Ana Reyes doesn’t want us to quickly and inexpensively fix up the Course which is, also, very dangerous — The Fairways are far too close together. When you walk down the corridors of Trash Island, you don’t hear the sound of the running Potomac, all you hear is the sound of people screaming, “FORE!” In any event, we’re making progress, and hopefully the Judge will agree that the Dignity, Beauty, and Importance of Washington, D.C., will be greatly enhanced by this soon to be beautiful Project. Trash Island, after years of laughter and scorn, will evolve into something very special, something which the Judge will be able to take great pride in seeing! All over the World it will be acclaimed as being the Best Golf Course anywhere, attracting the U.S. Open, the PGA Championship, the Ryder Cup, and the Presidents Cup, with all of the Economic Development that will bring. Very importantly, also, is that anyone living in the D.C. area will be given a 50% discount on any and all Rates charged. The Department of the Interior has done a magnificent job of cleaning, fixing, renovating, and rebuilding 83 Fountains, Monuments, and Statues throughout our beautiful Capital. Even the Reflecting Pool, which hasn’t worked properly since its building in 1922, is open, beautiful, and working as it was always expected to do. Perhaps most importantly, Crime in Washington, D.C., is down 91%, A RECORD, and the People are happy and safe again! The Department of the Interior’s Golf Project will greatly enhance everything else that has already taken place in the last two year period. Everyone is proud and grateful again! Thank you for your attention to this matter. President DONALD J. TRUMP"
+    ],
+    "key": "When you walk down the corridors of Trash Island, you don’t hear the sound of the running Potomac, all you hear is the sound of people screaming, “FORE!”",
+    "context": "Posted on 14 November 2026. The descriptions of the golf course, the project, the court case and the figures are the President’s.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 14 November 2026 (shown as 11/14/26, 11:35 AM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland congratulates the fountains, the monuments and the Reflecting Pool.",
+      "Bern’s fountains have been running since the 16th century. Nobody has asked them to host the Ryder Cup.",
+      "As for the screams of “FORE!”, we would suggest quiet hours after 10 p.m."
+    ],
+    "key": "As for the screams of “FORE!”, we would suggest quiet hours after 10 p.m."
+  },
+  "editions": {},
+  "episode": {
+    "review": "Switzerland has reviewed the request.",
+    "highlight": "all you hear is the sound of people screaming, “FORE!”",
+    "neutral": [
+      "Switzerland congratulates the fountains, the monuments and the Reflecting Pool.",
+      "Bern’s fountains have been running since the 16th century. Nobody has asked them to host the Ryder Cup.",
+      "*As for the screams of “FORE!”, we would suggest quiet hours after 10 p.m.*"
+    ],
+    "canton": "genevois",
+    "reaction": [
+      "A golf course on an island, in the capital?",
+      "In Geneva, our island in the Rhône has a statue of Rousseau, and some ducks.",
+      "*Nobody shouts “FORE!”. Rousseau prefers to read.*"
+    ],
+    "tagline": [
+      "Switzerland: Neutral since 1815.",
+      "Quiet after 10 p.m. since forever."
+    ]
+  }
+}

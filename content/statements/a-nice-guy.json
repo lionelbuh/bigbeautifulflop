@@ -1,0 +1,60 @@
+{
+  "slug": "a-nice-guy",
+  "status": "published",
+  "published": "2026-11-14",
+  "headline": "Look like a nice guy",
+  "dek": "The President says some of the people freed from the death penalty by the Governor of California, whom he calls “Newscum”, make Hannibal Lecter look like a nice guy. Switzerland has reviewed the request.",
+  "topics": [
+    "justice",
+    "California"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-14",
+    "time": "17:00",
+    "text": [
+      "Some of the people that Gavin Newscum freed from the Death Penalty, after many years of going through the California “Justice” System, make Hannibal Lecter, of Silence of the Lambs, look like a nice guy! President DJT"
+    ],
+    "key": "make Hannibal Lecter, of Silence of the Lambs, look like a nice guy!",
+    "context": "Posted on 14 November 2026. Hannibal Lecter is a fictional character, from the novel and film The Silence of the Lambs. Our versions are about the comparison, never about the crimes or the victims.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 14 November 2026 (shown as 11/14/26, 2:00 PM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland notes the comparison with Hannibal Lecter, a fictional character.",
+      "We prefer to leave real people to the courts, and films to the film critics.",
+      "And in the Alps, our lambs are never silent. They wear bells."
+    ],
+    "key": "And in the Alps, our lambs are never silent. They wear bells."
+  },
+  "editions": {},
+  "episode": {
+    "review": "Switzerland has reviewed the request.",
+    "highlight": "make Hannibal Lecter, of Silence of the Lambs, look like a nice guy!",
+    "neutral": [
+      "Switzerland notes the comparison with Hannibal Lecter, a fictional character.",
+      "We prefer to leave real people to the courts, and films to the film critics.",
+      "*And in the Alps, our lambs are never silent. They wear bells.*"
+    ],
+    "canton": "fribourgeois",
+    "reaction": [
+      "Hannibal Lecter?",
+      "In Fribourg, the most frightening thing we know is a fondue that separates.",
+      "*We call it a disaster. Then we add more cheese.*"
+    ],
+    "tagline": [
+      "Switzerland: Neutral since 1815.",
+      "Leaving the reviews to the critics since forever."
+    ]
+  }
+}

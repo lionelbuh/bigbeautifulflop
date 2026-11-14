@@ -524,7 +524,7 @@ export function episodeHtml(s) {
   // the post in full, word for word: only the highlight is ours
   // a short post is shown larger; the longest stay at 30px so they fit in full
   const n = s.original.text.join(' ').length;
-  const size = n < 350 ? 46 : n < 650 ? 38 : 30;
+  const size = n < 350 ? 46 : n < 650 ? 38 : n < 1300 ? 30 : 24;
   const FULL = s.original.text.map((x) => `<p class="t">${ep.highlight ? e(x).replace(e(ep.highlight), `<mark>${e(ep.highlight)}</mark>`) : e(x)}</p>`).join('');
   return `<!doctype html><meta charset="utf-8"><style>
 ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
