@@ -1,0 +1,53 @@
+name: Voice test (Piper)
+
+# A one-off test: Monsieur Neutre's lines of one episode read by free Piper voices (open source, run here).
+# The audio files and the voices' model cards are committed to the branch the workflow is run on.
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Episode (statement slug)'
+        required: true
+        default: 'trash-island'
+
+permissions:
+  contents: write
+
+jobs:
+  voice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read the lines with two voices
+        run: |
+          pip install -q piper-tts
+          mkdir -p tmp-voice && cd tmp-voice
+          for v in en_GB/alan/medium/en_GB-alan-medium en_US/ryan/high/en_US-ryan-high; do
+            n=$(basename $v)
+            curl -sSLf -o $n.onnx "https://huggingface.co/rhasspy/piper-voices/resolve/main/${v%/*}/$n.onnx"
+            curl -sSLf -o $n.onnx.json "https://huggingface.co/rhasspy/piper-voices/resolve/main/${v%/*}/$n.onnx.json"
+            curl -sSLf -o $n.MODEL_CARD "https://huggingface.co/rhasspy/piper-voices/resolve/main/${v%/*}/MODEL_CARD" || true
+          done
+          python3 - "${{ inputs.slug }}" <<'PY'
+          import json, subprocess, sys
+          s = json.load(open(f'../content/statements/{sys.argv[1]}.json'))
+          lines = [('n', x) for x in s['episode']['neutral']] + [('v', x) for x in s['episode']['reaction']]
+          for voice in ('en_GB-alan-medium', 'en_US-ryan-high'):
+              for i, (part, text) in enumerate(lines):
+                  out = f'{voice}-{part}{i}.wav'
+                  subprocess.run(['python3', '-m', 'piper', '-m', f'{voice}.onnx', '-f', out, '--length-scale', '1.08'], input=text.replace('*', '').encode(), check=True)
+          PY
+          rm -f *.onnx *.onnx.json
+          ls -la
+      - name: Commit the audio to this branch
+        run: |
+          mkdir -p voice-test && mv tmp-voice/* voice-test/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add voice-test
+          git commit -m "Voice test (Piper): ${{ inputs.slug }} [skip ci]"
+          git push
