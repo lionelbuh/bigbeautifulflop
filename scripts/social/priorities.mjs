@@ -10,6 +10,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { escapeHtml as e } from '../../src/site/html.js';
 import { render, styles, STAMP_ASSET, RED, GRAIN, CROSS } from './videos.mjs';
+import { monsieurNeutre } from './assets/monsieur-neutre.mjs';
 
 const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -119,6 +120,30 @@ ${T.a.slice(1).map((t, i) => `#a .p${i + 2}{animation:fadein .5s ease-out ${t}s 
 .stamp{position:absolute;left:50%;top:1260px;width:640px;margin-left:-320px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) ${T.stamp}s both,hide .4s ease-in ${T.vEnd}s forwards}
 .stamp svg{width:100%;height:auto;display:block}
 @keyframes stampin{from{opacity:0;transform:rotate(-13deg) scale(2.6)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+/* Monsieur Neutre (optional, "mascot"): reads, nods, stamps, tips his hat */
+.mn{width:100%;height:auto;display:block;overflow:visible}
+.m{position:absolute;width:250px}
+.m .eyes{animation:blink 3.4s steps(1) infinite}
+@keyframes blink{0%,94%{transform:scaleY(1)}95%,99%{transform:scaleY(.1)}}
+#m1{right:60px;top:1590px;width:220px;animation:fadein .5s ease-out 1.6s both,hide .3s ease-in ${T.a0 - 0.3}s forwards}
+#m1 .arm{animation:scan 2.4s ease-in-out 1.6s infinite alternate}
+@keyframes scan{from{transform:rotate(-14deg)}to{transform:rotate(8deg)}}
+#m1 .head{animation:tilt 2.4s ease-in-out 1.6s infinite alternate,nod .5s ease-in-out ${T.review + 0.3}s 3 alternate}
+@keyframes tilt{from{transform:rotate(-4deg)}to{transform:rotate(3deg)}}
+@keyframes nod{to{transform:rotate(9deg) translateY(4px)}}
+#m1 .brows{animation:raise .4s ease-out ${T.review}s both}
+@keyframes raise{to{transform:translateY(-6px)}}
+#m3{left:40px;top:1480px;width:300px;animation:fadein .4s ease-out ${T.v0}s both,hide .4s ease-in ${T.vEnd}s forwards}
+#m3 .arm{animation:lift .5s ease-out ${T.v0}s both,slam .22s cubic-bezier(.6,0,.9,.5) ${T.stamp - 0.2}s both}
+@keyframes lift{from{transform:rotate(0)}to{transform:rotate(-110deg)}}
+@keyframes slam{from{transform:rotate(-110deg)}to{transform:rotate(-10deg)}}
+#m3 .head{animation:proud .5s ease-out ${T.stamp + 0.4}s both}
+@keyframes proud{to{transform:rotate(-6deg)}}
+#m4{left:50%;margin-left:-110px;width:220px;top:1520px;z-index:3;animation:fadein .4s ease-out ${T.endAt + 0.3}s both}
+#m4 .hat{animation:tip .9s ease-in-out ${T.endAt + 1.4}s both}
+@keyframes tip{0%{transform:none}50%{transform:translate(18px,-34px) rotate(16deg)}100%{transform:none}}
+#m4 .arm{animation:wave .9s ease-in-out ${T.endAt + 1.4}s both}
+@keyframes wave{50%{transform:rotate(-120deg)}}
 /* the end */
 #end{background:#F4F0E6;animation:fadein .5s ease-out ${T.endAt}s both}
 #end .tl{font-family:F;font-size:84px;line-height:1.08;max-width:900px}
@@ -133,12 +158,13 @@ ${T.a.slice(1).map((t, i) => `#a .p${i + 2}{animation:fadein .5s ease-out ${t}s 
 <p class="subj">${e(sp.subject)}</p>
 <div class="fig">${PARQUET}<p>${e(sp.figure)}</p></div>
 <div class="facts"><h3>The facts</h3>${sp.facts.map((x) => `<p>${e(x)}</p>`).join('')}</div>
-<p class="src">${e(sp.sourcesLabel || 'Sources: the White House, CBS News, SCOTUSblog')}</p>
+<p class="src"${sp.mascot ? ' style="right:320px"' : ''}>${e(sp.sourcesLabel || 'Sources: the White House, CBS News, SCOTUSblog')}</p>
 <p class="rev">${e(sp.review)}</p>
 <div id="a"><p class="sec">${CROSS(34)} The Swiss assessment <small>Satire</small></p><div class="big">${sp.assessment.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div></div>
 ${sp.alternative ? altHtml(sp.alternative) : ''}
 <div id="v"><p class="intro">${e(sp.verdictIntro)}</p><div class="big">${sp.verdict.map((x) => `<p>${mk(x)}</p>`).join('')}</div><div class="stamp">${STAMP_ASSET}</div></div>
-<div id="end">${CROSS(70)}<p class="tl">${e(sp.tagline[0])}</p><p class="tl2">${e(sp.tagline[1])}</p>${sp.endLine ? `<p class="el">${e(sp.endLine).replace(/\. /g, '.<br>')}</p>` : ''}<p class="so">${e(SIGN_OFF)}</p><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
+${sp.mascot ? `<div class="m" id="m1">${monsieurNeutre('loupe')}</div><div class="m" id="m3">${monsieurNeutre('stamp')}</div>` : ''}
+<div id="end">${CROSS(70)}<p class="tl">${e(sp.tagline[0])}</p><p class="tl2">${e(sp.tagline[1])}</p>${sp.endLine ? `<p class="el">${e(sp.endLine).replace(/\. /g, '.<br>')}</p>` : ''}<p class="so">${e(SIGN_OFF)}</p><div class="rl"></div><p class="url">bigbeautifulflop.com</p>${sp.mascot ? `<div class="m" id="m4">${monsieurNeutre()}</div>` : ''}</div>
 ${GRAIN}`;
 }
 
