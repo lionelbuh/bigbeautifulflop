@@ -23,11 +23,19 @@ export function schedule(sp) {
   T.factsEnd = r(T.facts + 6.6); // the three short notes appear together
   T.review = T.factsEnd;
   T.a0 = r(T.review + 2.6);
+  if (!sp.assessment.length) T.a0 = r(T.review + 2.9);
   T.a = [];
   let t = T.a0;
   for (const x of sp.assessment) { T.a.push(r(t)); t += read(x); }
-  T.aEnd = r(t);
-  T.v0 = r(T.aEnd + 0.3);
+  T.aEnd = r(sp.assessment.length ? t : T.a0 - 0.3);
+  // THE SWISS ALTERNATIVE (optional): the same money, the Swiss way
+  if (sp.alternative) {
+    T.alt0 = r(T.aEnd + 0.3);
+    T.altCh = r(T.alt0 + 4.6);
+    T.altClose = r(T.altCh + 4.6);
+    T.altEnd = r(T.altClose + read(sp.alternative.closing));
+  }
+  T.v0 = r((T.altEnd ?? T.aEnd) + 0.3);
   T.stamp = r(T.v0 + 1.4);
   T.vEnd = r(T.stamp + 3.8);
   T.endAt = r(T.vEnd + 0.2);
@@ -43,6 +51,11 @@ const PARQUET = (() => {
   }
   return `<svg viewBox="0 0 940 380"><defs><clipPath id="c"><rect width="940" height="380"/></clipPath></defs><g clip-path="url(#c)" fill="#efe6d2" stroke="#171614" stroke-width="2">${tiles}</g><rect width="940" height="380" fill="none" stroke="#171614" stroke-width="4"/></svg>`;
 })();
+
+function altHtml(a) {
+  const card = (id, c) => `<div class="cmp" id="${id}"><p class="fl">${e(c.flag)}</p><p class="lb">${e(c.label)}</p><p class="am">${e(c.amount)}${c.approx ? `<small>${e(c.approx)}</small>` : ''}</p><p class="nt">${e(c.note)}</p></div>`;
+  return `<div id="alt"><p class="sec">${CROSS(34)} The Swiss Alternative <small>Satire</small></p>${card('us', a.us)}${card('ch', a.ch)}<p class="disc">${e(a.disclaimer)}</p><p class="close">${mk(a.closing)}</p></div>`;
+}
 
 export function prioritiesHtml(sp) {
   const T = schedule(sp);
@@ -81,6 +94,21 @@ body{background:#F4F0E6}
 #a .sec{top:640px}
 #a .big{top:700px}
 ${T.a.slice(1).map((t, i) => `#a .p${i + 2}{animation:fadein .5s ease-out ${t}s both}`).join('')}
+/* THE SWISS ALTERNATIVE */
+#alt{animation:fadein .5s ease-out ${T.alt0}s both,hide .4s ease-in ${T.altEnd}s forwards}
+#alt .sec{top:400px}
+.cmp{position:absolute;left:70px;right:70px;padding:26px 30px 28px;border:2px solid #171614;background:#fffdf8}
+.cmp .fl{font-size:22px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#57524a}
+.cmp .lb{font-family:F;font-size:44px;line-height:1.1;margin-top:8px}
+.cmp .am{font-family:F;font-weight:600;font-size:84px;line-height:1;margin-top:12px;letter-spacing:-.02em}
+.cmp .am small{display:block;font-size:38px;font-weight:500;color:#57524a;margin-top:6px;letter-spacing:0}
+.cmp .nt{font-size:28px;line-height:1.3;color:#57524a;margin-top:12px}
+#us{top:480px}
+#ch{top:980px;border-color:${RED};animation:fadein .5s ease-out ${T.altCh}s both}
+#ch .am{color:${RED}}
+#alt .disc{position:absolute;left:70px;right:70px;top:1420px;font-family:F;font-style:italic;font-size:30px;color:#57524a;animation:fadein .5s ease-out ${T.altCh}s both}
+#alt .close{position:absolute;left:70px;right:70px;top:1510px;font-family:F;font-size:60px;line-height:1.12;animation:fadein .5s ease-out ${T.altClose}s both}
+#alt .close em{font-style:italic;color:${RED}}
 /* 3. the verdict */
 #v{animation:fadein .5s ease-out ${T.v0}s both,hide .4s ease-in ${T.vEnd}s forwards}
 #v .intro{position:absolute;left:70px;right:70px;top:620px;font-family:F;font-style:italic;font-size:48px;line-height:1.2;color:#57524a}
@@ -100,18 +128,19 @@ ${T.a.slice(1).map((t, i) => `#a .p${i + 2}{animation:fadein .5s ease-out ${t}s 
 <p class="subj">${e(sp.subject)}</p>
 <div class="fig">${PARQUET}<p>${e(sp.figure)}</p></div>
 <div class="facts"><h3>The facts</h3>${sp.facts.map((x) => `<p>${e(x)}</p>`).join('')}</div>
-<p class="src">Sources: the White House, CBS News, SCOTUSblog</p>
+<p class="src">${e(sp.sourcesLabel || 'Sources: the White House, CBS News, SCOTUSblog')}</p>
 <p class="rev">${e(sp.review)}</p>
 <div id="a"><p class="sec">${CROSS(34)} The Swiss assessment <small>Satire</small></p><div class="big">${sp.assessment.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div></div>
+${sp.alternative ? altHtml(sp.alternative) : ''}
 <div id="v"><p class="intro">${e(sp.verdictIntro)}</p><div class="big">${sp.verdict.map((x) => `<p>${mk(x)}</p>`).join('')}</div><div class="stamp">${STAMP_ASSET}</div></div>
 <div id="end">${CROSS(70)}<p class="tl">${e(sp.tagline[0])}</p><p class="tl2">${e(sp.tagline[1])}</p><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
 ${GRAIN}`;
 }
 
-export async function renderPriorities(slug) {
-  const sp = JSON.parse(readFileSync(path.join(root, 'content/specials', `${slug}.json`), 'utf8'));
+export async function renderPriorities(slug, { json, out } = {}) {
+  const sp = JSON.parse(readFileSync(json || path.join(root, 'content/specials', `${slug}.json`), 'utf8'));
   const T = schedule(sp);
-  const dir = path.join(root, 'public/social/priorities', slug);
+  const dir = out || path.join(root, 'public/social/priorities', slug);
   mkdirSync(dir, { recursive: true });
   const work = mkdtempSync(path.join(tmpdir(), 'bbf-priorities-'));
   const browser = await chromium.launch();
@@ -131,6 +160,8 @@ export async function renderPriorities(slug) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const slug = process.argv[2];
   if (!slug) { console.error('usage: node scripts/social/priorities.mjs <slug>'); process.exit(1); }
-  const { dir, T } = await renderPriorities(slug);
+  const opt = (k) => { const i = process.argv.indexOf(k); return i > 0 ? path.resolve(process.argv[i + 1]) : undefined; };
+  // --json <file> --out <dir>: render a draft without touching the published files
+  const { dir, T } = await renderPriorities(slug, { json: opt('--json'), out: opt('--out') });
   console.log(`${slug}: ${dir}/video-1.mp4 (${r(T.endAt + 3.8)} s)`);
 }

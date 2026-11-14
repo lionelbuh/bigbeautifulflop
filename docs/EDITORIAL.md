@@ -240,3 +240,19 @@ the classic format (`videos.json` records the format).
   the hook, the title (“Les Vaudoiseries de Trump”) and the link to the version.
 - **Press:** `/press/` (English and French, images to use); the message to send is in `docs/PRESS.md`.
 
+
+## The Swiss Priorities Report (special edition, about one video in five)
+
+“America has its priorities. Switzerland has questions.” Not a post, but one of the President’s projects or
+priorities (the ballroom, his name on everything, gold, portraits…), reviewed by Switzerland. A file in
+`content/specials/<slug>.json`, rendered by `node scripts/social/priorities.mjs <slug>` (a draft:
+`--json <file> --out <dir>`), with a page at `/priorities/<slug>/`; it is posted once on each network.
+
+**The Swiss Alternative** (optional `alternative`): the same money, the Swiss way.
+- Use the latest credible cost estimates, and say which one: the project itself is not the wider works
+  (e.g. the ballroom, about $400 million according to the White House, against about $600 million for the
+  whole project with its security works, a contractor’s estimate reported by The Washington Post).
+- Compare with a real Swiss project and its real cost (e.g. the Limmattalbahn, a 13-km light rail line near
+  Zurich, about CHF 600 million). Never invent numbers of trains, schools or people.
+- Always an illustrative comparison, never money that could be moved; say so on screen.
+- Simple numbers only, with a conversion at the current rate when the currencies differ; sources in the file.
