@@ -420,8 +420,20 @@ const instagram = {
   /** A Reel (also shown in the feed). */
   async reel(clip, caption) {
     const ig = env.INSTAGRAM_USER_ID;
-    const container = await graphPost(GRAPH, `/${ig}/media`, env.INSTAGRAM_TOKEN, { media_type: 'REELS', video_url: clip.url, caption, share_to_feed: 'true', ...(clip.cover ? { cover_url: clip.cover } : {}) });
-    await this.waitReady(container.id, 60);
+    const make = async (cover) => {
+      const container = await graphPost(GRAPH, `/${ig}/media`, env.INSTAGRAM_TOKEN, { media_type: 'REELS', video_url: clip.url, caption, share_to_feed: 'true', ...(cover ? { cover_url: cover } : {}) });
+      await this.waitReady(container.id, 60);
+      return container;
+    };
+    let container;
+    try {
+      container = await make(clip.cover);
+    } catch (err) {
+      // an upload refused with a custom cover (e.g. error 2207077) is tried once more with Instagram's own cover
+      if (!clip.cover || !/container ERROR/.test(err.message)) throw err;
+      console.log(`  (Instagram: ${err.message.slice(0, 120)}; trying again without the custom cover)`);
+      container = await make(null);
+    }
     const post = await graphPost(GRAPH, `/${ig}/media_publish`, env.INSTAGRAM_TOKEN, { creation_id: container.id });
     return { id: post.id };
   },
