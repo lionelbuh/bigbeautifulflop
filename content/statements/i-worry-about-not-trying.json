@@ -1,0 +1,61 @@
+{
+  "slug": "i-worry-about-not-trying",
+  "status": "published",
+  "published": "2026-11-14",
+  "headline": "I worry about not trying",
+  "dek": "The President posts words of Senator John Kennedy on Fox News: some people worry about losing, he worries about not trying. Switzerland has reviewed the request.",
+  "topics": [
+    "Senate",
+    "Fox News"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-14",
+    "time": "12:40",
+    "text": [
+      "“Some people worry about losing, I worry about not trying. I can explain a loss, I can’t explain to my people why I didn’t try!”",
+      "Highly Respected Senator John Kennedy, of Louisiana, being interviewed by Kayleigh McEnany on FoxNews"
+    ],
+    "key": "“Some people worry about losing, I worry about not trying. I can explain a loss, I can’t explain to my people why I didn’t try!”",
+    "context": "Posted on 14 November 2026. The President posts, in quotation marks, words of Senator John Kennedy of Louisiana in an interview on Fox News.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 14 November 2026 (shown as 11/14/26, 9:40 AM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland agrees: trying matters.",
+      "About nine popular initiatives in ten are rejected at the ballot box. Swiss citizens keep launching new ones anyway.",
+      "We can explain a loss. Usually in four languages."
+    ],
+    "key": "We can explain a loss. Usually in four languages."
+  },
+  "editions": {},
+  "episode": {
+    "review": "Switzerland has reviewed the request.",
+    "highlight": "I worry about not trying",
+    "neutral": [
+      "Switzerland agrees: trying matters.",
+      "About nine popular initiatives in ten are rejected at the ballot box. Swiss citizens keep launching new ones anyway.",
+      "*We can explain a loss. Usually in four languages.*"
+    ],
+    "canton": "vaudois",
+    "reaction": [
+      "Try? Of course.",
+      "In Vaud, we never say no. We say “faut voir”: we’ll see.",
+      "*Some of us have been seeing since 1803.*"
+    ],
+    "tagline": [
+      "Switzerland: Neutral since 1815.",
+      "Voting again since forever."
+    ]
+  }
+}
