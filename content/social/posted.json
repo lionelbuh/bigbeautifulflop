@@ -675,5 +675,32 @@
       "id": "TgLiF83tFqQ",
       "video": 1
     }
+  },
+  "i-worry-about-not-trying": {
+    "bluesky": {
+      "at": "2026-11-14T19:27:37.099Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2ca6rd2vl2m",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-14T19:28:58.445Z",
+      "id": "18649680196014904",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-14T19:29:06.333Z",
+      "id": "40157229693924500",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-14T19:30:16.083Z",
+      "id": "17886659220625493",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-14T19:30:19.463Z",
+      "id": "QWX9Lwkc9yw",
+      "video": 1
+    }
   }
 }
