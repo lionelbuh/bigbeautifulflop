@@ -24,6 +24,7 @@ import { loadStatements } from '../../src/site/content.js';
 import { logoFlop } from '../../src/site/logo.js';
 import { escapeHtml as e } from '../../src/site/html.js';
 import { CANTONS } from '../../src/site/cantons.js';
+import { monsieurNeutre } from './assets/monsieur-neutre.mjs';
 import { episodesSinceSpecial } from '../../src/site/pages.js';
 import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle, regionTitle, weeklyPicks, SOCIAL_NETWORKS, VIDEO_SERIES, ALL_SERIES } from './compose.mjs';
 
@@ -514,6 +515,8 @@ export const CROSS = (s = 40) => `<svg width="${s}" height="${s}" viewBox="0 0 3
 export function episodeHtml(s) {
   const T = episodeSchedule(s);
   const ep = s.episode;
+  // Monsieur Neutre appears in every episode (from 14 November 2026), unless the statement says otherwise
+  const mascot = ep.mascot !== false;
   const STAMP = STAMP_ASSET;
   const canton = CANTONS[ep.canton];
   const day = new Date(`${s.original.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -571,6 +574,31 @@ body{background:#F4F0E6}
 .geo p{font-size:22px;letter-spacing:.18em;text-transform:uppercase;color:#57524a;margin-top:6px}
 #v .big{top:820px}
 #v .p2{animation:fadein .5s ease-out ${T.v2}s both}#v .p3{animation:fadein .5s ease-out ${T.v3}s both}
+/* Monsieur Neutre, the recurring character: reads the post, stamps, reacts, tips his hat */
+.mn{width:100%;height:auto;display:block;overflow:visible}
+.m{position:absolute;width:230px;z-index:2}
+.m .eyes{animation:blink 3.4s steps(1) infinite}
+@keyframes blink{0%,94%{transform:scaleY(1)}95%,99%{transform:scaleY(.1)}}
+#m1{right:60px;top:1600px;animation:fadein .5s ease-out 1.2s both,hide .3s ease-in 4.4s forwards}
+#m1 .arm{animation:scan 1.6s ease-in-out 1.2s infinite alternate}
+@keyframes scan{from{transform:rotate(-14deg)}to{transform:rotate(8deg)}}
+#m1 .brows{animation:raise .4s ease-out 3.2s both}
+@keyframes raise{to{transform:translateY(-6px)}}
+#m2{left:50px;top:1560px;width:250px;animation:fadein .3s ease-out 4.6s both,hide .4s ease-in ${T.nEnd}s forwards}
+#m2 .arm{animation:lift .3s ease-out 4.6s both,slam .2s cubic-bezier(.6,0,.9,.5) 5.0s both}
+@keyframes lift{from{transform:rotate(0)}to{transform:rotate(-110deg)}}
+@keyframes slam{from{transform:rotate(-110deg)}to{transform:rotate(-10deg)}}
+#m2 .head{animation:nod .5s ease-in-out ${T.n2}s 2 alternate}
+@keyframes nod{to{transform:rotate(9deg) translateY(4px)}}
+#m3{right:60px;top:1560px;animation:fadein .5s ease-out ${T.v0 + 0.4}s both,hide .4s ease-in ${T.vEnd}s forwards}
+#m3 .brows{animation:raise .4s ease-out ${T.v0 + 0.8}s both}
+#m3 .head{animation:shake .45s ease-in-out ${T.v3}s 4 alternate}
+@keyframes shake{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+#m4{left:50%;margin-left:-100px;width:200px;top:1540px;z-index:3;animation:fadein .4s ease-out ${T.endAt + 0.3}s both}
+#m4 .hat{animation:tip .9s ease-in-out ${T.endAt + 1.3}s both}
+@keyframes tip{0%{transform:none}50%{transform:translate(18px,-34px) rotate(16deg)}100%{transform:none}}
+#m4 .arm{animation:wave .9s ease-in-out ${T.endAt + 1.3}s both}
+@keyframes wave{50%{transform:rotate(-120deg)}}
 /* the end */
 #end{background:#F4F0E6;animation:fadein .5s ease-out ${T.endAt}s both}
 #end .tl{font-family:F;font-size:84px;line-height:1.08;max-width:900px}
@@ -584,7 +612,8 @@ ${FULL}</div>
 <div id="n"><p class="sec">${CROSS(34)} Swiss Neutrality <small>Satire</small></p><div class="big">${staged(ep.neutral)}</div></div>
 <div class="stamp">${STAMP}</div>
 <div id="v"><p class="sec">${e(canton.name)} <small>Satire</small></p><div class="crest">${canton.flag}</div><div class="geo">${canton.geo}<p>${e(canton.places)}</p></div><div class="big">${staged(ep.reaction)}</div></div>
-<div id="end">${CROSS(70)}<p class="tl">${e(tag[0])}</p>${tag[1] ? `<p class="tl2">${e(tag[1])}</p>` : ''}<div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
+${mascot ? `<div class="m" id="m1">${monsieurNeutre('loupe')}</div><div class="m" id="m2">${monsieurNeutre('stamp')}</div><div class="m" id="m3">${monsieurNeutre()}</div>` : ''}
+<div id="end">${CROSS(70)}<p class="tl">${e(tag[0])}</p>${tag[1] ? `<p class="tl2">${e(tag[1])}</p>` : ''}<div class="rl"></div><p class="url">bigbeautifulflop.com</p>${mascot ? `<div class="m" id="m4">${monsieurNeutre()}</div>` : ''}</div>
 ${GRAIN}<script>
 window.fit = () => {
   // the post starts centred when it is short, and the review line sits right under it;
@@ -595,6 +624,9 @@ window.fit = () => {
   post.style.top = top + 'px';
   rev.style.top = (top + H + 140) + 'px';
   post.style.setProperty('--ty', Math.round(815 - top - 0.865 * H) + 'px');
+  // no room under a very long post: Monsieur Neutre reads it only when he fits
+  const m1 = document.querySelector('#m1');
+  if (m1 && rev.getBoundingClientRect().bottom > 1570) m1.style.display = 'none';
   // long lines get a slightly smaller type, so Swiss Neutrality ends above the stamp, and the canton above the bottom
   for (const [sel, limit] of [['#n .big', 1600], ['#v .big', 1780]]) {
     const big = document.querySelector(sel);
