@@ -1,0 +1,61 @@
+{
+  "slug": "all-in-the-next-50-days",
+  "status": "published",
+  "published": "2026-11-14",
+  "headline": "All in the next 50 days",
+  "dek": "The President posts a list, attributed to Senator John Kennedy, of nominations and bills to pass in the next 50 days. Switzerland has reviewed the request.",
+  "topics": [
+    "Congress",
+    "Senate"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-14",
+    "time": "12:39",
+    "text": [
+      "“I’m going to fight and get all of the President’s Nominees confirmed. Get the Permitting Bill passed. I want to do a Reconciliation Bill, which we can pass with no Democrat votes, provide money for the Military, money for Air Control, a Bill to ban Stock Trading, pass a Bill on Pardon Brokers, pass a Fraud Bill, all in the next 50 days. The FAA Funding should be a stand alone Bill — We should get Democrat support for that!”",
+      "Senator John Kennedy"
+    ],
+    "key": "pass a Fraud Bill, all in the next 50 days.",
+    "context": "Posted on 14 November 2026. The President posts, in quotation marks, words he attributes to Senator John Kennedy of Louisiana.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 14 November 2026 (shown as 11/14/26, 9:39 AM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland admires the ambition: five bills and every nominee in 50 days.",
+      "Here, once Parliament passes a law, citizens get 100 days just to decide whether they want to vote on it.",
+      "Five bills in 50 days? We would still be in the consultation phase."
+    ],
+    "key": "Here, once Parliament passes a law, citizens get 100 days just to decide whether they want to vote on it."
+  },
+  "editions": {},
+  "episode": {
+    "review": "Switzerland has reviewed the request.",
+    "highlight": "all in the next 50 days",
+    "neutral": [
+      "Switzerland admires the ambition: five bills and every nominee in 50 days.",
+      "Here, once Parliament passes a law, citizens get 100 days just to decide whether they want to vote on it.",
+      "*Five bills in 50 days? We would still be in the consultation phase.*"
+    ],
+    "canton": "valaisan",
+    "reaction": [
+      "Fifty days?",
+      "In Valais, that is not even enough time to age a raclette cheese.",
+      "*Good laws, like good cheese, take time.*"
+    ],
+    "tagline": [
+      "Switzerland: Neutral since 1815.",
+      "In no hurry since forever."
+    ]
+  }
+}
