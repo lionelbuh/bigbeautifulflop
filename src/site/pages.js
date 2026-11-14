@@ -477,6 +477,9 @@ function notFound() {
 
 /* ---------------- The Swiss Priorities Report (special editions) ---------------- */
 
+/** The fixed sign-off (also at the end of each video: scripts/social/priorities.mjs). */
+const PRIORITIES_SIGN_OFF = 'Switzerland remains available for a modest, well-insured alternative.';
+
 /** The special editions in content/specials/ that are published, newest first. */
 export function specials() {
   const dir = new URL('../../content/specials/', import.meta.url);
@@ -485,6 +488,18 @@ export function specials() {
     .map((f) => JSON.parse(readFileSync(new URL(f, dir), 'utf8')))
     .filter((sp) => sp.status === 'published')
     .sort((a, b) => b.published.localeCompare(a.published));
+}
+
+/**
+ * Episodes posted since the last Priorities Report (each special records, in `after`, the episode it followed).
+ * One special edition is due every five episodes.
+ */
+export function episodesSinceSpecial(statements) {
+  const last = specials()[0];
+  const episodes = statements.filter((s) => s.episode); // newest first
+  if (!last?.after) return episodes.length;
+  const i = episodes.findIndex((s) => s.slug === last.after);
+  return i < 0 ? episodes.length : i;
 }
 
 function prioritiesPage(sp) {
@@ -498,8 +513,16 @@ function prioritiesPage(sp) {
     <p class="muted">Sources: ${sp.sources.map((u, i) => `<a href="${e(u)}" rel="noopener">${i + 1}</a>`).join(', ')}</p>
     <h2>${e(sp.review)}</h2>
     ${sp.assessment.map((x) => `<p>${mk(x)}</p>`).join('')}
+    ${sp.alternative ? `<h2>The Swiss Alternative</h2>
+    <ul>
+      <li><strong>${e(sp.alternative.us.label)}:</strong> ${e(sp.alternative.us.amount)}${sp.alternative.us.approx ? ` (${e(sp.alternative.us.approx)})` : ''}. ${e(sp.alternative.us.note)}</li>
+      <li><strong>${e(sp.alternative.ch.label)}:</strong> ${e(sp.alternative.ch.amount)}. ${e(sp.alternative.ch.note)}</li>
+    </ul>
+    <p class="muted">${e(sp.alternative.disclaimer)}</p>
+    <p>${mk(sp.alternative.closing)}</p>` : ''}
     <p><em>${e(sp.verdictIntro)}</em></p>
     <p style="font-size:1.6em;line-height:1.2"><strong>${sp.verdict.map(mk).join(' ')}</strong></p>
+    <p><em>${e(sp.tagline.join(' '))}</em>${sp.endLine ? ` ${e(sp.endLine)}` : ''} ${e(PRIORITIES_SIGN_OFF)}</p>
     <p class="muted">Satire. ${e(DISCLAIMER)}</p>
   </div>`;
 }

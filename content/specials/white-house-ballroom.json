@@ -2,26 +2,30 @@
   "slug": "white-house-ballroom",
   "status": "published",
   "published": "2026-11-14",
+  "after": "i-worry-about-not-trying",
   "format": "priorities",
   "date": "2026-11-14",
   "subject": "The White House ballroom",
   "facts": [
     "Under construction where the East Wing stood, demolished in October 2025.",
     "About 650 seats.",
-    "Estimated at $200 to $300 million, privately funded, according to the White House."
+    "The ballroom: about $400 million, privately funded, according to the White House."
   ],
   "sources": [
     "https://www.whitehouse.gov/briefings-statements/2025/07/the-white-house-announces-white-house-ballroom-construction-to-begin",
     "https://www.cbsnews.com/news/white-house-state-ballroom-east-wing-trump",
     "https://www.cbsnews.com/news/trump-2026-midterms-republicans-white-house-ballroom/",
-    "https://www.scotusblog.com/2026/08/supreme-court-allows-construction-on-white-house-ballroom-to-continue/"
+    "https://www.scotusblog.com/2026/08/supreme-court-allows-construction-on-white-house-ballroom-to-continue/",
+    "https://www.washingtonpost.com/investigations/2026/06/16/records-reveal-600m-estimate-trumps-ballroom-project-with-half-taxpayers/",
+    "https://www.euronews.com/2026/08/22/white-house-ballroom-will-cost-nearly-400m-as-supreme-court-allows-work-to-continue",
+    "https://www.railwaygazette.com/urban-rail/first-phase-of-limmattalbahn-opens-in-zurich/54477.article",
+    "https://www.railjournal.com/tag/limmattalbahn/",
+    "https://en.wikipedia.org/wiki/Limmattal_light_rail_line",
+    "https://fred.stlouisfed.org/series/DEXSZUS"
   ],
   "figure": "A ballroom floor (illustration)",
   "review": "Switzerland has reviewed the proposal.",
-  "assessment": [
-    "We appreciate the importance of dancing.",
-    "Our Federal Palace in Bern has no ballroom. It has a public gallery, and free guided tours."
-  ],
+  "assessment": [],
   "verdictIntro": "After careful consideration, the Swiss assessment:",
   "verdict": [
     "Nice floor.",
@@ -30,5 +34,24 @@
   "tagline": [
     "America has its priorities.",
     "Switzerland has questions."
-  ]
+  ],
+  "alternative": {
+    "us": {
+      "flag": "United States",
+      "label": "The whole ballroom project",
+      "amount": "about $600 million",
+      "approx": "≈ CHF 490 million",
+      "note": "Contractor’s estimate including security works, about half public money (The Washington Post)."
+    },
+    "ch": {
+      "flag": "Switzerland",
+      "label": "The Limmattalbahn, near Zurich",
+      "amount": "about CHF 600 million",
+      "note": "A 13-kilometre light rail line with 27 stops. Opened in 2022, under budget."
+    },
+    "disclaimer": "An illustrative comparison: different countries, different budgets.",
+    "closing": "*We have nothing against dancing. We just prefer public transport.*"
+  },
+  "sourcesLabel": "Sources: the White House, The Washington Post, CBS News, Railway Gazette",
+  "endLine": "Our trains leave on time. Our dances end on time."
 }

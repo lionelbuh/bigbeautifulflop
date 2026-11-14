@@ -24,6 +24,7 @@ import { loadStatements } from '../../src/site/content.js';
 import { logoFlop } from '../../src/site/logo.js';
 import { escapeHtml as e } from '../../src/site/html.js';
 import { CANTONS } from '../../src/site/cantons.js';
+import { episodesSinceSpecial } from '../../src/site/pages.js';
 import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle, regionTitle, weeklyPicks, SOCIAL_NETWORKS, VIDEO_SERIES, ALL_SERIES } from './compose.mjs';
 
 const { chromium } = createRequire(import.meta.url)('playwright');
@@ -823,6 +824,9 @@ async function main() {
   writeFileSync(rotationFile, `${JSON.stringify({ next: turn }, null, 2)}\n`);
   rmSync(work, { recursive: true, force: true });
   console.log(`Videos: ${built} rendered, ${wanted.length} statements.`);
+  // one Swiss Priorities Report every five episodes (docs/EDITORIAL.md)
+  const since = episodesSinceSpecial(all);
+  console.log(since >= 5 ? `REMINDER: ${since} episodes since the last Swiss Priorities Report: one is due (tell the owner).` : `Episodes since the last Swiss Priorities Report: ${since} of 5.`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) await main();

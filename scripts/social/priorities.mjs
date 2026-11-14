@@ -15,6 +15,8 @@ const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const read = (x) => Math.min(6.5, Math.max(4, 3.5 + x.replace(/\*/g, '').length / 30)); // as in the episodes
 const r = (x) => Math.round(x * 10) / 10;
+/** The fixed sign-off of every Priorities Report. */
+export const SIGN_OFF = 'Switzerland remains available for a modest, well-insured alternative.';
 const mk = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
 /** The timeline, from the length of the texts: every sentence gets time to be read. */
@@ -122,6 +124,9 @@ ${T.a.slice(1).map((t, i) => `#a .p${i + 2}{animation:fadein .5s ease-out ${t}s 
 #end .tl{font-family:F;font-size:84px;line-height:1.08;max-width:900px}
 #end .tl2{font-family:F;font-style:italic;font-size:64px;color:${RED};max-width:880px;line-height:1.2}
 #end .rl{width:160px;border-top:2px solid #171614}
+#end{gap:30px}
+#end .el{font-family:F;font-size:46px;line-height:1.2;max-width:880px;animation:fadein .5s ease-out ${r(T.endAt + 1.6)}s both}
+#end .so{font-family:F;font-style:italic;font-size:36px;line-height:1.25;color:#57524a;max-width:820px;animation:fadein .5s ease-out ${r(T.endAt + 3.2)}s both}
 </style>
 <div class="mast"><div class="row"><span>Independent satire</span><span>Special edition</span><span>${day}</span></div><p class="nm">Big Beautiful <i>Flop</i></p><div class="rule"></div></div>
 <div class="kick"><span class="k">${CROSS(30)} The Swiss Priorities Report</span><p class="tg">${sp.tagline.map(e).join('<br>')}</p></div>
@@ -133,7 +138,7 @@ ${T.a.slice(1).map((t, i) => `#a .p${i + 2}{animation:fadein .5s ease-out ${t}s 
 <div id="a"><p class="sec">${CROSS(34)} The Swiss assessment <small>Satire</small></p><div class="big">${sp.assessment.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div></div>
 ${sp.alternative ? altHtml(sp.alternative) : ''}
 <div id="v"><p class="intro">${e(sp.verdictIntro)}</p><div class="big">${sp.verdict.map((x) => `<p>${mk(x)}</p>`).join('')}</div><div class="stamp">${STAMP_ASSET}</div></div>
-<div id="end">${CROSS(70)}<p class="tl">${e(sp.tagline[0])}</p><p class="tl2">${e(sp.tagline[1])}</p><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
+<div id="end">${CROSS(70)}<p class="tl">${e(sp.tagline[0])}</p><p class="tl2">${e(sp.tagline[1])}</p>${sp.endLine ? `<p class="el">${e(sp.endLine).replace(/\. /g, '.<br>')}</p>` : ''}<p class="so">${e(SIGN_OFF)}</p><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
 ${GRAIN}`;
 }
 
@@ -147,7 +152,7 @@ export async function renderPriorities(slug, { json, out } = {}) {
   try {
     const page = await browser.newPage();
     await render(page, work, prioritiesHtml(sp), path.join(dir, 'video-1.mp4'), {
-      duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), bed: true,
+      duration: r(T.endAt + 7.2), end: r(T.endAt + 0.2), bed: true,
       fx: [{ file: 'bbf-stamp.wav', at: r(T.stamp + 0.26), volume: 1 }], coverAt: r(T.stamp + 1),
     });
   } finally {
@@ -163,5 +168,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const opt = (k) => { const i = process.argv.indexOf(k); return i > 0 ? path.resolve(process.argv[i + 1]) : undefined; };
   // --json <file> --out <dir>: render a draft without touching the published files
   const { dir, T } = await renderPriorities(slug, { json: opt('--json'), out: opt('--out') });
-  console.log(`${slug}: ${dir}/video-1.mp4 (${r(T.endAt + 3.8)} s)`);
+  console.log(`${slug}: ${dir}/video-1.mp4 (${r(T.endAt + 7.2)} s)`);
 }
