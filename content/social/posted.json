@@ -702,5 +702,29 @@
       "id": "QWX9Lwkc9yw",
       "video": 1
     }
+  },
+  "priorities": {
+    "white-house-ballroom": {
+      "bluesky": {
+        "at": "2026-11-14T20:32:31.496Z",
+        "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2cdsu3hv72x"
+      },
+      "threads": {
+        "at": "2026-11-14T20:33:08.438Z",
+        "id": "18155802241539092"
+      },
+      "facebook": {
+        "at": "2026-11-14T20:33:14.452Z",
+        "id": "1706364574155213"
+      },
+      "instagram": {
+        "at": "2026-11-14T20:34:14.942Z",
+        "id": "17917239366492047"
+      },
+      "youtube": {
+        "at": "2026-11-14T20:34:16.663Z",
+        "id": "aT3x6pO4l_c"
+      }
+    }
   }
 }
