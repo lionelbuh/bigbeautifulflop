@@ -504,10 +504,10 @@ export function episodeTiming(s) {
   return { ...EPISODE, duration: r1(T.endAt + 3.8), end: r1(T.endAt + 0.2) };
 }
 const r1 = (x) => Math.round(x * 10) / 10;
-const STAMP_ASSET = readFileSync(path.join(root, 'scripts/social/assets/neutral-swiss-stamp.svg'), 'utf8').replace(/<!--[\s\S]*?-->/, '');
-const RED = '#D71920';
-const GRAIN = `<svg class="grain" viewBox="0 0 1080 1920"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="2"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .5 0"/></filter><rect width="1080" height="1920" filter="url(#g)"/></svg>`;
-const CROSS = (s = 40) => `<svg width="${s}" height="${s}" viewBox="0 0 32 32"><rect width="32" height="32" fill="${RED}"/><path d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z" fill="#F4F0E6"/></svg>`;
+export const STAMP_ASSET = readFileSync(path.join(root, 'scripts/social/assets/neutral-swiss-stamp.svg'), 'utf8').replace(/<!--[\s\S]*?-->/, '');
+export const RED = '#D71920';
+export const GRAIN = `<svg class="grain" viewBox="0 0 1080 1920"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="2"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .5 0"/></filter><rect width="1080" height="1920" filter="url(#g)"/></svg>`;
+export const CROSS = (s = 40) => `<svg width="${s}" height="${s}" viewBox="0 0 32 32"><rect width="32" height="32" fill="${RED}"/><path d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z" fill="#F4F0E6"/></svg>`;
 /* Canton of Vaud: the flag (white over green, LIBERTÉ ET PATRIE) and the crescent of Lake Geneva */
 
 export function episodeHtml(s) {
