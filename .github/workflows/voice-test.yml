@@ -26,17 +26,19 @@ jobs:
         run: |
           pip install -q piper-tts
           mkdir -p tmp-voice && cd tmp-voice
-          for v in en_GB/alan/medium/en_GB-alan-medium en_US/ryan/high/en_US-ryan-high; do
-            n=$(basename $v)
-            curl -sSLf -o $n.onnx "https://huggingface.co/rhasspy/piper-voices/resolve/main/${v%/*}/$n.onnx"
-            curl -sSLf -o $n.onnx.json "https://huggingface.co/rhasspy/piper-voices/resolve/main/${v%/*}/$n.onnx.json"
-            curl -sSLf -o $n.MODEL_CARD "https://huggingface.co/rhasspy/piper-voices/resolve/main/${v%/*}/MODEL_CARD" || true
+          for n in en_GB-alan-medium en_US-ryan-high; do
+            python3 -m piper.download_voices $n || echo "could not download $n"
+            base=$(python3 -c "import json,sys;v=json.load(open('$n.onnx.json'));print(v.get('dataset',''))" 2>/dev/null || true)
+            echo "$n dataset: $base"
+            python3 -c "import json;v=json.load(open('$n.onnx.json'));print(json.dumps({k:v.get(k) for k in ('dataset','language','audio')}))" > $n.INFO 2>/dev/null || true
           done
+          ls -la
           python3 - "${{ inputs.slug }}" <<'PY'
           import json, subprocess, sys
           s = json.load(open(f'../content/statements/{sys.argv[1]}.json'))
           lines = [('n', x) for x in s['episode']['neutral']] + [('v', x) for x in s['episode']['reaction']]
-          for voice in ('en_GB-alan-medium', 'en_US-ryan-high'):
+          import os
+          for voice in [v for v in ('en_GB-alan-medium', 'en_US-ryan-high') if os.path.exists(f'{v}.onnx')]:
               for i, (part, text) in enumerate(lines):
                   out = f'{voice}-{part}{i}.wav'
                   subprocess.run(['python3', '-m', 'piper', '-m', f'{voice}.onnx', '-f', out, '--length-scale', '1.08'], input=text.replace('*', '').encode(), check=True)
