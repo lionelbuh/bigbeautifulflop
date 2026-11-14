@@ -47,8 +47,11 @@ async function fromArchive() {
   return items.map((x) => {
     const original = tag(x, 'truth:originalUrl') || (x.match(/https:\/\/truthsocial\.com\/@realDonaldTrump\/(?:posts\/)?\d+/) || [])[0] || '';
     const id = (original.match(/(\d{6,})$/) || [])[1] || tag(x, 'guid') || tag(x, 'link');
-    const text = decode(tag(x, 'description'));
-    return { id: String(id), at: new Date(tag(x, 'pubDate')), url: original || tag(x, 'link'), text, retruth: /^RT @/.test(text) ? 'RT' : '', media: 0 };
+    let text = decode(tag(x, 'description'));
+    // a post with only a video or an image reads "View video" / "View image" in the archive
+    const media = /^View (video|image)s?$/i.test(text) ? 1 : 0;
+    if (media) text = '';
+    return { id: String(id), at: new Date(tag(x, 'pubDate')), url: original || tag(x, 'link'), text, retruth: /^RT @/.test(text) ? 'RT' : '', media };
   });
 }
 
