@@ -807,5 +807,32 @@
       "id": "GUBs_tINbh0",
       "video": 1
     }
+  },
+  "time-is-of-the-essence": {
+    "bluesky": {
+      "at": "2026-11-15T18:15:36.490Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2emmwayxq2v",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-15T18:16:58.734Z",
+      "id": "18004346988034017",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-15T18:17:05.781Z",
+      "id": "2123945608229141",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-15T18:18:06.272Z",
+      "id": "18108430445363134",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-15T18:18:08.229Z",
+      "id": "9HLc6ZhR2Pw",
+      "video": 1
+    }
   }
 }
