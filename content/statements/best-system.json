@@ -1,0 +1,60 @@
+{
+  "slug": "best-system",
+  "status": "published",
+  "published": "2026-11-15",
+  "headline": "The best system anywhere in the World",
+  "dek": "The President asks Congress to approve the money for a new air traffic control system, much of which he says is 50 years old. Switzerland has reviewed the request.",
+  "topics": [
+    "aviation",
+    "Congress"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-15",
+    "time": "08:35",
+    "text": [
+      "If Congress approves the desperately needed money for Air Traffic Control, we can get it built quickly and efficiently. It will be the BEST SYSTEM anywhere in the World. Much of our current air control system is 50 years old - RIDICULOUS! We have already started the work, but it should be done all at once, not in drips and drabs. Congress must approve. The Biden Administration set it back years! President DJT"
+    ],
+    "key": "Much of our current air control system is 50 years old - RIDICULOUS!",
+    "context": "Posted on 15 November 2026. The age of the system and the account of the previous administration are the President’s.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 15 November 2026 (shown as 11/15/26, 5:35 AM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland agrees: air traffic control is important.",
+      "Our airspace is so small that a jet crosses it in under half an hour.",
+      "Which leaves very little time for drips and drabs."
+    ],
+    "key": "Which leaves very little time for drips and drabs."
+  },
+  "editions": {},
+  "episode": {
+    "review": "Switzerland has reviewed the request.",
+    "highlight": "Much of our current air control system is 50 years old - RIDICULOUS!",
+    "neutral": [
+      "Switzerland agrees: air traffic control is important.",
+      "Our airspace is so small that a jet crosses it in under half an hour.",
+      "*Which leaves very little time for drips and drabs.*"
+    ],
+    "canton": "neuchatelois",
+    "reaction": [
+      "Fifty years old? Ridiculous?",
+      "In Neuchâtel, a fifty-year-old watch is just getting started.",
+      "*We call it vintage. And it still keeps time.*"
+    ],
+    "tagline": [
+      "Switzerland: Neutral since 1815.",
+      "Vintage since forever."
+    ]
+  }
+}
