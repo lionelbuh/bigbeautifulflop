@@ -510,7 +510,7 @@ export function episodeTiming(s) {
   return {
     ...EPISODE, duration: r1(T.endAt + 3.8), end: r1(T.endAt + 0.2),
     // the voice: each line when its bubble appears, the music lower underneath
-    ...(voice ? { bedVolume: 0.16, fx: [...EPISODE.fx, ...lines.map((c) => ({ file: c.file, at: c.at, volume: 1.5 }))] } : {}),
+    ...(voice ? { bedVolume: 0.16, fx: [...EPISODE.fx, ...lines.map((c) => ({ file: c.file, at: c.at, volume: 0.95 }))] } : {}),
   };
 }
 

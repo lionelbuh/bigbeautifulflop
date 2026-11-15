@@ -8,6 +8,7 @@ with the exact texts and durations, so a video is made again whenever a line cha
 import json, os, subprocess, sys, wave
 
 slug, model = sys.argv[1], sys.argv[2]
+LENGTH = sys.argv[3] if len(sys.argv) > 3 else '1.1'
 s = json.load(open(f'content/statements/{slug}.json'))
 out = f'content/voices/{slug}'
 os.makedirs(out, exist_ok=True)
@@ -16,9 +17,10 @@ for part, key in (('n', 'neutral'), ('v', 'reaction')):
     for i, text in enumerate(s['episode'][key]):
         clean = text.replace('*', '')
         f = f'{out}/{part}{i}.wav'
-        subprocess.run([sys.executable, '-m', 'piper', '-m', model, '-f', f, '--length-scale', '1.0', '--sentence-silence', '0.25'], input=clean.encode(), check=True)
+        # a little slower than Piper's default (1.0), which sounds mechanical; a short pause between sentences
+        subprocess.run([sys.executable, '-m', 'piper', '-m', model, '-f', f, '--length-scale', LENGTH, '--sentence-silence', '0.35'], input=clean.encode(), check=True)
         with wave.open(f) as w:
             dur = w.getnframes() / w.getframerate()
         lines[f'{part}{i}'] = {'text': clean, 'duration': round(dur, 2)}
-json.dump({'voice': os.path.basename(model).replace('.onnx', ''), 'lines': lines}, open(f'{out}/lines.json', 'w'), indent=2)
+json.dump({'voice': os.path.basename(model).replace('.onnx', ''), 'lengthScale': LENGTH, 'lines': lines}, open(f'{out}/lines.json', 'w'), indent=2)
 print(json.dumps(lines, indent=2))

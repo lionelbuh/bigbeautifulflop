@@ -13,6 +13,10 @@ on:
         description: 'Piper voice'
         required: false
         default: 'en_US-norman-medium'
+      length_scale:
+        description: 'Speed: 1.0 is Piper default; higher is slower'
+        required: false
+        default: '1.1'
 
 permissions:
   contents: write
@@ -35,7 +39,7 @@ jobs:
           pip install -q piper-tts
           mkdir -p /tmp/piper && (cd /tmp/piper && python3 -m piper.download_voices ${{ inputs.voice }})
           for slug in ${{ inputs.slugs }}; do
-            python3 scripts/social/voice_lines.py "$slug" "/tmp/piper/${{ inputs.voice }}.onnx"
+            python3 scripts/social/voice_lines.py "$slug" "/tmp/piper/${{ inputs.voice }}.onnx" "${{ inputs.length_scale }}"
           done
       - name: Commit the audio to this branch
         run: |
