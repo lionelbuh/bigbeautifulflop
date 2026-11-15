@@ -13,6 +13,8 @@
 - **The Swiss Priorities Report** (special edition, `docs/EDITORIAL.md`): one every 5 episodes. `npm run videos`
   prints how many episodes have gone out since the last one; at 5, remind the owner and suggest a subject.
   Each special records in `after` the episode it followed; it ends with the fixed sign-off and, if any, its `endLine`.
+- **Monsieur Neutre's voice:** after writing an episode, push the branch, run the “Voices (Monsieur Neutre)” workflow
+  on the working branch with the slug, pull, then `npm run videos` (it says “no voice yet” until the voice is there).
 - After adding or changing a statement: `npm run images` (share images in `public/og/`, uses the
   pre-installed Playwright), then `npm run videos` (one episode video, or two for older formats, per statement waiting to be posted,
   in `public/social/<slug>/`; deletes the videos of statements already posted), and commit them with the content.

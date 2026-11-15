@@ -138,7 +138,7 @@ ${styles({ stageTop: s.headline.length > 30 ? 560 : 470, boxSize: series.id === 
  * Frame by frame: every animation is paused and set to the frame's time. Several tabs share the work
  * (one per processor, up to four): GitHub's machines are much slower than a laptop.
  */
-export async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, fx = [], coverAt = 0 } = {}) {
+export async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, bedVolume = 0.32, fx = [], coverAt = 0 } = {}) {
   const frames = path.join(work, 'frames');
   rmSync(frames, { recursive: true, force: true });
   mkdirSync(frames, { recursive: true });
@@ -164,12 +164,12 @@ export async function render(page, work, markup, file, { duration = DURATION, en
   // inputs: 1 opening, 2 ending, 3 music bed (short format), then the sound effects of the first screen
   const inputs = ['bbf-opening.wav', 'bbf-ending.wav', ...(bed ? ['bbf-bed.wav'] : []), ...fx.map((x) => x.file)];
   const chains = [`[2:a]adelay=${end * 1000}|${end * 1000}[a2]`];
-  if (bed) chains.push(`[3:a]atrim=0:${end - 2.2},afade=t=out:st=${end - 3.2}:d=1,volume=0.32,adelay=2200|2200[a3]`);
+  if (bed) chains.push(`[3:a]atrim=0:${end - 2.2},afade=t=out:st=${end - 3.2}:d=1,volume=${bedVolume},adelay=2200|2200[a3]`);
   fx.forEach((x, k) => chains.push(`[${(bed ? 4 : 3) + k}:a]volume=${x.volume ?? 1},adelay=${Math.round(x.at * 1000)}|${Math.round(x.at * 1000)}[f${k}]`));
   const labels = ['[1:a]', '[a2]', ...(bed ? ['[a3]'] : []), ...fx.map((_, k) => `[f${k}]`)];
-  const mix = `${chains.join(';')};${labels.join('')}amix=inputs=${labels.length}:duration=longest:normalize=0,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`;
+  const mix = `${chains.join(';')};${labels.join('')}amix=inputs=${labels.length}:duration=longest:normalize=0,alimiter=limit=0.89:level=false,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`;
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%04d.jpg'),
-    ...inputs.flatMap((f) => ['-i', path.join(sound, f)]),
+    ...inputs.flatMap((f) => ['-i', path.isAbsolute(f) ? f : path.join(sound, f)]),
     '-filter_complex', mix,
     '-map', '0:v', '-map', '[a]', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '21', '-c:a', 'aac', '-b:a', '160k',
     '-t', String(duration), '-movflags', '+faststart', file]);
@@ -486,10 +486,12 @@ export const EPISODE = { duration: 25, end: 21.4, bed: true, fx: [{ file: 'bbf-s
  * The episode's timeline: each sentence stays on screen long enough to be read, about 5 to 6 seconds
  * (4 for a very short one, 6.5 at most), before the next one appears.
  */
-export function episodeSchedule(s) {
+export function episodeSchedule(s, voice = voiceOf(s)) {
   const read = (x) => Math.min(6.5, Math.max(4, 3.5 + x.replace(/\*/g, '').length / 30));
-  const [a1, a2, a3 = 0] = s.episode.neutral.map(read);
-  const [b1, b2, b3 = 0] = s.episode.reaction.map(read);
+  // with a voice, a line stays at least as long as Monsieur Neutre takes to say it, plus a breath
+  const hold = (part) => (x, i) => Math.max(read(x), voice ? voice.lines[`${part}${i}`].duration + 0.9 : 0);
+  const [a1, a2, a3 = 0] = s.episode.neutral.map(hold('n'));
+  const [b1, b2, b3 = 0] = s.episode.reaction.map(hold('v'));
   const r = (x) => Math.round(x * 10) / 10;
   const n0 = 4.7; // Swiss Neutrality appears as the post shrinks; the stamp lands on its first sentence
   const T = { n2: r(n0 + a1), n3: r(n0 + a1 + a2) };
@@ -503,7 +505,35 @@ export function episodeSchedule(s) {
 }
 export function episodeTiming(s) {
   const T = episodeSchedule(s);
-  return { ...EPISODE, duration: r1(T.endAt + 3.8), end: r1(T.endAt + 0.2) };
+  const voice = voiceOf(s);
+  const lines = voice ? voiceCues(s, T) : [];
+  return {
+    ...EPISODE, duration: r1(T.endAt + 3.8), end: r1(T.endAt + 0.2),
+    // the voice: each line when its bubble appears, the music lower underneath
+    ...(voice ? { bedVolume: 0.16, fx: [...EPISODE.fx, ...lines.map((c) => ({ file: c.file, at: c.at, volume: 1.5 }))] } : {}),
+  };
+}
+
+/**
+ * Monsieur Neutre's voice for an episode (content/voices/<slug>/, made by .github/workflows/voices.yml),
+ * or null when there is none yet, or when a line has changed since it was recorded.
+ */
+export function voiceOf(s) {
+  const dir = path.join(root, 'content/voices', s.slug);
+  const meta = path.join(dir, 'lines.json');
+  if (!s.episode || !existsSync(meta)) return null;
+  const v = JSON.parse(readFileSync(meta, 'utf8'));
+  const want = [...s.episode.neutral.map((x, i) => [`n${i}`, x]), ...s.episode.reaction.map((x, i) => [`v${i}`, x])];
+  if (!want.every(([k, x]) => v.lines[k]?.text === x.replace(/\*/g, '') && existsSync(path.join(dir, `${k}.wav`)))) return null;
+  return { ...v, dir };
+}
+/** When each line is said: as its bubble appears. */
+export function voiceCues(s, T = episodeSchedule(s)) {
+  const v = voiceOf(s);
+  if (!v) return [];
+  const n = [4.9, T.n2 + 0.2, T.n3 + 0.2], c = [T.v0 + 0.8, T.v2 + 0.2, T.v3 + 0.2];
+  return [...s.episode.neutral.map((_, i) => ['n', i, n[i]]), ...s.episode.reaction.map((_, i) => ['v', i, c[i]])]
+    .map(([p, i, at]) => ({ key: `${p}${i}`, at: r1(at), duration: v.lines[`${p}${i}`].duration, file: path.join(v.dir, `${p}${i}.wav`) }));
 }
 const r1 = (x) => Math.round(x * 10) / 10;
 export const STAMP_ASSET = readFileSync(path.join(root, 'scripts/social/assets/neutral-swiss-stamp.svg'), 'utf8').replace(/<!--[\s\S]*?-->/, '');
@@ -514,6 +544,7 @@ export const CROSS = (s = 40) => `<svg width="${s}" height="${s}" viewBox="0 0 3
 
 export function episodeHtml(s) {
   const T = episodeSchedule(s);
+  const cues = voiceCues(s, T);
   const ep = s.episode;
   // Monsieur Neutre appears in every episode (from 14 November 2026), unless the statement says otherwise
   const mascot = ep.mascot !== false;
@@ -606,8 +637,8 @@ ${mascot ? `/* speech bubbles: Monsieur Neutre says the Swiss lines */
 #v .bub{font-size:58px}#v .bub::after{right:150px;transform:scaleX(-1) skewX(-20deg)}
 .m .mouth{transform:scaleY(.35)}
 @keyframes talk{from{transform:scaleY(.35)}to{transform:scaleY(1.25)}}
-#m2 .mouth{animation:${[4.9, T.n2, T.n3].slice(0, ep.neutral.length).map((t) => `talk .15s ease-in-out ${t}s 12 alternate`).join(',')}}
-#m3 .mouth{animation:${[T.v0 + 0.6, T.v2, T.v3].slice(0, ep.reaction.length).map((t) => `talk .15s ease-in-out ${t}s 12 alternate`).join(',')}}
+#m2 .mouth{animation:${(cues.length ? cues.filter((c) => c.key[0] === 'n').map((c) => [c.at, c.duration]) : [4.9, T.n2, T.n3].slice(0, ep.neutral.length).map((t) => [t, 1.8])).map(([t, d]) => `talk .15s ease-in-out ${t}s ${Math.max(2, Math.round(d / 0.15))} alternate`).join(',')}}
+#m3 .mouth{animation:${(cues.length ? cues.filter((c) => c.key[0] === 'v').map((c) => [c.at, c.duration]) : [T.v0 + 0.6, T.v2, T.v3].slice(0, ep.reaction.length).map((t) => [t, 1.8])).map(([t, d]) => `talk .15s ease-in-out ${t}s ${Math.max(2, Math.round(d / 0.15))} alternate`).join(',')}}
 ` : ''}
 /* the end */
 #end{background:#F4F0E6;animation:fadein .5s ease-out ${T.endAt}s both}
@@ -820,7 +851,9 @@ async function main() {
     const meta = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, 'utf8')) : {};
     if (s.episode) {
       const file = path.join(dir, 'video-1.mp4');
-      const hash = createHash('sha256').update(JSON.stringify(s) + SELF).digest('hex').slice(0, 16);
+      const voice = voiceOf(s);
+      if (!voice) console.log(`${s.slug}: no voice yet (run the Voices workflow on this branch)`);
+      const hash = createHash('sha256').update(JSON.stringify(s) + SELF + (voice ? readFileSync(path.join(voice.dir, 'lines.json'), 'utf8') : '')).digest('hex').slice(0, 16);
       if (!(meta[1]?.hash === hash && existsSync(file))) {
         await render(page, work, episodeHtml(s), file, episodeTiming(s));
         built += 1;

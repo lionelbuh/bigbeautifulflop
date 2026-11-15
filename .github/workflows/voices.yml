@@ -1,0 +1,46 @@
+name: Voices (Monsieur Neutre)
+
+# Monsieur Neutre's lines of new episodes, read by the free Piper voice "Norman" (public-domain recordings).
+# Run by hand (or by Claude) on the working branch after an episode is written: the audio is committed to
+# content/voices/<slug>/ on that branch, and `npm run videos` mixes it into the video.
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: 'Episodes (statement slugs), separated by spaces'
+        required: true
+      voice:
+        description: 'Piper voice'
+        required: false
+        default: 'en_US-norman-medium'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: voices
+  cancel-in-progress: false
+
+jobs:
+  voices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read the lines
+        run: |
+          pip install -q piper-tts
+          mkdir -p /tmp/piper && (cd /tmp/piper && python3 -m piper.download_voices ${{ inputs.voice }})
+          for slug in ${{ inputs.slugs }}; do
+            python3 scripts/social/voice_lines.py "$slug" "/tmp/piper/${{ inputs.voice }}.onnx"
+          done
+      - name: Commit the audio to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/voices
+          git commit -m "Voices: ${{ inputs.slugs }} [skip ci]" || exit 0
+          git pull -q --rebase && git push
