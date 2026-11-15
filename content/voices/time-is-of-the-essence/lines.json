@@ -1,0 +1,29 @@
+{
+  "voice": "en_US-norman-medium",
+  "lines": {
+    "n0": {
+      "text": "Switzerland notes that the golf course will wait two more weeks.",
+      "duration": 3.37
+    },
+    "n1": {
+      "text": "Here, a public consultation usually lasts three months. Two weeks is barely time to find the envelope.",
+      "duration": 6.33
+    },
+    "n2": {
+      "text": "The golf course will still be there. Golf courses are very patient.",
+      "duration": 3.61
+    },
+    "v0": {
+      "text": "Golf seasons will be lost?",
+      "duration": 1.68
+    },
+    "v1": {
+      "text": "In Valais, our golf season ends when the snow arrives. Nobody appeals.",
+      "duration": 4.78
+    },
+    "v2": {
+      "text": "The snow has never lost a case.",
+      "duration": 1.85
+    }
+  }
+}

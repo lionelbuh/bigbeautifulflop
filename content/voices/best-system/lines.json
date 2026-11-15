@@ -1,0 +1,29 @@
+{
+  "voice": "en_US-norman-medium",
+  "lines": {
+    "n0": {
+      "text": "Switzerland agrees: air traffic control is important.",
+      "duration": 3.22
+    },
+    "n1": {
+      "text": "Our airspace is so small that a jet crosses it in under half an hour.",
+      "duration": 3.66
+    },
+    "n2": {
+      "text": "Which leaves very little time for drips and drabs.",
+      "duration": 2.91
+    },
+    "v0": {
+      "text": "Fifty years old? Ridiculous?",
+      "duration": 2.41
+    },
+    "v1": {
+      "text": "In Neuch\u00e2tel, a fifty-year-old watch is just getting started.",
+      "duration": 3.8
+    },
+    "v2": {
+      "text": "We call it vintage. And it still keeps time.",
+      "duration": 2.98
+    }
+  }
+}
