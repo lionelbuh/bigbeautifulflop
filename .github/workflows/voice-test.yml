@@ -13,6 +13,10 @@ on:
         description: 'Piper voices, separated by spaces'
         required: false
         default: 'en_GB-alan-medium en_US-ryan-high'
+      accent:
+        description: 'French voices reading English with a French accent (fr_FR-...)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -47,6 +51,21 @@ jobs:
                   out = f'{voice}-{part}{i}.wav'
                   subprocess.run(['python3', '-m', 'piper', '-m', f'{voice}.onnx', '-f', out, '--length-scale', '1.08'], input=text.replace('*', '').encode(), check=True)
           PY
+          if [ -n "${{ inputs.accent }}" ]; then
+            sudo apt-get install -y -qq espeak-ng >/dev/null
+            for n in ${{ inputs.accent }}; do
+              python3 -m piper.download_voices $n || echo "could not download $n"
+              lang=${n%%-*}; rest=${n#*-}; name=${rest%-*}; q=${rest##*-}
+              curl -sSLf -o $n.MODEL_CARD "https://huggingface.co/rhasspy/piper-voices/resolve/main/${lang%%_*}/$lang/$name/$q/MODEL_CARD" || echo "no model card for $n"
+              python3 - "${{ inputs.slug }}" "$n" <<'PY'
+          import json, subprocess, sys
+          s = json.load(open(f'../content/statements/{sys.argv[1]}.json'))
+          lines = [('n', x) for x in s['episode']['neutral']] + [('v', x) for x in s['episode']['reaction']]
+          for i, (part, text) in enumerate(lines):
+              subprocess.run(['python3', '../scripts/social/voice_accent.py', f'{sys.argv[2]}.onnx', f'{sys.argv[2]}-accent-{part}{i}.wav', text], check=True)
+          PY
+            done
+          fi
           rm -f *.onnx *.onnx.json
           ls -la
       - name: Commit the audio to this branch
