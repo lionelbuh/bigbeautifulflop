@@ -1,0 +1,29 @@
+{
+  "voice": "en_US-norman-medium",
+  "lines": {
+    "n0": {
+      "text": "Switzerland congratulates the fountains, the monuments and the Reflecting Pool.",
+      "duration": 4.42
+    },
+    "n1": {
+      "text": "Bern\u2019s fountains have been running since the 16th century. Nobody has asked them to host the Ryder Cup.",
+      "duration": 5.31
+    },
+    "n2": {
+      "text": "As for the screams of \u201cFORE!\u201d, we would suggest quiet hours after 10 p.m.",
+      "duration": 4.44
+    },
+    "v0": {
+      "text": "A golf course on an island, in the capital?",
+      "duration": 2.45
+    },
+    "v1": {
+      "text": "In Geneva, our island in the Rh\u00f4ne has a statue of Rousseau, and some ducks.",
+      "duration": 4.32
+    },
+    "v2": {
+      "text": "Nobody shouts \u201cFORE!\u201d. Rousseau prefers to read.",
+      "duration": 3.34
+    }
+  }
+}
