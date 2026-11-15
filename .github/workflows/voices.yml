@@ -16,7 +16,7 @@ on:
       length_scale:
         description: 'Speed: 1.0 is Piper default; higher is slower'
         required: false
-        default: '1.1'
+        default: '1.08'
 
 permissions:
   contents: write
