@@ -1,0 +1,62 @@
+{
+  "slug": "ninety-nine-point-ninety-nine",
+  "status": "published",
+  "published": "2026-11-16",
+  "headline": "99.99%",
+  "dek": "The President criticises 60 Minutes and says 99.99% of the drones and missiles fired by Iran since February 2026 were shot down or caused no U.S. deaths. Switzerland has reviewed the request.",
+  "topics": [
+    "Iran",
+    "military",
+    "media"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-16",
+    "time": "09:17",
+    "text": [
+      "The new people running 60 Minutes are even worse than their predecessors. A recent study on an attack in the early stages of Iran was not correctly stated. Since February 28, 2026, the start of Epic Fury, Iran has fired between 8,000-9,000 One-way Attack Drones. Only 2 of them got through, resulting in U.S. fatalities, both on the first day, hitting Kuwait and Saudi Arabia. Likewise, Iran has fired about 2,000 Ballistic Missiles. Only 1 out of the 2,0000 got through, and caused U.S. fatalities (Jordan). Translation: 99.99% of Iranian missiles and drones have been shot down or, in any event, not caused U.S. deaths. CENTCOM defensive measures have been historically effective. No one in the World has the ability to do so well. All of this being left out of the 60 Minutes “report.” Thank you for your attention to this matter. President DONALD J. TRUMP"
+    ],
+    "key": "Translation: 99.99% of Iranian missiles and drones have been shot down or, in any event, not caused U.S. deaths.",
+    "context": "Posted on 16 November 2026. The figures, the dates and the account of the 60 Minutes report are the President’s; “2,0000” is as written. Our versions are about the arithmetic, never about those who were killed.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 16 November 2026 (shown as 11/16/26, 6:17 AM Pacific)."
+    }
+  },
+  "neutral": {
+    "en": [
+      "Switzerland mourns those who were killed, and respects those who defend others.",
+      "We also checked the arithmetic: 3 out of about 10,500 is 99.97 percent.",
+      "In Switzerland, the last two decimals are considered important."
+    ],
+    "key": "We also checked the arithmetic: 3 out of about 10,500 is 99.97 percent."
+  },
+  "editions": {},
+  "episode": {
+    "review": "Switzerland has reviewed the request.",
+    "highlight": "99.99% of Iranian missiles and drones have been shot down",
+    "hook": "Trump says 99.99%. *Switzerland checked the math.*",
+    "neutral": [
+      "Switzerland mourns those who were killed, and respects those who defend others.",
+      "We also checked the arithmetic: 3 out of about 10,500 is 99.97 percent.",
+      "*In Switzerland, the last two decimals are considered important.*"
+    ],
+    "canton": "genevois",
+    "reaction": [
+      "Geneva is home to the Red Cross and the Geneva Conventions.",
+      "Here, we count differently: every single one matters.",
+      "*That is why we never round up.*"
+    ],
+    "tagline": [
+      "Switzerland: Neutral since 1815.",
+      "Precise to the last decimal since forever."
+    ]
+  }
+}
