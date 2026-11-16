@@ -492,19 +492,19 @@ export function episodeSchedule(s, voice = voiceOf(s)) {
   const hook = !!s.episode.hook;
   // with a hook (the opening line), the voice sets the pace: a line stays as long as it is said, plus a breath
   const hold = (part) => (x, i) => (voice && hook
-    ? Math.max(2.8, voice.lines[`${part}${i}`].duration + 0.9)
+    ? Math.max(2.2, voice.lines[`${part}${i}`].duration + 0.5)
     : Math.max(read(x), voice ? voice.lines[`${part}${i}`].duration + 0.9 : 0));
   const [a1, a2, a3 = 0] = s.episode.neutral.map(hold('n'));
   const [b1, b2, b3 = 0] = s.episode.reaction.map(hold('v'));
   const r = (x) => Math.round(x * 10) / 10;
   // Swiss Neutrality appears as the post shrinks; the stamp lands on its first sentence.
   // With a hook: 0-2.6 s the hook (Monsieur Neutre, big), 2.6-5.8 s Trump's key line, then Swiss Neutrality.
-  const hk = hook ? Math.max(2.6, (voice?.lines.h0?.duration ?? 2) + 0.6) : 0;
-  const n0 = hook ? r(hk + 3.4) : 4.7;
+  const hk = hook ? Math.max(2.4, (voice?.lines.h0?.duration ?? 2) + 0.4) : 0;
+  const n0 = hook ? r(hk + 3.0) : 4.7;
   const T = { hook, hk: r(hk), k1: r(n0 - 0.2), n0, n2: r(n0 + a1), n3: r(n0 + a1 + a2) };
   T.nEnd = r(n0 + a1 + a2 + a3);
   T.v0 = r(T.nEnd + 0.3);
-  T.v2 = r(T.v0 + 0.6 + b1); // a moment for the flag and the map
+  T.v2 = r(T.v0 + (hook ? 0.4 : 0.6) + b1); // a moment for the flag and the map
   T.v3 = r(T.v2 + b2);
   T.vEnd = r(T.v3 + b3);
   T.endAt = r(T.vEnd + 0.2);

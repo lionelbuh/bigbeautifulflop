@@ -316,6 +316,11 @@ export function regionTitle(region) {
  * format, a question (“What if Trump were from Vaud?”).
  */
 export function youtubeTitle(s, series, { question = false } = {}) {
+  // an episode with a hook: the hook is the title ("Trump says time is of the essence. Switzerland disagrees.")
+  if (s.episode?.hook) {
+    const h = `${s.episode.hook.replace(/\*/g, '')} 🇨🇭 #Shorts`;
+    if (chars(h) <= 100) return h;
+  }
   if (series?.id === 'episode' || s.episode) {
     const t = `Switzerland has reviewed the request: ${s.headline} #Shorts`;
     return chars(t) <= 100 ? t : `${excerpt(`Switzerland has reviewed: ${s.headline}`, 91)} #Shorts`;
