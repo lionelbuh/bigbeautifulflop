@@ -1,13 +1,27 @@
 """Monsieur Neutre's lines read by Kokoro (open source, Apache 2.0): same files as voice_lines.py.
-    python3 scripts/social/voice_kokoro.py <slug> <voice> [speed] [out_dir]
+    python3 scripts/social/voice_kokoro.py <slug> <voice|auto> [speed] [out_dir]
+"auto": the voices take turns, one episode each (content/voices/rotation.json): Puck, then Onyx.
 Voices: am_michael, am_adam, am_fenrir, am_puck (American), bm_george, bm_lewis, bm_daniel (British).
 """
 import json, os, sys
 import numpy as np, soundfile as sf
 from kokoro import KPipeline
 
+ROTATION = ['am_puck', 'am_onyx']
 slug, voice = sys.argv[1], sys.argv[2]
-speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
+speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.1
+rot_file = 'content/voices/rotation.json'
+if voice == 'auto':
+    # an episode keeps its voice when it is read again; a new one takes the next voice in turn
+    prev = f'content/voices/{slug}/lines.json'
+    known = json.load(open(prev)).get('voice', '').replace('kokoro-', '') if os.path.exists(prev) else ''
+    if known in ROTATION:
+        voice = known
+    else:
+        rot = json.load(open(rot_file)) if os.path.exists(rot_file) else {'next': 0}
+        voice = ROTATION[rot['next'] % len(ROTATION)]
+        os.makedirs('content/voices', exist_ok=True)
+        json.dump({'next': (rot['next'] + 1) % len(ROTATION), 'last': {'slug': slug, 'voice': voice}}, open(rot_file, 'w'), indent=2)
 out = sys.argv[4] if len(sys.argv) > 4 else f'content/voices/{slug}'
 pipe = KPipeline(lang_code='b' if voice.startswith('b') else 'a')
 s = json.load(open(f'content/statements/{slug}.json'))
@@ -20,6 +34,10 @@ for part, key in (('h', 'hook'), ('n', 'neutral'), ('v', 'reaction')):
     for i, text in enumerate(texts):
         clean = text.replace('*', '')
         audio = np.concatenate([np.asarray(a) for _, _, a in pipe(clean, voice=voice, speed=speed)])
+        # trim the silence Kokoro leaves at both ends, keeping a short breath
+        loud = np.nonzero(np.abs(audio) > 0.01)[0]
+        if loud.size:
+            audio = audio[max(0, loud[0] - 1200):min(len(audio), loud[-1] + 3600)]
         f = f'{out}/{part}{i}.wav'
         sf.write(f, audio, 24000, subtype='PCM_16')
         lines[f'{part}{i}'] = {'text': clean, 'duration': round(len(audio) / 24000, 2)}

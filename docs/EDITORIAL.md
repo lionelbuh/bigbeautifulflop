@@ -264,8 +264,8 @@ priorities (the ballroom, his name on everything, gold, portraits…), reviewed 
 The recurring character of the videos: a small Swiss civil servant drawn in ink (grey suit, red bow tie,
 round glasses, hat with a red band), `scripts/social/assets/monsieur-neutre.mjs`. In every episode he reads
 the post with a magnifier, says the Swiss lines in speech bubbles (Swiss Neutrality, then the canton),
-slams the NEUTRAL SWISS stamp and tips his hat at the end. His voice (from 15 November 2026) is the free
-Piper voice “Norman” (American English, trained on public-domain LibriVox recordings): the Voices workflow
-(`.github/workflows/voices.yml`) reads his lines into `content/voices/<slug>/`, and `npm run videos` mixes
-them in as each bubble appears, with the music lowered; the bubbles stay as subtitles. He is
+slams the NEUTRAL SWISS stamp and tips his hat at the end. His voice (from 17 November 2026): Kokoro (open source, Apache 2.0), two American voices taking turns,
+one episode each: Puck, then Onyx (`content/voices/rotation.json`). The Voices workflow
+(`.github/workflows/voices.yml`, engine kokoro, voice auto) reads his lines into `content/voices/<slug>/`,
+and `npm run videos` mixes them in as each bubble appears, with the music lowered; the bubbles stay as subtitles. He is
 never a caricature of a real person, and the President's post is never put in his mouth.

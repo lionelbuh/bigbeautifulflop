@@ -10,13 +10,13 @@ on:
         description: 'Episodes (statement slugs), separated by spaces'
         required: true
       voice:
-        description: 'Piper voice'
+        description: 'Voice: auto (Kokoro Puck and Onyx in turn), a Kokoro voice (am_puck...), or a Piper voice (en_US-norman-medium)'
         required: false
-        default: 'en_US-norman-medium'
+        default: 'auto'
       engine:
-        description: 'piper or kokoro'
+        description: 'kokoro (from 17 November 2026) or piper'
         required: false
-        default: 'piper'
+        default: 'kokoro'
       test_voices:
         description: 'Kokoro test: several voices, written to content/voices-test/<voice>/<slug>/'
         required: false
@@ -49,9 +49,9 @@ jobs:
           pip install -q "kokoro>=0.9" soundfile
           for slug in ${{ inputs.slugs }}; do
             if [ -n "${{ inputs.test_voices }}" ]; then
-              for v in ${{ inputs.test_voices }}; do python3 scripts/social/voice_kokoro.py "$slug" "$v" 1.0 "content/voices-test/$v/$slug"; done
+              for v in ${{ inputs.test_voices }}; do python3 scripts/social/voice_kokoro.py "$slug" "$v" 1.1 "content/voices-test/$v/$slug"; done
             else
-              python3 scripts/social/voice_kokoro.py "$slug" "${{ inputs.voice }}" 1.0
+              python3 scripts/social/voice_kokoro.py "$slug" "${{ inputs.voice }}" 1.1
             fi
           done
       - name: Read the lines
