@@ -1,0 +1,54 @@
+{
+  "slug": "oval-office-gold",
+  "status": "published",
+  "published": "2026-11-17",
+  "after": "ninety-nine-point-ninety-nine",
+  "format": "priorities",
+  "date": "2026-11-17",
+  "subject": "The gold in the Oval Office",
+  "facts": [
+    "Since 2025: gold accents on the ceiling, the door frames and around the presidential seal.",
+    "Paid for by the President himself, according to the White House.",
+    "Cost: not disclosed."
+  ],
+  "sources": [
+    "https://www.foxnews.com/politics/trump-gives-oval-office-gilded-makeover-covers-cost-himself",
+    "https://www.foxbusiness.com/politics/from-gilded-oval-office-new-monument-look-trumps-renovation-projects",
+    "https://snb.ch/en/ifor/public/qas/id/qas_bilanz",
+    "https://www.mining.com/web/swiss-central-bank-has-no-plans-to-increase-gold-reserves-says-chairman/",
+    "https://swissinfo.ch/eng/business/banking-on-bunkers-in-the-swiss-alps/10018268",
+    "https://business-standard.com/article/international/secret-alpine-gold-vaults-are-the-new-swiss-bank-accounts-116093001064_1.html"
+  ],
+  "sourcesLabel": "Sources: the White House via Fox News, Swiss National Bank, swissinfo, Bloomberg",
+  "figure": "Gold (illustration)",
+  "figureType": "gold",
+  "review": "Switzerland has reviewed the decoration.",
+  "assessment": [],
+  "alternative": {
+    "us": {
+      "flag": "United States",
+      "label": "The Oval Office",
+      "amount": "Gold: on the ceiling",
+      "note": "Gold accents on the ceiling, the doors and the seal. For everyone to see."
+    },
+    "ch": {
+      "flag": "Switzerland",
+      "label": "The Swiss National Bank",
+      "amount": "1,040 tonnes of gold",
+      "note": "About 70% kept in Switzerland, in places it does not disclose. Some old army bunkers in the Alps now store gold too."
+    },
+    "disclaimer": "An illustrative comparison: a ceiling is not a central bank.",
+    "closing": "*In Switzerland, gold goes inside the mountain. Not on the ceiling.*"
+  },
+  "verdictIntro": "After careful consideration, the Swiss assessment:",
+  "verdict": [
+    "Very shiny.",
+    "*Wrong place for the gold.*"
+  ],
+  "endLine": "Our gold is in the vault. Our ceilings are just ceilings.",
+  "tagline": [
+    "America has its priorities.",
+    "Switzerland has questions."
+  ],
+  "mascot": true
+}

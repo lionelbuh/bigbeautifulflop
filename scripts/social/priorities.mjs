@@ -60,6 +60,12 @@ function altHtml(a) {
   return `<div id="alt"><p class="sec">${CROSS(34)} The Swiss Alternative <small>Satire</small></p>${card('us', a.us)}${card('ch', a.ch)}<p class="disc">${e(a.disclaimer)}</p><p class="close">${mk(a.closing)}</p></div>`;
 }
 
+// gold bars, stacked, drawn as an editorial figure
+const GOLD = (() => {
+  const bar = (x, y) => `<g transform="translate(${x} ${y})"><path d="M0 60 L24 0 H176 L200 60 Z" fill="#e3b73f" stroke="#171614" stroke-width="4" stroke-linejoin="round"/><path d="M24 0 L36 22 H164 L176 0" fill="none" stroke="#171614" stroke-width="2.5" opacity=".5"/><text x="100" y="46" text-anchor="middle" font-family="F, Georgia, serif" font-size="20" font-weight="700" fill="#171614" opacity=".7">999.9</text></g>`;
+  return `<svg viewBox="0 0 940 380"><rect width="940" height="380" fill="#efe6d2" stroke="#171614" stroke-width="4"/>${[[170, 280], [370, 280], [570, 280], [270, 210], [470, 210], [370, 140]].map(([x, y]) => bar(x, y)).join('')}</svg>`;
+})();
+
 export function prioritiesHtml(sp) {
   const T = schedule(sp);
   const day = new Date(`${sp.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -156,7 +162,7 @@ ${T.a.slice(1).map((t, i) => `#a .p${i + 2}{animation:fadein .5s ease-out ${t}s 
 <div class="mast"><div class="row"><span>Independent satire</span><span>Special edition</span><span>${day}</span></div><p class="nm">Big Beautiful <i>Flop</i></p><div class="rule"></div></div>
 <div class="kick"><span class="k">${CROSS(30)} The Swiss Priorities Report</span><p class="tg">${sp.tagline.map(e).join('<br>')}</p></div>
 <p class="subj">${e(sp.subject)}</p>
-<div class="fig">${PARQUET}<p>${e(sp.figure)}</p></div>
+<div class="fig">${sp.figureType === 'gold' ? GOLD : PARQUET}<p>${e(sp.figure)}</p></div>
 <div class="facts"><h3>The facts</h3>${sp.facts.map((x) => `<p>${e(x)}</p>`).join('')}</div>
 <p class="src"${sp.mascot ? ' style="right:320px"' : ''}>${e(sp.sourcesLabel || 'Sources: the White House, CBS News, SCOTUSblog')}</p>
 <p class="rev">${e(sp.review)}</p>
