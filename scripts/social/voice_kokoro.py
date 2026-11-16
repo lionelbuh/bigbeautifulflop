@@ -24,10 +24,17 @@ if voice == 'auto':
         json.dump({'next': (rot['next'] + 1) % len(ROTATION), 'last': {'slug': slug, 'voice': voice}}, open(rot_file, 'w'), indent=2)
 out = sys.argv[4] if len(sys.argv) > 4 else f'content/voices/{slug}'
 pipe = KPipeline(lang_code='b' if voice.startswith('b') else 'a')
-s = json.load(open(f'content/statements/{slug}.json'))
+# an episode (content/statements) or a Priorities Report (content/specials): a few lines of it
+if os.path.exists(f'content/statements/{slug}.json'):
+    s = json.load(open(f'content/statements/{slug}.json'))
+    parts = (('h', 'hook'), ('n', 'neutral'), ('v', 'reaction'))
+else:
+    sp = json.load(open(f'content/specials/{slug}.json'))
+    s = {'episode': {'review': sp['review'], 'closing': (sp.get('alternative') or {}).get('closing', ''), 'verdict': ' '.join(sp['verdict'])}}
+    parts = (('r', 'review'), ('c', 'closing'), ('d', 'verdict'))
 os.makedirs(out, exist_ok=True)
 lines = {}
-for part, key in (('h', 'hook'), ('n', 'neutral'), ('v', 'reaction')):
+for part, key in parts:
     texts = s['episode'].get(key) or []
     if isinstance(texts, str):
         texts = [texts]

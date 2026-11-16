@@ -4,7 +4,7 @@
 //   node scripts/social/priorities.mjs <slug>    renders content/specials/<slug>.json
 //   -> public/social/priorities/<slug>/video-1.mp4 and cover-1.jpg
 import { createRequire } from 'node:module';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -21,6 +21,18 @@ export const SIGN_OFF = 'Switzerland remains available for a modest, well-insure
 const mk = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
 /** The timeline, from the length of the texts: every sentence gets time to be read. */
+/** Monsieur Neutre's voice for a Priorities Report: a few lines (r0 review, c0 closing, d0 verdict), or null. */
+export function voiceOfSpecial(sp) {
+  const dir = path.join(root, 'content/voices', sp.slug);
+  const meta = path.join(dir, 'lines.json');
+  if (!existsSync(meta)) return null;
+  const v = JSON.parse(readFileSync(meta, 'utf8'));
+  const plain = (x) => (x || '').replace(/\*/g, '');
+  const want = { r0: plain(sp.review), c0: plain(sp.alternative?.closing), d0: plain(sp.verdict.join(' ')) };
+  const ok = Object.entries(want).filter(([, x]) => x).every(([k, x]) => v.lines[k]?.text === x && existsSync(path.join(dir, `${k}.wav`)));
+  return ok ? { ...v, dir } : null;
+}
+
 export function schedule(sp) {
   const T = { facts: 2.2 };
   T.factsEnd = r(T.facts + 6.6); // the three short notes appear together
@@ -39,7 +51,9 @@ export function schedule(sp) {
     T.altEnd = r(T.altClose + read(sp.alternative.closing));
   }
   T.v0 = r((T.altEnd ?? T.aEnd) + 0.3);
-  T.stamp = r(T.v0 + 1.4);
+  const voice = voiceOfSpecial(sp);
+  // with a voice, the verdict is said first, then the stamp
+  T.stamp = r(Math.max(T.v0 + 1.4, voice?.lines.d0 ? T.v0 + 0.5 + voice.lines.d0.duration + 0.2 : 0));
   T.vEnd = r(T.stamp + 3.8);
   T.endAt = r(T.vEnd + 0.2);
   return T;
@@ -144,6 +158,10 @@ ${T.a.slice(1).map((t, i) => `#a .p${i + 2}{animation:fadein .5s ease-out ${t}s 
 @keyframes lift{from{transform:rotate(0)}to{transform:rotate(-110deg)}}
 @keyframes slam{from{transform:rotate(-110deg)}to{transform:rotate(-10deg)}}
 #m3 .head{animation:proud .5s ease-out ${T.stamp + 0.4}s both}
+.m .mouth{transform:scaleY(.35)}
+@keyframes talk{from{transform:scaleY(.35)}to{transform:scaleY(1.25)}}
+${(() => { const v = voiceOfSpecial(sp); if (!v) return ''; const n = (k) => Math.max(2, Math.round((v.lines[k]?.duration || 0) / 0.15));
+  return `#m1 .mouth{animation:talk .15s ease-in-out ${r(T.review + 0.3)}s ${n('r0')} alternate}#m3 .mouth{animation:talk .15s ease-in-out ${r(T.v0 + 0.5)}s ${n('d0')} alternate}`; })()}
 @keyframes proud{to{transform:rotate(-6deg)}}
 #m4{left:50%;margin-left:-110px;width:220px;top:1520px;z-index:3;animation:fadein .4s ease-out ${T.endAt + 0.3}s both}
 #m4 .hat{animation:tip .9s ease-in-out ${T.endAt + 1.4}s both}
@@ -177,6 +195,9 @@ ${GRAIN}`;
 export async function renderPriorities(slug, { json, out } = {}) {
   const sp = JSON.parse(readFileSync(json || path.join(root, 'content/specials', `${slug}.json`), 'utf8'));
   const T = schedule(sp);
+  const voice = voiceOfSpecial(sp);
+  const cues = voice ? [['r0', T.review + 0.3], ['c0', (T.altClose ?? 0) + 0.2], ['d0', T.v0 + 0.5]].filter(([k]) => voice.lines[k]) : [];
+  if (!voice) console.log(`${slug}: no voice (run the Voices workflow with this slug)`);
   const dir = out || path.join(root, 'public/social/priorities', slug);
   mkdirSync(dir, { recursive: true });
   const work = mkdtempSync(path.join(tmpdir(), 'bbf-priorities-'));
@@ -185,7 +206,8 @@ export async function renderPriorities(slug, { json, out } = {}) {
     const page = await browser.newPage();
     await render(page, work, prioritiesHtml(sp), path.join(dir, 'video-1.mp4'), {
       duration: r(T.endAt + 7.2), end: r(T.endAt + 0.2), bed: true,
-      fx: [{ file: 'bbf-stamp.wav', at: r(T.stamp + 0.26), volume: 1 }], coverAt: r(T.stamp + 1),
+      fx: [{ file: 'bbf-stamp.wav', at: r(T.stamp + 0.26), volume: 1 }, ...cues.map(([k, at]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(at), volume: 0.95 }))],
+      ...(voice ? { bedVolume: 0.16 } : {}), coverAt: r(T.stamp + 1),
     });
   } finally {
     await browser.close();
