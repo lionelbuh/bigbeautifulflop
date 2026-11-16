@@ -1,0 +1,18 @@
+{
+  "voice": "kokoro-am_onyx",
+  "speed": 1.1,
+  "lines": {
+    "r0": {
+      "text": "Switzerland has reviewed the decoration.",
+      "duration": 2.33
+    },
+    "c0": {
+      "text": "In Switzerland, gold goes inside the mountain. Not on the ceiling.",
+      "duration": 3.54
+    },
+    "d0": {
+      "text": "Very shiny. Wrong place for the gold.",
+      "duration": 2.17
+    }
+  }
+}
