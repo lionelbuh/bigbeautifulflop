@@ -527,7 +527,8 @@ export function episodeTiming(s) {
  * or null when there is none yet, or when a line has changed since it was recorded.
  */
 export function voiceOf(s) {
-  const dir = path.join(root, 'content/voices', s.slug);
+  // BBF_VOICES: another folder of voices (tests of other voices), e.g. content/voices-test/am_michael
+  const dir = path.join(root, process.env.BBF_VOICES || 'content/voices', s.slug);
   const meta = path.join(dir, 'lines.json');
   if (!s.episode || !existsSync(meta)) return null;
   const v = JSON.parse(readFileSync(meta, 'utf8'));

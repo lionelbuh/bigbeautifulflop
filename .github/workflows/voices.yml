@@ -13,6 +13,14 @@ on:
         description: 'Piper voice'
         required: false
         default: 'en_US-norman-medium'
+      engine:
+        description: 'piper or kokoro'
+        required: false
+        default: 'piper'
+      test_voices:
+        description: 'Kokoro test: several voices, written to content/voices-test/<voice>/<slug>/'
+        required: false
+        default: ''
       length_scale:
         description: 'Speed: 1.0 is Piper default; higher is slower'
         required: false
@@ -34,7 +42,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Read the lines (Kokoro)
+        if: ${{ inputs.engine == 'kokoro' }}
+        run: |
+          sudo apt-get install -y -qq espeak-ng >/dev/null
+          pip install -q "kokoro>=0.9" soundfile
+          for slug in ${{ inputs.slugs }}; do
+            if [ -n "${{ inputs.test_voices }}" ]; then
+              for v in ${{ inputs.test_voices }}; do python3 scripts/social/voice_kokoro.py "$slug" "$v" 1.0 "content/voices-test/$v/$slug"; done
+            else
+              python3 scripts/social/voice_kokoro.py "$slug" "${{ inputs.voice }}" 1.0
+            fi
+          done
       - name: Read the lines
+        if: ${{ inputs.engine != 'kokoro' }}
         run: |
           pip install -q piper-tts
           mkdir -p /tmp/piper && (cd /tmp/piper && python3 -m piper.download_voices ${{ inputs.voice }})
@@ -45,6 +66,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content/voices
+          git add -A content
           git commit -m "Voices: ${{ inputs.slugs }} [skip ci]" || exit 0
           git pull -q --rebase && git push
