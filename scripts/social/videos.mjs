@@ -498,9 +498,9 @@ export function episodeSchedule(s, voice = voiceOf(s)) {
   const [b1, b2, b3 = 0] = s.episode.reaction.map(hold('v'));
   const r = (x) => Math.round(x * 10) / 10;
   // Swiss Neutrality appears as the post shrinks; the stamp lands on its first sentence.
-  // With a hook: 0-2.6 s the hook (Monsieur Neutre, big), 2.6-5.8 s Trump's key line, then Swiss Neutrality.
+  // With a hook: first the hook (Monsieur Neutre, big), then Trump's full post as without a hook, then Swiss Neutrality.
   const hk = hook ? Math.max(2.4, (voice?.lines.h0?.duration ?? 2) + 0.4) : 0;
-  const n0 = hook ? r(hk + 3.0) : 4.7;
+  const n0 = hook ? r(hk + 4.7) : 4.7;
   const T = { hook, hk: r(hk), k1: r(n0 - 0.2), n0, n2: r(n0 + a1), n3: r(n0 + a1 + a2) };
   T.nEnd = r(n0 + a1 + a2 + a3);
   T.v0 = r(T.nEnd + 0.3);
@@ -648,22 +648,17 @@ ${mascot ? `/* speech bubbles: Monsieur Neutre says the Swiss lines */
 #m2 .mouth{animation:${(cues.length ? cues.filter((c) => c.key[0] === 'n').map((c) => [c.at, c.duration]) : [T.n0 + 0.2, T.n2, T.n3].slice(0, ep.neutral.length).map((t) => [t, 1.8])).map(([t, d]) => `talk .15s ease-in-out ${t}s ${Math.max(2, Math.round(d / 0.15))} alternate`).join(',')}}
 #m3 .mouth{animation:${(cues.length ? cues.filter((c) => c.key[0] === 'v').map((c) => [c.at, c.duration]) : [T.v0 + 0.6, T.v2, T.v3].slice(0, ep.reaction.length).map((t) => [t, 1.8])).map(([t, d]) => `talk .15s ease-in-out ${t}s ${Math.max(2, Math.round(d / 0.15))} alternate`).join(',')}}
 ` : ''}
-${T.hook ? `/* the hook: Monsieur Neutre says one line, big; then Trump's key line; the full post stays small above Swiss Neutrality */
-.post{animation:fadein .4s ease-out ${T.k1}s both,hide .4s ease-in ${T.nEnd - 0.2}s forwards;transform:translateY(var(--ty,-260px)) scale(.46)}
-.rev,#m1{display:none}
+${T.hook ? `/* the hook: Monsieur Neutre says one line, big; then Trump's full post, as in every episode */
 #h{position:absolute;inset:0;animation:hide .3s ease-in ${T.hk}s forwards}
 #h .q{position:absolute;left:70px;right:70px;top:330px;font-family:F;font-weight:600;font-size:88px;line-height:1.04;letter-spacing:-.02em;text-align:center}
 #h .q em{font-style:italic;color:${RED}}
 #m0{left:50%;margin-left:-250px;width:500px;top:960px}
 #m0 .brows{animation:raise .4s ease-out .2s both}
 #m0 .mouth{animation:talk .15s ease-in-out .3s ${Math.max(2, Math.round((cues.find((c) => c.key === 'h0')?.duration ?? 1.8) / 0.15))} alternate}
-#k{position:absolute;inset:0;animation:fadein .4s ease-out ${T.hk}s both,hide .3s ease-in ${T.k1}s forwards}
-#k .lb{position:absolute;left:70px;right:70px;top:380px;display:flex;align-items:center;gap:18px;font-size:24px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#57524a}
-#k .lb i{width:56px;height:56px;border-radius:50%;background:#6b665e;color:#fff;display:grid;place-items:center;font-style:normal;letter-spacing:0;font-size:22px}
-#k .kq{position:absolute;left:70px;right:70px;top:480px;font-family:I;font-weight:800;font-size:72px;line-height:1.14;letter-spacing:-.01em}
-#k .kq mark{background:linear-gradient(transparent 58%,#efd27e 58%)}
-#k .rv{position:absolute;left:70px;right:70px;top:1240px;text-align:center;font-family:F;font-style:italic;font-size:56px;color:#1f3a5f}
-#k .rv::before{content:'';display:block;width:120px;margin:0 auto 24px;border-top:2px solid #171614}
+.post{animation:fadein .4s ease-out ${T.hk}s both,zoom 1.6s cubic-bezier(.3,0,.2,1) ${r1(T.hk + 1.2)}s forwards,shrink .7s ease-in-out ${r1(T.hk + 4.2)}s forwards,hide .4s ease-in ${T.nEnd - 0.2}s forwards}
+.rev{animation:fadein .4s ease-out ${T.hk}s both,hide .3s ease-in ${r1(T.hk + 4.3)}s forwards}
+#m1{animation:fadein .5s ease-out ${r1(T.hk + 1.2)}s both,hide .3s ease-in ${r1(T.hk + 4.4)}s forwards}
+#m1 .brows{animation:raise .4s ease-out ${r1(T.hk + 3.2)}s both}
 ` : ''}
 /* the end */
 #end{background:#F4F0E6;animation:fadein .5s ease-out ${T.endAt}s both}
@@ -675,8 +670,7 @@ ${T.hook ? `/* the hook: Monsieur Neutre says one line, big; then Trump's key li
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>
 ${FULL}</div>
 <p class="rev">${e(ep.review || 'Switzerland has reviewed the request.')}</p>
-${T.hook ? `<div id="h"><p class="q">${mk(ep.hook)}</p><div class="m" id="m0">${monsieurNeutre()}</div></div>
-<div id="k"><p class="lb"><i>DT</i> Trump on Truth Social · ${day}</p><p class="kq">“…${(() => { const key = s.original.key || ep.highlight; return ep.highlight && key.includes(ep.highlight) ? e(key).replace(e(ep.highlight), `<mark>${e(ep.highlight)}</mark>`) : `<mark>${e(key)}</mark>`; })()}…”</p><p class="rv">${e(ep.review || 'Switzerland has reviewed the request.')}</p></div>` : ''}
+${T.hook ? `<div id="h"><p class="q">${mk(ep.hook)}</p><div class="m" id="m0">${monsieurNeutre()}</div></div>` : ''}
 
 <div id="n"><p class="sec">${CROSS(34)} Swiss Neutrality <small>Satire</small></p><div class="big${mascot ? ' bub' : ''}">${staged(ep.neutral)}</div></div>
 <div class="stamp">${STAMP}</div>

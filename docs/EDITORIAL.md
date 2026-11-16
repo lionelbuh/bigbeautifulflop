@@ -13,7 +13,9 @@ Each new statement is one short episode, all in English, with one video (no seco
    `src/site/cantons.js`; vary them, `npm run regions` helps), with `episode.reaction`, two or three short lines.
 4. **The tagline** (`episode.tagline`), e.g. “Switzerland: Neutral since 1815.” / “Careful with the budget since forever.”
 
-`episode.highlight` (optional) must be exact words of the original; `*…*` marks the red italic last line.
+`episode.hook` (from 16 November 2026): one short line Monsieur Neutre says first, big, to stop the scroll
+(e.g. “Trump says time is of the essence. *Switzerland disagrees.*”); it is also the YouTube title. Then
+Trump’s full post, readable, as always. `episode.highlight` (optional) must be exact words of the original; `*…*` marks the red italic last line.
 `editions` is `{}` and there is no presidential version. Visual direction: ivory paper (#F4F0E6) with grain,
 newspaper typography, red #D71920, flags and abstract maps in SVG; no photographs, no cartoon scenery,
 no imitation of anyone’s face or voice.
