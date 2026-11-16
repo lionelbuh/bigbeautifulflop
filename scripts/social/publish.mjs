@@ -6,6 +6,7 @@
  *   node scripts/social/publish.mjs --mode preview    prints what would be posted; posts nothing
  *   node scripts/social/publish.mjs --mode publish    posts the new statements not posted yet
  *   node scripts/social/publish.mjs --mode delete --slug <slug> --networks bluesky   deletes a post (and its log entry)
+ *   node scripts/social/publish.mjs --mode thumbnail --slug <slug>   sets our cover as the YouTube thumbnail
  *   options: --slug <slug> (one statement, even older than the start date), --networks bluesky,threads
  *
  * Only statements published on or after `start` (content/social/config.json) are posted automatically,
@@ -494,7 +495,23 @@ const youtube = {
       throw err;
     }
     const res = await call(start.headers.get('location'), { method: 'PUT', headers: { 'Content-Type': 'video/mp4' }, body: bytes });
+    await this.thumbnail(res.id, clip.file.replace(/video(-\d)?\.mp4$/, (m, n) => `cover${n || ''}.jpg`), token);
     return { id: res.id };
+  },
+  /**
+   * Our cover (the opening screen) as the thumbnail; otherwise YouTube picks a frame from the middle.
+   * Needs a verified channel; a refusal is reported, never a failure of the post.
+   */
+  async thumbnail(id, file, token) {
+    if (!existsSync(file)) return;
+    try {
+      const res = await fetch(`https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId=${encodeURIComponent(id)}&uploadType=media`, {
+        method: 'POST', headers: { Authorization: `Bearer ${token || await this.token()}`, 'Content-Type': 'image/jpeg' }, body: readFileSync(file),
+      });
+      console.log(res.ok ? `  (YouTube: thumbnail set for ${id})` : `  (YouTube: thumbnail not set for ${id}: HTTP ${res.status} ${(await res.text()).slice(0, 200)})`);
+    } catch (err) {
+      console.log(`  (YouTube: thumbnail not set: ${err.message.slice(0, 120)})`);
+    }
   },
   async publish(s) {
     const clip = clipOf(s, 1);
@@ -541,6 +558,13 @@ async function main() {
     return;
   }
 
+  // the cover as thumbnail of a video already on YouTube: --mode thumbnail --slug <slug>
+  if (mode === 'thumbnail') {
+    const id = log[slug]?.youtube?.id;
+    if (!slug || !id) throw new Error('--mode thumbnail needs --slug of a statement posted on YouTube');
+    await youtube.thumbnail(id, coverFile({ slug }, 1));
+    return;
+  }
   if (mode === 'delete') {
     if (!slug) throw new Error('delete needs --slug');
     for (const name of chosen) {

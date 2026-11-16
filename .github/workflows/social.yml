@@ -26,7 +26,7 @@ on:
         required: true
         default: check
         type: choice
-        options: [check, preview, publish, delete]
+        options: [check, preview, publish, delete, thumbnail]
       slug:
         description: 'One statement (its slug), optional'
         required: false
