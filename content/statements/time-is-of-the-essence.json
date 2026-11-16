@@ -42,6 +42,7 @@
   "episode": {
     "review": "Switzerland has reviewed the request.",
     "highlight": "Time is of the essence",
+    "hook": "Trump says time is of the essence. *Switzerland disagrees.*",
     "neutral": [
       "Switzerland notes that the golf course will wait two more weeks.",
       "Here, a public consultation usually lasts three months. Two weeks is barely time to find the envelope.",

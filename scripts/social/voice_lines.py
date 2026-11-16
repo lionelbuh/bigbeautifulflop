@@ -13,8 +13,11 @@ s = json.load(open(f'content/statements/{slug}.json'))
 out = f'content/voices/{slug}'
 os.makedirs(out, exist_ok=True)
 lines = {}
-for part, key in (('n', 'neutral'), ('v', 'reaction')):
-    for i, text in enumerate(s['episode'][key]):
+for part, key in (('h', 'hook'), ('n', 'neutral'), ('v', 'reaction')):
+    texts = s['episode'].get(key) or []
+    if isinstance(texts, str):
+        texts = [texts]
+    for i, text in enumerate(texts):
         clean = text.replace('*', '')
         f = f'{out}/{part}{i}.wav'
         # a little slower than Piper's default (1.0), which sounds mechanical; a short pause between sentences

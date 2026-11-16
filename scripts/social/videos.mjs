@@ -489,12 +489,19 @@ export const EPISODE = { duration: 25, end: 21.4, bed: true, fx: [{ file: 'bbf-s
 export function episodeSchedule(s, voice = voiceOf(s)) {
   const read = (x) => Math.min(6.5, Math.max(4, 3.5 + x.replace(/\*/g, '').length / 30));
   // with a voice, a line stays at least as long as Monsieur Neutre takes to say it, plus a breath
-  const hold = (part) => (x, i) => Math.max(read(x), voice ? voice.lines[`${part}${i}`].duration + 0.9 : 0);
+  const hook = !!s.episode.hook;
+  // with a hook (the opening line), the voice sets the pace: a line stays as long as it is said, plus a breath
+  const hold = (part) => (x, i) => (voice && hook
+    ? Math.max(2.8, voice.lines[`${part}${i}`].duration + 0.9)
+    : Math.max(read(x), voice ? voice.lines[`${part}${i}`].duration + 0.9 : 0));
   const [a1, a2, a3 = 0] = s.episode.neutral.map(hold('n'));
   const [b1, b2, b3 = 0] = s.episode.reaction.map(hold('v'));
   const r = (x) => Math.round(x * 10) / 10;
-  const n0 = 4.7; // Swiss Neutrality appears as the post shrinks; the stamp lands on its first sentence
-  const T = { n2: r(n0 + a1), n3: r(n0 + a1 + a2) };
+  // Swiss Neutrality appears as the post shrinks; the stamp lands on its first sentence.
+  // With a hook: 0-2.6 s the hook (Monsieur Neutre, big), 2.6-5.8 s Trump's key line, then Swiss Neutrality.
+  const hk = hook ? Math.max(2.6, (voice?.lines.h0?.duration ?? 2) + 0.6) : 0;
+  const n0 = hook ? r(hk + 3.4) : 4.7;
+  const T = { hook, hk: r(hk), k1: r(n0 - 0.2), n0, n2: r(n0 + a1), n3: r(n0 + a1 + a2) };
   T.nEnd = r(n0 + a1 + a2 + a3);
   T.v0 = r(T.nEnd + 0.3);
   T.v2 = r(T.v0 + 0.6 + b1); // a moment for the flag and the map
@@ -509,8 +516,9 @@ export function episodeTiming(s) {
   const lines = voice ? voiceCues(s, T) : [];
   return {
     ...EPISODE, duration: r1(T.endAt + 3.8), end: r1(T.endAt + 0.2),
+    fx: [{ file: 'bbf-stamp.wav', at: r1(T.n0 + 0.76), volume: 1 }], coverAt: T.hook ? 1.4 : r1(T.n0 + 1.5),
     // the voice: each line when its bubble appears, the music lower underneath
-    ...(voice ? { bedVolume: 0.16, fx: [...EPISODE.fx, ...lines.map((c) => ({ file: c.file, at: c.at, volume: 0.95 }))] } : {}),
+    ...(voice ? { bedVolume: 0.16, fx: [{ file: 'bbf-stamp.wav', at: r1(T.n0 + 0.76), volume: 1 }, ...lines.map((c) => ({ file: c.file, at: c.at, volume: 0.95 }))] } : {}),
   };
 }
 
@@ -523,7 +531,7 @@ export function voiceOf(s) {
   const meta = path.join(dir, 'lines.json');
   if (!s.episode || !existsSync(meta)) return null;
   const v = JSON.parse(readFileSync(meta, 'utf8'));
-  const want = [...s.episode.neutral.map((x, i) => [`n${i}`, x]), ...s.episode.reaction.map((x, i) => [`v${i}`, x])];
+  const want = [...(s.episode.hook ? [['h0', s.episode.hook]] : []), ...s.episode.neutral.map((x, i) => [`n${i}`, x]), ...s.episode.reaction.map((x, i) => [`v${i}`, x])];
   if (!want.every(([k, x]) => v.lines[k]?.text === x.replace(/\*/g, '') && existsSync(path.join(dir, `${k}.wav`)))) return null;
   return { ...v, dir };
 }
@@ -531,8 +539,8 @@ export function voiceOf(s) {
 export function voiceCues(s, T = episodeSchedule(s)) {
   const v = voiceOf(s);
   if (!v) return [];
-  const n = [4.9, T.n2 + 0.2, T.n3 + 0.2], c = [T.v0 + 0.8, T.v2 + 0.2, T.v3 + 0.2];
-  return [...s.episode.neutral.map((_, i) => ['n', i, n[i]]), ...s.episode.reaction.map((_, i) => ['v', i, c[i]])]
+  const n = [T.n0 + 0.2, T.n2 + 0.2, T.n3 + 0.2], c = [T.v0 + 0.8, T.v2 + 0.2, T.v3 + 0.2];
+  return [...(s.episode.hook ? [['h', 0, 0.3]] : []), ...s.episode.neutral.map((_, i) => ['n', i, n[i]]), ...s.episode.reaction.map((_, i) => ['v', i, c[i]])]
     .map(([p, i, at]) => ({ key: `${p}${i}`, at: r1(at), duration: v.lines[`${p}${i}`].duration, file: path.join(v.dir, `${p}${i}.wav`) }));
 }
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -590,9 +598,9 @@ body{background:#F4F0E6}
 /* 2. Swiss neutrality */
 #n .sec{top:960px}
 #n .big{top:1020px}
-#n{animation:fadein .6s ease-out 4.7s both,hide .4s ease-in ${T.nEnd}s forwards}
+#n{animation:fadein .6s ease-out ${T.n0}s both,hide .4s ease-in ${T.nEnd}s forwards}
 #n .p2{animation:fadein .5s ease-out ${T.n2}s both}#n .p3{animation:fadein .5s ease-out ${T.n3}s both}
-.stamp{position:absolute;right:56px;top:1620px;width:560px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) 5.2s both,hide .4s ease-in ${T.nEnd}s forwards}
+.stamp{position:absolute;right:56px;top:1620px;width:560px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) ${r1(T.n0 + 0.5)}s both,hide .4s ease-in ${T.nEnd}s forwards}
 .stamp svg{width:100%;height:auto;display:block}
 @keyframes stampin{from{opacity:0;transform:rotate(-13deg) scale(2.6)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
 /* 3. Canton of Vaud */
@@ -615,8 +623,8 @@ body{background:#F4F0E6}
 @keyframes scan{from{transform:rotate(-14deg)}to{transform:rotate(8deg)}}
 #m1 .brows{animation:raise .4s ease-out 3.2s both}
 @keyframes raise{to{transform:translateY(-6px)}}
-#m2{left:50px;top:1560px;width:250px;animation:fadein .3s ease-out 4.6s both,hide .4s ease-in ${T.nEnd}s forwards}
-#m2 .arm{animation:lift .3s ease-out 4.6s both,slam .2s cubic-bezier(.6,0,.9,.5) 5.0s both}
+#m2{left:50px;top:1560px;width:250px;animation:fadein .3s ease-out ${r1(T.n0 - 0.1)}s both,hide .4s ease-in ${T.nEnd}s forwards}
+#m2 .arm{animation:lift .3s ease-out ${r1(T.n0 - 0.1)}s both,slam .2s cubic-bezier(.6,0,.9,.5) ${r1(T.n0 + 0.3)}s both}
 @keyframes lift{from{transform:rotate(0)}to{transform:rotate(-110deg)}}
 @keyframes slam{from{transform:rotate(-110deg)}to{transform:rotate(-10deg)}}
 #m2 .head{animation:nod .5s ease-in-out ${T.n2}s 2 alternate}
@@ -637,8 +645,25 @@ ${mascot ? `/* speech bubbles: Monsieur Neutre says the Swiss lines */
 #v .bub{font-size:58px}#v .bub::after{right:150px;transform:scaleX(-1) skewX(-20deg)}
 .m .mouth{transform:scaleY(.35)}
 @keyframes talk{from{transform:scaleY(.35)}to{transform:scaleY(1.25)}}
-#m2 .mouth{animation:${(cues.length ? cues.filter((c) => c.key[0] === 'n').map((c) => [c.at, c.duration]) : [4.9, T.n2, T.n3].slice(0, ep.neutral.length).map((t) => [t, 1.8])).map(([t, d]) => `talk .15s ease-in-out ${t}s ${Math.max(2, Math.round(d / 0.15))} alternate`).join(',')}}
+#m2 .mouth{animation:${(cues.length ? cues.filter((c) => c.key[0] === 'n').map((c) => [c.at, c.duration]) : [T.n0 + 0.2, T.n2, T.n3].slice(0, ep.neutral.length).map((t) => [t, 1.8])).map(([t, d]) => `talk .15s ease-in-out ${t}s ${Math.max(2, Math.round(d / 0.15))} alternate`).join(',')}}
 #m3 .mouth{animation:${(cues.length ? cues.filter((c) => c.key[0] === 'v').map((c) => [c.at, c.duration]) : [T.v0 + 0.6, T.v2, T.v3].slice(0, ep.reaction.length).map((t) => [t, 1.8])).map(([t, d]) => `talk .15s ease-in-out ${t}s ${Math.max(2, Math.round(d / 0.15))} alternate`).join(',')}}
+` : ''}
+${T.hook ? `/* the hook: Monsieur Neutre says one line, big; then Trump's key line; the full post stays small above Swiss Neutrality */
+.post{animation:fadein .4s ease-out ${T.k1}s both,hide .4s ease-in ${T.nEnd - 0.2}s forwards;transform:translateY(var(--ty,-260px)) scale(.46)}
+.rev,#m1{display:none}
+#h{position:absolute;inset:0;animation:hide .3s ease-in ${T.hk}s forwards}
+#h .q{position:absolute;left:70px;right:70px;top:330px;font-family:F;font-weight:600;font-size:88px;line-height:1.04;letter-spacing:-.02em;text-align:center}
+#h .q em{font-style:italic;color:${RED}}
+#m0{left:50%;margin-left:-250px;width:500px;top:960px}
+#m0 .brows{animation:raise .4s ease-out .2s both}
+#m0 .mouth{animation:talk .15s ease-in-out .3s ${Math.max(2, Math.round((cues.find((c) => c.key === 'h0')?.duration ?? 1.8) / 0.15))} alternate}
+#k{position:absolute;inset:0;animation:fadein .4s ease-out ${T.hk}s both,hide .3s ease-in ${T.k1}s forwards}
+#k .lb{position:absolute;left:70px;right:70px;top:380px;display:flex;align-items:center;gap:18px;font-size:24px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#57524a}
+#k .lb i{width:56px;height:56px;border-radius:50%;background:#6b665e;color:#fff;display:grid;place-items:center;font-style:normal;letter-spacing:0;font-size:22px}
+#k .kq{position:absolute;left:70px;right:70px;top:480px;font-family:I;font-weight:800;font-size:72px;line-height:1.14;letter-spacing:-.01em}
+#k .kq mark{background:linear-gradient(transparent 58%,#efd27e 58%)}
+#k .rv{position:absolute;left:70px;right:70px;top:1240px;text-align:center;font-family:F;font-style:italic;font-size:56px;color:#1f3a5f}
+#k .rv::before{content:'';display:block;width:120px;margin:0 auto 24px;border-top:2px solid #171614}
 ` : ''}
 /* the end */
 #end{background:#F4F0E6;animation:fadein .5s ease-out ${T.endAt}s both}
@@ -650,6 +675,9 @@ ${mascot ? `/* speech bubbles: Monsieur Neutre says the Swiss lines */
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>
 ${FULL}</div>
 <p class="rev">${e(ep.review || 'Switzerland has reviewed the request.')}</p>
+${T.hook ? `<div id="h"><p class="q">${mk(ep.hook)}</p><div class="m" id="m0">${monsieurNeutre()}</div></div>
+<div id="k"><p class="lb"><i>DT</i> Trump on Truth Social · ${day}</p><p class="kq">“…${(() => { const key = s.original.key || ep.highlight; return ep.highlight && key.includes(ep.highlight) ? e(key).replace(e(ep.highlight), `<mark>${e(ep.highlight)}</mark>`) : `<mark>${e(key)}</mark>`; })()}…”</p><p class="rv">${e(ep.review || 'Switzerland has reviewed the request.')}</p></div>` : ''}
+
 <div id="n"><p class="sec">${CROSS(34)} Swiss Neutrality <small>Satire</small></p><div class="big${mascot ? ' bub' : ''}">${staged(ep.neutral)}</div></div>
 <div class="stamp">${STAMP}</div>
 <div id="v"><p class="sec">${e(canton.name)} <small>Satire</small></p><div class="crest">${canton.flag}</div><div class="geo">${canton.geo}<p>${e(canton.places)}</p></div><div class="big${mascot ? ' bub' : ''}">${staged(ep.reaction)}</div></div>
