@@ -910,5 +910,32 @@
       "id": "sK38IcoUuvA",
       "video": 1
     }
+  },
+  "economy-is-booming": {
+    "bluesky": {
+      "at": "2026-11-17T08:29:12.577Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2ims743zp2v",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-17T08:30:14.343Z",
+      "id": "18101733710393515",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-17T08:30:19.991Z",
+      "id": "2675038642940273",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-17T08:31:40.090Z",
+      "id": "18198306322397705",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-17T08:31:43.921Z",
+      "id": "mT6jaQQab00",
+      "video": 1
+    }
   }
 }
