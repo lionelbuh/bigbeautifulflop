@@ -46,7 +46,7 @@ export function meanwhileHtml(t, s, voice) {
   const nEnd = r(at.at(-1) + holds.at(-1) + 0.6);
   const stampAt = r(at.at(-1) + (L[`s${holds.length - 1}`]?.duration ?? 2) * 0.6);
   // an official figure (optional), with its source, after Steve
-  const fEnd = t.fact ? r(nEnd + 5.2) : nEnd;
+  const fEnd = t.fact ? r(nEnd + 8) : nEnd; // time to read the figure, the sentence and the source
   const endAt = r(fEnd + 0.2);
   const T = { hk: r(hk), n0, at, nEnd, fEnd, stampAt, endAt };
   const day = new Date(`${s.original.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
