@@ -48,7 +48,7 @@ describe('social posts', () => {
   it('gives each statement two different video series, in turns, with short enough posts', () => {
     statements.forEach((s, i) => {
       const series = videoSeriesFor(s, i);
-      if (s.episode) {
+      if (s.episode || s.meanwhile) {
         expect(series.map((x) => x.id)).toEqual(['episode']);
         expect(chars(youtubeTitle(s, series[0]))).toBeLessThanOrEqual(100);
         return;

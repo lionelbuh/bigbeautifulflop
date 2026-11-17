@@ -253,7 +253,12 @@ export function thread(s, { day, regions = true, first = null } = {}) {
 }
 
 /** The calm version of a statement: the Neutral Swiss (new format) or the presidential version (earlier). */
-export const calmPost = (s) => (s.neutral ? neutralPost(s) : presidentialPost(s));
+export const calmPost = (s) => (s.meanwhile ? meanwhileCard(s) : s.neutral ? neutralPost(s) : presidentialPost(s));
+/** Steve's lines alone (lists of statements). */
+function meanwhileCard(s) {
+  return `<section class="ep-card ep-neutral"><p class="ep-label">Meanwhile, at a real American kitchen table <small>Satire</small></p>
+    <p class="ep-who">Steve, a regular American (fictional)</p><div class="ep-lines">${lines(s.meanwhile.steve)}</div></section>`;
+}
 
 /** How a neutral Swiss would put it: in English, with the French behind a link. */
 export function neutralPost(s) {
