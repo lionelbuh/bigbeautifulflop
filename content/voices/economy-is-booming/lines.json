@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump says the economy is booming. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 3.59
+    },
+    "s0": {
+      "text": "The economy is booming? Good to know.",
+      "duration": 2.08
+    },
+    "s1": {
+      "text": "Five hundred thousand new businesses a month. I started one too.",
+      "duration": 3.63
+    },
+    "s2": {
+      "text": "It\u2019s called skipping lunch.",
+      "duration": 1.37
+    }
+  }
+}
