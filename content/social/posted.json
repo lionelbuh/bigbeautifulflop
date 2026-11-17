@@ -884,33 +884,6 @@
       "video": 1
     }
   },
-  "energy-dominance": {
-    "bluesky": {
-      "at": "2026-11-17T07:17:28.542Z",
-      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2iirwcywx2e",
-      "video": 1
-    },
-    "threads": {
-      "at": "2026-11-17T07:18:25.137Z",
-      "id": "18134394103841156",
-      "video": 1
-    },
-    "facebook": {
-      "at": "2026-11-17T07:18:31.917Z",
-      "id": "2192633961291865",
-      "video": 1
-    },
-    "instagram": {
-      "at": "2026-11-17T07:19:27.906Z",
-      "id": "18055999082598184",
-      "video": 1
-    },
-    "youtube": {
-      "at": "2026-11-17T07:19:33.593Z",
-      "id": "sK38IcoUuvA",
-      "video": 1
-    }
-  },
   "economy-is-booming": {
     "bluesky": {
       "at": "2026-11-17T08:29:12.577Z",
