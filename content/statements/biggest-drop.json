@@ -1,0 +1,48 @@
+{
+  "slug": "biggest-drop",
+  "status": "published",
+  "published": "2026-11-18",
+  "headline": "Biggest drop in 18 years",
+  "dek": "The President celebrates the biggest weekly drop in gasoline prices in 18 years, and asks why it came after the election. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "gas prices",
+    "economy"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-17",
+    "time": "17:09",
+    "text": [
+      "Biggest drop in gasoline in 18 years. Notice that they waited until after the “Election?” President DJT"
+    ],
+    "key": "Biggest drop in gasoline in 18 years.",
+    "context": "Posted on 17 November 2026, sharing another user’s post about last week’s fall in pump prices (not quoted here). Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 18 November 2026 (shown as 11/17/26, 2:09 PM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump celebrates the biggest drop in gas prices in 18 years. *Meanwhile, at Steve’s house…*",
+    "highlight": "Biggest drop in gasoline in 18 years.",
+    "steve": [
+      "Biggest drop in eighteen years? Great.",
+      "I just filled up. Still seventy-four cents a gallon more than last year.",
+      "*My wallet had its biggest drop too.*"
+    ],
+    "fact": {
+      "number": "$3.82",
+      "text": "a gallon: the national average for regular gas in mid-November 2026, up from $3.08 a year earlier (+24%), even after the recent drop.",
+      "source": "AAA national average gas prices, November 2026 and November 2025",
+      "url": "https://gasprices.aaa.com/"
+    }
+  }
+}
