@@ -1,0 +1,42 @@
+{
+  "slug": "economy-is-booming",
+  "status": "published",
+  "published": "2026-11-17",
+  "headline": "Our Economy is booming",
+  "dek": "The President says the economy is booming, with over 500,000 new businesses formed every month this year. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "economy",
+    "small business"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-16",
+    "time": "19:42",
+    "text": [
+      "Under my leadership, our Economy is booming! New Businesses created in America have reached ALL-TIME HIGHS — Over 500,000 new Businesses formed every month this year. Unlike the Communists that want to tax our Small Business Owners to “death,” my Administration and Republicans in Congress rewarded them with the Largest Tax Cuts in American History, which EVERY Democrat voted against. I WILL ALWAYS FIGHT FOR THE AMERICAN PEOPLE! President DONALD J. TRUMP"
+    ],
+    "key": "Under my leadership, our Economy is booming!",
+    "context": "Posted on 16 November 2026. The figures and the account of the tax cuts are the President’s. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 17 November 2026 (shown as 11/16/26, 4:42 PM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump says the economy is booming. *Meanwhile, at Steve’s house…*",
+    "highlight": "our Economy is booming!",
+    "steve": [
+      "The economy is booming? Good to know.",
+      "Five hundred thousand new businesses a month. I started one too.",
+      "*It’s called skipping lunch.*"
+    ]
+  }
+}
