@@ -261,8 +261,8 @@ const threads = {
       for (const text of posts.slice(1)) {
         const under = replies.filter((r) => r.replied_to?.id === ids.at(-1));
         const next = under.find((r) => same(r.text, text));
-        // a reply that is not ours: this is another thread with the same start (an earlier version), not ours to finish
-        if (!next && under.length) return [];
+        // any reply that is not ours: this is another thread with the same start (an earlier version), not ours to finish
+        if (under.some((r) => !same(r.text, text))) return [];
         if (!next) break;
         ids.push(next.id);
       }
