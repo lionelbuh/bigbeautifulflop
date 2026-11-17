@@ -259,7 +259,10 @@ const threads = {
       const replies = (await graphGet(THREADS, '/me/replies?fields=id,text,replied_to&limit=50', env.THREADS_TOKEN)).data || [];
       const ids = [top.id];
       for (const text of posts.slice(1)) {
-        const next = replies.find((r) => r.replied_to?.id === ids.at(-1) && same(r.text, text));
+        const under = replies.filter((r) => r.replied_to?.id === ids.at(-1));
+        const next = under.find((r) => same(r.text, text));
+        // a reply that is not ours: this is another thread with the same start (an earlier version), not ours to finish
+        if (!next && under.length) return [];
         if (!next) break;
         ids.push(next.id);
       }
