@@ -1,34 +1,22 @@
 {
-  "voice": "kokoro-am_puck",
+  "voice": "kokoro-am_fenrir",
   "speed": 1.1,
   "lines": {
     "h0": {
-      "text": "Trump wants Energy Dominance. Switzerland uses rivers.",
-      "duration": 3.14
+      "text": "Trump promises Energy Dominance. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 3.6
     },
-    "n0": {
-      "text": "Switzerland has no natural gas of its own. We import every cubic metre.",
-      "duration": 4.32
+    "s0": {
+      "text": "Energy Dominance? Great.",
+      "duration": 1.32
     },
-    "n1": {
-      "text": "Most of our electricity comes from water: dams and rivers make about 60 percent of it.",
-      "duration": 4.73
+    "s1": {
+      "text": "I just dominated my thermostat: sixty-four degrees and two sweaters.",
+      "duration": 4.11
     },
-    "n2": {
-      "text": "Rivers are not radical. They just go downhill.",
-      "duration": 2.27
-    },
-    "v0": {
-      "text": "Energy Dominance?",
-      "duration": 1.07
-    },
-    "v1": {
-      "text": "In Fribourg, we built a dam in 1948 and got a lake: the Lac de la Gruy\u00e8re.",
-      "duration": 4.66
-    },
-    "v2": {
-      "text": "Now the cheese has a view.",
-      "duration": 1.14
+    "s2": {
+      "text": "The only thing unleashed in this house is my gas bill.",
+      "duration": 2.72
     }
   }
 }

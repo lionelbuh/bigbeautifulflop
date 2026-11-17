@@ -3,7 +3,7 @@
   "status": "published",
   "published": "2026-11-17",
   "headline": "Energy Dominance",
-  "dek": "The President says New Yorkers pay three to seven times more for natural gas because of Democratic policies, and promises American Energy Dominance. Switzerland has reviewed the request.",
+  "dek": "The President says New Yorkers pay three to seven times more for natural gas because of Democratic policies, and promises American Energy Dominance. Meanwhile, at a real American kitchen table…",
   "topics": [
     "energy",
     "New York"
@@ -19,7 +19,7 @@
       "Despite the United States having the MOST ABUNDANT Supply, and LOWEST COST Natural Gas in the World, Citizens in Blue States like New York have been paying 3X-7X more for Natural Gas due to the costly Anti-Energy Policies pushed by Blue State Governors and Political leaders. We must protect our American Families from these Radical Climate Extremists, they are exploding Energy costs. The Democrat Party wants to ban all Pipelines, all Refineries, and all Fossil Fuels. The great news is that I am working to END the Left's War on Energy Affordability and Energy Security, and I will UNLEASH American Energy Dominance for ALL Americans! President DONALD J. TRUMP"
     ],
     "key": "Citizens in Blue States like New York have been paying 3X-7X more for Natural Gas due to the costly Anti-Energy Policies pushed by Blue State Governors and Political leaders.",
-    "context": "Posted on 16 November 2026. The prices, the comparison and the account of Democratic policies are the President’s.",
+    "context": "Posted on 16 November 2026. The prices, the comparison and the account of Democratic policies are the President’s. Steve is a fictional character.",
     "source": {
       "label": "Truth Social, @realDonaldTrump",
       "url": "https://truthsocial.com/@realDonaldTrump"
@@ -29,33 +29,20 @@
       "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 17 November 2026 (shown as Nov 16, 2026, 4:44 PM Pacific)."
     }
   },
-  "neutral": {
-    "en": [
-      "Switzerland has no natural gas of its own. We import every cubic metre.",
-      "Most of our electricity comes from water: dams and rivers make about 60 percent of it.",
-      "Rivers are not radical. They just go downhill."
-    ],
-    "key": "Rivers are not radical. They just go downhill."
-  },
   "editions": {},
-  "episode": {
-    "review": "Switzerland has reviewed the request.",
+  "meanwhile": {
+    "hook": "Trump promises Energy Dominance. *Meanwhile, at Steve’s house…*",
     "highlight": "3X-7X more for Natural Gas",
-    "hook": "Trump wants Energy Dominance. *Switzerland uses rivers.*",
-    "neutral": [
-      "Switzerland has no natural gas of its own. We import every cubic metre.",
-      "Most of our electricity comes from water: dams and rivers make about 60 percent of it.",
-      "*Rivers are not radical. They just go downhill.*"
+    "steve": [
+      "Energy Dominance? Great.",
+      "I just dominated my thermostat: sixty-four degrees and two sweaters.",
+      "*The only thing unleashed in this house is my gas bill.*"
     ],
-    "canton": "fribourgeois",
-    "reaction": [
-      "Energy Dominance?",
-      "In Fribourg, we built a dam in 1948 and got a lake: the Lac de la Gruyère.",
-      "*Now the cheese has a view.*"
-    ],
-    "tagline": [
-      "Switzerland: Neutral since 1815.",
-      "Powered by gravity since forever."
-    ]
+    "fact": {
+      "number": "34 million",
+      "text": "U.S. households, 27% of all households, had trouble paying their energy bills or kept their home at an unsafe temperature because of the cost.",
+      "source": "U.S. Energy Information Administration, Residential Energy Consumption Survey 2020",
+      "url": "https://www.eia.gov/todayinenergy/detail.php?id=51979"
+    }
   }
 }
