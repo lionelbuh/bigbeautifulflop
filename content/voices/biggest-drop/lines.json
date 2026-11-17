@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump celebrates the biggest drop in gas prices in 18 years. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 5.64
+    },
+    "s0": {
+      "text": "Biggest drop in eighteen years? Great.",
+      "duration": 1.83
+    },
+    "s1": {
+      "text": "I just filled up. Still seventy-four cents a gallon more than last year.",
+      "duration": 3.76
+    },
+    "s2": {
+      "text": "My wallet had its biggest drop too.",
+      "duration": 1.8
+    }
+  }
+}
