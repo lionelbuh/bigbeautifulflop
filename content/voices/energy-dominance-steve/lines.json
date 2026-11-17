@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump promises Energy Dominance. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 3.6
+    },
+    "s0": {
+      "text": "Energy Dominance? Great.",
+      "duration": 1.32
+    },
+    "s1": {
+      "text": "I just dominated my thermostat: sixty-four degrees and two sweaters.",
+      "duration": 4.11
+    },
+    "s2": {
+      "text": "The only thing unleashed in this house is my gas bill.",
+      "duration": 2.72
+    }
+  }
+}
