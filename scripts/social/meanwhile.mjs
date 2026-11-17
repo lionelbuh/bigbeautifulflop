@@ -27,7 +27,7 @@ export function voiceOfMeanwhile(slug, m) {
 /** An episode (statement with `meanwhile`): its html and render options. */
 export function meanwhileVideo(s) {
   const m = s.meanwhile;
-  const t = { episode: { hook: m.hook, steve: m.steve }, stamp: m.stamp || ['REALITY', 'CHECK'], tagline: m.tagline || ['Politicians say it.', 'Real people pay for it.'] };
+  const t = { episode: { hook: m.hook, steve: m.steve }, fact: m.fact, stamp: m.stamp || ['REALITY', 'CHECK'], tagline: m.tagline || ['Politicians say it.', 'Real people pay for it.'] };
   const voice = voiceOfMeanwhile(s.slug, m);
   const { html, T } = meanwhileHtml(t, { ...s, episode: { highlight: m.highlight } }, voice);
   const cues = voice ? [['h0', 0.3], ...m.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
@@ -45,8 +45,10 @@ export function meanwhileHtml(t, s, voice) {
   const at = [n0 + 0.3]; holds.slice(0, -1).forEach((h, i) => at.push(r(at[i] + h)));
   const nEnd = r(at.at(-1) + holds.at(-1) + 0.6);
   const stampAt = r(at.at(-1) + (L[`s${holds.length - 1}`]?.duration ?? 2) * 0.6);
-  const endAt = r(nEnd + 0.2);
-  const T = { hk: r(hk), n0, at, nEnd, stampAt, endAt };
+  // an official figure (optional), with its source, after Steve
+  const fEnd = t.fact ? r(nEnd + 5.2) : nEnd;
+  const endAt = r(fEnd + 0.2);
+  const T = { hk: r(hk), n0, at, nEnd, fEnd, stampAt, endAt };
   const day = new Date(`${s.original.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
   const n = s.original.text.join(' ').length;
   const size = n < 350 ? 46 : n < 650 ? 38 : n < 1300 ? 30 : 24;
@@ -105,6 +107,13 @@ ${T.at.slice(1).map((a, i) => `.bub .p${i + 2}{animation:fadein .5s ease-out ${r
 .stamp{position:absolute;right:56px;top:1620px;width:560px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) ${T.stampAt}s both}
 .stamp svg{width:100%;height:auto;display:block}
 @keyframes stampin{from{opacity:0;transform:rotate(-13deg) scale(2.6)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+/* the facts */
+#f{position:absolute;inset:0;animation:fadein .5s ease-out ${T.nEnd}s both,hide .4s ease-in ${T.fEnd}s forwards}
+#f .sec{top:520px}
+#f .num{position:absolute;left:70px;right:70px;top:620px;font-family:F;font-weight:600;font-size:150px;line-height:1;letter-spacing:-.03em;color:${RED}}
+#f .txt{position:absolute;left:70px;right:70px;top:820px;font-family:F;font-size:58px;line-height:1.15}
+#f .src{position:absolute;left:70px;right:70px;top:1360px;font-size:28px;line-height:1.35;color:#57524a;border-top:1px solid #171614;padding-top:18px}
+#s3{left:auto;right:60px;top:1500px;width:230px;animation:fadein .4s ease-out ${r(T.nEnd + 0.4)}s both}
 /* the end */
 #end{background:#F4F0E6;animation:fadein .5s ease-out ${T.endAt}s both;gap:34px}
 #end .tl{font-family:F;font-size:96px;line-height:1.05;max-width:900px}
@@ -116,6 +125,7 @@ ${T.at.slice(1).map((a, i) => `.bub .p${i + 2}{animation:fadein .5s ease-out ${r
 <div id="h"><p class="q">${mk(t.episode.hook)}</p><div class="m" id="s0">${steve('mug')}</div></div>
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>${FULL}</div>
 <div id="n"><p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div>
+${t.fact ? `<div id="f"><p class="sec">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p><div class="m" id="s3">${steve('mug')}</div></div>` : ''}
 <div id="end"><p class="tl">${e(t.tagline[0])}</p><p class="tl2">${e(t.tagline[1])}</p><div class="m" id="s2">${steve('mug')}</div><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
 ${GRAIN}<script>
 window.fit = () => {

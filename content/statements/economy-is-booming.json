@@ -37,6 +37,12 @@
       "The economy is booming? Good to know.",
       "Five hundred thousand new businesses a month. I started one too.",
       "*It’s called skipping lunch.*"
-    ]
+    ],
+    "fact": {
+      "number": "47.9 million",
+      "text": "Americans lived in households that were food insecure at some point in 2024: 13.7% of households, the highest rate since 2014.",
+      "source": "USDA Economic Research Service, Household Food Security in the United States in 2024 (December 2025)",
+      "url": "https://www.ers.usda.gov/publications/113622"
+    }
   }
 }

@@ -29,6 +29,7 @@ export function validateStatement(s, file = s?.slug) {
     need(typeof m.hook === 'string' && m.hook.length, 'meanwhile.hook is required');
     need(Array.isArray(m.steve) && m.steve.length >= 2 && m.steve.length <= 3, 'meanwhile.steve: two or three lines');
     need(!m.highlight || (o.text || []).join(' ').includes(m.highlight), 'meanwhile.highlight must be words of the original, exactly');
+    need(!m.fact || (m.fact.number && m.fact.text && m.fact.source), 'meanwhile.fact needs number, text and source (an official figure, always sourced)');
   }
   // an episode (from 13 November 2026): the post, Swiss Neutrality, one canton, the tagline
   if (s.episode) {

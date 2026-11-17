@@ -52,6 +52,7 @@ export function meanwhileThread(s) {
     <p class="ep-who">Steve, a regular American (fictional)</p>
     <div class="ep-lines">${lines(m.steve)}</div>
     <div class="ep-stamp" aria-hidden="true">${REALITY}</div></section>
+  ${m.fact ? `<section class="ep-card ep-fact"><p class="ep-label">The facts <small>Official figures</small></p><p class="ep-num">${e(m.fact.number)}</p><p class="ep-factxt">${e(m.fact.text)}</p><p class="ep-who">Source: ${m.fact.url ? `<a href="${e(m.fact.url)}" rel="noopener">${e(m.fact.source)}</a>` : e(m.fact.source)}</p></section>` : ''}
   <p class="ep-tagline">${e(tag[0])}${tag[1] ? `<em>${e(tag[1])}</em>` : ''}</p>
 </div>`;
 }

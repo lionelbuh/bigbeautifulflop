@@ -148,6 +148,7 @@ export function facebookPost(s) {
     `${calmOf(s).label}: ${quote(excerpt(calmOf(s).en, 500))}`,
     lead ? `${regionLabel(lead.region)} (satire): ${quote(excerpt(englishOf(lead.region, lead.edition), 400))}` : '',
     s.episode ? `${CANTONS[s.episode.canton].name} (satire): ${quote(excerpt(plain(s.episode.reaction), 400))}` : '',
+    s.meanwhile?.fact ? `The facts: ${s.meanwhile.fact.number} ${s.meanwhile.fact.text} (${s.meanwhile.fact.source})` : '',
     s.meanwhile ? `${(s.meanwhile.tagline || ['Politicians say it.', 'Real people pay for it.']).join(' ')}\n\nThe full episode: ${articleUrl(s, 'facebook')}` : s.episode ? `${plain(s.episode.tagline || []).join(' ')}\n\nThe full episode: ${articleUrl(s, 'facebook')}` : `All ${versionsOf(s).length + 1} versions: ${articleUrl(s, 'facebook')}`,
     SATIRE_NOTE,
   ];
@@ -360,6 +361,7 @@ export function youtubeDescription(s, series) {
     `${calmOf(s).label} (satire): ${quote(excerpt(calmOf(s).en, 700))}`,
     v ? `Then: ${regionLabel(v.region)} (satire).` : '',
     s.episode ? `${CANTONS[s.episode.canton].name} (satire): ${quote(excerpt(plain(s.episode.reaction), 400))}` : '',
+    s.meanwhile?.fact ? `The facts: ${s.meanwhile.fact.number} ${s.meanwhile.fact.text} (${s.meanwhile.fact.source})` : '',
     s.episode ? plain(s.episode.tagline || []).join(' ') : s.meanwhile ? (s.meanwhile.tagline || ['Politicians say it.', 'Real people pay for it.']).join(' ') : '',
     `${s.episode || s.meanwhile ? 'The full episode' : 'All versions'}: ${articleUrl(s, 'youtube')}`,
     SATIRE_NOTE,
