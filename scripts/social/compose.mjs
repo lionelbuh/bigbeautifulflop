@@ -96,6 +96,17 @@ const plain = (list) => list.map((x) => x.replace(/\*/g, ''));
 
 export function threadPosts(s, max, { firstTag = '', lastTag = '', source = '' } = {}) {
   const url = articleUrl(s, source);
+  // Meanwhile: the quote, then Steve in full, then the tagline and the link
+  if (s.meanwhile) {
+    const tags = lastTag ? `\n\n${lastTag}` : '';
+    const head = `${s.headline}\n\nTrump on Truth Social: `;
+    const first = `${head}${quote(excerpt(s.original.key || s.original.text, max - chars(head) - 2 - (firstTag ? chars(firstTag) + 2 : 0)))}${firstTag ? `\n\n${firstTag}` : ''}`;
+    const sh = 'Meanwhile, at a real American kitchen table, Steve (satire): ';
+    const steve = `${sh}${quote(excerpt(s.meanwhile.steve.map((x) => x.replace(/\*/g, '')).join(' '), max - chars(sh) - 2))}`;
+    const tl = (s.meanwhile.tagline || ['Politicians say it.', 'Real people pay for it.']).join(' ');
+    const last = `${tl}\n\nThe full episode: ${url}\n\n${SATIRE_NOTE}${tags}`;
+    return [first, steve, chars(last) <= max ? last : `The full episode: ${url}${tags}`];
+  }
   const head = `${s.headline}\n\nTrump on Truth Social: `;
   const mid = `\n\n${calmOf(s).label} (satire): `;
   const tail = firstTag ? `\n\n${firstTag}` : '';
