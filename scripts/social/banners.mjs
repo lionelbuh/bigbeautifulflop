@@ -1,4 +1,4 @@
-// The banners of the social accounts, with Monsieur Neutre: YouTube (2048x1152, everything that matters in
+// The banners of the social accounts, with Steve (the Meanwhile format, from 17 November 2026): YouTube (2048x1152, everything that matters in
 // the central 1235x338 band), Facebook cover (1640x624), Bluesky (3000x1000).
 //   node scripts/social/banners.mjs   -> brand/banner-youtube.png, banner-facebook.png, banner-bluesky.png
 import { createRequire } from 'node:module';
@@ -6,7 +6,7 @@ import { mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { styles, STAMP_ASSET, RED, CROSS } from './videos.mjs';
-import { monsieurNeutre } from './assets/monsieur-neutre.mjs';
+import { steve } from './assets/steve.mjs';
 import { logoFlop } from '../../src/site/logo.js';
 import { MOTTO } from '../../src/site/layout.js';
 
@@ -36,9 +36,9 @@ html,body{width:${W}px;height:${H}px;margin:0;background:#F4F0E6;overflow:hidden
 <div class="bn-rule" style="top:${(H - bh) / 2 - 22 * u}px"></div><div class="bn-rule" style="top:${(H + bh) / 2 + 18 * u}px;border-top-width:${6 * u}px;border-top-style:double"></div>
 <div class="bn-box">
   <div class="bn-logo">${logoFlop({ font: 'F' })}</div>
-  <div class="bn-txt"><p class="bn-nm">Big Beautiful <i>Flop</i></p><p class="bn-mt">${MOTTO}</p><p class="bn-tg">${CROSS(22 * u)} Switzerland has reviewed the request · Independent satire</p></div>
-  <div class="bn-mn">${monsieurNeutre('stamp')}</div>
-  <div class="bn-st">${STAMP_ASSET}</div>
+  <div class="bn-txt"><p class="bn-nm">Big Beautiful <i>Flop</i></p><p class="bn-mt">${MOTTO}</p><p class="bn-tg">Meanwhile, at a real American kitchen table · Independent satire</p></div>
+  <div class="bn-mn">${steve('bill')}</div>
+  <div class="bn-st">${STAMP_ASSET.replace('>NEUTRAL<', '>REALITY<').replace('>SWISS<', '>CHECK<').replace('letter-spacing="16"', 'letter-spacing="10"').replace('<path d="M87 94 h18 v20 h20 v18 h-20 v20 h-18 v-20 h-20 v-18 h20 z" fill="#F4F0E6"/>', '<path d="M74 122 l18 18 l30 -38" fill="none" stroke="#F4F0E6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>')}</div>
 </div>
 <svg class="grain" viewBox="0 0 ${W} ${H}"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="2"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .5 0"/></filter><rect width="${W}" height="${H}" filter="url(#g)"/></svg>`;
 }

@@ -37,6 +37,25 @@ export function episodeThread(s) {
 </div>`;
 }
 
+/**
+ * “Meanwhile” (from 17 November 2026), like the video: the post in full, then Steve, a fictional regular
+ * American at his kitchen table, with the REALITY CHECK stamp, and the tagline.
+ */
+const REALITY = STAMP.replace('>NEUTRAL<', '>REALITY<').replace('>SWISS<', '>CHECK<').replace('letter-spacing="16"', 'letter-spacing="10"')
+  .replace('<path d="M87 94 h18 v20 h20 v18 h-20 v20 h-18 v-20 h-20 v-18 h20 z" fill="#F4F0E6"/>', '<path d="M74 122 l18 18 l30 -38" fill="none" stroke="#F4F0E6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>');
+export function meanwhileThread(s) {
+  const m = s.meanwhile;
+  const tag = m.tagline?.length ? m.tagline : ['Politicians say it.', 'Real people pay for it.'];
+  return `<div class="episode">
+  ${originalPost(s)}
+  <section class="ep-card ep-neutral"><p class="ep-label">Meanwhile, at a real American kitchen table <small>Satire</small></p>
+    <p class="ep-who">Steve, a regular American (fictional)</p>
+    <div class="ep-lines">${lines(m.steve)}</div>
+    <div class="ep-stamp" aria-hidden="true">${REALITY}</div></section>
+  <p class="ep-tagline">${e(tag[0])}${tag[1] ? `<em>${e(tag[1])}</em>` : ''}</p>
+</div>`;
+}
+
 export const articlePath = (s) => `/statements/${s.slug}/`;
 export const editionPath = (s, region) => `/statements/${s.slug}/${region.id}/`;
 
@@ -213,6 +232,7 @@ function sectionTabs(s, { day, first, idPrefix }) {
 
 /** The whole thread: the original, the American President, then the four sections as tabs. */
 export function thread(s, { day, regions = true, first = null } = {}) {
+  if (s.meanwhile) return meanwhileThread(s);
   if (s.episode) return episodeThread(s);
   // the Swiss format: the original, the Neutral Swiss, then the cantons
   if (s.neutral) {

@@ -7,14 +7,13 @@
     preparation, even if the owner asked in advance to post: the owner rereads every statement first.
   - **Technical and design changes the owner asked for:** push to the working branch and to `main`
     without asking.
-- New statements are episodes (from 13 November 2026), see “The episode format” in `docs/EDITORIAL.md`: the
-  original in full, Swiss Neutrality (`episode.neutral` + `neutral.en/key`), one canton (`episode.canton`,
-  `episode.reaction`) and the tagline; English only, one video. Times pasted from Truth Social are Pacific: store them in Eastern time.
-- **The Swiss Priorities Report** (special edition, `docs/EDITORIAL.md`): one every 5 episodes. `npm run videos`
-  prints how many episodes have gone out since the last one; at 5, remind the owner and suggest a subject.
-  Each special records in `after` the episode it followed; it ends with the fixed sign-off and, if any, its `endLine`.
-- **Monsieur Neutre's voice:** after writing an episode, push the branch, run the “Voices (Monsieur Neutre)” workflow
-  on the working branch with the slug, pull, then `npm run videos` (it says “no voice yet” until the voice is there).
+- New statements are “Meanwhile” episodes (from 17 November 2026), see the first section of `docs/EDITORIAL.md`:
+  the hook, the politician's post in full, Steve (a fictional regular American) in two or three lines with the
+  REALITY CHECK stamp, the tagline “Politicians say it. Real people pay for it.”; English only, one video.
+  Times pasted from Truth Social are Pacific: store them in Eastern time. The Swiss format and the Swiss Priorities
+  Report are retired (archives only).
+- **Steve's voice:** after writing an episode, push the branch, run the “Voices” workflow on the working branch with
+  the slug (engine kokoro, voice auto: Steve is Fenrir), pull, then `npm run videos` (it says “no voice yet” until then).
 - After adding or changing a statement: `npm run images` (share images in `public/og/`, uses the
   pre-installed Playwright), then `npm run videos` (one episode video, or two for older formats, per statement waiting to be posted,
   in `public/social/<slug>/`; deletes the videos of statements already posted), and commit them with the content.

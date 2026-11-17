@@ -6,7 +6,7 @@ export const SITE_NAME = 'Big Beautiful Flop';
 export const SITE_URL = 'https://bigbeautifulflop.com';
 /** Our YouTube channel (Shorts). */
 export const YOUTUBE_URL = 'https://www.youtube.com/channel/UCvLa86RwzhHk8dKXHLtOraQ';
-export const MOTTO = 'Making presidential statements neutral again.';
+export const MOTTO = 'Politicians say it. Real people pay for it.';
 export const TAGLINE = 'Lost in translation. Found in reality.';
 export const DISCLAIMER =
   'An independent satirical project. Original statements are sourced and attributed. All neutral, presidential and regional adaptations are fictional, AI-assisted editorial interpretations.';

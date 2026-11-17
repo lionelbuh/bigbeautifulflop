@@ -15,6 +15,28 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const r = (x) => Math.round(x * 10) / 10;
 const mk = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
+/** The voice of an episode (content/voices/<slug>/: h0 the hook, s0.. Steve's lines), or null if missing or stale. */
+export function voiceOfMeanwhile(slug, m) {
+  const dir = path.join(root, 'content/voices', slug);
+  const meta = path.join(dir, 'lines.json');
+  if (!existsSync(meta)) return null;
+  const v = JSON.parse(readFileSync(meta, 'utf8'));
+  const want = [['h0', m.hook], ...m.steve.map((x, i) => [`s${i}`, x])];
+  return want.every(([k, x]) => v.lines[k]?.text === x.replace(/\*/g, '') && existsSync(path.join(dir, `${k}.wav`))) ? { ...v, dir } : null;
+}
+/** An episode (statement with `meanwhile`): its html and render options. */
+export function meanwhileVideo(s) {
+  const m = s.meanwhile;
+  const t = { episode: { hook: m.hook, steve: m.steve }, stamp: m.stamp || ['REALITY', 'CHECK'], tagline: m.tagline || ['Politicians say it.', 'Real people pay for it.'] };
+  const voice = voiceOfMeanwhile(s.slug, m);
+  const { html, T } = meanwhileHtml(t, { ...s, episode: { highlight: m.highlight } }, voice);
+  const cues = voice ? [['h0', 0.3], ...m.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
+  return { html, voice, opts: {
+    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), bed: true, coverAt: 1.4, ...(voice ? { bedVolume: 0.16 } : {}),
+    fx: [{ file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+  } };
+}
+
 export function meanwhileHtml(t, s, voice) {
   const L = voice?.lines || {};
   const hk = Math.max(2.6, (L.h0?.duration ?? 2.4) + 0.5);

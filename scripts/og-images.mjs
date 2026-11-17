@@ -54,15 +54,17 @@ function statementCard(s) {
   return `${BASE}<div class="frame">${brand}
     <h1>${e(s.headline)}</h1>
     <p class="quote"><b>The original · ${e(s.original.channel || '')}</b>“${e(truncate(s.original.text.join(' '), 175))}”</p>
-    <p class="foot">${s.neutral
+    <p class="foot">${s.meanwhile
+      ? `<span><b>Meanwhile</b>, at a real American kitchen table · Satire</span>`
+      : s.neutral
       ? `<span>Certifié neutre · <b>The Neutral Swiss</b> · ${Object.keys(s.editions || {}).length} cantons</span>`
       : `<span>The presidential version · <b>${Object.keys(s.editions || {}).length} versions</b> · English adaptations</span>`}<span>bigbeautifulflop.com</span></p>
   </div>`;
 }
 
 const defaultCard = `${BASE}<div class="frame">${brand}
-  <p class="motto">Making presidential statements neutral again.</p>
-  <p class="quote" style="margin-top:34px"><b>What Trump says · What a real president would say · How the world would say it</b>Vaudois, Valaisan, Genevois, Parisien, Marseillais… with English adaptations.</p>
+  <p class="motto">Politicians say it. Real people pay for it.</p>
+  <p class="quote" style="margin-top:34px"><b>What politicians post · What it means at a real kitchen table</b>Word for word, then Steve, a regular American. Independent satire.</p>
   <p class="foot"><span>Lost in translation. Found in reality.</span><span>bigbeautifulflop.com</span></p>
 </div>`;
 

@@ -59,6 +59,7 @@ export const NEUTRAL_LABEL = 'The Neutral Swiss: the same message, the neutral w
 
 /** The calm version: the Neutral Swiss (from November 2026) or, earlier, the presidential version. */
 export function calmOf(s) {
+  if (s.meanwhile) return { label: 'Meanwhile, at a real American kitchen table', short: 'Meanwhile', en: s.meanwhile.steve.map((x) => x.replace(/\*/g, '')), key: s.meanwhile.steve.at(-1).replace(/\*/g, '') };
   if (s.episode) return { label: 'Swiss Neutrality', short: 'Swiss Neutrality', en: s.neutral.en, key: s.neutral.key };
   return s.neutral
     ? { label: NEUTRAL_LABEL, short: 'The Neutral Swiss', en: s.neutral.en, key: s.neutral.key }
@@ -101,7 +102,7 @@ export function threadPosts(s, max, { firstTag = '', lastTag = '', source = '' }
   const room = max - chars(head) - chars(mid) - chars(tail) - 4;
   const trumpRoom = Math.floor(room * 0.55);
   // the Swiss format quotes the key line (word for word), the earlier one the start of the post
-  const said = s.neutral && s.original.key ? s.original.key : s.original.text;
+  const said = (s.neutral || s.meanwhile) && s.original.key ? s.original.key : s.original.text;
   const posts = [`${head}${quote(excerpt(said, trumpRoom))}${mid}${quote(excerpt(calmOf(s).en, room - trumpRoom))}${tail}`];
   const anglo = [...ofCountry(s, 'united-states'), ...ofCountry(s, 'united-kingdom')][0];
   if (anglo) {
@@ -116,12 +117,14 @@ export function threadPosts(s, max, { firstTag = '', lastTag = '', source = '' }
   for (const v of ofCountry(s, 'france').slice(0, 2)) posts.push(frenchPost('🇫🇷', v, max));
   const n = versionsOf(s).length + 1;
   const tags = lastTag ? `\n\n${lastTag}` : '';
-  const last = s.episode
+  const last = s.meanwhile
+    ? `${(s.meanwhile.tagline || ['Politicians say it.', 'Real people pay for it.']).join(' ')}\n\nThe full episode: ${url}\n\n${SATIRE_NOTE}${tags}`
+    : s.episode
     ? `${plain(s.episode.tagline || []).join(' ')}\n\nThe full episode: ${url}\n\n${SATIRE_NOTE}${tags}`
     : s.neutral
     ? `Trump’s post, made neutral, and the cantons: ${url}\n\n${SATIRE_NOTE}${tags}`
     : `All ${n} versions, with three diplomats (British, French, Swiss): ${url}\n\n${SATIRE_NOTE}${tags}`;
-  posts.push(chars(last) <= max ? last : `${s.episode ? 'The full episode' : `All ${n} versions`}: ${url}${tags}`);
+  posts.push(chars(last) <= max ? last : `${s.episode || s.meanwhile ? 'The full episode' : `All ${n} versions`}: ${url}${tags}`);
   return posts;
 }
 
@@ -134,7 +137,7 @@ export function facebookPost(s) {
     `${calmOf(s).label}: ${quote(excerpt(calmOf(s).en, 500))}`,
     lead ? `${regionLabel(lead.region)} (satire): ${quote(excerpt(englishOf(lead.region, lead.edition), 400))}` : '',
     s.episode ? `${CANTONS[s.episode.canton].name} (satire): ${quote(excerpt(plain(s.episode.reaction), 400))}` : '',
-    s.episode ? `${plain(s.episode.tagline || []).join(' ')}\n\nThe full episode: ${articleUrl(s, 'facebook')}` : `All ${versionsOf(s).length + 1} versions: ${articleUrl(s, 'facebook')}`,
+    s.meanwhile ? `${(s.meanwhile.tagline || ['Politicians say it.', 'Real people pay for it.']).join(' ')}\n\nThe full episode: ${articleUrl(s, 'facebook')}` : s.episode ? `${plain(s.episode.tagline || []).join(' ')}\n\nThe full episode: ${articleUrl(s, 'facebook')}` : `All ${versionsOf(s).length + 1} versions: ${articleUrl(s, 'facebook')}`,
     SATIRE_NOTE,
   ];
   return { message: parts.filter(Boolean).join('\n\n'), link: articleUrl(s, 'facebook') };
@@ -148,7 +151,9 @@ export function instagramCaption(s) {
   const caption = [
     s.headline,
     `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 700))}`,
-    s.episode
+    s.meanwhile
+      ? `Meanwhile, at a real American kitchen table, Steve has a few thoughts. ${(s.meanwhile.tagline || ['Politicians say it.', 'Real people pay for it.']).join(' ')}`
+      : s.episode
       ? 'Switzerland has reviewed the request: Swiss Neutrality, then the reaction of a Swiss canton. Switzerland: neutral since 1815.'
       : s.neutral
       ? 'Then the same message, the neutral Swiss way, and as it would sound in the cantons of French-speaking Switzerland. Which canton does the best Trump? Tell us in the comments.'
@@ -185,7 +190,7 @@ export function carouselCards(s) {
   return [
     [
       { kind: 'original', label: 'Donald J. Trump · Truth Social', text: excerpt(s.original.text, 420) },
-      { kind: 'presidential', label: s.neutral ? 'The Neutral Swiss' : 'The American President', note: calmOf(s).label, text: excerpt(calmOf(s).en, 360) },
+      { kind: 'presidential', label: s.meanwhile ? 'Meanwhile, Steve' : s.neutral ? 'The Neutral Swiss' : 'The American President', note: calmOf(s).label, text: excerpt(calmOf(s).en, 360) },
     ],
     ...groups.map((g) => g.map((v) => card(v, g.length > 2 ? 300 : 360))),
   ];
@@ -226,7 +231,7 @@ export function seriesVersion(s, series) {
  * content/social/video-rotation.json, so series take turns from one statement to the next.
  */
 export function videoSeriesFor(s, start = 0) {
-  if (s.episode) return [EPISODE_SERIES];
+  if (s.episode || s.meanwhile) return [EPISODE_SERIES];
   if (s.neutral) return CANTON_SERIES.filter((series) => seriesVersion(s, series));
   const n = VIDEO_SERIES.length;
   const from = (i, ok) => {
@@ -265,7 +270,7 @@ export function videosPending(s, log, start, youtubeStart = null) {
   if (!(s.published >= start)) return false;
   const entry = log?.[s.slug] || {};
   // an episode has a single video
-  if (s.episode) return [...SOCIAL_NETWORKS, ...(youtubeStart && s.published >= youtubeStart ? ['youtube'] : [])].some((name) => !entry[name]);
+  if (s.episode || s.meanwhile) return [...SOCIAL_NETWORKS, ...(youtubeStart && s.published >= youtubeStart ? ['youtube'] : [])].some((name) => !entry[name]);
   // YouTube counts only from the day it was switched on (content/social/config.json, youtubeStart)
   // (or for an older statement whose videos were sent to YouTube afterwards, by hand)
   const networks = (youtubeStart && s.published >= youtubeStart) || entry.youtube ? [...SOCIAL_NETWORKS, 'youtube'] : SOCIAL_NETWORKS;
@@ -317,6 +322,10 @@ export function regionTitle(region) {
  */
 export function youtubeTitle(s, series, { question = false } = {}) {
   // an episode with a hook: the hook is the title ("Trump says time is of the essence. Switzerland disagrees.")
+  if (s.meanwhile?.hook) {
+    const h = `${s.meanwhile.hook.replace(/\*/g, '')} #Shorts`;
+    if (chars(h) <= 100) return h;
+  }
   if (s.episode?.hook) {
     const h = `${s.episode.hook.replace(/\*/g, '')} 🇨🇭 #Shorts`;
     if (chars(h) <= 100) return h;
@@ -334,14 +343,14 @@ export function youtubeTitle(s, series, { question = false } = {}) {
 
 /** The description of a Short: the original, the presidential version, the link. */
 export function youtubeDescription(s, series) {
-  const v = series && !s.episode ? seriesVersion(s, series) : null;
+  const v = series && !s.episode && !s.meanwhile ? seriesVersion(s, series) : null;
   return [
     `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 900))}`,
     `${calmOf(s).label} (satire): ${quote(excerpt(calmOf(s).en, 700))}`,
     v ? `Then: ${regionLabel(v.region)} (satire).` : '',
     s.episode ? `${CANTONS[s.episode.canton].name} (satire): ${quote(excerpt(plain(s.episode.reaction), 400))}` : '',
-    s.episode ? plain(s.episode.tagline || []).join(' ') : '',
-    `${s.episode ? 'The full episode' : 'All versions'}: ${articleUrl(s, 'youtube')}`,
+    s.episode ? plain(s.episode.tagline || []).join(' ') : s.meanwhile ? (s.meanwhile.tagline || ['Politicians say it.', 'Real people pay for it.']).join(' ') : '',
+    `${s.episode || s.meanwhile ? 'The full episode' : 'All versions'}: ${articleUrl(s, 'youtube')}`,
     SATIRE_NOTE,
     '#PoliticalSatire #Satire',
   ].filter(Boolean).join('\n\n');

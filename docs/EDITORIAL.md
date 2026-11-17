@@ -1,6 +1,24 @@
 # Editorial workflow
 
-## The episode format (from 13 November 2026)
+## “Meanwhile” (from 17 November 2026): the format of every new episode
+
+One short episode, all in English, one video (25–35 s):
+
+1. **The hook** (`meanwhile.hook`): the politician's big line, then “*Meanwhile, at Steve’s house…*”, said by Steve.
+   It is also the YouTube title. Example: “Trump promises Energy Dominance. *Meanwhile, at Steve’s house…*”
+2. **The original**, in full and word for word (`original.text`, `original.key`), with `meanwhile.highlight` (exact
+   words of the original) highlighted. Posts by Trump, or by the politicians around him.
+3. **Meanwhile, at a real American kitchen table** (`meanwhile.steve`, two or three short lines, the last one in
+   `*…*`, the punchline): Steve, a **fictional** regular American (cap, hoodie, coffee, bills), says what it means
+   for people like him. Then the red REALITY CHECK stamp.
+4. **The tagline**: “Politicians say it. *Real people pay for it.*” (`meanwhile.tagline` to change it).
+
+Rules: Steve is never a real person and never mocks real people or victims; the joke is the gap between the big
+promise and the kitchen table. No region needed. His voice: Kokoro “Fenrir” (Voices workflow, voice auto).
+The Swiss format (Swiss Neutrality, cantons, Monsieur Neutre) and the Swiss Priorities Report are retired: their
+episodes stay in the archives.
+
+## The episode format (13–16 November 2026)
 
 Each new statement is one short episode, all in English, with one video (no second video):
 

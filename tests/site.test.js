@@ -88,7 +88,7 @@ describe('build', () => {
     }
     expect(readFileSync(path.join(out, '404.html'), 'utf8')).toContain('noindex');
     const home = readFileSync(path.join(out, 'index.html'), 'utf8');
-    expect(home).toContain('Making presidential statements neutral again.');
+    expect(home).toContain('Politicians say it. Real people pay for it.');
     expect(readFileSync(path.join(out, 'sitemap.xml'), 'utf8')).not.toContain('/episodes/');
   });
   it('gives Google dates with a time zone, and urls for the author and the shared post', async () => {

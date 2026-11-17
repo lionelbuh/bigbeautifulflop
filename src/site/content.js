@@ -22,7 +22,14 @@ export function validateStatement(s, file = s?.slug) {
   need(Array.isArray(o.text) && o.text.length > 0, 'original.text must be a list of paragraphs');
   need(o.medium, 'original.medium is required (where it was said or posted)');
   need(o.source && o.source.label, 'original.source.label is required: no source, no statement');
-  need((s.presidential && Array.isArray(s.presidential.en) && s.presidential.en.length) || (s.neutral && Array.isArray(s.neutral.en) && s.neutral.en.length), 'neutral.en (or, before November 2026, presidential.en) is required');
+  need((s.presidential && Array.isArray(s.presidential.en) && s.presidential.en.length) || (s.neutral && Array.isArray(s.neutral.en) && s.neutral.en.length) || s.meanwhile, 'meanwhile (or, before 17 November 2026, neutral.en or presidential.en) is required');
+  // "Meanwhile" (from 17 November 2026): the post, then Steve, a fictional regular American
+  if (s.meanwhile) {
+    const m = s.meanwhile;
+    need(typeof m.hook === 'string' && m.hook.length, 'meanwhile.hook is required');
+    need(Array.isArray(m.steve) && m.steve.length >= 2 && m.steve.length <= 3, 'meanwhile.steve: two or three lines');
+    need(!m.highlight || (o.text || []).join(' ').includes(m.highlight), 'meanwhile.highlight must be words of the original, exactly');
+  }
   // an episode (from 13 November 2026): the post, Swiss Neutrality, one canton, the tagline
   if (s.episode) {
     const ep = s.episode;

@@ -36,7 +36,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
   const ctx = { statements, recent, archived, lead, day, today };
 
   const pages = [
-    page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} Trump’s posts, quoted word for word. Then Switzerland reviews the request: Swiss Neutrality, and the reaction of a Swiss canton. Independent satire.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
+    page({ pageId: 'home', path: '/', title: SITE_NAME, description: `${MOTTO} Politicians’ posts, quoted word for word. Then Steve, a regular American, at his kitchen table. Independent satire.`, main: home(ctx), bodyClass: 'home', jsonLd: siteLd(), lastmod: statements[0]?.published }),
     // the Episodes page (13 November 2026) repeated the home page: its address leads home
     { path: '/episodes/', lang: 'en', listed: false, html: redirectPage('/') },
     { path: '/neutral/', lang: 'en', listed: false, html: redirectPage('/') },
@@ -80,7 +80,7 @@ export function buildPages({ statements, day, today, assets, ogImages = new Set(
     const regions = REGIONS.filter((r) => s.editions?.[r.id]);
     pages.push(page({
       pageId: '', path: articlePath(s), type: 'article', title: s.headline, description: s.dek, main: article(ctx, s), lastmod: s.published,
-      docTitle: `${s.headline}: Trump’s post, made ${s.neutral ? 'neutral' : 'presidential'}`, image: imageOf(s), published: s.published,
+      docTitle: s.meanwhile ? `${s.headline}: Trump’s post, and meanwhile, a regular American` : `${s.headline}: Trump’s post, made ${s.neutral ? 'neutral' : 'presidential'}`, image: imageOf(s), published: s.published,
       jsonLd: articleLd(s, imageOf(s)),
     }));
     for (const region of regions) {
@@ -387,7 +387,7 @@ function regionPage({ statements }, region) {
 function about() {
   return `${sectionHead('About', 'An independent satirical publication', TAGLINE)}
   <div class="prose">
-    <p>Big Beautiful Flop is a series of short episodes. Each one starts with a real post by Donald Trump, in full and word for word. Switzerland then reviews the request: first Swiss Neutrality, calm and polite, then the reaction of one Swiss canton. Switzerland: neutral since 1815.</p>
+    <p>Big Beautiful Flop is a series of short episodes. Each one starts with a real post by Donald Trump (or the politicians around him), in full and word for word. Then, meanwhile, at a real American kitchen table: Steve, a regular American, says what it means for people like him. Politicians say it. Real people pay for it.</p>
     <p>Earlier statements were shown in other formats (a neutral Swiss in English and French, regional versions, a statesmanlike American President, three diplomats): they remain on their pages, in the <a href="/archives/">archives</a>.</p>
     <h2>Who’s behind this</h2>
     <p>Big Beautiful Flop is made by a Swiss-American living in California: Swiss enough to believe every disagreement can be settled over a fondue, American enough to care how the President talks. As a neutral country, Switzerland has spent centuries translating between quarrelling powers; this is our modest contribution to that tradition. We are not neutral about manners. We are neutral about fondue: moitié-moitié or pure Gruyère, both are welcome.</p>
@@ -395,7 +395,7 @@ function about() {
     <ul>
       <li><strong>The original is quoted verbatim</strong>, dated and sourced. No source, no statement.</li>
       <li><strong>We never invent quotes.</strong> Our versions are never attributed to Donald Trump and are always labelled as satire.</li>
-      <li><strong>Same message, neutral manners.</strong> Swiss Neutrality keeps the facts and the point, and drops the insults and the capital letters.</li>
+      <li><strong>Steve is fictional.</strong> He is not a real person and speaks for nobody; his lines are satire, about the policy, never about people.</li>
       <li><strong>No photographs, no imitations.</strong> No altered images, no imitated voice or face: just the post, the text and the stamp.</li>
       <li><strong>Humans publish.</strong> AI helps us draft; an editor approves everything.</li>
     </ul>
@@ -442,17 +442,17 @@ function press({ statements }) {
   return `${sectionHead('Press', 'Big Beautiful Flop in brief', 'For journalists, editors and podcasters. Pour la presse romande et française : voir plus bas.')}
   <div class="prose">
     <h2>In one sentence</h2>
-    <p>Big Beautiful Flop shows Donald Trump’s posts, word for word, then lets Switzerland review the request: Swiss Neutrality first, then the reaction of a Swiss canton, from Vaud to Geneva. Short episodes, in English.</p>
+    <p>Big Beautiful Flop shows what politicians post, word for word, and then what it looks like at a real American kitchen table, through Steve, a fictional regular American. Short episodes, in English.</p>
     <h2>What makes it different</h2>
     <ul>
       <li><strong>The original is never altered.</strong> Each post is quoted verbatim, dated and sourced; everything else is clearly labelled satire.</li>
-      <li><strong>Same message, neutral manners.</strong> Swiss Neutrality keeps the point and drops the insults and the capital letters: the gap between the two is the joke.</li>
-      <li><strong>Swiss clichés, gently applied.</strong> Each episode ends with a canton: referendums in Vaud, raclette in Valais, precision in Neuchâtel.</li>
+      <li><strong>The gap is the joke.</strong> Big promises on one side, the gas bill and the grocery receipt on the other.</li>
+      <li><strong>Steve, the regular American.</strong> A recurring, entirely fictional character with a cap, a coffee and a lot of bills.</li>
       <li><strong>Swiss neutrality, applied to satire.</strong> Made by a Swiss-American living in California: no party, no campaign, no advertising.</li>
     </ul>
     <h2>Facts</h2>
     <ul>
-      <li>Launched in November 2026; ${n} statements so far; episodes since 13 November 2026.</li>
+      <li>Launched in November 2026; ${n} statements so far; “Meanwhile” episodes since 17 November 2026.</li>
       <li>On the site, and as short vertical videos on Instagram, Facebook, Threads, Bluesky and YouTube; “The Flop of the week” every Sunday.</li>
       <li>Independent, non-commercial; no cookies, no advertising.</li>
     </ul>
@@ -463,8 +463,8 @@ function press({ statements }) {
     <p>Interviews, questions, corrections: ${emailLink()}. We usually answer within a day.</p>
     <h2 lang="fr">En bref, en français</h2>
     <div lang="fr">
-      <p>Big Beautiful Flop montre les messages de Donald Trump en entier, mot pour mot, puis la Suisse examine la demande : la neutralité suisse d’abord, puis la réaction d’un canton, de Vaud à Genève. De courts épisodes, en anglais.</p>
-      <p>L’original n’est jamais modifié et tout le reste est signalé comme satire. Le projet est fait par un Suisse-Américain qui vit en Californie, sans parti ni publicité : la neutralité suisse appliquée à la satire. Chaque épisode a sa vidéo, avec le tampon « Neutral Swiss ».</p>
+      <p>Big Beautiful Flop montre les messages des politiciens américains en entier, mot pour mot, puis, pendant ce temps, à la table de cuisine d’un Américain ordinaire : Steve, personnage fictif, dit ce que cela change pour lui. Les politiciens le disent, les gens le paient.</p>
+      <p>L’original n’est jamais modifié et tout le reste est signalé comme satire. Le projet est fait par un Suisse-Américain qui vit en Californie, sans parti ni publicité : la neutralité suisse appliquée à la satire. Chaque épisode a sa vidéo, avec le tampon « Reality check ».</p>
       <p>Contact : ${emailLink()}.</p>
     </div>
   </div>`;

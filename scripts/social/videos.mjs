@@ -24,6 +24,7 @@ import { loadStatements } from '../../src/site/content.js';
 import { logoFlop } from '../../src/site/logo.js';
 import { escapeHtml as e } from '../../src/site/html.js';
 import { CANTONS } from '../../src/site/cantons.js';
+import { meanwhileVideo } from './meanwhile.mjs';
 import { monsieurNeutre } from './assets/monsieur-neutre.mjs';
 import { episodesSinceSpecial } from '../../src/site/pages.js';
 import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle, regionTitle, weeklyPicks, SOCIAL_NETWORKS, VIDEO_SERIES, ALL_SERIES } from './compose.mjs';
@@ -872,6 +873,20 @@ async function main() {
     mkdirSync(dir, { recursive: true });
     const metaFile = path.join(dir, 'videos.json');
     const meta = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, 'utf8')) : {};
+    if (s.meanwhile) {
+      // "Meanwhile" (from 17 November 2026): the post, then Steve, a fictional regular American
+      const file = path.join(dir, 'video-1.mp4');
+      const v = meanwhileVideo(s);
+      if (!v.voice) console.log(`${s.slug}: no voice yet (run the Voices workflow on this branch)`);
+      const hash = createHash('sha256').update(JSON.stringify(s) + SELF + v.html.length + (v.voice ? readFileSync(path.join(v.voice.dir, 'lines.json'), 'utf8') : '')).digest('hex').slice(0, 16);
+      if (!(meta[1]?.hash === hash && existsSync(file))) {
+        await render(page, work, v.html, file, v.opts);
+        built += 1;
+        console.log(`${s.slug}: meanwhile video`);
+      }
+      writeFileSync(metaFile, `${JSON.stringify({ 1: { series: 'episode', hash }, format: 'meanwhile' }, null, 2)}\n`);
+      continue;
+    }
     if (s.episode) {
       const file = path.join(dir, 'video-1.mp4');
       const voice = voiceOf(s);
@@ -925,7 +940,8 @@ async function main() {
   console.log(`Videos: ${built} rendered, ${wanted.length} statements.`);
   // one Swiss Priorities Report every five episodes (docs/EDITORIAL.md)
   const since = episodesSinceSpecial(all);
-  console.log(since >= 5 ? `REMINDER: ${since} episodes since the last Swiss Priorities Report: one is due (tell the owner).` : `Episodes since the last Swiss Priorities Report: ${since} of 5.`);
+  // the Swiss Priorities Report is paused since the Meanwhile format (17 November 2026)
+  void since;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) await main();

@@ -7,10 +7,14 @@ import json, os, sys
 import numpy as np, soundfile as sf
 from kokoro import KPipeline
 
-ROTATION = ['am_puck', 'am_onyx']
+ROTATION = ['am_puck', 'am_onyx']  # Monsieur Neutre (Swiss episodes, before 17 November 2026)
+STEVE = 'am_fenrir'  # Steve, the regular American (Meanwhile, from 17 November 2026)
 slug, voice = sys.argv[1], sys.argv[2]
 speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.1
 rot_file = 'content/voices/rotation.json'
+_st = f'content/statements/{slug}.json'
+if voice == 'auto' and os.path.exists(_st) and 'meanwhile' in json.load(open(_st)):
+    voice = STEVE  # Steve always speaks with his own voice; the rotation is for Monsieur Neutre
 if voice == 'auto':
     # an episode keeps its voice when it is read again; a new one takes the next voice in turn
     prev = f'content/voices/{slug}/lines.json'
@@ -32,6 +36,12 @@ if os.path.exists(f'content/tests/{slug}.json'):
 elif os.path.exists(f'content/statements/{slug}.json'):
     s = json.load(open(f'content/statements/{slug}.json'))
     parts = (('h', 'hook'), ('n', 'neutral'), ('v', 'reaction'))
+    if 'meanwhile' in s:
+        # "Meanwhile": the hook and Steve's lines, always in Steve's voice
+        s = {'episode': s['meanwhile']}
+        parts = (('h', 'hook'), ('s', 'steve'))
+        if voice == 'auto':
+            voice = STEVE
 else:
     sp = json.load(open(f'content/specials/{slug}.json'))
     s = {'episode': {'review': sp['review'], 'closing': (sp.get('alternative') or {}).get('closing', ''), 'verdict': ' '.join(sp['verdict'])}}
