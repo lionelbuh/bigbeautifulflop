@@ -30,7 +30,9 @@ export function meanwhileHtml(t, s, voice) {
   const size = n < 350 ? 46 : n < 650 ? 38 : n < 1300 ? 30 : 24;
   const hl = s.episode?.highlight;
   const FULL = s.original.text.map((x) => `<p class="t">${hl ? e(x).replace(e(hl), `<mark>${e(hl)}</mark>`) : e(x)}</p>`).join('');
-  const stamp = STAMP_ASSET.replace('>NEUTRAL<', `>${e(t.stamp[0])}<`).replace('>SWISS<', `>${e(t.stamp[1])}<`).replace('letter-spacing="16"', 'letter-spacing="10"');
+  const stamp = STAMP_ASSET.replace('>NEUTRAL<', `>${e(t.stamp[0])}<`).replace('>SWISS<', `>${e(t.stamp[1])}<`).replace('letter-spacing="16"', 'letter-spacing="10"')
+    // no Swiss cross here: a red check mark in its square instead
+    .replace('<path d="M87 94 h18 v20 h20 v18 h-20 v20 h-18 v-20 h-20 v-18 h20 z" fill="#F4F0E6"/>', '<path d="M74 122 l18 18 l30 -38" fill="none" stroke="#F4F0E6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>');
   const talk = (k, t0) => (L[k] ? `talk .15s ease-in-out ${r(t0)}s ${Math.max(2, Math.round(L[k].duration / 0.15))} alternate` : '');
   const html = `<!doctype html><meta charset="utf-8"><style>
 ${styles({ stageTop: 330, boxSize: 38, hookSize: 92, titleAnim: false })}
