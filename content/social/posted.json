@@ -725,6 +725,28 @@
         "at": "2026-11-14T21:31:30.343Z",
         "id": "9q2caKvHFHc"
       }
+    },
+    "oval-office-gold": {
+      "bluesky": {
+        "at": "2026-11-17T00:02:55.921Z",
+        "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2hqiwhffo2k"
+      },
+      "threads": {
+        "at": "2026-11-17T00:03:50.344Z",
+        "id": "17936283162413032"
+      },
+      "facebook": {
+        "at": "2026-11-17T00:03:57.532Z",
+        "id": "1155785430697710"
+      },
+      "instagram": {
+        "at": "2026-11-17T00:05:00.279Z",
+        "id": "18109813436459856"
+      },
+      "youtube": {
+        "at": "2026-11-17T00:05:07.542Z",
+        "id": "uC0YHtipxoE"
+      }
     }
   },
   "trash-island": {
