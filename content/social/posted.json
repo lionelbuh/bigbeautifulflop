@@ -937,5 +937,32 @@
       "id": "18014935877995168",
       "video": 1
     }
+  },
+  "biggest-drop": {
+    "bluesky": {
+      "at": "2026-11-17T23:53:02.920Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2kag6kbob2i",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-17T23:54:05.820Z",
+      "id": "18455561833132285",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-17T23:54:12.071Z",
+      "id": "1783435452912226",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-17T23:54:53.107Z",
+      "id": "18120615625799577",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-17T23:54:56.922Z",
+      "id": "y6z9_olXMOE",
+      "video": 1
+    }
   }
 }
