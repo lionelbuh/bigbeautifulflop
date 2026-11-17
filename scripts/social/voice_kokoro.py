@@ -25,7 +25,11 @@ if voice == 'auto':
 out = sys.argv[4] if len(sys.argv) > 4 else f'content/voices/{slug}'
 pipe = KPipeline(lang_code='b' if voice.startswith('b') else 'a')
 # an episode (content/statements) or a Priorities Report (content/specials): a few lines of it
-if os.path.exists(f'content/statements/{slug}.json'):
+if os.path.exists(f'content/tests/{slug}.json'):
+    # a test of the "Meanwhile" format: the hook and Steve's lines
+    s = json.load(open(f'content/tests/{slug}.json'))
+    parts = (('h', 'hook'), ('s', 'steve'))
+elif os.path.exists(f'content/statements/{slug}.json'):
     s = json.load(open(f'content/statements/{slug}.json'))
     parts = (('h', 'hook'), ('n', 'neutral'), ('v', 'reaction'))
 else:

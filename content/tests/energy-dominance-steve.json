@@ -1,0 +1,23 @@
+{
+  "slug": "energy-dominance-steve",
+  "base": "energy-dominance",
+  "format": "meanwhile",
+  "politician": "Trump",
+  "quote": "I will UNLEASH American Energy Dominance for ALL Americans!",
+  "episode": {
+    "hook": "Trump promises Energy Dominance. *Meanwhile, at Steve’s house…*",
+    "steve": [
+      "Energy Dominance? Great.",
+      "I just dominated my thermostat: sixty-four degrees and two sweaters.",
+      "*The only thing unleashed in this house is my gas bill.*"
+    ]
+  },
+  "stamp": [
+    "REALITY",
+    "CHECK"
+  ],
+  "tagline": [
+    "Politicians say it.",
+    "Real people pay for it."
+  ]
+}
