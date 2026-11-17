@@ -387,14 +387,14 @@ function regionPage({ statements }, region) {
 function about() {
   return `${sectionHead('About', 'An independent satirical publication', TAGLINE)}
   <div class="prose">
-    <p>Big Beautiful Flop is a series of short episodes. Each one starts with a real post by Donald Trump (or the politicians around him), in full and word for word. Then, meanwhile, at a real American kitchen table: Steve, a regular American, says what it means for people like him. Politicians say it. Real people pay for it.</p>
+    <p>Big Beautiful Flop is a series of short episodes. Each one starts with a real post from the U.S. government and the politicians who run it, in full and word for word. Then, meanwhile, at a real American kitchen table: Steve, a regular American, says what it means for people like him. Politicians say it. Real people pay for it.</p>
     <p>Earlier statements were shown in other formats (a neutral Swiss in English and French, regional versions, a statesmanlike American President, three diplomats): they remain on their pages, in the <a href="/archives/">archives</a>.</p>
     <h2>Who’s behind this</h2>
     <p>Big Beautiful Flop is made by a Swiss-American living in California: Swiss enough to believe every disagreement can be settled over a fondue, American enough to care how the President talks. As a neutral country, Switzerland has spent centuries translating between quarrelling powers; this is our modest contribution to that tradition. We are not neutral about manners. We are neutral about fondue: moitié-moitié or pure Gruyère, both are welcome.</p>
     <h2>Our rules</h2>
     <ul>
       <li><strong>The original is quoted verbatim</strong>, dated and sourced. No source, no statement.</li>
-      <li><strong>We never invent quotes.</strong> Our versions are never attributed to Donald Trump and are always labelled as satire.</li>
+      <li><strong>We never invent quotes.</strong> Our versions are never attributed to the people we quote, and are always labelled as satire.</li>
       <li><strong>Steve is fictional.</strong> He is not a real person and speaks for nobody; his lines are satire, about the policy, never about people.</li>
       <li><strong>No photographs, no imitations.</strong> No altered images, no imitated voice or face: just the post, the text and the stamp.</li>
       <li><strong>Humans publish.</strong> AI helps us draft; an editor approves everything.</li>
