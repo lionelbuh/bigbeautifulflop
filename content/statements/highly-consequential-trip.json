@@ -1,0 +1,48 @@
+{
+  "slug": "highly-consequential-trip",
+  "status": "published",
+  "published": "2026-11-19",
+  "headline": "A Great and Highly Consequential Trip",
+  "dek": "The President flies back from China after a Great and Highly Consequential Trip, and announces a news conference on his trade deals. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "trade",
+    "China"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-19",
+    "time": "12:01",
+    "text": [
+      "Heading back to Washington, D.C., from China. It was a Great and Highly Consequential Trip. I will be giving a News Conference tomorrow at 12 P.M., the White House. Also, will be discussing the Trade Deals with Thailand, the Philippines, and others. President DONALD J. TRUMP"
+    ],
+    "key": "It was a Great and Highly Consequential Trip.",
+    "context": "Posted on 19 November 2026. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 19 November 2026 (shown as 11/19/26, 9:01 AM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump returns from a Highly Consequential Trip. *Meanwhile, at Steve’s house…*",
+    "highlight": "It was a Great and Highly Consequential Trip.",
+    "steve": [
+      "A Great and Highly Consequential Trip? I know the feeling.",
+      "I just drove to the grocery store and back. Highly consequential.",
+      "*Next week, I’m negotiating a trade deal with my landlord.*"
+    ],
+    "fact": {
+      "number": "22.7 million",
+      "text": "renter households, 49% of all renters, spent more than 30% of their income on rent and utilities in 2024: a record for the fourth year in a row.",
+      "source": "Harvard Joint Center for Housing Studies, from U.S. Census Bureau data (American Community Survey)",
+      "url": "https://www.jchs.harvard.edu/press-releases/new-report-finds-cooling-rental-markets-affordability-crisis-deepens-renters"
+    }
+  }
+}
