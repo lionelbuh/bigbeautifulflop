@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump returns from a Highly Consequential Trip. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 4.33
+    },
+    "s0": {
+      "text": "A Great and Highly Consequential Trip? I know the feeling.",
+      "duration": 2.99
+    },
+    "s1": {
+      "text": "I just drove to the grocery store and back. Highly consequential.",
+      "duration": 3.6
+    },
+    "s2": {
+      "text": "Next week, I\u2019m negotiating a trade deal with my landlord.",
+      "duration": 3.14
+    }
+  }
+}
