@@ -13,6 +13,9 @@ import { steve } from './assets/steve.mjs';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const r = (x) => Math.round(x * 10) / 10;
+// the opening shout, “Big Beautiful Floooop?”, over the opening fanfare (when the file exists); Steve's hook comes after it
+export const SHOUT = path.join(root, 'scripts/social/sound/bbf-shout.wav');
+const SHOUT_END = 2.3;
 const mk = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
 /** The voice of an episode (content/voices/<slug>/: h0 the hook, s0.. Steve's lines), or null if missing or stale. */
@@ -30,16 +33,19 @@ export function meanwhileVideo(s) {
   const t = { episode: { hook: m.hook, steve: m.steve }, fact: m.fact, stamp: m.stamp || ['REALITY', 'CHECK'], tagline: m.tagline || ['Politicians say it.', 'Real people pay for it.'] };
   const voice = voiceOfMeanwhile(s.slug, m);
   const { html, T } = meanwhileHtml(t, { ...s, episode: { highlight: m.highlight } }, voice);
-  const cues = voice ? [['h0', 0.3], ...m.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
+  const cues = voice ? [['h0', T.h0at], ...m.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
+  const shout = existsSync(SHOUT);
   return { html, voice, opts: {
-    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), bed: true, coverAt: 1.4, ...(voice ? { bedVolume: 0.16 } : {}),
-    fx: [{ file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+    // the opening fanfare (with the shout), then only the voices and the stamp, then the ending fanfare
+    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), bed: !shout, coverAt: 1.4, ...(voice ? { bedVolume: 0.16 } : {}),
+    fx: [...(shout ? [{ file: SHOUT, at: 0.15, volume: 1.1 }] : []), { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
   } };
 }
 
-export function meanwhileHtml(t, s, voice) {
+export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const L = voice?.lines || {};
-  const hk = Math.max(2.6, (L.h0?.duration ?? 2.4) + 0.5);
+  const h0at = shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
+  const hk = Math.max(2.6, h0at + (L.h0?.duration ?? 2.4) + 0.5);
   const n0 = r(hk + 4.7);
   const holds = t.episode.steve.map((x, i) => Math.max(2.4, (L[`s${i}`]?.duration ?? (1.5 + x.length / 18)) + 0.6));
   const at = [n0 + 0.3]; holds.slice(0, -1).forEach((h, i) => at.push(r(at[i] + h)));
@@ -48,7 +54,7 @@ export function meanwhileHtml(t, s, voice) {
   // an official figure (optional), with its source, after Steve
   const fEnd = t.fact ? r(nEnd + 8) : nEnd; // time to read the figure, the sentence and the source
   const endAt = r(fEnd + 0.2);
-  const T = { hk: r(hk), n0, at, nEnd, fEnd, stampAt, endAt };
+  const T = { hk: r(hk), h0at, n0, at, nEnd, fEnd, stampAt, endAt };
   const day = new Date(`${s.original.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
   const n = s.original.text.join(' ').length;
   const size = n < 350 ? 46 : n < 650 ? 38 : n < 1300 ? 30 : 24;
@@ -80,7 +86,7 @@ body{background:#F4F0E6}
 #h .q{position:absolute;left:70px;right:70px;top:330px;font-family:F;font-weight:600;font-size:86px;line-height:1.04;letter-spacing:-.02em;text-align:center}
 #h .q em{font-style:italic;color:${RED}}
 #s0{left:50%;margin-left:-240px;width:480px;top:960px}
-#s0 .mouth{animation:${talk('h0', 0.3) || 'none'}}
+#s0 .mouth{animation:${talk('h0', h0at) || 'none'}}
 #s0 .brows{animation:raise .4s ease-out .2s both}
 /* 2. the post, in full */
 .post{position:absolute;left:70px;right:70px;top:330px;background:#fffdf8;border:1px solid #171614;padding:34px 40px 30px;box-shadow:8px 8px 0 rgba(23,22,20,.08);transform-origin:50% 75%;animation:fadein .4s ease-out ${T.hk}s both,zoom 1.6s cubic-bezier(.3,0,.2,1) ${r(T.hk + 1.2)}s forwards,shrink .7s ease-in-out ${r(T.hk + 4.2)}s forwards,hide .4s ease-in ${r(T.nEnd - 0.2)}s forwards}
