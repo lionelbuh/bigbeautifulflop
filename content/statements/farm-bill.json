@@ -1,0 +1,50 @@
+{
+  "slug": "farm-bill",
+  "status": "published",
+  "published": "2026-11-19",
+  "headline": "Food security is national security",
+  "dek": "The President says no President stands with farmers like him, and asks Congress to pass a new Farm Bill before the end of the session. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "farmers",
+    "Congress"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-19",
+    "time": "08:40",
+    "text": [
+      "There has been no greater President that stands with American Farmers and Ranchers than President Donald J. Trump!",
+      "As l've stated before, I was the last President to get a Farm Bill done in 2018. IT IS TIME TO DO IT AGAIN, and FAST. Our Great Farmers and Ranchers NEED and DESERVE certainty ahead of the 2027 planting season because FOOD SECURITY IS NATIONAL SECURITY!",
+      "Congressional Republican Majorities, YOU MUST PASS A NEW FARM BILL DURING THE REMAINING DAYS OF CONGRESS. FARMERS AND RANCHERS ARE NOT INTERESTED IN FURTHER DELAYS. Thank you for your attention to this matter. President DONALD J. TRUMP"
+    ],
+    "key": "Our Great Farmers and Ranchers NEED and DESERVE certainty ahead of the 2027 planting season because FOOD SECURITY IS NATIONAL SECURITY!",
+    "context": "Posted on 19 November 2026. “l've” is as written. The account of the 2018 Farm Bill is the President’s. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 19 November 2026 (shown as 11/19/26, 5:40 AM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump says no President stands with farmers like him. *Meanwhile, at Steve’s farm…*",
+    "highlight": "FOOD SECURITY IS NATIONAL SECURITY!",
+    "steve": [
+      "No greater President for farmers? Good to hear.",
+      "I need certainty for 2027. So far, the only certainty is my loan payment.",
+      "*Food security is national security. Farm security is a second mortgage.*"
+    ],
+    "fact": {
+      "number": "+46%",
+      "text": "farm bankruptcies in 2025: 315 Chapter 12 filings, up from 2024 and the highest number since 2020.",
+      "source": "American Farm Bureau Federation, analysis of U.S. Courts bankruptcy data",
+      "url": "https://www.agproud.com/articles/62969-chapter-12-farm-bankruptcy-filings-up-46-in-2025"
+    }
+  }
+}
