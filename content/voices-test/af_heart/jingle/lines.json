@@ -1,0 +1,18 @@
+{
+  "voice": "kokoro-af_heart",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Big Beautiful Floooooop?",
+      "duration": 1.26
+    },
+    "s0": {
+      "text": "Big Beautiful Flop?",
+      "duration": 1.17
+    },
+    "s1": {
+      "text": "Big! Beautiful! Floooop?",
+      "duration": 1.24
+    }
+  }
+}
