@@ -6,7 +6,8 @@ One short episode, all in English, one video (25–35 s):
 
 1. **The hook** (`meanwhile.hook`): the politician's big line, then “*Meanwhile, at Steve’s house…*”, said by Steve.
    It is also the YouTube title. Example: “Trump promises Energy Dominance. *Meanwhile, at Steve’s house…*”
-2. **The original**, in full and word for word (`original.text`, `original.key`), with `meanwhile.highlight` (exact
+2. **The original**, in full and word for word, small, on the first screen with the hook and Steve (from 20 November
+   2026, no separate post screen), then small above Steve's bubble; (`original.text`, `original.key`), with `meanwhile.highlight` (exact
    words of the original) highlighted. Posts by Trump, or by the politicians around him.
 3. **Meanwhile, at a real American kitchen table** (`meanwhile.steve`, two or three short lines, the last one in
    `*…*`, the punchline): Steve, a **fictional** regular American (cap, hoodie, coffee, bills), says what it means

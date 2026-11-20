@@ -47,7 +47,8 @@ export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const L = voice?.lines || {};
   const h0at = shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
   const hk = Math.max(2.6, h0at + (L.h0?.duration ?? 2.4) + 0.5);
-  const n0 = r(hk + 4.7);
+  // no separate post screen any more: the post is on the first screen; Steve comes right after
+  const n0 = r(hk + 0.4);
   const holds = t.episode.steve.map((x, i) => Math.max(2.4, (L[`s${i}`]?.duration ?? (1.5 + x.length / 18)) + 0.6));
   const at = [n0 + 0.3]; holds.slice(0, -1).forEach((h, i) => at.push(r(at[i] + h)));
   const nEnd = r(at.at(-1) + holds.at(-1) + 0.6);
@@ -97,7 +98,7 @@ body{background:#F4F0E6}
 #s0 .mouth{animation:${talk('h0', h0at) || 'none'}}
 #s0 .brows{animation:raise .4s ease-out .2s both}
 /* 2. the post, in full */
-.post{position:absolute;left:70px;right:70px;top:330px;background:#fffdf8;border:1px solid #171614;padding:34px 40px 30px;box-shadow:8px 8px 0 rgba(23,22,20,.08);transform-origin:50% 75%;animation:fadein .4s ease-out ${T.hk}s both,zoom 1.6s cubic-bezier(.3,0,.2,1) ${r(T.hk + 1.2)}s forwards,shrink .7s ease-in-out ${r(T.hk + 4.2)}s forwards,hide .4s ease-in ${r(T.nEnd - 0.2)}s forwards}
+.post{position:absolute;left:70px;right:70px;top:330px;background:#fffdf8;border:1px solid #171614;padding:34px 40px 30px;box-shadow:8px 8px 0 rgba(23,22,20,.08);transform-origin:50% 75%;transform:translateY(var(--ty,-260px)) scale(.46);animation:fadein .4s ease-out ${T.hk}s both,hide .4s ease-in ${r(T.nEnd - 0.2)}s forwards}
 .post .who{display:flex;align-items:center;gap:16px;margin-bottom:8px;padding-bottom:16px;border-bottom:1px solid #d9d1c3}
 .post .av{width:62px;height:62px;border-radius:50%;background:#6b665e;color:#fff;display:grid;place-items:center;font-weight:700;font-size:24px}
 .post .nm{font-weight:800;font-size:30px}.post .hd{font-size:22px;color:#7a7368}
