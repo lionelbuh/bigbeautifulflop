@@ -54,7 +54,8 @@ export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const nEnd = r(at.at(-1) + holds.at(-1) + 0.6);
   const stampAt = r(at.at(-1) + (L[`s${holds.length - 1}`]?.duration ?? 2) * 0.6);
   // an official figure (optional), with its source, after Steve
-  const fEnd = t.fact ? r(nEnd + 8) : nEnd; // time to read the figure, the sentence and the source
+  // the figure is on Steve's screen (from 20 November 2026): no separate screen
+  const fEnd = nEnd;
   const endAt = r(fEnd + 0.2);
   const T = { hk: r(hk), h0at, n0, at, nEnd, fEnd, stampAt, endAt };
   const day = new Date(`${s.original.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -122,7 +123,15 @@ ${T.at.slice(1).map((a, i) => `.bub .p${i + 2}{animation:fadein .5s ease-out ${r
 .stamp{position:absolute;right:56px;top:1620px;width:560px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) ${T.stampAt}s both}
 .stamp svg{width:100%;height:auto;display:block}
 @keyframes stampin{from{opacity:0;transform:rotate(-13deg) scale(2.6)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
-/* the facts */
+/* the facts, at the top of Steve's screen (the post was on the first screen) */
+${t.fact ? `.post{display:none}` : ''}
+.nf{position:absolute;left:70px;right:70px;top:300px}
+.nf .lb{display:flex;align-items:center;font-size:22px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:${RED};padding-bottom:12px;border-bottom:2px solid #171614}
+.nf .lb small{margin-left:auto;color:#57524a;letter-spacing:.16em}
+.nf .num{font-family:F;font-weight:600;font-size:118px;line-height:1;letter-spacing:-.03em;color:${RED};margin-top:20px}
+.nf .txt{font-family:F;font-size:44px;line-height:1.16;margin-top:12px}
+.nf .src{font-size:22px;line-height:1.35;color:#57524a;margin-top:16px}
+/* (former facts screen) */
 #f{position:absolute;inset:0;animation:fadein .5s ease-out ${T.nEnd}s both,hide .4s ease-in ${T.fEnd}s forwards}
 #f .sec{top:520px}
 #f .num{position:absolute;left:70px;right:70px;top:620px;font-family:F;font-weight:600;font-size:150px;line-height:1;letter-spacing:-.03em;color:${RED}}
@@ -139,8 +148,8 @@ ${T.at.slice(1).map((a, i) => `.bub .p${i + 2}{animation:fadein .5s ease-out ${r
 <div class="mast"><div class="row"><span>Independent satire</span><span>Meanwhile</span><span>${day}</span></div><p class="nm">Big Beautiful <i>Flop</i></p><div class="rule"></div></div>
 <div id="h"><p class="q">${mk(t.episode.hook)}</p><div class="hpost"><div class="who"><span class="av">DT</span><div><p class="nm">Donald J. Trump</p><p class="hd">@realDonaldTrump · Truth Social · ${day}</p></div></div>${FULL}</div><div class="m" id="s0">${steve('mug')}</div></div>
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>${FULL}</div>
-<div id="n"><p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div>
-${t.fact ? `<div id="f"><p class="sec">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p><div class="m" id="s3">${steve('mug')}</div></div>` : ''}
+<div id="n">${t.fact ? `<div class="nf"><p class="lb">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p></div>` : ''}<p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div>
+${false ? `<div id="f"><p class="sec">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p><div class="m" id="s3">${steve('mug')}</div></div>` : ''}
 <div id="end"><p class="tl">${e(t.tagline[0])}</p><p class="tl2">${e(t.tagline[1])}</p><div class="m" id="s2">${steve('mug')}</div><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
 ${GRAIN}<script>
 window.fit = () => {

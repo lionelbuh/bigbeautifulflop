@@ -12,6 +12,7 @@ One short episode, all in English, one video (25–35 s):
 3. **Meanwhile, at a real American kitchen table** (`meanwhile.steve`, two or three short lines, the last one in
    `*…*`, the punchline): Steve, a **fictional** regular American (cap, hoodie, coffee, bills), says what it means
    for people like him. Then the red REALITY CHECK stamp.
+   **The facts** (`meanwhile.fact`: number, text, official source) at the top of Steve’s screen, while he speaks.
 4. **The tagline**: “Politicians say it. *Real people pay for it.*” (`meanwhile.tagline` to change it).
 
 Sound: the opening fanfare (quiet) with the shout “Big Beautiful Floooooop?” (Kokoro “Bella”, slowed, the Flop
