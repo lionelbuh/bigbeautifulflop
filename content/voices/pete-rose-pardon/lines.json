@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump gives Pete Rose a Complete and Total Pardon. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 4.48
+    },
+    "s0": {
+      "text": "A Complete and Total Pardon for Pete Rose? Great.",
+      "duration": 2.57
+    },
+    "s1": {
+      "text": "Can I get one for my credit card late fees?",
+      "duration": 2.33
+    },
+    "s2": {
+      "text": "Pete Rose had 4,256 hits. My credit score took a few too.",
+      "duration": 5.03
+    }
+  }
+}
