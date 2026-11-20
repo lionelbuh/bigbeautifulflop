@@ -139,7 +139,7 @@ ${styles({ stageTop: s.headline.length > 30 ? 560 : 470, boxSize: series.id === 
  * Frame by frame: every animation is paused and set to the frame's time. Several tabs share the work
  * (one per processor, up to four): GitHub's machines are much slower than a laptop.
  */
-export async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, bedVolume = 0.32, fx = [], coverAt = 0 } = {}) {
+export async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, bedVolume = 0.32, openingVolume = 1, fx = [], coverAt = 0 } = {}) {
   const frames = path.join(work, 'frames');
   rmSync(frames, { recursive: true, force: true });
   mkdirSync(frames, { recursive: true });
@@ -164,10 +164,10 @@ export async function render(page, work, markup, file, { duration = DURATION, en
   // the opening fanfare, the ending fanfare that flops, and (short format) a light music bed in between
   // inputs: 1 opening, 2 ending, 3 music bed (short format), then the sound effects of the first screen
   const inputs = ['bbf-opening.wav', 'bbf-ending.wav', ...(bed ? ['bbf-bed.wav'] : []), ...fx.map((x) => x.file)];
-  const chains = [`[2:a]adelay=${end * 1000}|${end * 1000}[a2]`];
+  const chains = [`[2:a]adelay=${end * 1000}|${end * 1000}[a2]`, `[1:a]volume=${openingVolume}[a1]`];
   if (bed) chains.push(`[3:a]atrim=0:${end - 2.2},afade=t=out:st=${end - 3.2}:d=1,volume=${bedVolume},adelay=2200|2200[a3]`);
   fx.forEach((x, k) => chains.push(`[${(bed ? 4 : 3) + k}:a]volume=${x.volume ?? 1},adelay=${Math.round(x.at * 1000)}|${Math.round(x.at * 1000)}[f${k}]`));
-  const labels = ['[1:a]', '[a2]', ...(bed ? ['[a3]'] : []), ...fx.map((_, k) => `[f${k}]`)];
+  const labels = ['[a1]', '[a2]', ...(bed ? ['[a3]'] : []), ...fx.map((_, k) => `[f${k}]`)];
   const mix = `${chains.join(';')};${labels.join('')}amix=inputs=${labels.length}:duration=longest:normalize=0,alimiter=limit=0.89:level=false,apad,atrim=0:${duration},afade=t=out:st=${duration - 0.4}:d=0.4[a]`;
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%04d.jpg'),
     ...inputs.flatMap((f) => ['-i', path.isAbsolute(f) ? f : path.join(sound, f)]),

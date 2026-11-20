@@ -13,9 +13,10 @@ import { steve } from './assets/steve.mjs';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const r = (x) => Math.round(x * 10) / 10;
-// the opening shout, “Big Beautiful Floooop?”, over the opening fanfare (when the file exists); Steve's hook comes after it
+// the opening shout, “Big Beautiful Floooooop?” (Kokoro “Bella”, slowed, the Flop stretched, pitched up), loud over a
+// quiet opening fanfare; Steve's hook comes after it
 export const SHOUT = path.join(root, 'scripts/social/sound/bbf-shout.wav');
-const SHOUT_END = 2.3;
+const SHOUT_END = 2.9;
 const mk = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
 /** The voice of an episode (content/voices/<slug>/: h0 the hook, s0.. Steve's lines), or null if missing or stale. */
@@ -37,8 +38,8 @@ export function meanwhileVideo(s) {
   const shout = existsSync(SHOUT);
   return { html, voice, opts: {
     // the opening fanfare (with the shout), then only the voices and the stamp, then the ending fanfare
-    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), bed: !shout, coverAt: 1.4, ...(voice ? { bedVolume: 0.16 } : {}),
-    fx: [...(shout ? [{ file: SHOUT, at: 0.15, volume: 1.1 }] : []), { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), bed: !shout, coverAt: 1.4, ...(voice ? { bedVolume: 0.16 } : {}), ...(shout ? { openingVolume: 0.3 } : {}),
+    fx: [...(shout ? [{ file: SHOUT, at: 0.15, volume: 1.8 }] : []), { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
   } };
 }
 

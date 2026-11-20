@@ -13,6 +13,9 @@ One short episode, all in English, one video (25–35 s):
    for people like him. Then the red REALITY CHECK stamp.
 4. **The tagline**: “Politicians say it. *Real people pay for it.*” (`meanwhile.tagline` to change it).
 
+Sound: the opening fanfare (quiet) with the shout “Big Beautiful Floooooop?” (Kokoro “Bella”, slowed, the Flop
+stretched, pitched up: `scripts/social/sound/bbf-shout.wav`), then no music, only the voices and the stamp, then the
+ending fanfare.
 Rules: Steve is never a real person and never mocks real people or victims; the joke is the gap between the big
 promise and the kitchen table. No region needed. His voice: Kokoro “Fenrir” (Voices workflow, voice auto).
 The Swiss format (Swiss Neutrality, cantons, Monsieur Neutre) and the Swiss Priorities Report are retired: their
