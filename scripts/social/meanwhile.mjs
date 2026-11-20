@@ -86,7 +86,14 @@ body{background:#F4F0E6}
 #h{position:absolute;inset:0;animation:hide .3s ease-in ${T.hk}s forwards}
 #h .q{position:absolute;left:70px;right:70px;top:330px;font-family:F;font-weight:600;font-size:86px;line-height:1.04;letter-spacing:-.02em;text-align:center}
 #h .q em{font-style:italic;color:${RED}}
-#s0{left:50%;margin-left:-240px;width:480px;top:960px}
+#s0{left:50%;margin-left:-170px;width:340px;top:1400px}
+/* the post itself, small, right under the hook: we see what he said from the first second */
+.hpost{position:absolute;left:110px;right:110px;top:700px;background:#fffdf8;border:1px solid #171614;padding:22px 28px 20px;box-shadow:6px 6px 0 rgba(23,22,20,.08);transform:rotate(-1.2deg)}
+.hpost .who{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid #d9d1c3}
+.hpost .av{width:44px;height:44px;border-radius:50%;background:#6b665e;color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px}
+.hpost .nm{font-weight:800;font-size:22px;margin:0}.hpost .hd{font-size:16px;color:#7a7368;margin:0}
+.hpost p.t{font-size:28px;line-height:1.35;margin-top:10px;color:#171614}
+.hpost mark{background:linear-gradient(transparent 60%,#efd27e 60%);font-weight:800}
 #s0 .mouth{animation:${talk('h0', h0at) || 'none'}}
 #s0 .brows{animation:raise .4s ease-out .2s both}
 /* 2. the post, in full */
@@ -129,7 +136,7 @@ ${T.at.slice(1).map((a, i) => `.bub .p${i + 2}{animation:fadein .5s ease-out ${r
 #s2{position:relative;width:220px}
 </style>
 <div class="mast"><div class="row"><span>Independent satire</span><span>Meanwhile</span><span>${day}</span></div><p class="nm">Big Beautiful <i>Flop</i></p><div class="rule"></div></div>
-<div id="h"><p class="q">${mk(t.episode.hook)}</p><div class="m" id="s0">${steve('mug')}</div></div>
+<div id="h"><p class="q">${mk(t.episode.hook)}</p><div class="hpost"><div class="who"><span class="av">DT</span><div><p class="nm">Donald J. Trump</p><p class="hd">@realDonaldTrump · Truth Social · ${day}</p></div></div>${FULL}</div><div class="m" id="s0">${steve('mug')}</div></div>
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>${FULL}</div>
 <div id="n"><p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div>
 ${t.fact ? `<div id="f"><p class="sec">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p><div class="m" id="s3">${steve('mug')}</div></div>` : ''}
@@ -141,6 +148,10 @@ window.fit = () => {
   const top = Math.max(330, Math.round((1920 - H) / 2 - 170));
   post.style.top = top + 'px';
   post.style.setProperty('--ty', Math.round(815 - top - 0.865 * H) + 'px');
+  // the small post on the first screen: its text shrinks until it fits between the hook and Steve
+  const hq = document.querySelector('#h .q'), hp = document.querySelector('.hpost');
+  hp.style.top = (hq.getBoundingClientRect().bottom + 40) + 'px';
+  for (let size = 28; size > 12 && hp.getBoundingClientRect().bottom > 1370; size -= 1) hp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = size - 1 + 'px'; });
   const big = document.querySelector('.bub');
   for (let size = 58; size > 44 && big.getBoundingClientRect().bottom > 1535; size -= 2) big.style.fontSize = size - 2 + 'px';
 };
