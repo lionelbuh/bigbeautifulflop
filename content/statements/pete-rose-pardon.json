@@ -1,0 +1,48 @@
+{
+  "slug": "pete-rose-pardon",
+  "status": "published",
+  "published": "2026-11-20",
+  "headline": "A Complete and Total Pardon",
+  "dek": "The President gives a Complete and Total Pardon to the late baseball legend Pete Rose, and lists his records. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "pardons",
+    "baseball"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-19",
+    "time": "16:11",
+    "text": [
+      "I have just given a Complete and Total Pardon to the Late, Great Pete Rose, a true Baseball SUPERSTAR & LEGEND, whose record of 4,256 Career Hits will never be broken. In addition, Pete played 3,562 career games (Highest Ever!), had 1,314 Runs batted in, 160 Home Runs, a .303 Batting Average, was a 17x All-Star, 3x World Series Champion, NL MVP, World Series MVP, NL Rookie of the Year, 2x Recipient of the Gold Glove Award, Silver Slugger Award, Roberto Clemente Award, 3x NL batting champion and, just like the Great Roger Clemens, who won 354 games, was treated terribly by Major League Baseball in not allowing him to go into the Baseball Hall of Fame. Politics, I guess! Thank you for your attention to this matter. President DONALD J. TRUMP"
+    ],
+    "key": "I have just given a Complete and Total Pardon to the Late, Great Pete Rose, a true Baseball SUPERSTAR & LEGEND, whose record of 4,256 Career Hits will never be broken.",
+    "context": "Posted on 19 November 2026. The statistics and the account of Major League Baseball are the President’s. Pete Rose died in 2024. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 20 November 2026 (shown as 11/19/26, 1:11 PM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump gives Pete Rose a Complete and Total Pardon. *Meanwhile, at Steve’s house…*",
+    "highlight": "a Complete and Total Pardon",
+    "steve": [
+      "A Complete and Total Pardon for Pete Rose? Great.",
+      "Can I get one for my credit card late fees?",
+      "*Pete Rose had 4,256 hits. My credit score took a few too.*"
+    ],
+    "fact": {
+      "number": "$1.29 trillion",
+      "text": "owed by Americans on their credit cards in the third quarter of 2026.",
+      "source": "Federal Reserve Bank of New York, Household Debt and Credit Report, Q3 2026 (November 2026)",
+      "url": "https://www.newyorkfed.org/newsevents/news/research/2026/20261110"
+    }
+  }
+}
