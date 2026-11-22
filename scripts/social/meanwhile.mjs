@@ -48,7 +48,8 @@ const JAR = `<svg viewBox="0 0 120 140"><rect x="30" y="6" width="60" height="16
 
 export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const L = voice?.lines || {};
-  const h0at = shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
+  // the BREAKING sound: the anchor says “Big Beautiful Flop.” on the sting; Steve's hook comes after it
+  const h0at = t.sound === 'news' ? 3.0 : shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
   const hk = Math.max(2.6, h0at + (L.h0?.duration ?? 2.4) + 0.5);
   // no separate post screen any more: the post is on the first screen; Steve comes right after
   const n0 = r(hk + 0.4);
@@ -205,9 +206,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const work = mkdtempSync(path.join(tmpdir(), 'bbf-meanwhile-'));
   const browser = await chromium.launch();
   const page = await browser.newPage();
+  const cuesH = cues.map(([k, a]) => (k === 'h0' ? [k, T.h0at] : [k, a]));
+  const news = t.sound === 'news';
+  const anchor = news && t.anchor ? path.join(root, t.anchor) : null;
   await render(page, work, html, out, {
-    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), bed: true, coverAt: 1.4, ...(voice ? { bedVolume: 0.16 } : {}),
-    fx: [{ file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(vdir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), coverAt: 1.4,
+    ...(news
+      ? { opening: 'bbf-news-open.wav', ending: 'bbf-news-end.wav', bed: true, bedFile: 'bbf-news-bed.wav', bedStart: T.n0, bedVolume: 0.3, openingVolume: 0.8 }
+      : { bed: true, ...(voice ? { bedVolume: 0.16 } : {}) }),
+    fx: [...(anchor ? [{ file: anchor, at: 1.2, volume: 1.6 }] : []), { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cuesH.map(([k, a]) => ({ file: path.join(vdir, `${k}.wav`), at: r(a), volume: 0.95 }))],
   });
   await browser.close();
   rmSync(work, { recursive: true, force: true });
