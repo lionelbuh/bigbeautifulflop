@@ -43,6 +43,9 @@ export function meanwhileVideo(s) {
   } };
 }
 
+// a jar of quarters (the "BREAKING" variant)
+const JAR = `<svg viewBox="0 0 120 140"><rect x="30" y="6" width="60" height="16" rx="4" fill="#8a8a8a" stroke="#171614" stroke-width="3"/><path d="M24 26 Q20 30 20 40 V118 Q20 132 34 132 H86 Q100 132 100 118 V40 Q100 30 96 26 Z" fill="#e9f3f5" fill-opacity=".7" stroke="#171614" stroke-width="3.5"/>${[[40, 120], [62, 122], [84, 120], [50, 110], [72, 110], [42, 100], [64, 98], [86, 100], [55, 88], [76, 88]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="11" ry="5" fill="#c9c9c9" stroke="#171614" stroke-width="2"/>`).join('')}</svg>`;
+
 export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const L = voice?.lines || {};
   const h0at = shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
@@ -123,6 +126,27 @@ ${T.at.slice(1).map((a, i) => `.bub .p${i + 2}{animation:fadein .5s ease-out ${r
 .stamp{position:absolute;right:56px;top:1620px;width:560px;transform:rotate(-8deg);animation:stampin .24s cubic-bezier(.5,0,.8,.4) ${T.stampAt}s both}
 .stamp svg{width:100%;height:auto;display:block}
 @keyframes stampin{from{opacity:0;transform:rotate(-13deg) scale(2.6)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+/* variant "BREAKING": a market board, Wall Street against Steve's jar, and a ticker with the official figure */
+${t.board ? `.post,.nf{display:none}
+.tick{position:absolute;left:0;right:0;top:250px;height:62px;background:${RED};color:#fff;overflow:hidden;display:flex;align-items:center;font-size:28px;font-weight:800;letter-spacing:.04em;white-space:nowrap}
+.tick b{background:#171614;padding:0 22px;height:100%;display:flex;align-items:center;letter-spacing:.2em;z-index:1}
+.tick span{display:inline-block;padding-left:40px;animation:scroll 14s linear ${r(T.n0)}s infinite}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.board{position:absolute;left:70px;right:70px;top:350px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.pan{border:3px solid #171614;background:#fffdf8;padding:18px 20px 16px;text-align:center;box-shadow:6px 6px 0 rgba(23,22,20,.08)}
+.pan .lb{font-size:24px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#57524a}
+.pan .val{font-family:F;font-weight:700;font-size:62px;line-height:1.05;margin-top:10px;letter-spacing:-.02em}
+.pan .nt{font-size:20px;color:#7a7368;margin-top:6px}
+.pan.down{border-color:${RED}}.pan.down .val{color:${RED};animation:fall .9s cubic-bezier(.5,0,.9,.5) ${r(T.n0 + 0.6)}s both}
+.pan.up{border-color:#1f7a3a}.pan.up .val{color:#1f7a3a;animation:rise .6s ease-out ${r(T.at[1] + 1.4)}s both}
+@keyframes fall{0%{opacity:0;transform:translateY(-60px)}70%{opacity:1;transform:translateY(14px)}100%{transform:none}}
+@keyframes rise{0%{opacity:0;transform:translateY(30px) scale(.8)}100%{opacity:1;transform:none}}
+.pan .ar{font-size:54px;line-height:1}
+.pan.down .ar{color:${RED};animation:bob .8s ease-in-out ${r(T.n0 + 1.5)}s infinite alternate}
+.pan.up .ar{color:#1f7a3a;animation:bob .8s ease-in-out ${r(T.at[1] + 2)}s infinite alternate-reverse}
+@keyframes bob{to{transform:translateY(10px)}}
+.jar{width:150px;margin:6px auto 0}.jar svg{width:100%;height:auto;display:block}
+` : ''}
 /* the facts, at the top of Steve's screen (the post was on the first screen) */
 ${t.fact ? `.post{display:none}` : ''}
 .nf{position:absolute;left:70px;right:70px;top:300px}
@@ -148,7 +172,7 @@ ${t.fact ? `.post{display:none}` : ''}
 <div class="mast"><div class="row"><span>Independent satire</span><span>Meanwhile</span><span>${day}</span></div><p class="nm">Big Beautiful <i>Flop</i></p><div class="rule"></div></div>
 <div id="h"><p class="q">${mk(t.episode.hook)}</p><div class="hpost"><div class="who"><span class="av">DT</span><div><p class="nm">Donald J. Trump</p><p class="hd">@realDonaldTrump · Truth Social · ${day}</p></div></div>${FULL}</div><div class="m" id="s0">${steve('mug')}</div></div>
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>${FULL}</div>
-<div id="n">${t.fact ? `<div class="nf"><p class="lb">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p></div>` : ''}<p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div>
+<div id="n">${t.board ? `<div class="tick"><b>BREAKING</b><span>${(e(t.ticker) + ' · ').repeat(4)}</span></div><div class="board">${[['left', '▼'], ['right', '▲']].map(([k, a]) => { const p = t.board[k]; return `<div class="pan ${p.dir}"><p class="lb">${e(p.label)}</p>${k === 'right' ? `<div class="jar">${JAR}</div>` : ''}<p class="ar">${a}</p><p class="val">${e(p.value)}</p><p class="nt">${e(p.note)}</p></div>`; }).join('')}</div>` : ''}${t.fact ? `<div class="nf"><p class="lb">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p></div>` : ''}<p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div>
 ${false ? `<div id="f"><p class="sec">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p><div class="m" id="s3">${steve('mug')}</div></div>` : ''}
 <div id="end"><p class="tl">${e(t.tagline[0])}</p><p class="tl2">${e(t.tagline[1])}</p><div class="m" id="s2">${steve('mug')}</div><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
 ${GRAIN}<script>
@@ -173,7 +197,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const [slug, out] = process.argv.slice(2);
   const t = JSON.parse(readFileSync(path.join(root, 'content/tests', `${slug}.json`), 'utf8'));
   const s = loadStatements(path.join(root, 'content/statements')).find((x) => x.slug === t.base);
-  const vdir = path.join(root, 'content/voices', slug);
+  const vdir = path.join(root, 'content/voices', t.voicesFrom || slug);
   const voice = existsSync(path.join(vdir, 'lines.json')) ? JSON.parse(readFileSync(path.join(vdir, 'lines.json'), 'utf8')) : null;
   const { html, T } = meanwhileHtml(t, s, voice);
   const cues = voice ? [['h0', 0.3], ...t.episode.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];

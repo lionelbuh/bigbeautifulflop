@@ -1,0 +1,37 @@
+{
+  "slug": "six-trillion-ticker",
+  "base": "six-trillion",
+  "voicesFrom": "six-trillion",
+  "format": "meanwhile",
+  "episode": {
+    "hook": "Trump says the market lost 6 Trillion Dollars. *Meanwhile, at Steve’s house…*",
+    "steve": [
+      "The market is down six trillion dollars? Oh no.",
+      "Let me check my portfolio… It’s a jar of quarters.",
+      "*Still up two dollars this month.*"
+    ]
+  },
+  "board": {
+    "left": {
+      "label": "Wall Street",
+      "value": "−$6 TRILLION",
+      "dir": "down",
+      "note": "according to the President"
+    },
+    "right": {
+      "label": "Steve’s jar",
+      "value": "+$2.00",
+      "dir": "up",
+      "note": "this month"
+    }
+  },
+  "ticker": "The richest 1% of households hold 50.9% of all U.S. stocks and mutual funds (Federal Reserve, Q2 2026)",
+  "stamp": [
+    "REALITY",
+    "CHECK"
+  ],
+  "tagline": [
+    "Politicians say it.",
+    "Real people pay for it."
+  ]
+}
