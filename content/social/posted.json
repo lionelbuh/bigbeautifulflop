@@ -1045,5 +1045,32 @@
       "id": "NiLoa9q-dYk",
       "video": 1
     }
+  },
+  "hard-to-work-with": {
+    "bluesky": {
+      "at": "2026-11-22T18:59:55.646Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2wcemns5n2f",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-22T19:00:55.600Z",
+      "id": "18382924006215501",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-22T19:01:01.255Z",
+      "id": "4336745786615346",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-22T19:01:56.515Z",
+      "id": "18111639563220376",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-22T19:02:01.285Z",
+      "id": "8hCUMIC-Duo",
+      "video": 1
+    }
   }
 }
