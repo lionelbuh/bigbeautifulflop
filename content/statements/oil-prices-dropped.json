@@ -1,0 +1,63 @@
+{
+  "slug": "oil-prices-dropped",
+  "status": "published",
+  "published": "2026-11-23",
+  "headline": "Oil prices have dropped precipitously",
+  "dek": "The President says oil prices dropped precipitously after the midterm elections, as he predicted, and calls the whole thing a Giant Hoax. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "gas prices",
+    "oil"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-22",
+    "time": "16:49",
+    "text": [
+      "Isn’t it interesting that Oil prices have dropped precipitously after the Midterm Elections? I said that was going to happen. The whole thing is a Giant Hoax! President DONALD J. TRUMP"
+    ],
+    "key": "Isn’t it interesting that Oil prices have dropped precipitously after the Midterm Elections?",
+    "context": "Posted on 22 November 2026. The account of oil prices is the President’s. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 23 November 2026 (shown as 11/22/26, 1:49 PM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump says oil prices dropped precipitously. *Meanwhile, at Steve’s house…*",
+    "highlight": "Oil prices have dropped precipitously",
+    "steve": [
+      "Oil dropped precipitously? Great news.",
+      "I just filled up. Still sixty-three cents a gallon more than last year.",
+      "*The only thing that dropped precipitously is my bank balance.*"
+    ],
+    "board": {
+      "left": {
+        "label": "Oil",
+        "value": "▼ DROPPED",
+        "dir": "down",
+        "note": "according to the President"
+      },
+      "right": {
+        "label": "Steve’s gas",
+        "value": "+63¢",
+        "dir": "up",
+        "note": "a gallon vs. last year"
+      }
+    },
+    "fact": {
+      "number": "$3.72",
+      "text": "a gallon of regular gas, national average on November 19, 2026, against $3.09 a year earlier.",
+      "source": "AAA, national average gas prices (November 19, 2026)",
+      "url": "https://gasprices.aaa.com/gas-prices-keep-dropping-as-thanksgiving-approaches/"
+    },
+    "ticker": "Gas: $3.72 a gallon, still 63 cents more than a year ago (AAA, November 19, 2026)"
+  }
+}
