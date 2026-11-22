@@ -2,6 +2,7 @@
 //   node scripts/social/meanwhile.mjs <test-slug> <out.mp4>     (content/tests/<slug>.json, voices in content/voices/<slug>/)
 import { createRequire } from 'node:module';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -49,7 +50,7 @@ const JAR = `<svg viewBox="0 0 120 140"><rect x="30" y="6" width="60" height="16
 export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const L = voice?.lines || {};
   // the BREAKING sound: the anchor says “Big Beautiful Flop.” on the sting; Steve's hook comes after it
-  const h0at = t.sound === 'news' ? 3.0 : shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
+  const h0at = t.sound === 'news' ? (t.h0at ?? 3.0) : shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
   const hk = Math.max(2.6, h0at + (L.h0?.duration ?? 2.4) + 0.5);
   // no separate post screen any more: the post is on the first screen; Steve comes right after
   const n0 = r(hk + 0.4);
@@ -200,6 +201,12 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const s = loadStatements(path.join(root, 'content/statements')).find((x) => x.slug === t.base);
   const vdir = path.join(root, 'content/voices', t.voicesFrom || slug);
   const voice = existsSync(path.join(vdir, 'lines.json')) ? JSON.parse(readFileSync(path.join(vdir, 'lines.json'), 'utf8')) : null;
+  // BREAKING: the anchor speaks alone, right after the opening sting (2.8 s); Steve's hook comes after him
+  const ANCHOR_AT = 2.9;
+  if (t.sound === 'news' && t.anchor) {
+    const d = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(root, t.anchor)]).toString());
+    t.h0at = r(ANCHOR_AT + d + 0.4);
+  }
   const { html, T } = meanwhileHtml(t, s, voice);
   const cues = voice ? [['h0', 0.3], ...t.episode.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
   mkdirSync(path.dirname(out), { recursive: true });
@@ -214,7 +221,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     ...(news
       ? { opening: 'bbf-news-open.wav', ending: 'bbf-news-end.wav', bed: true, bedFile: 'bbf-news-bed.wav', bedStart: T.n0, bedVolume: 0.3, openingVolume: 0.8 }
       : { bed: true, ...(voice ? { bedVolume: 0.16 } : {}) }),
-    fx: [...(anchor ? [{ file: anchor, at: 1.2, volume: 1.6 }] : []), { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cuesH.map(([k, a]) => ({ file: path.join(vdir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+    fx: [...(anchor ? [{ file: anchor, at: ANCHOR_AT, volume: 1.6 }] : []), { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cuesH.map(([k, a]) => ({ file: path.join(vdir, `${k}.wav`), at: r(a), volume: 0.95 }))],
   });
   await browser.close();
   rmSync(work, { recursive: true, force: true });
