@@ -43,7 +43,8 @@
         "label": "Prices",
         "value": "+3.7%",
         "dir": "down",
-        "note": "in one year (CPI)"
+        "note": "in one year (CPI)",
+        "arrow": "▲"
       },
       "right": {
         "label": "Steve’s paycheck",
