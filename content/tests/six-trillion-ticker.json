@@ -33,5 +33,7 @@
   "tagline": [
     "Politicians say it.",
     "Real people pay for it."
-  ]
+  ],
+  "sound": "news",
+  "anchor": "content/voices-test/bm_george/anchor/h0.wav"
 }
