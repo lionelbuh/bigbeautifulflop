@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump says it will be very hard to work with Chuck Schumer. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 4.56
+    },
+    "s0": {
+      "text": "Very hard to work with someone? Welcome to my job.",
+      "duration": 2.71
+    },
+    "s1": {
+      "text": "I can\u2019t stand Gary from accounting either.",
+      "duration": 1.96
+    },
+    "s2": {
+      "text": "But I still show up Monday, 7 a.m. Nobody shuts me down.",
+      "duration": 3.57
+    }
+  }
+}
