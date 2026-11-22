@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump says oil prices dropped precipitously. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 4.14
+    },
+    "s0": {
+      "text": "Oil dropped precipitously? Great news.",
+      "duration": 2.22
+    },
+    "s1": {
+      "text": "I just filled up. Still sixty-three cents a gallon more than last year.",
+      "duration": 3.64
+    },
+    "s2": {
+      "text": "The only thing that dropped precipitously is my bank balance.",
+      "duration": 3.2
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump says he predicted two things. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 3.51
+    },
+    "s0": {
+      "text": "Trump predicted two things? So did I.",
+      "duration": 1.98
+    },
+    "s1": {
+      "text": "One: my rent would go up. Two: my paycheck wouldn\u2019t.",
+      "duration": 2.62
+    },
+    "s2": {
+      "text": "Both came true. Nobody calls me a genius.",
+      "duration": 2.38
+    }
+  }
+}
