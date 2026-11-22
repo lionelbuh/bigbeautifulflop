@@ -15,9 +15,11 @@ One short episode, all in English, one video (25–35 s):
    **The facts** (`meanwhile.fact`: number, text, official source) at the top of Steve’s screen, while he speaks.
 4. **The tagline**: “Politicians say it. *Real people pay for it.*” (`meanwhile.tagline` to change it).
 
-Sound: the opening fanfare (quiet) with the shout “Big Beautiful Floooooop?” (Kokoro “Bella”, slowed, the Flop
-stretched, pitched up: `scripts/social/sound/bbf-shout.wav`), then no music, only the voices and the stamp, then the
-ending fanfare.
+Sound (BREAKING, from 22 November 2026): a news opening sting, then George the anchor saying “Big Beautiful Flop.”
+alone (`scripts/social/sound/bbf-anchor.wav`, Kokoro “bm_george”), Steve's hook, a news-room tick-tock under Steve's
+screen, and an ending sting that flops (`scripts/social/news_sound.py`). When the topic is money or prices, give the
+episode a duel board (`meanwhile.board`: left and right, each with label, value, dir up/down, note) and a BREAKING
+ticker with the official figure; otherwise the figure stays at the top of Steve's screen.
 Rules: Steve is never a real person and never mocks real people or victims; the joke is the gap between the big
 promise and the kitchen table. No region needed. His voice: Kokoro “Fenrir” (Voices workflow, voice auto).
 The Swiss format (Swiss Neutrality, cantons, Monsieur Neutre) and the Swiss Priorities Report are retired: their

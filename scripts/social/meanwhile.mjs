@@ -17,6 +17,9 @@ const r = (x) => Math.round(x * 10) / 10;
 // the opening shout, “Big Beautiful Floooooop?” (Kokoro “Bella”, slowed, the Flop stretched, pitched up), loud over a
 // quiet opening fanfare; Steve's hook comes after it
 export const SHOUT = path.join(root, 'scripts/social/sound/bbf-shout.wav');
+// George, the news anchor (Kokoro “bm_george”): “Big Beautiful Flop.”, alone, right after the opening sting
+const ANCHOR = path.join(root, 'scripts/social/sound/bbf-anchor.wav');
+const ANCHOR_DUR = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', ANCHOR]).toString());
 const SHOUT_END = 2.9;
 const mk = (x) => e(x).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
@@ -32,15 +35,20 @@ export function voiceOfMeanwhile(slug, m) {
 /** An episode (statement with `meanwhile`): its html and render options. */
 export function meanwhileVideo(s) {
   const m = s.meanwhile;
-  const t = { episode: { hook: m.hook, steve: m.steve }, fact: m.fact, stamp: m.stamp || ['REALITY', 'CHECK'], tagline: m.tagline || ['Politicians say it.', 'Real people pay for it.'] };
+  // BREAKING (from 22 November 2026): the news sound, George the anchor, and, when the episode has one, the duel board
+  // with the BREAKING ticker (the official figure); otherwise the figure at the top of Steve's screen
+  const t = { episode: { hook: m.hook, steve: m.steve }, fact: m.fact, board: m.board, ticker: m.ticker || (m.fact ? `${m.fact.number} ${m.fact.text} (${m.fact.source})` : ''),
+    sound: 'news', stamp: m.stamp || ['REALITY', 'CHECK'], tagline: m.tagline || ['Politicians say it.', 'Real people pay for it.'] };
+  const ANCHOR_AT = 2.9;
+  t.h0at = r(ANCHOR_AT + ANCHOR_DUR + 0.4);
   const voice = voiceOfMeanwhile(s.slug, m);
   const { html, T } = meanwhileHtml(t, { ...s, episode: { highlight: m.highlight } }, voice);
   const cues = voice ? [['h0', T.h0at], ...m.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
-  const shout = existsSync(SHOUT);
   return { html, voice, opts: {
-    // the opening fanfare (with the shout), then only the voices and the stamp, then the ending fanfare
-    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), bed: !shout, coverAt: 1.4, ...(voice ? { bedVolume: 0.16 } : {}), ...(shout ? { openingVolume: 0.3 } : {}),
-    fx: [...(shout ? [{ file: SHOUT, at: 0.15, volume: 1.8 }] : []), { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+    // the news sting, George alone (“Big Beautiful Flop.”), Steve's hook, the tick-tock under Steve, the ending that flops
+    duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), coverAt: 1.4,
+    opening: 'bbf-news-open.wav', ending: 'bbf-news-end.wav', bed: true, bedFile: 'bbf-news-bed.wav', bedStart: T.n0, bedVolume: 0.3, openingVolume: 0.8,
+    fx: [{ file: ANCHOR, at: ANCHOR_AT, volume: 1.6 }, { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
   } };
 }
 
