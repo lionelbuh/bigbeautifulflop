@@ -10,6 +10,7 @@
 - New statements are “Meanwhile” episodes (from 17 November 2026), see the first section of `docs/EDITORIAL.md`:
   the hook, the politician's post in full, Steve (a fictional regular American) in two or three lines with the
   REALITY CHECK stamp, the tagline “Politicians say it. Real people pay for it.”; English only, one video.
+  Posts come from the current administration only (Trump and his government), not from the opposition.
   Times pasted from Truth Social are Pacific: store them in Eastern time. The Swiss format and the Swiss Priorities
   Report are retired (archives only).
 - **Steve's voice:** after writing an episode, push the branch, run the “Voices” workflow on the working branch with
