@@ -1,0 +1,18 @@
+{
+  "voice": "kokoro-am_onyx",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Big Beautiful Flop.",
+      "duration": 1.3
+    },
+    "s0": {
+      "text": "Big. Beautiful. Flop.",
+      "duration": 1.39
+    },
+    "s1": {
+      "text": "This is Big Beautiful Flop.",
+      "duration": 1.67
+    }
+  }
+}

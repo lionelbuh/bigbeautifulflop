@@ -1,0 +1,18 @@
+{
+  "voice": "kokoro-am_michael",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Big Beautiful Flop.",
+      "duration": 1.33
+    },
+    "s0": {
+      "text": "Big. Beautiful. Flop.",
+      "duration": 1.35
+    },
+    "s1": {
+      "text": "This is Big Beautiful Flop.",
+      "duration": 1.75
+    }
+  }
+}
