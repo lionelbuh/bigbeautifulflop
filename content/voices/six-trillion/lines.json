@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump says the market lost 6 Trillion Dollars. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 4.25
+    },
+    "s0": {
+      "text": "The market is down six trillion dollars? Oh no.",
+      "duration": 2.76
+    },
+    "s1": {
+      "text": "Let me check my portfolio\u2026 It\u2019s a jar of quarters.",
+      "duration": 2.64
+    },
+    "s2": {
+      "text": "Still up two dollars this month.",
+      "duration": 1.56
+    }
+  }
+}
