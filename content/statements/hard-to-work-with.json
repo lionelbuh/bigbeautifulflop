@@ -1,0 +1,48 @@
+{
+  "slug": "hard-to-work-with",
+  "status": "published",
+  "published": "2026-11-22",
+  "headline": "Very hard to work with",
+  "dek": "The President says it will be very hard for him to work with Chuck Schumer if he becomes Senate Majority Leader. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "Congress",
+    "Senate"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-22",
+    "time": "08:41",
+    "text": [
+      "It is going to be very hard for me to work with Chuck Schumer should he become Senate Majority Leader. He failed badly as “Leader” once before, one of the worst in history, and I have little doubt that he will fail again. All he did was perpetuate the Russia, Russia, Russia Hoax, and many other Hoaxes and Scams, making my victory in 2024 an easy and glorious one. Here we go again! President DJT"
+    ],
+    "key": "It is going to be very hard for me to work with Chuck Schumer should he become Senate Majority Leader.",
+    "context": "Posted on 22 November 2026. The judgments on Senator Schumer are the President’s. Steve and his colleague Gary are fictional.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 22 November 2026 (shown as Nov 22, 2026, 5:41 AM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump says it will be very hard to work with Chuck Schumer. *Meanwhile, at Steve’s house…*",
+    "highlight": "It is going to be very hard for me to work with Chuck Schumer",
+    "steve": [
+      "Very hard to work with someone? Welcome to my job.",
+      "I can’t stand Gary from accounting either.",
+      "*But I still show up Monday, 7 a.m. Nobody shuts me down.*"
+    ],
+    "fact": {
+      "number": "43 days",
+      "text": "the 2025 federal shutdown, the longest in U.S. history: about 670,000 federal employees furloughed, some 730,000 working without pay.",
+      "source": "Bipartisan Policy Center, via CBS News and ABC News (November 2025)",
+      "url": "https://www.cbsnews.com/news/2025-government-shutdown-by-numbers"
+    }
+  }
+}
