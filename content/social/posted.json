@@ -1099,5 +1099,32 @@
       "id": "hq8gJQNow3s",
       "video": 1
     }
+  },
+  "two-predictions": {
+    "bluesky": {
+      "at": "2026-11-23T00:10:12.970Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2wtphlsvq2t",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-23T00:11:10.586Z",
+      "id": "18085425593364786",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-23T00:11:17.371Z",
+      "id": "1163260882808665",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-23T00:11:59.258Z",
+      "id": "18111211652253674",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-23T00:12:04.088Z",
+      "id": "LsL8T_g_NKk",
+      "video": 1
+    }
   }
 }
