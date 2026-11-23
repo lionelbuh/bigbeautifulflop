@@ -1126,5 +1126,32 @@
       "id": "LsL8T_g_NKk",
       "video": 1
     }
+  },
+  "oil-prices-dropped": {
+    "bluesky": {
+      "at": "2026-11-23T02:12:33.607Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2x2kac2y42t",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-23T02:13:29.905Z",
+      "id": "18069080270514695",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-23T02:13:37.439Z",
+      "id": "1636890940875781",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-23T02:14:30.759Z",
+      "id": "18091178729305567",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-23T02:14:34.782Z",
+      "id": "BVREuHD188I",
+      "video": 1
+    }
   }
 }
