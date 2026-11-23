@@ -50,7 +50,8 @@
         "label": "Steve’s paycheck",
         "value": "+3.0%",
         "dir": "up",
-        "note": "in one year"
+        "note": "in one year",
+        "icon": "check"
       }
     },
     "fact": {

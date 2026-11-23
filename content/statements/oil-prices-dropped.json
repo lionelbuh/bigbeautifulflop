@@ -41,7 +41,7 @@
     "board": {
       "left": {
         "label": "Oil",
-        "value": "▼ DROPPED",
+        "value": "DROPPED",
         "dir": "down",
         "note": "according to the President"
       },
@@ -49,7 +49,8 @@
         "label": "Steve’s gas",
         "value": "+63¢",
         "dir": "up",
-        "note": "a gallon vs. last year"
+        "note": "a gallon vs. last year",
+        "icon": "pump"
       }
     },
     "fact": {
