@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump congratulates Jensen Huang on getting his job back. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 5.05
+    },
+    "s0": {
+      "text": "Jensen got his job back? Good for him.",
+      "duration": 2.15
+    },
+    "s1": {
+      "text": "When I lost mine, nobody posted that I was a National Treasure.",
+      "duration": 3.43
+    },
+    "s2": {
+      "text": "My board of directors is my wife. She was less forgiving.",
+      "duration": 3.04
+    }
+  }
+}
