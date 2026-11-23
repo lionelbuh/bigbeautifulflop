@@ -1,0 +1,65 @@
+{
+  "slug": "two-predictions",
+  "status": "published",
+  "published": "2026-11-23",
+  "headline": "I predicted two things",
+  "dek": "The President says he predicted two things about the midterm elections, and that both came true. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "economy",
+    "elections"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-22",
+    "time": "16:47",
+    "text": [
+      "As everyone remembers, I predicted two things concerning the November 3rd Midterm Elections. One, that if the Democrats win, the Stock Markets would go down, substantially, which they have, and two, that the Islamic Republic of Iran, which has killed 81,000 protestors as of today, will grow more aggressive in their attacks, which has also occurred. Iran has launched more drones and missiles in the last week than at any time for over a year. Don’t worry, they’ve all been knocked down, and done no damage. Iranian leaders consider the Democrats weak, ineffective, and Country destroying, but I won’t let that happen! Both the Dems and Iran fought like hell to keep the Oil price up as long as possible and, since the Election, the Oil price has dropped by a record level. Too bad the Voters didn’t understand this before they pulled the trigger, but the whole Election was very “strange.” In the end, America will win! Thank you for your attention to this matter. President DONALD J. TRUMP"
+    ],
+    "key": "As everyone remembers, I predicted two things concerning the November 3rd Midterm Elections.",
+    "context": "Posted on 22 November 2026. The predictions, the figures on Iran and on oil prices, and their causes are the President’s. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 23 November 2026 (shown as 11/22/26, 1:47 PM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump says he predicted two things. *Meanwhile, at Steve’s house…*",
+    "highlight": "I predicted two things",
+    "steve": [
+      "Trump predicted two things? So did I.",
+      "One: my rent would go up. Two: my paycheck wouldn’t.",
+      "*Both came true. Nobody calls me a genius.*"
+    ],
+    "board": {
+      "left": {
+        "label": "Prices",
+        "value": "+3.7%",
+        "dir": "down",
+        "note": "in one year (CPI)",
+        "arrow": "▲"
+      },
+      "right": {
+        "label": "Steve’s paycheck",
+        "value": "+3.0%",
+        "dir": "up",
+        "note": "in one year",
+        "icon": "check"
+      }
+    },
+    "fact": {
+      "number": "−0.7%",
+      "text": "real average hourly earnings, September 2025 to September 2026: prices rose 3.7%, pay 3.0%.",
+      "source": "U.S. Bureau of Labor Statistics, Real Earnings (October 2026)",
+      "url": "https://www.bls.gov/opub/ted/2026/real-average-hourly-earnings-decreased-0-7-percent-from-september-2025-to-september-2026.htm"
+    },
+    "ticker": "Real wages fell 0.7% in a year: prices +3.7%, pay +3.0% (U.S. Bureau of Labor Statistics, September 2026)"
+  }
+}
