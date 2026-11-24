@@ -1153,5 +1153,32 @@
       "id": "BVREuHD188I",
       "video": 1
     }
+  },
+  "jensen-returns": {
+    "bluesky": {
+      "at": "2026-11-24T05:08:38.081Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n2zutyi3sw2k",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-24T05:09:39.135Z",
+      "id": "18121172294041262",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-24T05:09:45.475Z",
+      "id": "1203006948814298",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-24T05:10:27.711Z",
+      "id": "18119870336044986",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-24T05:10:32.160Z",
+      "id": "qztya-mOQWo",
+      "video": 1
+    }
   }
 }
