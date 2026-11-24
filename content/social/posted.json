@@ -1207,5 +1207,32 @@
       "id": "dql3tiHLYZ8",
       "video": 1
     }
+  },
+  "womens-world-cup": {
+    "bluesky": {
+      "at": "2026-11-24T23:12:44.780Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n33rgjyzv62f",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-24T23:13:41.940Z",
+      "id": "18155023177558680",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-24T23:13:48.802Z",
+      "id": "1123165300481902",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-24T23:14:32.763Z",
+      "id": "17875941996640514",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-24T23:14:39.610Z",
+      "id": "F8VtffWbfuk",
+      "video": 1
+    }
   }
 }
