@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump promises Generational Economic Impact from the World Cup. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 5.77
+    },
+    "s0": {
+      "text": "Another World Cup in 2031? Great.",
+      "duration": 2.51
+    },
+    "s1": {
+      "text": "I\u2019m still paying off my ticket from 2026.",
+      "duration": 2.91
+    },
+    "s2": {
+      "text": "Generational Economic Impact: my grandkids will finish paying for it.",
+      "duration": 3.99
+    }
+  }
+}
