@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump says catastrophic climate predictions are GONE. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 4.64
+    },
+    "s0": {
+      "text": "Catastrophic predictions: gone? Great news.",
+      "duration": 2.51
+    },
+    "s1": {
+      "text": "Somebody tell my home insurance company.",
+      "duration": 1.96
+    },
+    "s2": {
+      "text": "They just raised my premium. For the catastrophe that\u2019s not coming.",
+      "duration": 3.62
+    }
+  }
+}
