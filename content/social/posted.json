@@ -1180,5 +1180,32 @@
       "id": "qztya-mOQWo",
       "video": 1
     }
+  },
+  "climate-gone": {
+    "bluesky": {
+      "at": "2026-11-24T07:20:09.428Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n32476bfla2x",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-24T07:21:07.534Z",
+      "id": "18120305543024617",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-24T07:21:12.957Z",
+      "id": "1423275456217441",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-24T07:21:56.176Z",
+      "id": "17958014523039507",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-24T07:22:01.627Z",
+      "id": "dql3tiHLYZ8",
+      "video": 1
+    }
   }
 }
