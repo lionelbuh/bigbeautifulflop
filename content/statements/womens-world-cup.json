@@ -1,0 +1,48 @@
+{
+  "slug": "womens-world-cup",
+  "status": "published",
+  "published": "2026-11-24",
+  "headline": "Generational Economic Impact",
+  "dek": "The President announces that the 2031 FIFA Women's World Cup will take place in the United States and promises Generational Economic Impact. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "sport",
+    "World Cup"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-24",
+    "time": "12:08",
+    "text": [
+      "I am proud to announce that the FIFA Women's World Cup 2031 will take place in the United States! After hosting the Most Successful World Cup in History, no Country is better positioned than the United States to be home to the largest Women's Sporting Event in History. The FIFA Women's World Cup 2031 will bring Generational Economic Impact to the United States, grow the sport of Soccer throughout our Country and the World, and showcase America’s Exceptionalism. Thank you to Gianni Infantino, and his great staff, for working to bring the Tournament to the U.S.A. President DONALD J. TRUMP"
+    ],
+    "key": "The FIFA Women's World Cup 2031 will bring Generational Economic Impact to the United States",
+    "context": "Posted on 24 November 2026. Steve is a fictional character; the joke is about ticket prices, not about the tournament.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 24 November 2026 (shown as 11/24/26, 9:08 AM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump promises Generational Economic Impact from the World Cup. *Meanwhile, at Steve’s house…*",
+    "highlight": "Generational Economic Impact",
+    "steve": [
+      "Another World Cup in 2031? Great.",
+      "I’m still paying off my ticket from 2026.",
+      "*Generational Economic Impact: my grandkids will finish paying for it.*"
+    ],
+    "fact": {
+      "number": "$6,730",
+      "text": "the top price FIFA first set for a ticket to the 2026 World Cup final; with dynamic pricing, some face values went even higher.",
+      "source": "FIFA ticket prices, as reported by NBC News and ESPN",
+      "url": "https://www.nbcnews.com/sports/soccer/2026-world-cup-tickets-cost-60-6730-fluctuate-dynamic-pricing-rcna228983"
+    }
+  }
+}
