@@ -1,0 +1,49 @@
+{
+  "slug": "climate-gone",
+  "status": "published",
+  "published": "2026-11-24",
+  "headline": "GONE! GONE! GONE!",
+  "dek": "The President says the UN climate panel has withdrawn its catastrophic climate projections: no more catastrophic predictions. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "climate",
+    "insurance"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-23",
+    "time": "13:55",
+    "text": [
+      "EXTREME CLIMATE SCIENCE “BITES THE DUST!”",
+      "Climate Change activists always described their Extreme Climate Science assumptions as “settled science,” and the scenarios of doom and destruction based on “Climate Change” have dominated their outlook. Well, their Climate Science has now been debunked, withdrawn, and taken down by the UN IPCC. That’s right, the same organization that published these projections as “settled science” has now determined they are not reliable and have withdrawn them. No more catastrophic predictions. GONE! GONE! GONE! Thank you for your attention to this matter. President DONALD J. TRUMP"
+    ],
+    "key": "No more catastrophic predictions. GONE! GONE! GONE!",
+    "context": "Posted on 23 November 2026. The account of the UN IPCC’s decisions is the President’s. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied by the editor from truthsocial.com/@realDonaldTrump on 24 November 2026 (shown as 11/23/26, 10:55 AM Pacific)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump says catastrophic climate predictions are GONE. *Meanwhile, at Steve’s house…*",
+    "highlight": "No more catastrophic predictions. GONE! GONE! GONE!",
+    "steve": [
+      "Catastrophic predictions: gone? Great news.",
+      "Somebody tell my home insurance company.",
+      "*They just raised my premium. For the catastrophe that’s not coming.*"
+    ],
+    "fact": {
+      "number": "+14.7%",
+      "text": "above inflation: how much home insurance premiums rose from 2018 to 2022 in the areas most exposed to climate risk (+8.7% nationwide).",
+      "source": "U.S. Department of the Treasury, Federal Insurance Office, Analyses of U.S. Homeowners Insurance Markets 2018–2022 (January 2025)",
+      "url": "https://home.treasury.gov/system/files/311/Analyses_of_US_Homeowners_Insurance_Markets_2018-2022_Climate-Related_Risks_and_Other_Factors_0.pdf"
+    }
+  }
+}
