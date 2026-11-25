@@ -33,7 +33,7 @@ export function voiceOfMeanwhile(slug, m) {
   return want.every(([k, x]) => v.lines[k]?.text === x.replace(/\*/g, '') && existsSync(path.join(dir, `${k}.wav`))) ? { ...v, dir } : null;
 }
 /** An episode (statement with `meanwhile`): its html and render options. */
-export function meanwhileVideo(s, { style = s.meanwhile.style || 'breaking' } = {}) {
+export function meanwhileVideo(s, { style = s.meanwhile.style || 'film' } = {}) {
   const m = s.meanwhile;
   // BREAKING (from 22 November 2026): the news sound, George the anchor, and, when the episode has one, the duel board
   // with the BREAKING ticker (the official figure); otherwise the figure at the top of Steve's screen

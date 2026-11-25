@@ -2,7 +2,18 @@
 
 ## “Meanwhile” (from 17 November 2026): the format of every new episode
 
-One short episode, all in English, one video (25–35 s):
+One short episode, all in English, one video (about 20–25 s).
+
+**Video style “film” (default from 25 November 2026)**, two screens and no end card:
+- Screen 1, the claim as an old silent film (sepia, flicker, scratches): the leader 3-2-1, a gold-framed card with
+  “BIG BEAUTIFUL FLOP” and the hook typed in word by word, then a card “THE PRESIDENT DECLARED” with the post in full,
+  the highlight underlined in gold. Music: an original piano waltz with projector clatter (`scripts/social/film_sound.mjs`).
+- Screen 2, reality in colour: a piano “plonk”, the film turns into colour, the facts (or the board), Steve's lines in
+  his voice, the REALITY CHECK stamp; the video stops about 1.5 s after the stamp. No George, no spoken hook, no tagline
+  card, no ending sting (shorter, watched to the end).
+- Older styles stay available with `meanwhile.style`: `"breaking"` (the format below, with the end card) or `"video"`.
+
+The parts (the tagline is used in posts and on the site, no longer in the video):
 
 1. **The hook** (`meanwhile.hook`): the politician's big line, then “*Meanwhile, at Steve’s house…*”, said by Steve.
    It is also the YouTube title. Example: “Trump promises Energy Dominance. *Meanwhile, at Steve’s house…*”
