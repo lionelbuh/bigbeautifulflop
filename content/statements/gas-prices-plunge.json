@@ -65,7 +65,7 @@
     "highlight": "real relief at the pump and more money in families’ pockets",
     "steve": [
       "Gas prices plunge! Lowest in eight months.",
-      "Last Thanksgiving, the same gallon was fifty-three cents cheaper.",
+      "This time last year, the same gallon was fifty-three cents cheaper.",
       "*I’m thankful for the plunge. I’m still paying for the climb.*"
     ],
     "board": {
@@ -84,11 +84,11 @@
       }
     },
     "fact": {
-      "number": "$3.59",
-      "text": "a gallon of regular gas, national average on November 25, 2026: down from $4.29 a month ago, but up from $3.05 a year ago.",
+      "number": "$3.587",
+      "text": "a gallon of regular gas, national average on November 25, 2026: down from $4.289 a month ago, but up from $3.055 a year ago.",
       "source": "AAA, national average gas prices (November 25, 2026)",
       "url": "https://gasprices.aaa.com/"
     },
-    "ticker": "Gas: $3.59 a gallon, 53 cents more than a year ago (AAA, November 25, 2026)"
+    "ticker": "Gas: $3.587 a gallon, 53 cents more than a year ago (AAA, November 25, 2026)"
   }
 }
