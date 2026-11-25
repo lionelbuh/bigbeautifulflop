@@ -100,6 +100,7 @@ export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const endAt = V ? r(Math.max(nEnd - 0.3, stampAt + 1.6)) : r(fEnd + 0.2);
   const T = { hk: r(hk), h0at, n0, at, nEnd, fEnd, stampAt, endAt, cd, hookAt, postAt };
   const day = new Date(`${s.original.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  const TS = !s.original.channel || s.original.channel === 'Truth Social';
   const size = n < 350 ? 46 : n < 650 ? 38 : n < 1300 ? 30 : 24;
   const hl = s.episode?.highlight;
   const FULL = s.original.text.map((x) => `<p class="t">${hl ? e(x).replace(e(hl), `<mark>${e(hl)}</mark>`) : e(x)}</p>`).join('');
@@ -287,7 +288,7 @@ ${F ? (() => {
   return `<div id="film"><div class="in">
 <div class="ld"><div class="sw"></div><div class="c1"></div><div class="c2"></div><div class="hx"></div><div class="vx"></div><i>3</i><i>2</i><i>1</i></div>
 <div class="fc c-hook">${box(90, 460, 900, 1000)}<p class="k">BIG BEAUTIFUL FLOP</p><div class="q"><p>${hook}</p></div></div>
-<div class="fc c-post">${box(60, 230, 960, 1460)}<div class="pp"><p class="k">THE PRESIDENT DECLARED<br><small style="letter-spacing:4px;font-size:22px">TRUTH SOCIAL · ${e(day.toUpperCase())}</small></p>${FULL}<p class="by">Donald J. Trump, in full</p></div></div>
+<div class="fc c-post">${box(60, 230, 960, 1460)}<div class="pp"><p class="k">${TS ? 'THE PRESIDENT' : e(s.original.speaker.toUpperCase())} DECLARED<br><small style="letter-spacing:4px;font-size:22px">${TS ? 'TRUTH SOCIAL' : e(s.original.channel.toUpperCase())} · ${e(day.toUpperCase())}</small></p>${FULL}<p class="by">${TS ? 'Donald J. Trump' : e(s.original.speaker)}, in full</p></div></div>
 </div><div class="dm"><div class="fl"></div><div class="vg"></div><div class="sp" style="left:14px"></div><div class="sp" style="right:14px"></div>${'<b></b>'.repeat(8)}${dust}</div></div>`;
 })() : ''}${V ? `<div id="dim"></div><div class="cd"><i>3</i><i>2</i><i>1</i></div>` : ''}<div id="shake"><div id="n">${t.board ? `<div class="tick"><b>BREAKING</b><span>${(e(t.ticker) + ' · ').repeat(4)}</span></div><div class="board">${[['left', '▼'], ['right', '▲']].map(([k, a]) => { const p = t.board[k]; return `<div class="pan ${p.dir}"><p class="lb">${e(p.label)}</p>${ICONS[p.icon || (k === 'right' ? 'jar' : '')] ? `<div class="jar">${ICONS[p.icon || 'jar']}</div>` : ''}<p class="ar">${p.arrow || a}</p><p class="val">${e(p.value)}</p><p class="nt">${e(p.note)}</p></div>`; }).join('')}</div>` : ''}${t.fact ? `<div class="nf"><p class="lb">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p></div>` : ''}<p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div></div>
 ${false ? `<div id="f"><p class="sec">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p><div class="m" id="s3">${steve('mug')}</div></div>` : ''}

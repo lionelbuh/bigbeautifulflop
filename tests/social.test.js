@@ -20,7 +20,7 @@ describe('social posts', () => {
         const posts = threadPosts(s, max);
         for (const p of posts) expect(chars(p)).toBeLessThanOrEqual(max);
         expect(posts.at(-1)).toContain(`https://bigbeautifulflop.com/statements/${s.slug}/`);
-        expect(posts[0]).toContain('Trump on Truth Social');
+        expect(posts[0]).toContain(s.original.channel && s.original.channel !== 'Truth Social' ? `${s.original.speaker} on ${s.original.channel}` : 'Trump on Truth Social');
         expect(posts.slice(1).join()).toContain('satire');
       }
       expect(chars(instagramCaption(s))).toBeLessThanOrEqual(2200);

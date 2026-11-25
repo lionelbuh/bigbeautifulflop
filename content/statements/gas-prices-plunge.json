@@ -1,0 +1,94 @@
+{
+  "slug": "gas-prices-plunge",
+  "status": "published",
+  "published": "2026-11-25",
+  "headline": "Real relief at the pump",
+  "dek": "The White House says gas prices are plunging ahead of Thanksgiving, just as President Trump predicted, with real relief at the pump and more money in families’ pockets. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "gas prices",
+    "Thanksgiving"
+  ],
+  "original": {
+    "speaker": "The White House",
+    "channel": "whitehouse.gov",
+    "medium": "White House release, whitehouse.gov",
+    "date": "2026-11-24",
+    "time": "12:18",
+    "title": "Gas Prices Plunge Ahead of Thanksgiving — Just as President Trump Predicted",
+    "text": [
+      "Just as President Donald J. Trump predicted, gas prices are tumbling down — and American families are feeling the relief just in time for Thanksgiving. From coast to coast, prices at the pump are falling fast, with the national average falling to its lowest price in eight months after the biggest three-week dive since 2008. As millions of Americans hit the road to gather with the people they love, President Trump is delivering just what he promised: real relief at the pump and more money in families’ pockets this holiday season.",
+      "The drop is being felt across the country:",
+      "WBMA-TV (Birmingham, Alabama): Birmingham gas prices drop 11.8 cents in a week",
+      "KSAZ-TV (Phoenix, Arizona): Thanksgiving rush: 1.7 million Arizonans expected to travel as gas prices drop",
+      "KTLO (Mountain Home, Arkansas): Arkansas gas prices see another big drop in past week",
+      "WFSB-TV (Hartford, Connecticut): Gas prices ease in Connecticut ahead of Thanksgiving travel",
+      "Bay News 9 (Tampa, Florida): Gas prices drop across Florida as Thanksgiving travel ramps up",
+      "WFLD-TV (Chicago, Illinois): Gas prices drop ahead of Thanksgiving travel",
+      "WANF-TV (Atlanta, Georgia): Georgia gas prices drop ahead of holiday travel",
+      "WGME-TV (Portland, Maine): Gas prices continue to drop in Maine",
+      "WBZ-TV (Boston, Massachusetts): Gas prices drop in Massachusetts ahead of holiday travel",
+      "KAAL-TV (Rochester, Minnesota): Gas price averages continue to drop in Minnesota, Iowa",
+      "WXXV-TV (Gulfport, Mississippi): Gas prices drop as Thanksgiving travel period approaches",
+      "Kirksville Daily Express (Kirksville, Missouri): Missouri gas prices drop 19.3 cents per gallon ahead of Thanksgiving travel",
+      "KTVQ-TV (Billings, Montana): Cheaper Thanksgiving road trips? Gas prices fall ahead of holiday travel",
+      "KOLN-TV (Lincoln, Nebraska): Gas prices drop across Tri-State",
+      "KTNV-TV (Las Vegas, Nevada): Falling gas prices bring some relief to Las Vegas drivers ahead of Thanksgiving travel",
+      "KOAT-TV (Albuquerque, New Mexico): Gas prices down 18.6% from a month ago ahead of Thanksgiving",
+      "WGHP-TV (Greensboro, North Carolina): Low gas prices save mountain travelers money ahead of Thanksgiving",
+      "WXIX-TV (Cincinnati, Ohio): Drastic drop: Gas prices plummet overnight in time for Thanksgiving travel",
+      "KWTV-TV (Oklahoma City, Oklahoma): Oklahoma City gas prices fall below $3 a gallon ahead of Thanksgiving",
+      "KOTV (Tulsa, Oklahoma): Tulsa gas prices drop ahead of Thanksgiving, with some stations under $3 a gallon",
+      "WPVI-TV (Philadelphia, Pennsylvania): Average gas prices in Philadelphia fall below $4 a gallon, just in time for Thanksgiving travel",
+      "WOLO-TV (Columbia, South Carolina): Holiday gas prices falling at historic pace",
+      "Argus Leader (Sioux Falls, South Dakota): A Thanksgiving treat in the offing: Lower gas prices",
+      "KDFW-TV (Dallas, Texas): DFW gas prices drop below $3 ahead of Thanksgiving travel rush",
+      "KSL-TV (Salt Lake City, Utah): Utah gas prices drop sharply over past month as economist predicts additional decline",
+      "Lynchburg Agenda (Lynchburg, Virginia): Gas Prices Fall Across Virginia Ahead of Thanksgiving; Lynchburg Drops to $3.21",
+      "Columbia Basin Herald (Moses Lake, Washington): Gas prices fall ahead of Thanksgiving as millions prepare to hit the road",
+      "WKBT-TV (La Crosse, Wisconsin): Gas Prices Tumbling Down",
+      "Wyoming Tribune Eagle (Cheyenne, Wyoming): Wyoming gas prices down nearly 18 cents in the past week"
+    ],
+    "key": "President Trump is delivering just what he promised: real relief at the pump and more money in families’ pockets this holiday season.",
+    "context": "White House release (Releases section) published on 24 November 2026, titled “Gas Prices Plunge Ahead of Thanksgiving — Just as President Trump Predicted”, followed by a list of local news headlines. The account of gas prices and their cause is the White House’s. Steve is a fictional character.",
+    "source": {
+      "label": "The White House, “Gas Prices Plunge Ahead of Thanksgiving — Just as President Trump Predicted”",
+      "url": "https://www.whitehouse.gov/releases/2026/11/gas-prices-plunge-ahead-of-thanksgiving-just-as-president-trump-predicted/"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied from whitehouse.gov (page and its RSS feed) on 25 November 2026; published 24 November 2026 at 12:18 PM Eastern (datetime 2026-11-24T12:18:40-05:00)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "The White House says gas prices plunge, just as Trump predicted. *Meanwhile, at Steve’s house…*",
+    "highlight": "real relief at the pump and more money in families’ pockets",
+    "steve": [
+      "Gas prices plunge! Lowest in eight months.",
+      "Last Thanksgiving, the same gallon was fifty-three cents cheaper.",
+      "*I’m thankful for the plunge. I’m still paying for the climb.*"
+    ],
+    "board": {
+      "left": {
+        "label": "Gas, in one month",
+        "value": "−70¢",
+        "dir": "down",
+        "note": "the plunge (AAA)"
+      },
+      "right": {
+        "label": "Steve’s gas",
+        "value": "+53¢",
+        "dir": "up",
+        "note": "a gallon vs. last Thanksgiving",
+        "icon": "pump"
+      }
+    },
+    "fact": {
+      "number": "$3.59",
+      "text": "a gallon of regular gas, national average on November 25, 2026: down from $4.29 a month ago, but up from $3.05 a year ago.",
+      "source": "AAA, national average gas prices (November 25, 2026)",
+      "url": "https://gasprices.aaa.com/"
+    },
+    "ticker": "Gas: $3.59 a gallon, 53 cents more than a year ago (AAA, November 25, 2026)"
+  }
+}

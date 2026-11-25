@@ -93,13 +93,16 @@ export function threadFor(network, s) {
 
 /** Episode lines without the *emphasis* marks. */
 const plain = (list) => list.map((x) => x.replace(/\*/g, ''));
+// who said it: Trump on Truth Social by default, or another official source (e.g. a White House release)
+const saidBy = (s, full) => (s.original.channel && s.original.channel !== 'Truth Social'
+  ? `${s.original.speaker} on ${s.original.channel}` : full ? 'Donald Trump on Truth Social' : 'Trump on Truth Social');
 
 export function threadPosts(s, max, { firstTag = '', lastTag = '', source = '' } = {}) {
   const url = articleUrl(s, source);
   // Meanwhile: the quote, then Steve in full, then the tagline and the link
   if (s.meanwhile) {
     const tags = lastTag ? `\n\n${lastTag}` : '';
-    const head = `${s.headline}\n\nTrump on Truth Social: `;
+    const head = `${s.headline}\n\n${saidBy(s)}: `;
     const first = `${head}${quote(excerpt(s.original.key || s.original.text, max - chars(head) - 2 - (firstTag ? chars(firstTag) + 2 : 0)))}${firstTag ? `\n\n${firstTag}` : ''}`;
     const sh = 'Meanwhile, at a real American kitchen table, Steve (satire): ';
     const steve = `${sh}${quote(excerpt(s.meanwhile.steve.map((x) => x.replace(/\*/g, '')).join(' '), max - chars(sh) - 2))}`;
@@ -107,7 +110,7 @@ export function threadPosts(s, max, { firstTag = '', lastTag = '', source = '' }
     const last = `${tl}\n\nThe full episode: ${url}\n\n${SATIRE_NOTE}${tags}`;
     return [first, steve, chars(last) <= max ? last : `The full episode: ${url}${tags}`];
   }
-  const head = `${s.headline}\n\nTrump on Truth Social: `;
+  const head = `${s.headline}\n\n${saidBy(s)}: `;
   const mid = `\n\n${calmOf(s).label} (satire): `;
   const tail = firstTag ? `\n\n${firstTag}` : '';
   const room = max - chars(head) - chars(mid) - chars(tail) - 4;
@@ -144,7 +147,7 @@ export function facebookPost(s) {
   const lead = leadSatire(s);
   const parts = [
     s.headline,
-    `Trump on Truth Social: ${quote(excerpt(s.original.text, 600))}`,
+    `${saidBy(s)}: ${quote(excerpt(s.original.text, 600))}`,
     `${calmOf(s).label}: ${quote(excerpt(calmOf(s).en, 500))}`,
     lead ? `${regionLabel(lead.region)} (satire): ${quote(excerpt(englishOf(lead.region, lead.edition), 400))}` : '',
     s.episode ? `${CANTONS[s.episode.canton].name} (satire): ${quote(excerpt(plain(s.episode.reaction), 400))}` : '',
@@ -162,7 +165,7 @@ export function facebookPost(s) {
 export function instagramCaption(s) {
   const caption = [
     s.headline,
-    `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 700))}`,
+    `${saidBy(s, true)}: ${quote(excerpt(s.original.text, 700))}`,
     s.meanwhile
       ? `Meanwhile, at a real American kitchen table, Steve has a few thoughts. ${(s.meanwhile.tagline || ['Politicians say it.', 'Real people pay for it.']).join(' ')}`
       : s.episode
@@ -201,7 +204,7 @@ export function carouselCards(s) {
   ].filter((g) => g.length);
   return [
     [
-      { kind: 'original', label: 'Donald J. Trump · Truth Social', text: excerpt(s.original.text, 420) },
+      { kind: 'original', label: s.original.channel && s.original.channel !== 'Truth Social' ? `${s.original.speaker} · ${s.original.channel}` : 'Donald J. Trump · Truth Social', text: excerpt(s.original.text, 420) },
       { kind: 'presidential', label: s.meanwhile ? 'Meanwhile, Steve' : s.neutral ? 'The Neutral Swiss' : 'The American President', note: calmOf(s).label, text: excerpt(calmOf(s).en, 360) },
     ],
     ...groups.map((g) => g.map((v) => card(v, g.length > 2 ? 300 : 360))),
@@ -357,7 +360,7 @@ export function youtubeTitle(s, series, { question = false } = {}) {
 export function youtubeDescription(s, series) {
   const v = series && !s.episode && !s.meanwhile ? seriesVersion(s, series) : null;
   return [
-    `Donald Trump on Truth Social: ${quote(excerpt(s.original.text, 900))}`,
+    `${saidBy(s, true)}: ${quote(excerpt(s.original.text, 900))}`,
     `${calmOf(s).label} (satire): ${quote(excerpt(calmOf(s).en, 700))}`,
     v ? `Then: ${regionLabel(v.region)} (satire).` : '',
     s.episode ? `${CANTONS[s.episode.canton].name} (satire): ${quote(excerpt(plain(s.episode.reaction), 400))}` : '',
