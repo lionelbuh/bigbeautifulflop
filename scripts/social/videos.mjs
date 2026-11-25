@@ -163,8 +163,9 @@ export async function render(page, work, markup, file, { duration = DURATION, en
   const sound = path.join(root, 'scripts/social/sound');
   // the opening fanfare, the ending fanfare that flops, and (short format) a light music bed in between
   // inputs: 1 opening, 2 ending, 3 music bed (short format), then the sound effects of the first screen
-  const inputs = [opening, ending, ...(bed ? [bedFile] : []), ...fx.map((x) => x.file)];
-  const chains = [`[2:a]adelay=${end * 1000}|${end * 1000}[a2]`, `[1:a]volume=${openingVolume}[a1]`];
+  // ending: null = no ending fanfare (the episode “video” style ends on the stamp); a short silence stands in for it
+  const inputs = [opening, ending || 'bbf-silence.wav', ...(bed ? [bedFile] : []), ...fx.map((x) => x.file)];
+  const chains = [ending ? `[2:a]adelay=${end * 1000}|${end * 1000}[a2]` : '[2:a]volume=0[a2]', `[1:a]volume=${openingVolume}[a1]`];
   if (bed) chains.push(`[3:a]atrim=0:${end - bedStart},afade=t=out:st=${end - bedStart - 1}:d=1,volume=${bedVolume},adelay=${Math.round(bedStart * 1000)}|${Math.round(bedStart * 1000)}[a3]`);
   fx.forEach((x, k) => chains.push(`[${(bed ? 4 : 3) + k}:a]volume=${x.volume ?? 1},adelay=${Math.round(x.at * 1000)}|${Math.round(x.at * 1000)}[f${k}]`));
   const labels = ['[a1]', '[a2]', ...(bed ? ['[a3]'] : []), ...fx.map((_, k) => `[f${k}]`)];

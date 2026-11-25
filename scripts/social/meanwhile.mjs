@@ -33,22 +33,30 @@ export function voiceOfMeanwhile(slug, m) {
   return want.every(([k, x]) => v.lines[k]?.text === x.replace(/\*/g, '') && existsSync(path.join(dir, `${k}.wav`))) ? { ...v, dir } : null;
 }
 /** An episode (statement with `meanwhile`): its html and render options. */
-export function meanwhileVideo(s) {
+export function meanwhileVideo(s, { style = s.meanwhile.style || 'breaking' } = {}) {
   const m = s.meanwhile;
   // BREAKING (from 22 November 2026): the news sound, George the anchor, and, when the episode has one, the duel board
   // with the BREAKING ticker (the official figure); otherwise the figure at the top of Steve's screen
   const t = { episode: { hook: m.hook, steve: m.steve }, fact: m.fact, board: m.board, ticker: m.ticker || (m.fact ? `${m.fact.number} ${m.fact.text} (${m.fact.source})` : ''),
-    sound: 'news', stamp: m.stamp || ['REALITY', 'CHECK'], tagline: m.tagline || ['Politicians say it.', 'Real people pay for it.'] };
+    sound: 'news', style, stamp: m.stamp || ['REALITY', 'CHECK'], tagline: m.tagline || ['Politicians say it.', 'Real people pay for it.'] };
   const ANCHOR_AT = 2.9;
   t.h0at = r(ANCHOR_AT + ANCHOR_DUR + 0.4);
   const voice = voiceOfMeanwhile(s.slug, m);
   const { html, T } = meanwhileHtml(t, { ...s, episode: { highlight: m.highlight } }, voice);
   const cues = voice ? [['h0', T.h0at], ...m.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
+  const V = style === 'video';
   return { html, voice, opts: {
+    ...(V ? {
+      // VIDEO (from 25 November 2026): two screens, no ending card: it stops on the stamp (shorter, watched to the end)
+      duration: r(T.endAt), end: r(T.endAt), coverAt: 1.4, ending: null,
+      opening: 'bbf-news-open.wav', bed: true, bedFile: 'bbf-news-bed.wav', bedStart: T.n0, bedVolume: 0.3, openingVolume: 0.8,
+      fx: [{ file: ANCHOR, at: ANCHOR_AT, volume: 1.6 }, { file: 'bbf-count.wav', at: T.cd, volume: 1 }, { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+    } : {
     // the news sting, George alone (“Big Beautiful Flop.”), Steve's hook, the tick-tock under Steve, the ending that flops
     duration: r(T.endAt + 3.8), end: r(T.endAt + 0.2), coverAt: 1.4,
     opening: 'bbf-news-open.wav', ending: 'bbf-news-end.wav', bed: true, bedFile: 'bbf-news-bed.wav', bedStart: T.n0, bedVolume: 0.3, openingVolume: 0.8,
     fx: [{ file: ANCHOR, at: ANCHOR_AT, volume: 1.6 }, { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 }, ...cues.map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+    }),
   } };
 }
 
@@ -66,7 +74,10 @@ export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const h0at = t.sound === 'news' ? (t.h0at ?? 3.0) : shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
   const hk = Math.max(2.6, h0at + (L.h0?.duration ?? 2.4) + 0.5);
   // no separate post screen any more: the post is on the first screen; Steve comes right after
-  const n0 = r(hk + 0.4);
+  const V = t.style === 'video';
+  // VIDEO: the 3-2-1 countdown right after the hook, then a swipe to Steve
+  const cd = r(hk - 0.2);
+  const n0 = V ? r(cd + 1.45) : r(hk + 0.4);
   const holds = t.episode.steve.map((x, i) => Math.max(2.4, (L[`s${i}`]?.duration ?? (1.5 + x.length / 18)) + 0.6));
   const at = [n0 + 0.3]; holds.slice(0, -1).forEach((h, i) => at.push(r(at[i] + h)));
   const nEnd = r(at.at(-1) + holds.at(-1) + 0.6);
@@ -74,8 +85,8 @@ export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   // an official figure (optional), with its source, after Steve
   // the figure is on Steve's screen (from 20 November 2026): no separate screen
   const fEnd = nEnd;
-  const endAt = r(fEnd + 0.2);
-  const T = { hk: r(hk), h0at, n0, at, nEnd, fEnd, stampAt, endAt };
+  const endAt = V ? r(Math.max(nEnd - 0.3, stampAt + 1.6)) : r(fEnd + 0.2);
+  const T = { hk: r(hk), h0at, n0, at, nEnd, fEnd, stampAt, endAt, cd };
   const day = new Date(`${s.original.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
   const n = s.original.text.join(' ').length;
   const size = n < 350 ? 46 : n < 650 ? 38 : n < 1300 ? 30 : 24;
@@ -183,11 +194,37 @@ ${t.fact ? `.post{display:none}` : ''}
 #end .tl2{font-family:F;font-style:italic;font-size:80px;color:${RED};max-width:900px;line-height:1.1}
 #end .rl{width:160px;border-top:2px solid #171614}
 #s2{position:relative;width:220px}
+${V ? `/* VIDEO style: a camera that moves, a countdown, a swipe, no end card */
+#end,#s0,.post{display:none}
+#h{animation:cam ${T.n0}s linear both,swipeout .35s cubic-bezier(.6,0,.9,.4) ${r(T.n0 - 0.3)}s forwards}
+@keyframes cam{from{transform:scale(1)}to{transform:scale(1.07) translateY(-14px)}}
+@keyframes swipeout{to{transform:translateX(-1100px) scale(1.07);filter:blur(10px)}}
+#h .q{animation:qin .5s cubic-bezier(.2,1.4,.5,1) .15s both}
+@keyframes qin{from{opacity:0;transform:translateY(50px) scale(.9)}}
+.hpost{transform:rotate(-1.2deg);animation:pin .6s cubic-bezier(.2,1.3,.5,1) .4s both}
+@keyframes pin{from{opacity:0;transform:rotate(-6deg) translateY(160px) scale(.85)}}
+.hpost mark{background:linear-gradient(#efd27e,#efd27e) no-repeat 0 85%/0% 40%;animation:hl .7s ease-out ${r(h0at + 0.4)}s forwards}
+@keyframes hl{to{background-size:100% 40%}}
+.cd{position:absolute;inset:0;z-index:5;display:grid;place-items:center;pointer-events:none}
+.cd i{position:absolute;top:760px;left:50%;width:400px;height:400px;margin-left:-200px;border-radius:50%;background:${RED};color:#fff;font:700 290px/400px F;font-style:normal;text-align:center;box-shadow:0 18px 0 rgba(23,22,20,.18);opacity:0}
+${[0, 1, 2].map((k) => `.cd i:nth-child(${k + 1}){animation:cdn .5s cubic-bezier(.2,1.3,.5,1) ${r(cd + k * 0.5)}s both,hide .1s linear ${r(cd + k * 0.5 + 0.45)}s forwards}`).join('')}
+.cd i:nth-child(3){background:#171614}
+@keyframes cdn{from{opacity:0;transform:scale(2.2)}to{opacity:1;transform:scale(1)}}
+#dim{position:absolute;inset:0;z-index:4;background:rgba(244,240,230,.6);backdrop-filter:blur(5px);opacity:0;animation:fadein .2s ease-out ${cd}s forwards,hide .2s linear ${r(T.n0 - 0.2)}s forwards}
+#n{animation:swipein .38s cubic-bezier(.1,.6,.3,1) ${r(T.n0 - 0.2)}s both,cam2 ${r(T.endAt - T.n0 + 0.5)}s linear ${r(T.n0)}s both}
+@keyframes swipein{from{transform:translateX(1100px);filter:blur(10px)}to{transform:none;filter:none}}
+@keyframes cam2{to{transform:scale(1.035)}}
+#n .stamp{animation:stampin .24s cubic-bezier(.5,0,.8,.4) ${T.stampAt}s both}
+#shake{position:absolute;inset:0;animation:shake .35s linear ${r(T.stampAt + 0.24)}s both}
+@keyframes shake{0%,100%{transform:none}20%{transform:translate(-14px,8px)}40%{transform:translate(12px,-10px)}60%{transform:translate(-8px,6px)}80%{transform:translate(5px,-3px)}}
+#s1{animation:bob2 1.6s ease-in-out ${T.n0}s infinite alternate}
+@keyframes bob2{to{transform:translateY(-8px)}}
+` : ''}
 </style>
 <div class="mast"><div class="row"><span>Independent satire</span><span>Meanwhile</span><span>${day}</span></div><p class="nm">Big Beautiful <i>Flop</i></p><div class="rule"></div></div>
 <div id="h"><p class="q">${mk(t.episode.hook)}</p><div class="hpost"><div class="who"><span class="av">DT</span><div><p class="nm">Donald J. Trump</p><p class="hd">@realDonaldTrump · Truth Social · ${day}</p></div></div>${FULL}</div><div class="m" id="s0">${steve('mug')}</div></div>
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>${FULL}</div>
-<div id="n">${t.board ? `<div class="tick"><b>BREAKING</b><span>${(e(t.ticker) + ' · ').repeat(4)}</span></div><div class="board">${[['left', '▼'], ['right', '▲']].map(([k, a]) => { const p = t.board[k]; return `<div class="pan ${p.dir}"><p class="lb">${e(p.label)}</p>${ICONS[p.icon || (k === 'right' ? 'jar' : '')] ? `<div class="jar">${ICONS[p.icon || 'jar']}</div>` : ''}<p class="ar">${p.arrow || a}</p><p class="val">${e(p.value)}</p><p class="nt">${e(p.note)}</p></div>`; }).join('')}</div>` : ''}${t.fact ? `<div class="nf"><p class="lb">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p></div>` : ''}<p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div>
+${V ? `<div id="dim"></div><div class="cd"><i>3</i><i>2</i><i>1</i></div>` : ''}<div id="shake"><div id="n">${t.board ? `<div class="tick"><b>BREAKING</b><span>${(e(t.ticker) + ' · ').repeat(4)}</span></div><div class="board">${[['left', '▼'], ['right', '▲']].map(([k, a]) => { const p = t.board[k]; return `<div class="pan ${p.dir}"><p class="lb">${e(p.label)}</p>${ICONS[p.icon || (k === 'right' ? 'jar' : '')] ? `<div class="jar">${ICONS[p.icon || 'jar']}</div>` : ''}<p class="ar">${p.arrow || a}</p><p class="val">${e(p.value)}</p><p class="nt">${e(p.note)}</p></div>`; }).join('')}</div>` : ''}${t.fact ? `<div class="nf"><p class="lb">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p></div>` : ''}<p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div></div>
 ${false ? `<div id="f"><p class="sec">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p><div class="m" id="s3">${steve('mug')}</div></div>` : ''}
 <div id="end"><p class="tl">${e(t.tagline[0])}</p><p class="tl2">${e(t.tagline[1])}</p><div class="m" id="s2">${steve('mug')}</div><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
 ${GRAIN}<script>
@@ -200,7 +237,9 @@ window.fit = () => {
   // the small post on the first screen: its text shrinks until it fits between the hook and Steve
   const hq = document.querySelector('#h .q'), hp = document.querySelector('.hpost');
   hp.style.top = (hq.getBoundingClientRect().bottom + 40) + 'px';
-  for (let size = 28; size > 12 && hp.getBoundingClientRect().bottom > 1370; size -= 1) hp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = size - 1 + 'px'; });
+  const V = ${V}, bottom = V ? 1780 : 1370;
+  if (V) { hp.style.left = hp.style.right = '80px'; hp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = '40px'; }); }
+  for (let size = V ? 40 : 28; size > 12 && hp.getBoundingClientRect().bottom > bottom; size -= 1) hp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = size - 1 + 'px'; });
   const big = document.querySelector('.bub');
   for (let size = 58; size > 44 && big.getBoundingClientRect().bottom > 1535; size -= 2) big.style.fontSize = size - 2 + 'px';
 };
@@ -208,7 +247,19 @@ window.fit = () => {
   return { html, T };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// node scripts/social/meanwhile.mjs --statement <slug> <out.mp4> [video|breaking]: a published episode in another style
+if (import.meta.url === `file://${process.argv[1]}` && process.argv[2] === '--statement') {
+  const [, slug, out, style = 'video'] = process.argv.slice(2);
+  const s = loadStatements(path.join(root, 'content/statements')).find((x) => x.slug === slug);
+  const { html, opts, voice } = meanwhileVideo(s, { style });
+  mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
+  const work = mkdtempSync(path.join(tmpdir(), 'bbf-meanwhile-'));
+  const browser = await chromium.launch();
+  await render(await browser.newPage(), work, html, path.resolve(out), opts);
+  await browser.close();
+  rmSync(work, { recursive: true, force: true });
+  console.log(out, opts.duration, voice ? 'with voice' : 'NO VOICE');
+} else if (import.meta.url === `file://${process.argv[1]}`) {
   const [slug, out] = process.argv.slice(2);
   const t = JSON.parse(readFileSync(path.join(root, 'content/tests', `${slug}.json`), 'utf8'));
   const s = loadStatements(path.join(root, 'content/statements')).find((x) => x.slug === t.base);
