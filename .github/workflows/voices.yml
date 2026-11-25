@@ -1,9 +1,14 @@
-name: Voices (Monsieur Neutre)
+name: Voices
 
 # Monsieur Neutre's lines of new episodes, read by the free Piper voice "Norman" (public-domain recordings).
 # Run by hand (or by Claude) on the working branch after an episode is written: the audio is committed to
 # content/voices/<slug>/ on that branch, and `npm run videos` mixes it into the video.
+# Also automatic: when a statement is pushed to the working branch, every episode whose voice is missing or out of date
+# is read by Kokoro (Steve, Fenrir) and committed back (the episode scout relies on this).
 on:
+  push:
+    branches: [claude/festive-shannon-2l3a2k]
+    paths: ['content/statements/**']
   workflow_dispatch:
     inputs:
       slugs:
@@ -42,20 +47,38 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Which episodes need a voice
+        id: need
+        run: |
+          if [ -n "${{ inputs.slugs }}" ]; then echo "slugs=${{ inputs.slugs }}" >> "$GITHUB_OUTPUT"; exit 0; fi
+          python3 - >> "$GITHUB_OUTPUT" <<'PY'
+          import glob, json, os
+          need = []
+          for f in sorted(glob.glob('content/statements/*.json')):
+              s = json.load(open(f)); m = s.get('meanwhile')
+              if not m: continue
+              slug = os.path.basename(f)[:-5]
+              want = {'h0': m['hook'], **{f's{i}': x for i, x in enumerate(m['steve'])}}
+              meta = f'content/voices/{slug}/lines.json'
+              have = json.load(open(meta))['lines'] if os.path.exists(meta) else {}
+              if any(have.get(k, {}).get('text') != x.replace('*', '') or not os.path.exists(f'content/voices/{slug}/{k}.wav') for k, x in want.items()):
+                  need.append(slug)
+          print('slugs=' + ' '.join(need))
+          PY
       - name: Read the lines (Kokoro)
-        if: ${{ inputs.engine == 'kokoro' }}
+        if: ${{ steps.need.outputs.slugs != '' && (inputs.engine || 'kokoro') == 'kokoro' }}
         run: |
           sudo apt-get install -y -qq espeak-ng >/dev/null
           pip install -q "kokoro>=0.9" soundfile
-          for slug in ${{ inputs.slugs }}; do
+          for slug in ${{ steps.need.outputs.slugs }}; do
             if [ -n "${{ inputs.test_voices }}" ]; then
               for v in ${{ inputs.test_voices }}; do python3 scripts/social/voice_kokoro.py "$slug" "$v" 1.1 "content/voices-test/$v/$slug"; done
             else
-              python3 scripts/social/voice_kokoro.py "$slug" "${{ inputs.voice }}" 1.1
+              python3 scripts/social/voice_kokoro.py "$slug" "${{ inputs.voice || 'auto' }}" 1.1
             fi
           done
       - name: Read the lines
-        if: ${{ inputs.engine != 'kokoro' }}
+        if: ${{ inputs.engine && inputs.engine != 'kokoro' }}
         run: |
           pip install -q piper-tts
           mkdir -p /tmp/piper && (cd /tmp/piper && python3 -m piper.download_voices ${{ inputs.voice }})
@@ -63,9 +86,10 @@ jobs:
             python3 scripts/social/voice_lines.py "$slug" "/tmp/piper/${{ inputs.voice }}.onnx" "${{ inputs.length_scale }}"
           done
       - name: Commit the audio to this branch
+        if: ${{ steps.need.outputs.slugs != '' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A content
-          git commit -m "Voices: ${{ inputs.slugs }} [skip ci]" || exit 0
+          git commit -m "Voices: ${{ steps.need.outputs.slugs }} [skip ci]" || exit 0
           git pull -q --rebase && git push
