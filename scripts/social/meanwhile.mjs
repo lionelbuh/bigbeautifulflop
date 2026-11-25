@@ -261,6 +261,7 @@ ${[0, 1, 2].map((k) => `.ld i:nth-of-type(${k + 1}){animation:show .01s linear $
 .c-post .k{text-align:center;font:700 30px/1.3 'DejaVu Serif',Georgia,serif;letter-spacing:8px;color:#c9a86a;margin-bottom:30px}
 .c-post p.t{font-family:F;font-size:40px;line-height:1.36;color:#efe3c8;margin:0 0 14px;text-align:center}
 .c-post mark{color:#efe3c8;background:linear-gradient(#b8862e,#b8862e) no-repeat 0 88%/0% 36%;animation:hl .8s ease-out ${r(postAt + 1)}s forwards;font-weight:700}
+.c-post .lst{columns:2;column-gap:28px;text-align:left}.c-post .lst p.t{text-align:left;margin:0 0 6px;break-inside:avoid;line-height:1.25;opacity:.85}
 .c-post .by{text-align:center;font-family:F;font-style:italic;font-size:30px;color:#c9a86a;margin-top:20px}
 .dm{position:absolute;inset:0;pointer-events:none}
 .dm .fl{position:absolute;inset:0;background:#000;animation:flk .36s steps(1) infinite}
@@ -307,7 +308,9 @@ window.fit = () => {
   if (V) { hp.style.left = hp.style.right = '80px'; hp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = '40px'; }); }
   for (let size = V ? 40 : 28; size > 12 && hp.getBoundingClientRect().bottom > bottom; size -= 1) hp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = size - 1 + 'px'; });
   const pp = document.querySelector('.c-post .pp');
-  if (pp) for (let size = 40; size > 16 && pp.scrollHeight > pp.clientHeight; size -= 1) pp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = size - 1 + 'px'; });
+  // long releases (a paragraph, then a list of headlines): the list in smaller type, two columns, so the whole text fits
+  if (pp && pp.querySelectorAll('p.t').length > 6) { const ps = [...pp.querySelectorAll('p.t')]; const box = document.createElement('div'); box.className = 'lst'; ps.slice(2).forEach((x) => box.appendChild(x)); ps[1].after(box); }
+  if (pp) for (let size = 40; size > 11 && pp.scrollHeight > pp.clientHeight; size -= 1) { pp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = size - 1 + 'px'; }); pp.querySelectorAll('.lst p.t').forEach((p) => { p.style.fontSize = Math.max(10, Math.round((size - 1) * 0.62)) + 'px'; }); }
   const big = document.querySelector('.bub');
   for (let size = 58; size > 44 && big.getBoundingClientRect().bottom > 1535; size -= 2) big.style.fontSize = size - 2 + 'px';
 };
