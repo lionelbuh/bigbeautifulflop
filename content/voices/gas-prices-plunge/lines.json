@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "The White House says gas prices plunge, just as Trump predicted. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 5.17
+    },
+    "s0": {
+      "text": "Gas prices plunge! Lowest in eight months.",
+      "duration": 2.21
+    },
+    "s1": {
+      "text": "This time last year, the same gallon was fifty-three cents cheaper.",
+      "duration": 3.41
+    },
+    "s2": {
+      "text": "I\u2019m thankful for the plunge. I\u2019m still paying for the climb.",
+      "duration": 2.91
+    }
+  }
+}
