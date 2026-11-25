@@ -46,7 +46,14 @@ export function meanwhileVideo(s, { style = s.meanwhile.style || 'breaking' } = 
   const cues = voice ? [['h0', T.h0at], ...m.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
   const V = style === 'video';
   return { html, voice, opts: {
-    ...(V ? {
+    ...(style === 'film' ? {
+      // FILM (trial, 25 November 2026): the claim as an old silent film (leader 3-2-1, the hook and the post on intertitles,
+      // piano waltz), then a plonk and the film turns into colour: Steve, the facts, the stamp. No end card.
+      duration: r(T.endAt), end: r(T.endAt), coverAt: r(T.postAt - 0.3), ending: null,
+      opening: 'bbf-film.wav', openingEnd: r(T.cd + 0.15), openingVolume: 0.9, bed: true, bedFile: 'bbf-news-bed.wav', bedStart: T.n0, bedVolume: 0.25,
+      fx: [{ file: 'bbf-count.wav', at: 0, volume: 0.8 }, { file: 'bbf-plonk.wav', at: r(T.cd), volume: 1 }, { file: 'bbf-stamp.wav', at: r(T.stampAt + 0.26), volume: 1 },
+        ...cues.filter(([k]) => k !== 'h0').map(([k, a]) => ({ file: path.join(voice.dir, `${k}.wav`), at: r(a), volume: 0.95 }))],
+    } : V ? {
       // VIDEO (from 25 November 2026): two screens, no ending card: it stops on the stamp (shorter, watched to the end)
       duration: r(T.endAt), end: r(T.endAt), coverAt: 1.4, ending: null,
       opening: 'bbf-news-open.wav', bed: true, bedFile: 'bbf-news-bed.wav', bedStart: T.n0, bedVolume: 0.3, openingVolume: 0.8,
@@ -74,10 +81,15 @@ export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   const h0at = t.sound === 'news' ? (t.h0at ?? 3.0) : shout ? SHOUT_END : 0.3; // Steve says the hook after the shout
   const hk = Math.max(2.6, h0at + (L.h0?.duration ?? 2.4) + 0.5);
   // no separate post screen any more: the post is on the first screen; Steve comes right after
-  const V = t.style === 'video';
+  const F = t.style === 'film';
+  const V = t.style === 'video' || F;
+  const n = s.original.text.join(' ').length;
+  // FILM: leader 3-2-1 (1.5 s), the hook card, the post card, then the film turns into colour at cd
+  const hookAt = 1.5, hookD = Math.min(4, Math.max(2.4, 0.9 + t.episode.hook.split(/\s+/).length * 0.26));
+  const postAt = r(hookAt + hookD), postD = Math.min(6.5, Math.max(3.6, 1.8 + n * 0.012));
   // VIDEO: the 3-2-1 countdown right after the hook, then a swipe to Steve
-  const cd = r(hk - 0.2);
-  const n0 = V ? r(cd + 1.45) : r(hk + 0.4);
+  const cd = F ? r(postAt + postD) : r(hk - 0.2);
+  const n0 = F ? r(cd + 0.6) : V ? r(cd + 1.45) : r(hk + 0.4);
   const holds = t.episode.steve.map((x, i) => Math.max(2.4, (L[`s${i}`]?.duration ?? (1.5 + x.length / 18)) + 0.6));
   const at = [n0 + 0.3]; holds.slice(0, -1).forEach((h, i) => at.push(r(at[i] + h)));
   const nEnd = r(at.at(-1) + holds.at(-1) + 0.6);
@@ -86,9 +98,8 @@ export function meanwhileHtml(t, s, voice, { shout = existsSync(SHOUT) } = {}) {
   // the figure is on Steve's screen (from 20 November 2026): no separate screen
   const fEnd = nEnd;
   const endAt = V ? r(Math.max(nEnd - 0.3, stampAt + 1.6)) : r(fEnd + 0.2);
-  const T = { hk: r(hk), h0at, n0, at, nEnd, fEnd, stampAt, endAt, cd };
+  const T = { hk: r(hk), h0at, n0, at, nEnd, fEnd, stampAt, endAt, cd, hookAt, postAt };
   const day = new Date(`${s.original.date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-  const n = s.original.text.join(' ').length;
   const size = n < 350 ? 46 : n < 650 ? 38 : n < 1300 ? 30 : 24;
   const hl = s.episode?.highlight;
   const FULL = s.original.text.map((x) => `<p class="t">${hl ? e(x).replace(e(hl), `<mark>${e(hl)}</mark>`) : e(x)}</p>`).join('');
@@ -220,11 +231,65 @@ ${[0, 1, 2].map((k) => `.cd i:nth-child(${k + 1}){animation:cdn .5s cubic-bezier
 #s1{animation:bob2 1.6s ease-in-out ${T.n0}s infinite alternate}
 @keyframes bob2{to{transform:translateY(-8px)}}
 ` : ''}
+${F ? `/* FILM: the claim as an old silent film, then reality in colour */
+#h,#dim,.cd{display:none}
+#n{animation:fadein .35s ease-out ${r(T.cd + 0.3)}s both,cam2 ${r(T.endAt - T.n0 + 0.5)}s linear ${r(T.n0)}s both}
+#film{position:absolute;inset:0;z-index:8;background:radial-gradient(ellipse at 50% 45%,#4a3b2a,#120e0a 75%);overflow:hidden;animation:toreal .6s ease-in ${T.cd}s forwards}
+@keyframes toreal{0%{filter:none}35%{filter:brightness(2.4) sepia(1)}100%{filter:brightness(3);opacity:0}}
+#film .in{position:absolute;inset:0;animation:jit .24s steps(1) infinite}
+@keyframes jit{0%{transform:translate(0,0)}25%{transform:translate(2px,-1px)}50%{transform:translate(-1px,2px)}75%{transform:translate(1px,1px)}}
+.ld{position:absolute;inset:0;background:#8a7b66;animation:hide .01s linear ${hookAt}s forwards}
+.ld .sw{position:absolute;left:210px;top:630px;width:660px;height:660px;border-radius:50%;background:conic-gradient(#5e5242 var(--a),transparent 0);animation:sweep .5s linear 0s 3}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes sweep{from{--a:0deg}to{--a:360deg}}
+.ld .c1,.ld .c2{position:absolute;border-radius:50%;border:6px solid #efe3c8}
+.ld .c1{left:210px;top:630px;width:660px;height:660px;box-sizing:border-box}.ld .c2{left:260px;top:680px;width:560px;height:560px;box-sizing:border-box;border-width:3px}
+.ld .hx{position:absolute;left:60px;right:60px;top:959px;border-top:3px solid rgba(239,227,200,.7)}.ld .vx{position:absolute;top:300px;bottom:300px;left:539px;border-left:3px solid rgba(239,227,200,.7)}
+.ld i{position:absolute;left:0;right:0;top:770px;text-align:center;font:700 300px/1 'DejaVu Serif',Georgia,serif;font-style:normal;color:#efe3c8;opacity:0}
+${[0, 1, 2].map((k) => `.ld i:nth-of-type(${k + 1}){animation:show .01s linear ${r(k * 0.5)}s forwards,hide .01s linear ${r(k * 0.5 + 0.5)}s forwards}`).join('')}
+@keyframes show{to{opacity:1}}
+.fr{position:absolute;inset:0;width:1080px;height:1920px}
+.fc{position:absolute;inset:0;opacity:0}
+.c-hook{animation:fadein .25s linear ${hookAt}s both,hide .25s linear ${r(postAt - 0.2)}s forwards}
+.c-hook .k{position:absolute;left:0;right:0;top:600px;text-align:center;font:700 40px/1 'DejaVu Serif',Georgia,serif;letter-spacing:12px;color:#c9a86a}
+.c-hook .q{position:absolute;left:170px;right:170px;top:720px;height:560px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:F;font-style:italic;font-size:84px;line-height:1.12;color:#efe3c8}
+.c-hook .q span{opacity:0}.c-hook .q em{color:#e0b45c}
+.c-post{animation:fadein .25s linear ${postAt}s both}
+.c-post .pp{position:absolute;left:110px;right:110px;top:300px;bottom:300px;display:flex;flex-direction:column;justify-content:center;transform-origin:50% 50%;animation:push ${postD}s linear ${postAt}s both}
+@keyframes push{from{transform:scale(.95)}to{transform:scale(1.02)}}
+.c-post .k{text-align:center;font:700 30px/1.3 'DejaVu Serif',Georgia,serif;letter-spacing:8px;color:#c9a86a;margin-bottom:30px}
+.c-post p.t{font-family:F;font-size:40px;line-height:1.36;color:#efe3c8;margin:0 0 14px;text-align:center}
+.c-post mark{color:#efe3c8;background:linear-gradient(#b8862e,#b8862e) no-repeat 0 88%/0% 36%;animation:hl .8s ease-out ${r(postAt + 1)}s forwards;font-weight:700}
+.c-post .by{text-align:center;font-family:F;font-style:italic;font-size:30px;color:#c9a86a;margin-top:20px}
+.dm{position:absolute;inset:0;pointer-events:none}
+.dm .fl{position:absolute;inset:0;background:#000;animation:flk .36s steps(1) infinite}
+@keyframes flk{0%{opacity:.06}25%{opacity:.12}50%{opacity:.03}75%{opacity:.09}}
+.dm .vg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.85) 100%)}
+.dm .sp{position:absolute;top:-120px;bottom:-120px;width:34px;background:repeating-linear-gradient(transparent 0 32px,rgba(0,0,0,.55) 32px 88px,transparent 88px 120px);animation:spr .55s linear infinite}
+@keyframes spr{to{transform:translateY(120px)}}
+.dm b{position:absolute;top:0;bottom:0;width:2px;background:rgba(239,227,200,.3);opacity:0}
+${[[160, 0.3, 0.7], [720, 1.1, 0.5], [430, 2.3, 0.9], [880, 3.6, 0.6], [300, 5.0, 0.8], [610, 6.7, 0.5], [210, 8.1, 0.7], [790, 9.4, 0.6]].map(([x, a, d], k) => `.dm b:nth-of-type(${k + 1}){left:${x}px;animation:show .01s ${a}s forwards,hide .01s ${r(a + d)}s forwards}`).join('')}
+.dm .du{position:absolute;border-radius:50%;opacity:0}
+` : ''}
 </style>
 <div class="mast"><div class="row"><span>Independent satire</span><span>Meanwhile</span><span>${day}</span></div><p class="nm">Big Beautiful <i>Flop</i></p><div class="rule"></div></div>
 <div id="h"><p class="q">${mk(t.episode.hook)}</p><div class="hpost"><div class="who"><span class="av">DT</span><div><p class="nm">Donald J. Trump</p><p class="hd">@realDonaldTrump · Truth Social · ${day}</p></div></div>${FULL}</div><div class="m" id="s0">${steve('mug')}</div></div>
 <div class="post"><div class="who"><span class="av">DT</span><div><p class="nm" style="margin:0">Donald J. Trump</p><p class="hd" style="margin:0">@realDonaldTrump · Truth Social · ${day}</p></div><span class="tg">THE ORIGINAL</span></div>${FULL}</div>
-${V ? `<div id="dim"></div><div class="cd"><i>3</i><i>2</i><i>1</i></div>` : ''}<div id="shake"><div id="n">${t.board ? `<div class="tick"><b>BREAKING</b><span>${(e(t.ticker) + ' · ').repeat(4)}</span></div><div class="board">${[['left', '▼'], ['right', '▲']].map(([k, a]) => { const p = t.board[k]; return `<div class="pan ${p.dir}"><p class="lb">${e(p.label)}</p>${ICONS[p.icon || (k === 'right' ? 'jar' : '')] ? `<div class="jar">${ICONS[p.icon || 'jar']}</div>` : ''}<p class="ar">${p.arrow || a}</p><p class="val">${e(p.value)}</p><p class="nt">${e(p.note)}</p></div>`; }).join('')}</div>` : ''}${t.fact ? `<div class="nf"><p class="lb">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p></div>` : ''}<p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div></div>
+${F ? (() => {
+  // the old-film frame (Art nouveau corners), dust specks at fixed pseudo-random places
+  const curl = (cx, cy, sx, sy) => `<path transform="translate(${cx} ${cy}) scale(${sx} ${sy})" d="M0 60 C0 20 20 0 60 0 M14 60 C14 30 30 14 60 14 M0 60 C-10 80 20 95 30 75 C38 60 20 52 14 60" fill="none" stroke="#c9a86a" stroke-width="4"/>`;
+  const box = (x, y, w, h) => `<svg class="fr" viewBox="0 0 1080 1920"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#c9a86a" stroke-width="5"/><rect x="${x + 18}" y="${y + 18}" width="${w - 36}" height="${h - 36}" fill="none" stroke="#c9a86a" stroke-width="2"/>${curl(x + 30, y + 30, 1, 1)}${curl(x + w - 30, y + 30, -1, 1)}${curl(x + 30, y + h - 30, 1, -1)}${curl(x + w - 30, y + h - 30, -1, -1)}<path d="M${x + w / 2 - 70} ${y + h - 70} h50 l20 -12 l20 12 l20 -12 l20 12 h50" fill="none" stroke="#c9a86a" stroke-width="3"/></svg>`;
+  let sd = 7; const rn = () => ((sd = (sd * 16807) % 2147483647) / 2147483647);
+  const dust = Array.from({ length: 40 }, () => { const a = r(rn() * (T.cd - 0.2)); const sz = 3 + rn() * 9; return `<i class="du" style="left:${Math.round(rn() * 1040)}px;top:${Math.round(rn() * 1880)}px;width:${sz.toFixed(0)}px;height:${sz.toFixed(0)}px;background:${rn() < 0.5 ? '#000' : '#efe3c8'};animation:show .01s ${a}s forwards,hide .01s ${r(a + 0.08)}s forwards"></i>`; }).join('');
+  const words = mk(t.episode.hook).split(/(\s+|<em>|<\/em>)/).filter((x) => x && !/^\s+$/.test(x));
+  let k = 0;
+  const hook = words.map((w) => (w === '<em>' || w === '</em>' ? w : `<span style="animation:fadein .2s linear ${r(hookAt + 0.3 + (k++) * 0.16)}s both">${w}</span>`)).join(' ');
+  return `<div id="film"><div class="in">
+<div class="ld"><div class="sw"></div><div class="c1"></div><div class="c2"></div><div class="hx"></div><div class="vx"></div><i>3</i><i>2</i><i>1</i></div>
+<div class="fc c-hook">${box(90, 460, 900, 1000)}<p class="k">BIG BEAUTIFUL FLOP</p><div class="q"><p>${hook}</p></div></div>
+<div class="fc c-post">${box(60, 230, 960, 1460)}<div class="pp"><p class="k">THE PRESIDENT DECLARED<br><small style="letter-spacing:4px;font-size:22px">TRUTH SOCIAL · ${e(day.toUpperCase())}</small></p>${FULL}<p class="by">Donald J. Trump, in full</p></div></div>
+</div><div class="dm"><div class="fl"></div><div class="vg"></div><div class="sp" style="left:14px"></div><div class="sp" style="right:14px"></div>${'<b></b>'.repeat(8)}${dust}</div></div>`;
+})() : ''}${V ? `<div id="dim"></div><div class="cd"><i>3</i><i>2</i><i>1</i></div>` : ''}<div id="shake"><div id="n">${t.board ? `<div class="tick"><b>BREAKING</b><span>${(e(t.ticker) + ' · ').repeat(4)}</span></div><div class="board">${[['left', '▼'], ['right', '▲']].map(([k, a]) => { const p = t.board[k]; return `<div class="pan ${p.dir}"><p class="lb">${e(p.label)}</p>${ICONS[p.icon || (k === 'right' ? 'jar' : '')] ? `<div class="jar">${ICONS[p.icon || 'jar']}</div>` : ''}<p class="ar">${p.arrow || a}</p><p class="val">${e(p.value)}</p><p class="nt">${e(p.note)}</p></div>`; }).join('')}</div>` : ''}${t.fact ? `<div class="nf"><p class="lb">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p></div>` : ''}<p class="sec">Meanwhile, at a real American kitchen table <small>Satire</small></p><div class="bub">${t.episode.steve.map((x, i) => `<p${i ? ` class="p${i + 1}"` : ''}>${mk(x)}</p>`).join('')}</div><div class="m" id="s1">${steve('bill')}</div><div class="stamp">${stamp}</div></div></div>
 ${false ? `<div id="f"><p class="sec">The facts <small>Official figures</small></p><p class="num">${e(t.fact.number)}</p><p class="txt">${e(t.fact.text)}</p><p class="src">Source: ${e(t.fact.source)}</p><div class="m" id="s3">${steve('mug')}</div></div>` : ''}
 <div id="end"><p class="tl">${e(t.tagline[0])}</p><p class="tl2">${e(t.tagline[1])}</p><div class="m" id="s2">${steve('mug')}</div><div class="rl"></div><p class="url">bigbeautifulflop.com</p></div>
 ${GRAIN}<script>
@@ -240,6 +305,8 @@ window.fit = () => {
   const V = ${V}, bottom = V ? 1780 : 1370;
   if (V) { hp.style.left = hp.style.right = '80px'; hp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = '40px'; }); }
   for (let size = V ? 40 : 28; size > 12 && hp.getBoundingClientRect().bottom > bottom; size -= 1) hp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = size - 1 + 'px'; });
+  const pp = document.querySelector('.c-post .pp');
+  if (pp) for (let size = 40; size > 16 && pp.scrollHeight > pp.clientHeight; size -= 1) pp.querySelectorAll('p.t').forEach((p) => { p.style.fontSize = size - 1 + 'px'; });
   const big = document.querySelector('.bub');
   for (let size = 58; size > 44 && big.getBoundingClientRect().bottom > 1535; size -= 2) big.style.fontSize = size - 2 + 'px';
 };

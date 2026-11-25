@@ -139,7 +139,7 @@ ${styles({ stageTop: s.headline.length > 30 ? 560 : 470, boxSize: series.id === 
  * Frame by frame: every animation is paused and set to the frame's time. Several tabs share the work
  * (one per processor, up to four): GitHub's machines are much slower than a laptop.
  */
-export async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, bedVolume = 0.32, openingVolume = 1, fx = [], coverAt = 0, opening = 'bbf-opening.wav', ending = 'bbf-ending.wav', bedFile = 'bbf-bed.wav', bedStart = 2.2 } = {}) {
+export async function render(page, work, markup, file, { duration = DURATION, end = END, bed = false, bedVolume = 0.32, openingVolume = 1, fx = [], coverAt = 0, opening = 'bbf-opening.wav', openingEnd = 0, ending = 'bbf-ending.wav', bedFile = 'bbf-bed.wav', bedStart = 2.2 } = {}) {
   const frames = path.join(work, 'frames');
   rmSync(frames, { recursive: true, force: true });
   mkdirSync(frames, { recursive: true });
@@ -165,7 +165,7 @@ export async function render(page, work, markup, file, { duration = DURATION, en
   // inputs: 1 opening, 2 ending, 3 music bed (short format), then the sound effects of the first screen
   // ending: null = no ending fanfare (the episode “video” style ends on the stamp); a short silence stands in for it
   const inputs = [opening, ending || 'bbf-silence.wav', ...(bed ? [bedFile] : []), ...fx.map((x) => x.file)];
-  const chains = [ending ? `[2:a]adelay=${end * 1000}|${end * 1000}[a2]` : '[2:a]volume=0[a2]', `[1:a]volume=${openingVolume}[a1]`];
+  const chains = [ending ? `[2:a]adelay=${end * 1000}|${end * 1000}[a2]` : '[2:a]volume=0[a2]', `[1:a]${openingEnd ? `atrim=0:${openingEnd},afade=t=out:st=${openingEnd - 0.25}:d=0.25,` : ''}volume=${openingVolume}[a1]`];
   if (bed) chains.push(`[3:a]atrim=0:${end - bedStart},afade=t=out:st=${end - bedStart - 1}:d=1,volume=${bedVolume},adelay=${Math.round(bedStart * 1000)}|${Math.round(bedStart * 1000)}[a3]`);
   fx.forEach((x, k) => chains.push(`[${(bed ? 4 : 3) + k}:a]volume=${x.volume ?? 1},adelay=${Math.round(x.at * 1000)}|${Math.round(x.at * 1000)}[f${k}]`));
   const labels = ['[a1]', '[a2]', ...(bed ? ['[a3]'] : []), ...fx.map((_, k) => `[f${k}]`)];
