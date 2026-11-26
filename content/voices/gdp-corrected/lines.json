@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump says growth was corrected to 4.3%. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 4.88
+    },
+    "s0": {
+      "text": "The economy got revised up to 4.3%? Great news.",
+      "duration": 3.82
+    },
+    "s1": {
+      "text": "Prices got revised up too: 3.8% in one year.",
+      "duration": 3.59
+    },
+    "s2": {
+      "text": "Can somebody open an investigation into my grocery bill?",
+      "duration": 3.4
+    }
+  }
+}
