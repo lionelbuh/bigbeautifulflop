@@ -1,0 +1,22 @@
+{
+  "voice": "kokoro-am_fenrir",
+  "speed": 1.1,
+  "lines": {
+    "h0": {
+      "text": "Trump says your 401(k)s would be BOOMING. Meanwhile, at Steve\u2019s house\u2026",
+      "duration": 4.7
+    },
+    "s0": {
+      "text": "My 401(k) would be booming? Let me check.",
+      "duration": 2.68
+    },
+    "s1": {
+      "text": "Oh, right. I don\u2019t have one. Almost half of families don\u2019t.",
+      "duration": 2.85
+    },
+    "s2": {
+      "text": "My retirement plan is \u201ckeep working.\u201d That one never crashes.",
+      "duration": 3.55
+    }
+  }
+}
