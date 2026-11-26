@@ -27,7 +27,7 @@ import { CANTONS } from '../../src/site/cantons.js';
 import { meanwhileVideo } from './meanwhile.mjs';
 import { monsieurNeutre } from './assets/monsieur-neutre.mjs';
 import { episodesSinceSpecial } from '../../src/site/pages.js';
-import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, videoTitle, regionTitle, weeklyPicks, SOCIAL_NETWORKS, VIDEO_SERIES, ALL_SERIES } from './compose.mjs';
+import { excerpt, englishOf, regionLabel, seriesVersion, videoSeriesFor, videosPending, activeNetworks, videoTitle, regionTitle, weeklyPicks, SOCIAL_NETWORKS, VIDEO_SERIES, ALL_SERIES } from './compose.mjs';
 
 const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -799,7 +799,7 @@ async function main() {
   const log = JSON.parse(readFileSync(path.join(root, 'content/social/posted.json'), 'utf8'));
   const argv = process.argv.slice(2);
   const opt = (name) => (argv.includes(`--${name}`) ? argv[argv.indexOf(`--${name}`) + 1] : null);
-  const networks = [...SOCIAL_NETWORKS, ...(config.youtubeStart ? ['youtube'] : [])];
+  const networks = [...activeNetworks(config.paused), ...(config.youtubeStart ? ['youtube'] : [])];
 
   // --test-short <slug> <1|2> <file.mp4>: one video in the short format, written outside the site
   if (argv.includes('--test-short')) {
@@ -851,7 +851,7 @@ async function main() {
 
   // --slug a,b: render these statements' videos (for example to send older ones to YouTube)
   const only = (opt('slug') || '').split(',').filter(Boolean);
-  const pending = (s) => videosPending(s, log, config.start, config.youtubeStart);
+  const pending = (s) => videosPending(s, log, config.start, config.youtubeStart, config.paused);
   const wanted = all.filter((s) => (only.length ? only.includes(s.slug) : pending(s)));
   // the videos of statements already posted everywhere are deleted: the repository stays small
   for (const s of all) {

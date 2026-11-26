@@ -539,7 +539,10 @@ function args() {
 
 async function main() {
   const { mode, slug, networks } = args();
-  const chosen = networks.filter((n) => NETWORKS[n]);
+  // paused networks (content/social/config.json) get nothing new; check, delete and thumbnail still work on them
+  const paused = ['check', 'delete', 'thumbnail'].includes(mode) ? [] : CONFIG.paused || [];
+  const chosen = networks.filter((n) => NETWORKS[n] && !paused.includes(n));
+  paused.filter((n) => networks.includes(n)).forEach((n) => console.log(`${n}: paused (content/social/config.json), nothing posted`));
   const log = existsSync(LOG_FILE) ? JSON.parse(readFileSync(LOG_FILE, 'utf8')) : {};
   let failed = 0;
 

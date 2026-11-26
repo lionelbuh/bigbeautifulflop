@@ -276,15 +276,18 @@ export function secondVideoPost(s, series, max, tags = '', source = '') {
 }
 
 export const SOCIAL_NETWORKS = ['bluesky', 'threads', 'facebook', 'instagram'];
+/** The networks posted to: all except those paused in content/social/config.json (`paused`; their keys and code stay). */
+export const activeNetworks = (paused = []) => SOCIAL_NETWORKS.filter((n) => !paused.includes(n));
 
 /**
  * Whether a statement still needs its videos: published since `start` and not posted yet on some
  * network, or posted with video 1 and still waiting for video 2. Other statements keep no video files.
  */
-export function videosPending(s, log, start, youtubeStart = null) {
+export function videosPending(s, log, start, youtubeStart = null, paused = []) {
   if (!(s.published >= start)) return false;
   const entry = log?.[s.slug] || {};
   // an episode has a single video
+  const SOCIAL_NETWORKS = activeNetworks(paused);
   if (s.episode || s.meanwhile) return [...SOCIAL_NETWORKS, ...(youtubeStart && s.published >= youtubeStart ? ['youtube'] : [])].some((name) => !entry[name]);
   // YouTube counts only from the day it was switched on (content/social/config.json, youtubeStart)
   // (or for an older statement whose videos were sent to YouTube afterwards, by hand)
