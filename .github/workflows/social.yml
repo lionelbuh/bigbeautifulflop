@@ -100,6 +100,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if jq -e '(.paused // []) | index("threads")' content/social/config.json >/dev/null; then echo "Threads paused: no reminder"; exit 0; fi
           created=$(jq -r .threadsTokenCreated content/social/config.json)
           age=$(( ( $(date +%s) - $(date -d "$created" +%s) ) / 86400 ))
           echo "Threads key: $age days old"

@@ -17,8 +17,8 @@
   the slug (engine kokoro, voice auto: Steve is Fenrir), pull, then `npm run videos` (it says “no voice yet” until then).
 - **Reply kit:** with every new episode sent for review, also give the owner 3 short reply variants (different
   wording each, natural tone, the official figure with its source, and the episode link
-  `https://bigbeautifulflop.com/statements/<slug>/`) that the owner posts by hand under relevant posts on Bluesky and
-  Threads, with the video saved on the phone. Never automated, never tagging official accounts.
+  `https://bigbeautifulflop.com/statements/<slug>/`) that the owner posts by hand under relevant posts on Bluesky
+  (Threads is closed), with the video saved on the phone. Never automated, never tagging official accounts.
 - After adding or changing a statement: `npm run images` (share images in `public/og/`, uses the
   pre-installed Playwright), then `npm run videos` (one episode video, or two for older formats, per statement waiting to be posted,
   in `public/social/<slug>/`; deletes the videos of statements already posted), and commit them with the content.
