@@ -11,6 +11,7 @@ import { loadStatements } from '../../src/site/content.js';
 import { render, styles, STAMP_ASSET, RED, GRAIN } from './videos.mjs';
 import { steve } from './assets/steve.mjs';
 import { punchHtml, punchOpts } from './punch.mjs';
+import { shortHtml, shortOpts } from './short.mjs';
 
 const { chromium } = createRequire(import.meta.url)('playwright');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -43,6 +44,7 @@ export function meanwhileVideo(s, { style = s.meanwhile.style || 'film' } = {}) 
   const ANCHOR_AT = 2.9;
   t.h0at = r(ANCHOR_AT + ANCHOR_DUR + 0.4);
   const voice = voiceOfMeanwhile(s.slug, m);
+  if (style === 'short') { const { html: sh, T: st } = shortHtml(s, voice); return { html: sh, voice, opts: shortOpts(m, voice, st) }; }
   if (style === 'punch') { const { html: ph, T: pt } = punchHtml(s, voice); return { html: ph, voice, opts: punchOpts(m, voice, pt) }; }
   const { html, T } = meanwhileHtml(t, { ...s, episode: { highlight: m.highlight } }, voice);
   const cues = voice ? [['h0', T.h0at], ...m.steve.map((_, i) => [`s${i}`, T.at[i]])] : [];
