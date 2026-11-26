@@ -57,3 +57,26 @@ const P = new Float32Array(Math.round(2.6 * SR));
 [[0, 33, 0.6], [0.02, 34, 0.5], [0.03, 40, 0.45], [0.05, 46, 0.4], [0.06, 47, 0.35]].forEach(([dt, n, v]) => piano(P, dt, n, v, 2.5));
 save(P, 'bbf-plonk.wav', 0.8);
 console.log('bbf-film.wav, bbf-plonk.wav');
+
+// ---- the episode style "punch" (from 26 November 2026): a tight beat and an impact hit, also synthesised here
+//   bbf-punch.wav  kick on every beat, sub bass, off-beat hats, a riser into the drop (120 bpm, 30 s)
+//   bbf-boom.wav   the impact: a falling sub thump, a noise crack and a short tail
+{
+  const D = 30, B = new Float32Array(D * SR), beat = 0.5;
+  let s2 = 3; const rn = () => ((s2 = (s2 * 16807) % 2147483647) / 2147483647) * 2 - 1;
+  const kick = (t0, v = 1) => { const s0 = Math.round(t0 * SR); for (let i = 0; i < 0.35 * SR && s0 + i < B.length; i++) { const t = i / SR; B[s0 + i] += Math.sin(2 * Math.PI * (45 + 110 * Math.exp(-t * 30)) * t) * Math.exp(-t * 9) * v; } };
+  const hat = (t0, v = 0.12) => { const s0 = Math.round(t0 * SR); for (let i = 0; i < 0.05 * SR && s0 + i < B.length; i++) B[s0 + i] += rn() * Math.exp(-(i / SR) * 80) * v; };
+  const bass = (t0, n, len) => { const f = midi(n), s0 = Math.round(t0 * SR); for (let i = 0; i < len * SR && s0 + i < B.length; i++) { const t = i / SR; B[s0 + i] += Math.tanh(2.2 * Math.sin(2 * Math.PI * f * t)) * 0.22 * Math.min(1, t * 80) * Math.min(1, (len - t) * 20); } };
+  const line = [33, 33, 36, 31];
+  for (let k = 0, t = 0; t < D - 0.5; k++, t += beat) {
+    kick(t, k % 4 === 0 ? 1 : 0.8);
+    hat(t + beat / 2);
+    if (k % 2 === 0) bass(t, line[Math.floor(k / 8) % 4], beat * 1.8);
+    if (k % 8 === 6) hat(t + beat * 0.75, 0.08);
+  }
+  save(B, 'bbf-punch.wav', 0.75);
+  const X = new Float32Array(Math.round(1.6 * SR));
+  for (let i = 0; i < X.length; i++) { const t = i / SR; X[i] = Math.sin(2 * Math.PI * (38 + 140 * Math.exp(-t * 14)) * t) * Math.exp(-t * 3.2) + rn() * Math.exp(-t * 40) * 0.6 + rn() * Math.exp(-t * 6) * 0.05; }
+  save(X, 'bbf-boom.wav', 0.9);
+  console.log('bbf-punch.wav, bbf-boom.wav');
+}
