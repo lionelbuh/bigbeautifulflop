@@ -596,6 +596,36 @@ async function main() {
     return;
   }
 
+  // another cut of an episode already posted, to compare views: content/variants/<slug>/<style>.mp4, posted once per
+  // network as a video of its own (log key "<network>:<style>"): --mode variant --slug <slug>
+  if (mode === 'variant') {
+    const s = loadStatements(path.join(root, 'content/statements')).find((x) => x.slug === slug);
+    const dir = path.join(root, 'content/variants', slug || '-');
+    if (!s || !existsSync(dir)) throw new Error('--mode variant needs --slug of a statement with content/variants/<slug>/');
+    for (const f of readdirSync(dir).filter((x) => x.endsWith('.mp4')).sort()) {
+      const style = f.replace(/\.mp4$/, '');
+      for (const name of chosen.filter((n) => n === 'bluesky' || n === 'youtube')) {
+        const key = `${name}:${style}`;
+        if (log[slug]?.[key] || !NETWORKS[name].ready()) continue;
+        const url = articleUrl(s, name);
+        const head = `${s.headline}\n\nMeanwhile, at Steve’s kitchen table (satire).\n\n${url}`;
+        const text = name === 'bluesky' ? ([...`${head}\n\n${BLUESKY_TAGS}`].length <= 300 ? `${head}\n\n${BLUESKY_TAGS}` : head) : youtubeDescription(s, null);
+        const clip = { file: path.join(dir, f), url: null, cover: null, alt: `${s.headline}: the post, the official figure and Steve, a fictional American (satire, video with voice).`, title: `${s.headline} · Steve’s take #Shorts`, description: youtubeDescription(s, null) };
+        try {
+          const res = await NETWORKS[name].publishVideo(clip, text);
+          log[slug] = { ...log[slug], [key]: { at: new Date().toISOString(), id: res.id } };
+          writeFileSync(LOG_FILE, `${JSON.stringify(log, null, 2)}\n`);
+          console.log(`${slug} · ${name}: ${style} posted (${res.id})`);
+        } catch (err) {
+          failed += 1;
+          console.log(`${slug} · ${name}: ${style} FAILED ${err.message}`);
+        }
+      }
+    }
+    process.exitCode = failed ? 1 : 0;
+    return;
+  }
+
   const statements = loadStatements(path.join(root, 'content/statements'));
   const queue = slug
     ? statements.filter((s) => s.slug === slug)
