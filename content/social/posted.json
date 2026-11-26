@@ -1234,5 +1234,59 @@
       "id": "F8VtffWbfuk",
       "video": 1
     }
+  },
+  "gas-prices-plunge": {
+    "bluesky": {
+      "at": "2026-11-26T01:29:52.801Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n36jkoddxe2v",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-26T01:30:59.276Z",
+      "id": "17891857272478767",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-26T01:31:07.688Z",
+      "id": "1879352176533583",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-26T01:32:42.042Z",
+      "id": "18189229951424537",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-26T01:32:46.239Z",
+      "id": "nPGBl6QZ1CE",
+      "video": 1
+    }
+  },
+  "booming-401ks": {
+    "bluesky": {
+      "at": "2026-11-26T01:33:03.151Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n36jqdoamx2v",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-26T01:33:58.145Z",
+      "id": "18041263019852994",
+      "video": 1
+    },
+    "facebook": {
+      "at": "2026-11-26T01:34:04.817Z",
+      "id": "2703387280115339",
+      "video": 1
+    },
+    "instagram": {
+      "at": "2026-11-26T01:34:48.321Z",
+      "id": "18174616567499903",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-26T01:34:53.194Z",
+      "id": "zLCt_m9JUOk",
+      "video": 1
+    }
   }
 }
