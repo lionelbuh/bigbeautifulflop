@@ -43,6 +43,7 @@
         "label": "401(k)s",
         "value": "BOOMING",
         "dir": "up",
+        "arrow": "▲",
         "note": "if he had been on the ballot"
       },
       "right": {
