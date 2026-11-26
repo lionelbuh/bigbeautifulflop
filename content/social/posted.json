@@ -1288,5 +1288,22 @@
       "id": "zLCt_m9JUOk",
       "video": 1
     }
+  },
+  "gdp-corrected": {
+    "bluesky": {
+      "at": "2026-11-26T16:10:50.949Z",
+      "id": "at://did:plc:ch6wkop3lejnmbsz6rfknk6g/app.bsky.feed.post/3n3a2rxmfzo23",
+      "video": 1
+    },
+    "threads": {
+      "at": "2026-11-26T16:11:52.384Z",
+      "id": "18069148484517857",
+      "video": 1
+    },
+    "youtube": {
+      "at": "2026-11-26T16:11:56.729Z",
+      "id": "s8La6A_68DY",
+      "video": 1
+    }
   }
 }
