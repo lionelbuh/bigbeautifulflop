@@ -1,0 +1,64 @@
+{
+  "slug": "booming-401ks",
+  "status": "published",
+  "published": "2026-11-25",
+  "headline": "Your 401-k’s would be BOOMING",
+  "dek": "The President says that if he had been on the ballot, the stock market and your 401(k)s would be booming. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "stock market",
+    "retirement"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-25",
+    "time": "12:14",
+    "text": [
+      "Stocks are down sharply because of the November Third Election results. I wasn’t on the Ballot, but if I was, the results, just like all three times before, would have been much different, and the Stock Market, and your 401-k’s, would be BOOMING. I told you so!!! President DJT"
+    ],
+    "key": "I wasn’t on the Ballot, but if I was, the results, just like all three times before, would have been much different, and the Stock Market, and your 401-k’s, would be BOOMING.",
+    "context": "Posted on 25 November 2026. The market claims, and the account of their cause, are the President’s. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump/117678202296534723"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied from the trumpstruth.org archive (status 43729) of truthsocial.com/@realDonaldTrump/117678202296534723 on 26 November 2026; posted 25 November 2026 at 17:14 UTC (12:14 PM Eastern)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump says your 401(k)s would be BOOMING. *Meanwhile, at Steve’s house…*",
+    "highlight": "your 401-k’s, would be BOOMING",
+    "steve": [
+      "My 401(k) would be booming? Let me check.",
+      "Oh, right. I don’t have one. Almost half of families don’t.",
+      "*My retirement plan is “keep working.” That one never crashes.*"
+    ],
+    "board": {
+      "left": {
+        "label": "401(k)s",
+        "value": "BOOMING",
+        "dir": "up",
+        "note": "if he had been on the ballot"
+      },
+      "right": {
+        "label": "Steve’s 401(k)",
+        "value": "NONE",
+        "dir": "down",
+        "arrow": "✕",
+        "note": "like 45% of families"
+      }
+    },
+    "fact": {
+      "number": "45.1%",
+      "text": "of American families have no retirement account at all: no 401(k), no IRA (2025). Only 54.9% have one.",
+      "source": "Federal Reserve, Survey of Consumer Finances 2025 (“Changes in U.S. Family Finances from 2022 to 2025”, October 2026)",
+      "url": "https://www.federalreserve.gov/publications/files/scf26.pdf"
+    },
+    "ticker": "45.1% of American families have no retirement account: no 401(k), no IRA (Federal Reserve, Survey of Consumer Finances 2025)"
+  }
+}
