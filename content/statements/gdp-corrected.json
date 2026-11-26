@@ -1,0 +1,65 @@
+{
+  "slug": "gdp-corrected",
+  "status": "published",
+  "published": "2026-11-26",
+  "headline": "Corrected to be 4.3%",
+  "dek": "The President says third-quarter growth was corrected from 3.4% to 4.3%, calls the earlier number fake and asks for an immediate investigation. Meanwhile, at a real American kitchen table…",
+  "topics": [
+    "economy",
+    "prices"
+  ],
+  "original": {
+    "speaker": "Donald J. Trump",
+    "channel": "Truth Social",
+    "handle": "@realDonaldTrump",
+    "medium": "Truth Social, @realDonaldTrump",
+    "date": "2026-11-26",
+    "time": "09:24",
+    "text": [
+      "It was just revealed that the REAL Numbers on the Economy, published before the Election, were FAKE, and a correction was issued yesterday by the people in the Government Agency that does these numbers. The American Economy under The Trump Administration is doing FAR BETTER than the good numbers already released. Third Quarter GDP Growth has now been corrected to be 4.3%, instead of 3.4%, a major difference! Why wasn’t the correct number issued before the Election? I am asking for an immediate investigation of this situation. This is not a small error, this is a massive, and purposeful, error. Thank you for your attention to this matter. President DONALD J. TRUMP"
+    ],
+    "key": "Third Quarter GDP Growth has now been corrected to be 4.3%, instead of 3.4%, a major difference!",
+    "context": "Posted on 26 November 2026, the day after the Bureau of Economic Analysis released its second estimate of third-quarter GDP (4.3%, revised up from the 3.4% advance estimate). The claims of a fake number and a purposeful error are the President’s. Steve is a fictional character.",
+    "source": {
+      "label": "Truth Social, @realDonaldTrump",
+      "url": "https://truthsocial.com/@realDonaldTrump/117683194517889136"
+    },
+    "verification": {
+      "status": "verified",
+      "note": "Copied from the trumpstruth.org archive of truthsocial.com/@realDonaldTrump/117683194517889136 on 26 November 2026; posted 26 November 2026 at 14:24 UTC (9:24 AM Eastern)."
+    }
+  },
+  "editions": {},
+  "meanwhile": {
+    "hook": "Trump says growth was corrected to 4.3%. *Meanwhile, at Steve’s house…*",
+    "highlight": "Third Quarter GDP Growth has now been corrected to be 4.3%, instead of 3.4%",
+    "steve": [
+      "The economy got revised up to 4.3%? Great news.",
+      "Prices got revised up too: 3.8% in one year.",
+      "*Can somebody open an investigation into my grocery bill?*"
+    ],
+    "board": {
+      "left": {
+        "label": "GDP growth, Q3",
+        "value": "+4.3%",
+        "dir": "up",
+        "arrow": "▲",
+        "note": "annual rate, revised up (BEA)"
+      },
+      "right": {
+        "label": "Steve’s prices",
+        "value": "+3.8%",
+        "dir": "down",
+        "arrow": "▲",
+        "note": "in one year (PCE, October)"
+      }
+    },
+    "fact": {
+      "number": "+3.8%",
+      "text": "prices paid by American households, October 2026 against October 2025 (PCE price index), released the same day as the 4.3% growth figure.",
+      "source": "U.S. Bureau of Economic Analysis, Personal Income and Outlays, October 2026 (November 25, 2026)",
+      "url": "https://www.bea.gov/news/2026/personal-income-and-outlays-october-2026"
+    },
+    "ticker": "Prices: +3.8% in one year (PCE price index, October 2026) · GDP: 4.3% annual rate in Q3, revised up from 3.4% (BEA, November 25, 2026)"
+  }
+}
